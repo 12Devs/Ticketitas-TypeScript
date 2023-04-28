@@ -1,0 +1,27 @@
+.Texto-Grande {
+    font-size: 32px !important;
+}
+
+.Texto-Medio {
+    font-size: 24px !important;
+}
+
+.Texto-Pequeno {
+    font-size: 20px !important;
+}
+
+.Texto-MuitoPequeno {
+    font-size: 16px !important;
+}
+
+.Texto-Branco {
+    color: white !important;
+}
+
+.Texto-Preto{
+    color: black !important;
+}
+
+.Texto-Azul{
+    color: #1F82B2 !important;
+}
