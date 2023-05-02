@@ -26,12 +26,12 @@ const NavBarGeral = () => {
           <Navbar.Brand>
             <img
               src="/img/logo.svg"
-              width="30"
-              height="30"
+              width="60"
+              height="60"
               className="d-inline-block"
               alt=''
-            />{''}
-            <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+            />
+            <Link to={'/'} style={{ textDecoration: 'none', color: 'white', }}>
               {"Ticketitas"}
             </Link>
           </Navbar.Brand>

@@ -1,3 +1,12 @@
 .NavBar {
     background: #23272E !important;
+    width: auto;
+    height: 104px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+
 }
+
+
