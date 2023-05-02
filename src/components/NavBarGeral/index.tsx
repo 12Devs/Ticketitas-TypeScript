@@ -2,7 +2,13 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
+import InputBuscar from '../InputBuscar';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+
 import './Navbar.css';
+
+
 
 const NavBarGeral = () => {
   const rotas = [{
@@ -18,6 +24,8 @@ const NavBarGeral = () => {
     label: 'Seja um promoter',
     to: '/cadastro-promoter'
   }];
+
+  const [busca, setBusca] = useState('');
 
   return (
 
@@ -41,6 +49,11 @@ const NavBarGeral = () => {
 
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto" />
+
+          <Nav className="me-auto" >
+            <InputBuscar placeholder='Encontre' controlId='buscarNavBar' data={busca} setData={setBusca} />
+          </Nav>
+
           <Nav>
             {rotas.map((rota, index) => (
               <Nav.Item key={index}>
@@ -52,6 +65,13 @@ const NavBarGeral = () => {
               </Nav.Item>
             ))}
           </Nav>
+
+          <Button variant="primary">
+            <Link to={'/cadastrarSe'} style={{ textDecoration: 'none', color: 'white' }}>
+              {'Cadastrar-se'}
+            </Link>
+          </Button>{' '}
+
         </Navbar.Collapse>
 
       </Container>
