@@ -20,42 +20,42 @@ const NavBarGeral = () => {
   }];
 
   return (
-    <>
-      <Navbar collapseOnSelect expand="lg" className='NavBar'>
-        <Container>
-          <Navbar.Brand>
-            <img
-              src="/img/logo.svg"
-              width="30"
-              height="30"
-              className="d-inline-block"
-              alt=''
-            />{''}
-            <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
-              {"Ticketitas"}
-            </Link>
-          </Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+    <Navbar collapseOnSelect expand="lg" className='NavBar'>
+      <Container>
+        <Navbar.Brand>
+          <img
+            src="/img/logo.svg"
+            width="30"
+            height="30"
+            className="d-inline-block"
+            alt=''
+          />{''}
+          <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+            {"Ticketitas"}
+          </Link>
+        </Navbar.Brand>
 
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto" />
-            <Nav>
-              {/*rotas.map((rota, index) => (
-                <Nav.Item key={index}>
 
-                  <Nav.Link>
-                    <Link to={rota.to} style={{ textDecoration: 'none', color: 'white' }}>
-                      {rota.label}
-                    </Link>
-                  </Nav.Link>
-                </Nav.Item>
-              ))*/}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto" />
+          <Nav>
+            {rotas.map((rota, index) => (
+              <Nav.Item key={index}>
+                <Nav.Link>
+                  <Link to={rota.to} style={{ textDecoration: 'none', color: 'white' }}>
+                    {rota.label}
+                  </Link>
+                </Nav.Link>
+              </Nav.Item>
+            ))}
+          </Nav>
+        </Navbar.Collapse>
+
+      </Container>
+    </Navbar>
   );
 }
 

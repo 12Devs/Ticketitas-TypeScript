@@ -8,8 +8,10 @@ export default function AppRouter() {
         <main>
             <Router>
                 <NavBarGeral/>
-                <Routes>
-                </Routes>
+
+                <p>AAAAAAAAA</p>
+                {/* <Routes>
+                </Routes> */}
             </Router>
         </main>
     );
