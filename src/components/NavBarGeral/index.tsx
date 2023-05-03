@@ -2,7 +2,13 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
+import InputBuscar from '../InputBuscar';
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+
 import './Navbar.css';
+
+
 
 const NavBarGeral = () => {
   const rotas = [{
@@ -19,43 +25,57 @@ const NavBarGeral = () => {
     to: '/cadastro-promoter'
   }];
 
+  const [busca, setBusca] = useState('');
+
   return (
-    <>
-      <Navbar collapseOnSelect expand="lg" className='NavBar'>
-        <Container>
-          <Navbar.Brand>
-            <img
-              src="/img/logo.svg"
-              width="60"
-              height="60"
-              className="d-inline-block"
-              alt=''
-            />
-            <Link to={'/'} style={{ textDecoration: 'none', color: 'white', }}>
-              {"Ticketitas"}
+
+    <Navbar collapseOnSelect expand="lg" className='NavBar'>
+      <Container>
+        <Navbar.Brand>
+          <img
+            src="/img/logo.svg"
+            width="30"
+            height="30"
+            className="d-inline-block"
+            alt=''
+          />{''}
+          <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+            {"Ticketitas"}
+          </Link>
+        </Navbar.Brand>
+
+
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto" />
+
+          <Nav className="me-auto" >
+            <InputBuscar placeholder='Encontre' controlId='buscarNavBar' data={busca} setData={setBusca} />
+          </Nav>
+
+          <Nav>
+            {rotas.map((rota, index) => (
+              <Nav.Item key={index}>
+                <Nav.Link>
+                  <Link to={rota.to} style={{ textDecoration: 'none', color: 'white' }}>
+                    {rota.label}
+                  </Link>
+                </Nav.Link>
+              </Nav.Item>
+            ))}
+          </Nav>
+
+          <Button variant="primary">
+            <Link to={'/cadastrarSe'} style={{ textDecoration: 'none', color: 'white' }}>
+              {'Cadastrar-se'}
             </Link>
-          </Navbar.Brand>
+          </Button>{' '}
 
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        </Navbar.Collapse>
 
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto" />
-            <Nav>
-              {/*rotas.map((rota, index) => (
-                <Nav.Item key={index}>
-
-                  <Nav.Link>
-                    <Link to={rota.to} style={{ textDecoration: 'none', color: 'white' }}>
-                      {rota.label}
-                    </Link>
-                  </Nav.Link>
-                </Nav.Item>
-              ))*/}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </>
+      </Container>
+    </Navbar>
   );
 }
 
