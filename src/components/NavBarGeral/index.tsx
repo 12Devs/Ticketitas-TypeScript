@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import InputBuscar from '../InputBuscar';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import ModalLogin from '../ModalLogin';
 
 import './Navbar.css';
 
@@ -51,7 +52,7 @@ const NavBarGeral = () => {
           <Nav className="me-auto" />
 
           <Nav className="me-auto" >
-            <InputBuscar placeholder='Encontre' controlId='buscarNavBar' data={busca} setData={setBusca} />
+            <InputBuscar placeholder='Busque eventos, shows, teatros...' controlId='buscarNavBar' data={busca} setData={setBusca} />
           </Nav>
 
           <Nav>
@@ -65,6 +66,8 @@ const NavBarGeral = () => {
               </Nav.Item>
             ))}
           </Nav>
+          
+          <ModalLogin/>
 
           <Button variant="primary">
             <Link to={'/cadastrarSe'} style={{ textDecoration: 'none', color: 'white' }}>

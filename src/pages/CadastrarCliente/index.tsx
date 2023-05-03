@@ -6,6 +6,10 @@ import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 
 import InputTexto from '../../components/InputTexto';
+import FormLabel from '../../components/FormLabel';
+
+import '../../components/Texto/Texto.css';
+import '../../components/Button/Button.css';
 
 // import InputText from '../InputText'
 // import InputSelect from '../InputSelect';
@@ -53,12 +57,12 @@ export default function CadastrarCliente() {
     }
 
     return (
-        <Form onSubmit={realizarCadastro} className='mainContent'>
-            <Container className='p-5'>
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
+            <Container>
 
-                {/* <Row className='mb-5'>
-                    <AbaIndicacao label={"Realizar cadastro"} />
-                </Row> */}
+                <Row>
+                    <FormLabel label='Cadastro'/>
+                </Row> 
 
                 <Row>
                     <Col sm={6}>
@@ -123,17 +127,13 @@ export default function CadastrarCliente() {
                     </Col>
                 </Row>
 
-                <Row className='mt-3'>
-                    <Col sm={6} className=' d-flex justify-content-end'>
-                        <Button variant="outline-secondary">
+                <Row className='d-flex justify-content-center'>
+                        <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                             Cancelar
                         </Button>
-                    </Col>
-                    <Col sm={6}>
-                        <Button type="submit" variant="primary">
+                        <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
                             Confirmar
                         </Button>
-                    </Col>
                 </Row>
 
             </Container>
