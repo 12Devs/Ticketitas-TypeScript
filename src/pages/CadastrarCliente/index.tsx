@@ -94,6 +94,9 @@ export default function CadastrarCliente() {
                         <Col sm={8}>
                             <InputTexto type='' defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
                         </Col>
+                        <Col sm={4}>
+                            <InputTexto type='' defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
+                        </Col>
                     </Row>
 
                     <Row>
