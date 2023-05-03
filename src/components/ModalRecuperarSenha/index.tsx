@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 import '../Button/Button.css';
 import InputTexto from '../InputTexto';
+import { Row } from 'react-bootstrap';
 
 export default function ModalRecuperarSenha() {
     const [show, setShow] = useState(false);
@@ -14,33 +15,45 @@ export default function ModalRecuperarSenha() {
 
     return (
         <>
-            <Button className='Botão-Terciário Texto-Preto' onClick={handleShow}>
+            <Button className='Botão-Terciário Texto-Azul' onClick={handleShow}>
                 Esqueci minha senha
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} style={{backgroundColor: "#23272E"}}>
                 <Modal.Body>
-                    <img
-                        src="/img/logo.svg"
-                        width="100"
-                        height="100"
-                        className="align-items-center"
-                        alt=''
-                    />{''}
-                    <p className='Texto-Grande Texto-Preto'>
-                        Recuperar senha
-                    </p>
+                    <Row className='justify-content-center'>
+                        <img
+                            src="/img/logo.svg"
+                            width="100"
+                            height="100"
+                            className="align-items-center"
+                            alt=''
+                        />{''}
+                        <p className='Texto-Grande Texto-Preto text-center'>
+                            Recuperar senha
+                        </p>
+                    </Row>
 
-                    <InputTexto defaultValue={''} required={true} label={"Email"} placeholder={""} controlId={"email"} data={email} setData={setEmail} />
+                    <Row className='justify-content-center'>
+                        <InputTexto 
+                            defaultValue={''} 
+                            required={true} 
+                            label={"Email"} 
+                            placeholder={"Digite o email associado a sua conta"} 
+                            controlId={"email"} 
+                            data={email} 
+                            setData={setEmail} />
+                    </Row>
 
-                    <p>
+                    <Row className='justify-content-center'>
                         aqui vai ter um captcha
-                    </p>
+                    </Row>
 
-                    <Button className='Botão-Primário Texto-Branco' type='submit'>
-                        Enviar
-                    </Button>
-
+                    <Row className='justify-content-center'>
+                        <Button className='Botão-Primario Texto-Branco' type='submit'>
+                            Enviar
+                        </Button>
+                    </Row>
                 </Modal.Body>
             </Modal>
         </>
