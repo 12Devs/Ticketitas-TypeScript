@@ -16,7 +16,7 @@ import InputTexto from '../../components/InputTexto';
 
 
 
-export default function CadastrarCliente() {
+export default function CadastrarPromoter() {
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobreome] = useState('');
     const [telefone, setTelefone] = useState('');
@@ -34,7 +34,7 @@ export default function CadastrarCliente() {
     const realizarCadastro = (event: any) => {
         event.preventDefault();
 
-        var dadosCliente = {
+        var dadosPromoter = {
             primeiroNome,
             sobrenome,
             telefone,
@@ -49,7 +49,7 @@ export default function CadastrarCliente() {
             senha,
             senhaConfirmacao
         }
-        console.log(dadosCliente);
+        console.log(dadosPromoter);
     }
 
     return (
@@ -116,7 +116,7 @@ export default function CadastrarCliente() {
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type={'passoword'} defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
+                        <InputTexto type={'password'} defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
                     </Col>
                     <Col sm={6}>
                         <InputTexto type={'password'} defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={senhaConfirmacao} setData={setSenhaConfirmacao} />

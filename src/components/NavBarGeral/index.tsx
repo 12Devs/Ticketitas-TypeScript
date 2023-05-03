@@ -51,7 +51,7 @@ const NavBarGeral = () => {
           <Nav className="me-auto" />
 
           <Nav className="me-auto" >
-            <InputBuscar placeholder='Encontre' controlId='buscarNavBar' data={busca} setData={setBusca} />
+            <InputBuscar placeholder='Buscar' controlId='buscarNavBar' data={busca} setData={setBusca} />
           </Nav>
 
           <Nav>

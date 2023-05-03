@@ -2,11 +2,16 @@
     background: #23272E !important;
     width: auto;
     height: 104px;
-    display: flex;
+    display:inline;
     flex-direction: row;
     align-items: center;
     padding: 10px;
 
+}
+
+.Container{
+    align-items: center;
+    display: flex;
 }
 
 
