@@ -42,7 +42,8 @@ export default function ModalRecuperarSenha() {
                             placeholder={"Digite o email associado a sua conta"} 
                             controlId={"email"} 
                             data={email} 
-                            setData={setEmail} />
+                            setData={setEmail} 
+                            type=''/>
                     </Row>
 
                     <Row className='justify-content-center'>
