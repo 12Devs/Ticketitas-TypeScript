@@ -1,4 +1,3 @@
-import { Model } from "sequelize";
 import { Endereco } from "../models/Endereco";
 
 
