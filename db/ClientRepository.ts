@@ -1,10 +1,11 @@
+import { CreateEnderecoController } from "../controllers/create endereco/CreateEnderecoController";
 import { createEnderecoController } from "../controllers/create endereco/index";
 import { Client } from "../models/Client";
 
 
 class ClientRepository {
 
-    private createEnderecoController
+    private createEnderecoController: CreateEnderecoController
 
     public constructor (){
         this.createEnderecoController = createEnderecoController;
@@ -12,7 +13,7 @@ class ClientRepository {
 
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
-        await createEnderecoController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco)=>{
+        await this.createEnderecoController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco)=>{
             const enderecoId = endereco.id;
             await Client.create({nome, cpf, email, telefone, senha, enderecoId});
         });
