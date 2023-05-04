@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import QuemSomos from './pages/QuemSomos';
 import CadastrarCliente from './pages/CadastrarCliente';
 import CadastrarPromoter from './pages/CadastrarPromoter';
-import Footer from './components/Footer';
+
 
 
 export default function AppRouter() {
@@ -19,9 +19,7 @@ export default function AppRouter() {
                     <Route path='cadastrarCliente' element={<CadastrarCliente/>}/>
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter/>}/>
                 </Routes>
-                <Footer>
-
-                </Footer>
+                
             </Router>
         </main>
     );

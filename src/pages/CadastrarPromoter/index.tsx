@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
+import FormLabel from '../../components/FormLabel';
 import { useState } from 'react';
 
 import InputTexto from '../../components/InputTexto';
@@ -56,10 +57,11 @@ export default function CadastrarPromoter() {
         <Form onSubmit={realizarCadastro} className='mainContent'>
             <Container className='p-5'>
 
-                {/* <Row className='mb-5'>
-                    <AbaIndicacao label={"Realizar cadastro"} />
-                </Row> */}
-
+               
+                 
+                <Row >
+                        <FormLabel label='Cadastro de Promoter'/>
+                    </Row>
                 <Row>
                     <Col sm={6}>
                         <InputTexto type={''} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
@@ -123,18 +125,14 @@ export default function CadastrarPromoter() {
                     </Col>
                 </Row>
 
-                <Row className='mt-3'>
-                    <Col sm={6} className=' d-flex justify-content-end'>
-                        <Button variant="outline-secondary">
-                            Cancelar
-                        </Button>
-                    </Col>
-                    <Col sm={6}>
-                        <Button type="submit" variant="primary">
-                            Confirmar
-                        </Button>
-                    </Col>
-                </Row>
+                <Row className='d-flex justify-content-center'>
+                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                                Cancelar
+                            </Button>
+                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
+                                Confirmar
+                            </Button>
+                    </Row>
 
             </Container>
         </Form>
