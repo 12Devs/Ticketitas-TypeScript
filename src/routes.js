@@ -4,6 +4,8 @@ import React from 'react';
 import Home from './pages/Home';
 import QuemSomos from './pages/QuemSomos';
 import CadastrarCliente from './pages/CadastrarCliente';
+import CadastrarPromoter from './pages/CadastrarPromoter';
+
 
 
 export default function AppRouter() {
@@ -14,8 +16,10 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos/>}/>
-                    <Route path='cadastrarSe' element={<CadastrarCliente/>}/>
+                    <Route path='cadastrarCliente' element={<CadastrarCliente/>}/>
+                    <Route path='cadastrarPromoter' element={<CadastrarPromoter/>}/>
                 </Routes>
+                
             </Router>
         </main>
     );

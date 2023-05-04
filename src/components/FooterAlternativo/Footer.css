@@ -1,0 +1,27 @@
+.Footer {
+    background: #23272E !important;
+    width: auto;
+    height: 100px;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    display: inline-block;
+
+    
+
+}
+#texto{
+    color: white;
+    font-size: 28px;
+    font-weight: 500;
+    display: inline-block;
+}
+.texto-cr
+{
+    color: white;
+    align-items: center;
+    font-size: 15px;
+}
+
+
+
