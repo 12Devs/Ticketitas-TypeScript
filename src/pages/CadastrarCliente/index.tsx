@@ -110,13 +110,13 @@ export default function CadastrarCliente() {
 
                 <Row>
                     <Col>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
+                        <InputTexto type={'email    '} defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type={'passoword'} defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
+                        <InputTexto type={'password'} defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
                     </Col>
                     <Col sm={6}>
                         <InputTexto type={'password'} defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={senhaConfirmacao} setData={setSenhaConfirmacao} />
