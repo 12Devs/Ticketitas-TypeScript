@@ -1,6 +1,5 @@
 import { Endereco } from "../models/Endereco";
 
-
 class EnderecoRepository {
 
     public async create (cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number){
