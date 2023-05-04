@@ -7,7 +7,7 @@ import { ensureAuthenticated } from '../middlewares/EnsureAuthenticatedClient';
 
 const clientRoutes = Router();
 
-clientRoutes.post("/client", ensureAuthenticated, (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.post("/client", (request: Request, response: Response, next: NextFunction)=>{
    
     return createClientController.handle(request, response).catch((error)=>{next(error)});
     

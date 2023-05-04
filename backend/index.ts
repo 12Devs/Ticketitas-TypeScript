@@ -2,11 +2,14 @@ import express, { NextFunction, Request, Response } from "express";
 import { router } from "./routes/IndexRoutes";
 import { conn } from "./db/Connection";
 import { ApiError } from "./errors/api.errors";
+import cors from "cors";
 
 
     const app = express();
     //Config json response
     app.use(express.json());
+
+    app.use(cors());
 
     //Usando as rotas
     app.use(router);

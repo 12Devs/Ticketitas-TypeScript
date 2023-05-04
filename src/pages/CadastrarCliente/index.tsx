@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
+import React, { useEffect } from 'react';
 
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
@@ -25,7 +26,7 @@ export default function CadastrarCliente() {
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobreome] = useState('');
     const [telefone, setTelefone] = useState('');
-    const [cpfCnpj, setCpfCnpj] = useState('');
+    const [cpf, setCpf] = useState('');
     const [cep, setCep] = useState('');
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
@@ -34,16 +35,24 @@ export default function CadastrarCliente() {
     const [numero, setNumero] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [senhaConfirmacao, setSenhaConfirmacao] = useState('');
+    const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
+        
+        
+        // sendFile().then((result)=>{
+        //     console.log("Esse é o resultado: ", result);
+        // })
+        
+    }
 
-        var dadosCliente = {
-            primeiroNome,
-            sobrenome,
+    const sendFile = async () => {
+
+        var dadosCliente: any = {
+            nome: primeiroNome + sobrenome, 
             telefone,
-            cpfCnpj,
+            cpf,
             cep,
             cidade,
             estado,
@@ -52,14 +61,21 @@ export default function CadastrarCliente() {
             numero,
             email,
             senha,
-            senhaConfirmacao
+            confirmacaoSenha
         }
-        console.log(dadosCliente);
-    }
+        const res = await fetch(`http://localhost:3333/user/client`, {
+          method: 'POST',
+          body: dadosCliente,
+        });
+
+        const data = await res.json();
+        console.log(data);
+        return data;
+      };
 
     return (
         <>
-            <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
+            <Form style={{minHeight: '75vh'}}>
                 <Container>
 
                     <Row >
@@ -80,7 +96,7 @@ export default function CadastrarCliente() {
                             <InputTexto type='' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
                         </Col>
                         <Col sm={6}>
-                            <InputTexto type='' defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
+                            <InputTexto type='' defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />
                         </Col>
                     </Row>
 
@@ -125,7 +141,7 @@ export default function CadastrarCliente() {
                             <InputTexto type='password' defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
                         </Col>
                         <Col sm={6}>
-                            <InputTexto type='password' defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={senhaConfirmacao} setData={setSenhaConfirmacao} />
+                            <InputTexto type='password' defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={confirmacaoSenha} setData={setConfirmacaoSenha} />
                         </Col>
                     </Row>
 
@@ -133,7 +149,7 @@ export default function CadastrarCliente() {
                             <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
                             </Button>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
+                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' onClick={sendFile}>
                                 Confirmar
                             </Button>
                     </Row>

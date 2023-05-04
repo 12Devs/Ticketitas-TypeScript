@@ -16,7 +16,7 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos/>}/>
-                    <Route path='cadastrarCliente' element={<CadastrarCliente/>}/>
+                    <Route path='cadastrarSe' element={<CadastrarCliente/>}/>
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter/>}/>
                 </Routes>
                 
