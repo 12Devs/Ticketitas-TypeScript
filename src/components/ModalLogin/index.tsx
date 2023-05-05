@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-
+import ReCAPTCHA from "react-google-recaptcha";
 import '../Button/Button.css';
 import InputTexto from '../InputTexto';
 import ModalRecuperarSenha from '../ModalRecuperarSenha';
@@ -12,9 +12,14 @@ export default function ModalLogin() {
     const [cpf, setCPF] = useState('');
     const [senha, setSenha] = useState('');
     const [userType, setUserType] = useState('cliente');
+    const [capcthavalidate, setcapcthavalidate] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    
+    function validateCaptcha() {
+        setcapcthavalidate(true)
+}
 
     return (
         <>
@@ -50,7 +55,10 @@ export default function ModalLogin() {
                     </Row>
 
                     <Row className='justify-content-center'>
-                        aqui vai ter um captcha
+                    <ReCAPTCHA
+                    sitekey="6LdLG-ElAAAAAN34jptkg-UA6ASYNmnM9_CXjvFM"
+                    onChange={validateCaptcha}
+                    />
                     </Row>
 
                     <Row className='justify-content-center'>
@@ -58,9 +66,20 @@ export default function ModalLogin() {
                     </Row>
 
                     <Row className='justify-content-center'>
-                        <Button className='Botão-Primario Texto-Branco' type='submit'>
+                        {
+                            capcthavalidate
+                            ?
+                            //Colocar ação do botão quando o captcha for validado
+                            <Button className='Botão-Primario Texto-Branco' type='submit'>
                             Entrar
-                        </Button>
+                            </Button>
+                            :
+                            <Button className='Botão-Primario Texto-Branco' type='submit'>
+                            Não
+                            </Button>
+                            
+                        }
+                        
                     </Row>
                 </Modal.Body>
             </Modal>
