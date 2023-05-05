@@ -42,7 +42,7 @@ export default function CadastrarCliente() {
     const realizarCadastro = (event: any) => {
         event.preventDefault();
         var dadosCliente: any = {
-            nome: primeiroNome + sobrenome, 
+            nome: `${primeiroNome} ${sobrenome}`, 
             telefone,
             cpf,
             cep,
@@ -63,7 +63,7 @@ export default function CadastrarCliente() {
 
     return (
         <>
-            <Form style={{minHeight: '75vh'}}>
+            <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
                 <Container>
 
                     <Row >
