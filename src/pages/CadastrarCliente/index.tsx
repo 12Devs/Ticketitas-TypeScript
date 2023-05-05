@@ -12,6 +12,8 @@ import FormLabel from '../../components/FormLabel';
 import '../../components/Texto/Texto.css';
 import '../../components/Button/Button.css';
 import Footer from '../../components/Footer';
+import { response } from 'express';
+import { api } from '../../services/api';
 
 // import InputText from '../InputText'
 // import InputSelect from '../InputSelect';
@@ -39,16 +41,6 @@ export default function CadastrarCliente() {
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
-        
-        
-        // sendFile().then((result)=>{
-        //     console.log("Esse é o resultado: ", result);
-        // })
-        
-    }
-
-    const sendFile = async () => {
-
         var dadosCliente: any = {
             nome: primeiroNome + sobrenome, 
             telefone,
@@ -63,15 +55,11 @@ export default function CadastrarCliente() {
             senha,
             confirmacaoSenha
         }
-        const res = await fetch(`http://localhost:3333/user/client`, {
-          method: 'POST',
-          body: dadosCliente,
-        });
+        
+        api.post("/user/client", dadosCliente).then((response)=>{console.log(response)});
+        
+    }
 
-        const data = await res.json();
-        console.log(data);
-        return data;
-      };
 
     return (
         <>
@@ -149,7 +137,7 @@ export default function CadastrarCliente() {
                             <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
                             </Button>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' onClick={sendFile}>
+                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">
                                 Confirmar
                             </Button>
                     </Row>

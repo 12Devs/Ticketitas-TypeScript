@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
+import Footer from '../../components/Footer';
 
 // import InputText from '../InputText'
 // import InputSelect from '../InputSelect';
@@ -26,8 +27,7 @@ export default function CadastrarAdmin() {
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [senhaConfirmacao, setSenhaConfirmacao] = useState('');
+
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
@@ -44,8 +44,6 @@ export default function CadastrarAdmin() {
             rua,
             numero,
             email,
-            senha,
-            senhaConfirmacao
         }
         console.log(dadosAdmin);
     }
@@ -61,66 +59,58 @@ export default function CadastrarAdmin() {
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
                     </Col>
                     <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome} />
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
-                    </Col>
-                    <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                    </Col>
+                    <Col sm={6}>
+                        <InputTexto type="" defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col sm={6}>
+                        <InputTexto type="" defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
                     </Col>
-                    {/* <Col sm={4}>
-                        <InputSelect label={"Estado"} name={'Estados'} data={estado} setData={setEstado} />
-                    </Col> */}
+                    { <Col sm={4}>
+                        <InputTexto type="" defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
+                    </Col> }
                 </Row>
 
                 <Row>
                     <Col>
-                        <InputTexto defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
                     </Col>
                     <Col sm={4}>
-                        <InputTexto defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col>
-                        <InputTexto defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
+                        <InputTexto type="" defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
                     </Col>
                 </Row>
 
-                <Row>
-                    <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
-                    </Col>
-                    <Col sm={6}>
-                        <InputTexto defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={senhaConfirmacao} setData={setSenhaConfirmacao} />
-                    </Col>
-                </Row>
 
                 <Row className='d-flex justify-content-center'>
                         <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
@@ -133,6 +123,8 @@ export default function CadastrarAdmin() {
 
             </Container>
         </Form>
+
+        <Footer/>
         </>
     )
 }
