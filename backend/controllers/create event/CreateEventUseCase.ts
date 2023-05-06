@@ -11,7 +11,7 @@ class CreateEventUseCase {
         this.eventRepository = eventRepository;
     }
 
-    public async execute (nome: string, descricao: string, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number) {
+    public async execute (nome: string, descricao: string, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
 
         //Validations
 
@@ -51,7 +51,7 @@ class CreateEventUseCase {
             throw new ApiError("O valor dos ingressos no setor vip é obrigatório!", 422);
         }
 
-        await this.eventRepository.create(nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip);
+        await this.eventRepository.create(nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, cidade, estado, bairro, rua, numero);
         
     }
 
