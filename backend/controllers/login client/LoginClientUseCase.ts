@@ -23,18 +23,18 @@ class LoginClientUseCase {
         const infoClient = await this.clientRepository.findByEmailAndSenha(email, senha);
         
         if (infoClient === null || infoClient === undefined) {
-            throw new ApiError("Email ou senha incorretos", 422);
+            throw new ApiError("Email ou senha incorretos", 401);
         }
 
         
         if (infoClient.email !== email) {
-            throw new ApiError("Email ou senha incorretos", 422);
+            throw new ApiError("Email ou senha incorretos", 401);
         }
 
         const checkSenha = bcrypt.compareSync(senha, infoClient.senha);
 
         if (!checkSenha) {
-            throw new ApiError("Email ou senha incorretos", 422);
+            throw new ApiError("Email ou senha incorretos", 401);
         }
 
         const client = {
