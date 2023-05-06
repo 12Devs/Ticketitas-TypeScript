@@ -1,13 +1,13 @@
 
-import { EnderecoRepository } from "../../db/EnderecoRepository";
+import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { ApiError } from "../../errors/api.errors";
 import { pesquisarCep } from "../../middlewares/PesquisarCep";
 
-class CreateEnderecoUseCase {
-    private enderecoRepository: EnderecoRepository
+class CreateEnderecoEventUseCase {
+    private enderecoEventRepository: EnderecoEventRepository
 
-    constructor (enderecoRepository: EnderecoRepository) {
-        this.enderecoRepository =  enderecoRepository;
+    public constructor (enderecoEventRepository: EnderecoEventRepository) {
+        this.enderecoEventRepository =  enderecoEventRepository;
     }
 
     public async execute (cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
@@ -39,16 +39,16 @@ class CreateEnderecoUseCase {
             throw new ApiError("O numero é obrigatório!", 422);
         }
 
-        const enderecoExists = await this.enderecoRepository.findByEndereco(cep, bairro, rua, numero);
+        const enderecoExists = await this.enderecoEventRepository.findByEndereco(cep, bairro, rua, numero);
 
         if(enderecoExists) {
             return enderecoExists;
         }
 
-        await this.enderecoRepository.create(cep, estado, cidade , bairro, rua, numero);
-        const enderecoId = await this.enderecoRepository.findByEndereco(cep, bairro, rua, numero);
+        await this.enderecoEventRepository.create(cep, estado, cidade , bairro, rua, numero);
+        const enderecoId = await this.enderecoEventRepository.findByEndereco(cep, bairro, rua, numero);
         return enderecoId
     }
 }
 
-export { CreateEnderecoUseCase };
+export { CreateEnderecoEventUseCase };

@@ -1,21 +1,21 @@
-import { CreateEnderecoController } from "../controllers/create endereco/CreateEnderecoController";
-import { createEnderecoController } from "../controllers/create endereco/index";
+import { createEnderecoUserController } from "../controllers/create user endereco/index";
+import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
 import { Client } from "../models/Client";
 
 
 class ClientRepository {
 
-    private createEnderecoController: CreateEnderecoController
+    private createEnderecoUserController: CreateEnderecoUserController
 
     public constructor (){
-        this.createEnderecoController = createEnderecoController;
+        this.createEnderecoUserController = createEnderecoUserController;
     }
 
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
-        await this.createEnderecoController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco)=>{
-            const enderecoId = endereco.id;
-            await Client.create({nome, cpf, email, telefone, senha, enderecoId});
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoUser: any)=>{
+            const enderecoUserId = enderecoUser.id;
+            await Client.create({nome, cpf, email, telefone, senha, enderecoUserId});
         });
         
     }

@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { loginClientController } from '../controllers/login client/index';
 import { createClientController } from '../controllers/create client/index';
-import { ensureAuthenticated } from '../middlewares/EnsureAuthenticatedClient';
-
 
 
 const clientRoutes = Router();
