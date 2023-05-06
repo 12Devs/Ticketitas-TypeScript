@@ -2,6 +2,10 @@ import { createEnderecoUserController } from "../controllers/create user enderec
 import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
 import { Client } from "../models/Client";
 
+interface cpfAndAvatar {
+    cpf: number,
+    avatar: string
+}
 
 class ClientRepository {
 
@@ -39,6 +43,14 @@ class ClientRepository {
             email: email
         }});
         return client;
+    }
+
+    
+    public async findByCpfAndAvatar (cpf: number): Promise<any>{
+        const cpfAndAvatar = await Client.findOne({raw: true, attributes: ['cpf', 'avatarImage'], where: {
+            cpf: cpf
+        }});
+        return cpfAndAvatar;
     }
 }
 

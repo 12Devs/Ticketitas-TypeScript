@@ -13,7 +13,6 @@ class LoginClientController {
 
         const { email, senha } = request.body;
         await this.loginClientUseCase.execute(email, senha).then((client)=>{
-            console.log(client)
             createUserToken(client, request, response);
         });
         

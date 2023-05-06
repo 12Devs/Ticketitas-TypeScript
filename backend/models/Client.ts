@@ -22,6 +22,10 @@ const Client = conn.define('client',{
     senha: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    avatarImage: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 

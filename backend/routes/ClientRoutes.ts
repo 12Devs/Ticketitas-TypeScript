@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { loginClientController } from '../controllers/login client/index';
 import { createClientController } from '../controllers/create client/index';
+import { loginClientController } from '../controllers/login client';
+import { ensureAuthenticated } from '../middlewares/EnsureAuthenticatedClient';
+import { imageUpload } from '../middlewares/ImageUpload';
+import { updateAvatarController } from '../controllers/update user avatar/index';
 
 
 const clientRoutes = Router();
@@ -11,7 +14,13 @@ clientRoutes.post("/client", (request: Request, response: Response, next: NextFu
     
 });
 
-clientRoutes.post("/login", (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.patch("/client/avatar", ensureAuthenticated, imageUpload.single("avatar"), (request: Request, response: Response, next: NextFunction)=>{
+   
+    return updateAvatarController.handle(request, response).catch((error)=>{next(error)});
+    
+});
+
+clientRoutes.post("/client/login", (request: Request, response: Response, next: NextFunction)=>{
     return loginClientController.handle(request, response).catch((error)=>{next(error)});
 });
 

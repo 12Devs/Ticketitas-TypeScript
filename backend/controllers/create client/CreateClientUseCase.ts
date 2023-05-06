@@ -9,6 +9,7 @@ class CreateClientUseCase {
     constructor (clientRepository: ClientRepository) {
         this.clientRepository =  clientRepository;
     }
+    
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
         //Validations
         if (!nome){

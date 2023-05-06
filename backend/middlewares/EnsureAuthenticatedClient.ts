@@ -21,6 +21,9 @@ async function ensureAuthenticated(request: Request, response: Response, next: N
         if(!clientCpf) {
             next(new ApiError("Client nã existe", 401));
         }
+        request.user = {
+            cpf: clientCpf
+        }
         next();
     } catch {
         next(new ApiError("Token inválido", 401));
