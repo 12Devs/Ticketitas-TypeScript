@@ -1,5 +1,6 @@
 import { EventRepository } from "../../db/EventRepository";
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
+
 
 
 class CreateEventUseCase {

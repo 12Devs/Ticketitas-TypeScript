@@ -1,5 +1,5 @@
 import { ClientRepository } from "../../db/ClientRepository";
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 

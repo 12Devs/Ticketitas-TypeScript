@@ -1,6 +1,5 @@
-
 import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
 
 class CreateEnderecoEventUseCase {
     private enderecoEventRepository: EnderecoEventRepository
