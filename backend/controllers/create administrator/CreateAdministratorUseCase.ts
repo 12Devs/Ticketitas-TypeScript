@@ -1,17 +1,15 @@
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-import { AccessCodeRepository } from "../../db/AccessCodeRepository";
 import { ApiError } from "../../errors/api.errors";
 import randomstring from 'node-randomstring';
 
 class CreateAdministratorUseCase {
 
     private administratorRepository: AdministratorRepository
-    private accessCodeRepository: AccessCodeRepository
 
     constructor (administratorRepository: AdministratorRepository) {
         this.administratorRepository =  administratorRepository;
     }
-    public async execute (nome: string, cpf: number, email: string, telefone: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
+    public async execute (nome: string, cpf: number, email: string, telefone: number) {
         //Validations
         if (!nome){
             throw new ApiError("O nome é obrigatório!", 422);
@@ -68,15 +66,18 @@ class CreateAdministratorUseCase {
         }
         */
 
-        const senha = await randomstring.generate(64);
+        const senha = await randomstring.generate(32);
         
         /**
         const salt = await bcrypt.genSalt(12);
         const senhaHash = await bcrypt.hash(senha, salt);
         */
 
-        await this.administratorRepository.create(nome, cpf, email, telefone, senha, cep, cidade, estado, bairro, rua, numero);
+        await this.administratorRepository.create(nome, cpf, email, telefone, senha);
+        
+        /**
         await this.accessCodeRepository.create(cpf);
+        */
     }
 }
 

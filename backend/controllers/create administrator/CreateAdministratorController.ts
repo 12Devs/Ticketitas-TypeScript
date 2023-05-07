@@ -13,8 +13,7 @@ class CreateAdministratorController {
     public async handle (request: Request, response: Response){
 
         const { nome, cpf, email, telefone } = request.body;
-        const { cep, cidade, estado, bairro, rua, numero } = request.body;
-        await this.createAdministradorUseCase.execute(nome, cpf, email, telefone, cep, cidade, estado, bairro, rua, numero);
+        await this.createAdministradorUseCase.execute(nome, cpf, email, telefone);
         return response.status(201).json({message: "Admin criado com sucessso!"})
         
     }

@@ -1,25 +1,21 @@
 import { CreateEnderecoController } from "../controllers/create endereco/CreateEnderecoController";
 import { createEnderecoController } from "../controllers/create endereco/index";
 import { Administrator } from "../models/Administrator";
-import { AccessCodeRepository } from "../db/AccessCodeRepository";
 
 class AdministratorRepository {
 
     private createEnderecoController
     private createCodigoDeAcessoController
     private administratorRepository: AdministratorRepository
-    private accessCodeRepository: AccessCodeRepository
 
     public constructor (){
         this.createEnderecoController = createEnderecoController;
     }
 
-    public async create (nome: string, cpf: number, email: string, telefone: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
+    public async create (nome: string, cpf: number, email: string, telefone: number, senha: string){
         
-        await createEnderecoController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco)=>{
-            const enderecoId = endereco.id;
-            await Administrator.create({nome, cpf, email, telefone, enderecoId});
-        });
+        const enderecoId = null;
+        await Administrator.create({nome, cpf, email, telefone, enderecoId});
         
     }
 
