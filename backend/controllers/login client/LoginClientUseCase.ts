@@ -26,8 +26,7 @@ class LoginClientUseCase {
         if (infoClient === null || infoClient === undefined) {
             throw new ApiError("Email ou senha incorretos", 401);
         }
-
-        
+ 
         if (infoClient.email !== email) {
             throw new ApiError("Email ou senha incorretos", 401);
         }

@@ -1,6 +1,6 @@
 import { EnderecoUserRepository } from "../../db/EnderecoUserRepository";
 import { ApiError } from "../../errors/api.errors";
-import { pesquisarCep } from "../../middlewares/PesquisarCep";
+import { pesquisarCep } from "../../utils/PesquisarCep";
 
 class CreateEnderecoUserUseCase {
     private enderecoUserRepository: EnderecoUserRepository
