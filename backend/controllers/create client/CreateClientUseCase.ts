@@ -43,7 +43,6 @@ class CreateClientUseCase {
         const cpfExists = await this.clientRepository.findByCpf(cpf);
         const emailExists = await this.clientRepository.findByEmail(email);
         
-        
         if(cpfExists) {
             throw new ApiError("Utilize outro cpf", 422);
         }

@@ -1,7 +1,7 @@
 import { Request } from "express";
 import multer from "multer";
 import crypto from "crypto";
-import { ApiError } from "../errors/api.errors";
+import { ApiError } from "../errors/ApiError";
 
 const imageStore = multer.diskStorage({
     destination: function(request: Request, file, callBack) {

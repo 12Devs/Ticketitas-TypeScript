@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
+import { Card } from "./Card";
 
 const Client = conn.define('client',{
     nome:{
@@ -29,5 +30,6 @@ const Client = conn.define('client',{
     }
 });
 
+Client.hasOne(Card);
 export { Client };
 

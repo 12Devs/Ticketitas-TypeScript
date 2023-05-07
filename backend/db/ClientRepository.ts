@@ -42,12 +42,24 @@ class ClientRepository {
     }
 
     
-    public async findByCpfAndAvatar (cpf: number): Promise<any>{
+    public async findByCpfAndAvatar (cpf: number) {
         const cpfAndAvatar = await Client.findOne({raw: true, attributes: ['cpf', 'avatarImage'], where: {
             cpf: cpf
         }});
         return cpfAndAvatar;
     }
+
+    public async updateAvatar (cpf: number, avatarImage: any){
+        await Client.update({
+            avatarImage: avatarImage
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
 }
 
 export { ClientRepository };

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
-import { ApiError } from "../errors/api.errors";
+import { ApiError } from "../errors/ApiError";
 import { ClientRepository } from "../db/ClientRepository";
 
 

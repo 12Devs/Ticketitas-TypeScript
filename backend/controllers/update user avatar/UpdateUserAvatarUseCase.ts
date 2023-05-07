@@ -15,21 +15,14 @@ class UpdateUseAvatarUserCase {
         
         if (this.userRepository instanceof ClientRepository){
             
-            const cpfAndAvatarClient = await this.userRepository.findByCpfAndAvatar(cpf.cpf);
+            const cpfAndAvatarClient: any = await this.userRepository.findByCpfAndAvatar(cpf.cpf);
 
             if(cpfAndAvatarClient.avatarImage) {
 
                 await deleteFile(`backend/uploadImages/profiles/${cpfAndAvatarClient.avatarImage}`);
             }
 
-            await Client.update({
-                avatarImage: avatarImage
-            },
-            {
-                where: {
-                    cpf: cpfAndAvatarClient.cpf
-                }
-            });
+            await this.userRepository.updateAvatar(cpfAndAvatarClient.cpf, avatarImage);
         }
     }
 
