@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { UpdateUseAvatarUserCase } from "./UpdateUserAvatarUseCase";
 
-
 class UpdateUseAvatarController {
 
     public updateUserAvatarUseCase: UpdateUseAvatarUserCase;

@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { createUserToken } from "../../middlewares/CreateUserToken";
 import { LoginClientUseCase } from "./LoginClientUseCase";
 
 class LoginClientController {
@@ -12,10 +11,9 @@ class LoginClientController {
     public async handle(request: Request, response: Response){
 
         const { email, senha } = request.body;
-        await this.loginClientUseCase.execute(email, senha).then((client)=>{
-            createUserToken(client, request, response);
-        });
+        const authenticateInfo = await this.loginClientUseCase.execute(email, senha);
         
+        return response.json({authenticateInfo});
     }
 }
 

@@ -2,10 +2,6 @@ import { createEnderecoUserController } from "../controllers/create user enderec
 import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
 import { Client } from "../models/Client";
 
-interface cpfAndAvatar {
-    cpf: number,
-    avatar: string
-}
 
 class ClientRepository {
 
@@ -38,7 +34,7 @@ class ClientRepository {
         return emailExists;
     }
 
-    public async findByEmailAndSenha (email: string, senha: string) {
+    public async findByEmailAndSenha (email: string) {
         const client = await Client.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'], where: {
             email: email
         }});

@@ -1,7 +1,6 @@
 
 import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { ApiError } from "../../errors/api.errors";
-import { pesquisarCep } from "../../middlewares/PesquisarCep";
 
 class CreateEnderecoEventUseCase {
     private enderecoEventRepository: EnderecoEventRepository
@@ -17,21 +16,19 @@ class CreateEnderecoEventUseCase {
             throw new ApiError("O cep é obrigatório!", 422);
         }
 
-        const dadosEndereco = await pesquisarCep(cep);
-
         if (!estado){
-            estado = dadosEndereco.uf;
+            throw new ApiError("O estado é obrigatório!", 422);
         }
 
         if (!cidade){
-            cidade = dadosEndereco.localidade;
+            throw new ApiError("A cidade é obrigatória!", 422);
         }
 
-        if (!bairro && !dadosEndereco.bairro){
+        if (!bairro){
             throw new ApiError("O bairro é obrigatório!", 422);
         }
 
-        if (!rua && !dadosEndereco.rua){
+        if (!rua){
             throw new ApiError("A rua é obrigatória!", 422);
         }
 

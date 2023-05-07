@@ -1,6 +1,7 @@
 import { ClientRepository } from "../../db/ClientRepository";
 import { ApiError } from "../../errors/api.errors";
 import bcrypt from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 class LoginClientUseCase {
 
@@ -20,7 +21,7 @@ class LoginClientUseCase {
             throw new ApiError("A senha é obrigatória", 422);
         }
 
-        const infoClient = await this.clientRepository.findByEmailAndSenha(email, senha);
+        const infoClient: any = await this.clientRepository.findByEmailAndSenha(email);
         
         if (infoClient === null || infoClient === undefined) {
             throw new ApiError("Email ou senha incorretos", 401);
@@ -37,13 +38,20 @@ class LoginClientUseCase {
             throw new ApiError("Email ou senha incorretos", 401);
         }
 
+        const token = sign({nome: infoClient.nome},
+
+            "vamoTirar10NessaBagaca",
+
+            {subject: `${infoClient.cpf}`,
+                expiresIn: "1d"});
+
         const client = {
             nome: infoClient.nome,
             cpf: infoClient.cpf,
             email: infoClient.email
         }
         
-        return {client}
+        return { client, token };
     }
 }
 

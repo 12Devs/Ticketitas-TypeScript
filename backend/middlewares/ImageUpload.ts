@@ -1,6 +1,5 @@
 import { Request } from "express";
 import multer from "multer";
-import path from "path";
 import crypto from "crypto";
 import { ApiError } from "../errors/api.errors";
 
