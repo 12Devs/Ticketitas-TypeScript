@@ -1,7 +1,7 @@
 .NavBar {
     background: #23272E !important;
     width: auto;
-    height: 104px;
+    height: fit-content;
     display:inline;
     flex-direction: row;
     align-items: center;
