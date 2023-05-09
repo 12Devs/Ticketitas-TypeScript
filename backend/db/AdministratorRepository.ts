@@ -57,20 +57,20 @@ class AdministratorRepository {
      *
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
-     * @param {string} nome user name
+     * @param {string} name user name
      * @param {number} cpf user CPF number
      * @param {string} email user e-mail address
-     * @param {number} telefone user telephone number
-     * @param {string} senha user once-encrypted password hash
+     * @param {number} phone user telephone number
+     * @param {string} password user once-encrypted password hash
      * @returns {*}
      */
-    public async create (nome: string, cpf: number, email: string, telefone: number, senha: string){
+    public async create (name: string, cpf: number, email: string, phone: number, password: string){
         
         //Assigns null to the address ID since the registry of new administrators does not require such information
         const enderecoId = null;
         
         //Executes the database actions
-        await Administrator.create({nome, cpf, email, telefone, enderecoId});
+        await Administrator.create({name, cpf, email, phone, enderecoId});
         
     }
 
@@ -113,11 +113,11 @@ class AdministratorRepository {
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
      * @param {string} email user e-mail address
-     * @param {string} senha user once-encrypted password hash
+     * @param {string} password user once-encrypted password hash
      * @returns {Array} Array of administrators found, matching the search (or none if no match is found)
      */
-    public async findByEmailAndSenha (email: string, senha: string) {
-        const administrator = await Administrator.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'], where: {
+    public async findByEmailAndSenha (email: string, password: string) {
+        const administrator = await Administrator.findOne({raw: true, attributes: ['name', 'cpf', 'email', 'password'], where: {
             email: email
         }});
         return administrator;

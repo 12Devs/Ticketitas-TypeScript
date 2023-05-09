@@ -49,10 +49,10 @@ class LoginAdministratorUseCase {
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
      * @param {string} email user e-mail address
-     * @param {string} senha user once-encrypted password
+     * @param {string} password user once-encrypted password
      * @returns {administrator} basic administrator object as it is defined by this method
      */
-    public async execute (email: string, senha: string) {
+    public async execute (email: string, password: string) {
         
         //Not-null e-mail address
         if (!email){
@@ -60,8 +60,8 @@ class LoginAdministratorUseCase {
         }
 
         //Not-null password
-        if (!senha){
-            throw new ApiError("A senha é obrigatória", 422);
+        if (!password){
+            throw new ApiError("A password é obrigatória", 422);
         }
 
         //Checks the existence of an user with that e-mail in the system and returns an info table for the request
@@ -69,30 +69,30 @@ class LoginAdministratorUseCase {
         
         //User exists
         if (infoAdministrator === null || infoAdministrator === undefined) {
-            throw new ApiError("Email ou senha incorretos", 422);
+            throw new ApiError("Email ou password incorretos", 422);
         }
         
         //User search must not return invalid data
         if (infoAdministrator.email !== email) {
-            throw new ApiError("Email ou senha incorretos", 422);
+            throw new ApiError("Email ou password incorretos", 422);
         }
 
         //Comparing the stored hash with the once-encrypted password received
-        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.senha);
+        const checkSenha = bcrypt.compareSync(password, infoAdministrator.password);
 
         //User password should match
         if (!checkSenha) {
-            throw new ApiError("Email ou senha incorretos", 422);
+            throw new ApiError("Email ou password incorretos", 422);
         }
 
         /**
          * Constructor for the basic administrator object to be returned
-         * @param {string} nome user name
+         * @param {string} name user name
          * @param {number} cpf user CPF number
          * @param {string} email user e-mail address
         */
         const administrator = {
-            nome: infoAdministrator.nome,
+            name: infoAdministrator.name,
             cpf: infoAdministrator.cpf,
             email: infoAdministrator.email
         }
