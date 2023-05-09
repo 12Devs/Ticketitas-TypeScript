@@ -34,6 +34,10 @@ export default function RecuperarSenha(){
         
     }
 
+    function mudarRota(rota: string) {
+        navigate(rota); 
+    }
+
     return (
         <>
             <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha}>
@@ -61,7 +65,7 @@ export default function RecuperarSenha(){
                     </Row>
                     
                     <Row className='d-flex justify-content-center'>
-                            <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                            <Button onClick={() => mudarRota('/')} style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
                             </Button>
                             <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">
