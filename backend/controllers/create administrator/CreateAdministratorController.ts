@@ -24,17 +24,17 @@ class CreateAdministratorController {
      * @private
      * @type {CreateAdministratorUseCase}
      */
-    private createAdministradorUseCase: CreateAdministratorUseCase;
+    private createAdministratorUseCase: CreateAdministratorUseCase;
 
     /**
      * Creates an instance of {@link CreateAdministratorController}
      * @date 5/8/2023 - 4:56:44 PM
      *
      * @constructor Marks this part of the code as a constructor
-     * @param {CreateAdministratorUseCase} createAdministradorUseCase Private instance of the CreateAdministratorUseCase class
+     * @param {CreateAdministratorUseCase} createAdministratorUseCase Private instance of the CreateAdministratorUseCase class
      */
-    constructor (createAdministradorUseCase: CreateAdministratorUseCase) {
-        this.createAdministradorUseCase = createAdministradorUseCase;
+    constructor (createAdministratorUseCase: CreateAdministratorUseCase) {
+        this.createAdministratorUseCase = createAdministratorUseCase;
     }
 
     /**
@@ -49,8 +49,8 @@ class CreateAdministratorController {
      */
     public async handle (request: Request, response: Response){
 
-        const { nome, cpf, email, telefone } = request.body;
-        await this.createAdministradorUseCase.execute(nome, cpf, email, telefone);
+        const { name, cpf, email, phone } = request.body;
+        await this.createAdministratorUseCase.execute(name, cpf, email, phone);
         return response.status(201).json({message: "Admin criado com sucessso!"})
         
     }

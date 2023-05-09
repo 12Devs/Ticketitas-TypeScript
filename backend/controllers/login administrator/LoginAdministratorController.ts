@@ -54,8 +54,8 @@ class LoginAdministratorController {
      */
     public async handle(request: Request, response: Response){
 
-        const { email, senha } = request.body;
-        await this.loginAdministratorUseCase.execute(email, senha).then((administrator)=>{
+        const { email, password } = request.body;
+        await this.loginAdministratorUseCase.execute(email, password).then((administrator)=>{
             console.log(administrator)
             createUserToken(administrator, request, response);
         });

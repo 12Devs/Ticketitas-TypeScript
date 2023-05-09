@@ -47,17 +47,17 @@ class CreateAdministratorUseCase {
      *
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
-     * @param {string} nome user full name
+     * @param {string} name user full name
      * @param {number} cpf "CPF" (Brazilian national Physical Person Registry) number of the citizen that is to be registered as a new user
      * @param {string} email user e-mail address
-     * @param {number} telefone user telephone number
+     * @param {number} phone user telephone number
      * @returns {*}
      */
-    public async execute (nome: string, cpf: number, email: string, telefone: number) {
+    public async execute (name: string, cpf: number, email: string, phone: number) {
         
         //Not-null user name
-        if (!nome){
-            throw new ApiError("O nome é obrigatório!", 422);
+        if (!name){
+            throw new ApiError("O name é obrigatório!", 422);
         }
 
         //Not-null user CPF number
@@ -71,8 +71,8 @@ class CreateAdministratorUseCase {
         }
 
         //Not-null user telephone number
-        if (!telefone){
-            throw new ApiError("O telefone é obrigatório!", 422);
+        if (!phone){
+            throw new ApiError("O phone é obrigatório!", 422);
         }
 
         //Methods used to check the existence of the chosen CPF number and e-mail address in the database registry
@@ -90,10 +90,10 @@ class CreateAdministratorUseCase {
         }
 
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long random temporary password
-        const senha = await randomstring.generate(32);
+        const password = await randomstring.generate(32);
 
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
-        await this.administratorRepository.create(nome, cpf, email, telefone, senha);
+        await this.administratorRepository.create(name, cpf, email, phone, password);
     }
 }
 

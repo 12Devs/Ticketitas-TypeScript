@@ -15,7 +15,7 @@ import { conn } from "../db/Connection";
  */
 const Administrator = conn.define('administrator',{
     //User name
-    nome:{
+    name:{
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -31,12 +31,12 @@ const Administrator = conn.define('administrator',{
         allowNull: false
     },
     //User telephone number
-    telefone: { 
+    phone: { 
         type: DataTypes.INTEGER,
         allowNull: false
     },
     //User once-encrypted password hash
-    senha: {
+    password: {
         type: DataTypes.STRING,
         allowNull: false
     }
