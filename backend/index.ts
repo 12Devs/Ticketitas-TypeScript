@@ -23,6 +23,6 @@ import cors from "cors";
         message: `Internal server error => ${error.message}`});
     });
 
-    conn.sync().then(()=>{
+    conn.sync({force: true}).then(()=>{
         app.listen(3333, ()=> console.log("Server on! Porta => 3333"));
     }). catch((error) => console.log(error));

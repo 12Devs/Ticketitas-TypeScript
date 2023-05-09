@@ -54,13 +54,17 @@ export default function CadastrarCliente() {
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
     useEffect(() => {
         if(cep.length == 8 && !isNaN(parseInt(cep))){
-            console.log(cep);
-            var endereco: any = {
-                cep
+            
+            var cepObj: any = {
+                cep: parseInt(cep)
             };
 
-            api.get('/endereco/complet', endereco).then((response)=>{
-                console.log(response);
+            api.post('/endereco/complet', cepObj).then((endereco)=>{
+                
+                setCidade(endereco.data.localidade);
+                setEstado(endereco.data.uf);
+                setBairro(endereco.data.bairro);
+                setRua(endereco.data.logradouro);
             });
         }
     }, [cep]);
