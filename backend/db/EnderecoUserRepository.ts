@@ -1,13 +1,16 @@
-import { Endereco } from "../models/Endereco";
+import { EnderecoUser } from "../models/EnderecoUser";
 
-class EnderecoRepository {
+
+class EnderecoUserRepository {
 
     public async create (cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number){
-        await Endereco.create({cep, estado, cidade , bairro, rua, numero});
+        
+        await EnderecoUser.create({cep, estado, cidade , bairro, rua, numero});
+        
     }
 
     public async findByEndereco (cep: number, bairro: string, rua: string, numero: number) {
-        const enderecoExists = await Endereco.findOne({raw: true, attributes: ['id'], where: {
+        const enderecoExists = await EnderecoUser.findOne({raw: true, attributes: ['id'], where: {
             cep: cep,
             bairro: bairro,
             rua: rua,
@@ -18,4 +21,4 @@ class EnderecoRepository {
     }
 }
 
-export { EnderecoRepository };
+export { EnderecoUserRepository };
