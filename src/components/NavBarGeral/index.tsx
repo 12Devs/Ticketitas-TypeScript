@@ -23,7 +23,7 @@ const NavBarGeral = () => {
     to: '/help'
   }, {
     label: 'Seja um promoter',
-    to: '/cadastro-promoter'
+    to: '/cadastrarPromoter'
   }];
 
   const [busca, setBusca] = useState('');
@@ -70,7 +70,7 @@ const NavBarGeral = () => {
           <ModalLogin/>
 
           <Button variant="primary">
-            <Link to={'/cadastrarSe'} style={{ textDecoration: 'none', color: 'white' }}>
+            <Link to={'/cadastrarCliente'} style={{ textDecoration: 'none', color: 'white' }}>
               {'Cadastrar-se'}
             </Link>
           </Button>{' '}
