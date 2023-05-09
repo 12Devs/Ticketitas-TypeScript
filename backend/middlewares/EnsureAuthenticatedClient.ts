@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
-import { ApiError } from "../errors/api.errors";
+import { ApiError } from "../errors/ApiError";
 import { ClientRepository } from "../db/ClientRepository";
 
 
@@ -20,6 +20,9 @@ async function ensureAuthenticated(request: Request, response: Response, next: N
         const clientCpf = await clientRepository.findByCpf(sub);
         if(!clientCpf) {
             next(new ApiError("Client nã existe", 401));
+        }
+        request.user = {
+            cpf: clientCpf
         }
         next();
     } catch {

@@ -1,10 +1,11 @@
-import { CreateEnderecoUseCase } from "./CreateEnderecoUseCase";
+import { CreateEnderecoEventUseCase } from "./CreateEnderecoEventUseCase";
 
-class CreateEnderecoController {
 
-        private createEnderecoUseCase: CreateEnderecoUseCase;
+class CreateEnderecoEventController {
 
-        constructor (createEnderecoUseCase: CreateEnderecoUseCase) {
+        private createEnderecoUseCase: CreateEnderecoEventUseCase;
+
+        public constructor (createEnderecoUseCase: CreateEnderecoEventUseCase) {
                 this.createEnderecoUseCase = createEnderecoUseCase;
         }
 
@@ -15,4 +16,4 @@ class CreateEnderecoController {
 
 }
 
-export { CreateEnderecoController };
+export { CreateEnderecoEventController };

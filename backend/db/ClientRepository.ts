@@ -1,21 +1,21 @@
-import { CreateEnderecoController } from "../controllers/create endereco/CreateEnderecoController";
-import { createEnderecoController } from "../controllers/create endereco/index";
+import { createEnderecoUserController } from "../controllers/create user endereco/index";
+import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
 import { Client } from "../models/Client";
 
 
 class ClientRepository {
 
-    private createEnderecoController: CreateEnderecoController
+    private createEnderecoUserController: CreateEnderecoUserController
 
     public constructor (){
-        this.createEnderecoController = createEnderecoController;
+        this.createEnderecoUserController = createEnderecoUserController;
     }
 
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
-        await this.createEnderecoController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco)=>{
-            const enderecoId = endereco.id;
-            await Client.create({nome, cpf, email, telefone, senha, enderecoId});
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoUser: any)=>{
+            const enderecoUserId = enderecoUser.id;
+            await Client.create({nome, cpf, email, telefone, senha, enderecoUserId});
         });
         
     }
@@ -34,12 +34,32 @@ class ClientRepository {
         return emailExists;
     }
 
-    public async findByEmailAndSenha (email: string, senha: string) {
+    public async findByEmailAndSenha (email: string) {
         const client = await Client.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'], where: {
             email: email
         }});
         return client;
     }
+
+    
+    public async findByCpfAndAvatar (cpf: number) {
+        const cpfAndAvatar = await Client.findOne({raw: true, attributes: ['cpf', 'avatarImage'], where: {
+            cpf: cpf
+        }});
+        return cpfAndAvatar;
+    }
+
+    public async updateAvatar (cpf: number, avatarImage: any){
+        await Client.update({
+            avatarImage: avatarImage
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
 }
 
 export { ClientRepository };

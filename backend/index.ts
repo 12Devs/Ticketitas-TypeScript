@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import { router } from "./routes/IndexRoutes";
 import { conn } from "./db/Connection";
-import { ApiError } from "./errors/api.errors";
+import { ApiError } from "./errors/ApiError";
 import cors from "cors";
 
 
