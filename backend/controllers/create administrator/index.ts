@@ -6,9 +6,9 @@ import { CreateAdministratorController } from "./CreateAdministratorController";
 import { CreateAdministratorUseCase } from "./CreateAdministratorUseCase";
 
 //Declaration of the instances of the classes
-const clientRepository = new AdministratorRepository();
-const createAdministradorUseCase = new CreateAdministratorUseCase(clientRepository);
-const createAdministratorController = new CreateAdministratorController(createAdministradorUseCase);
+const administratorRepository = new AdministratorRepository();
+const createAdministratorUseCase = new CreateAdministratorUseCase(administratorRepository);
+const createAdministratorController = new CreateAdministratorController(createAdministratorUseCase);
 
 //Exporting the instance of the controlling class of this feature-folder
 export { createAdministratorController };
