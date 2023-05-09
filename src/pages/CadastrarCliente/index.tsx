@@ -12,17 +12,8 @@ import FormLabel from '../../components/FormLabel';
 import '../../components/Texto/Texto.css';
 import '../../components/Button/Button.css';
 import Footer from '../../components/Footer';
-import { response } from 'express';
-import { api } from '../../services/api';
-
-// import InputText from '../InputText'
-// import InputSelect from '../InputSelect';
-// import AbaIndicacao from '../AbaIndicacao';
-// import Footer from '../Footer';
-
-
-
-
+import {response} from 'express';
+import {api} from '../../services/api';
 
 export default function CadastrarCliente() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -60,6 +51,19 @@ export default function CadastrarCliente() {
         
     }
 
+    // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
+    useEffect(() => {
+        if(cep.length == 8 && !isNaN(parseInt(cep))){
+            console.log(cep);
+            var endereco: any = {
+                cep
+            };
+
+            api.get('/endereco/complet', endereco).then((response)=>{
+                console.log(response);
+            });
+        }
+    }, [cep]);
 
     return (
         <>
