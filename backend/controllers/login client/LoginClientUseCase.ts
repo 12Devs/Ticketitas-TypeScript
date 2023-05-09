@@ -37,7 +37,7 @@ class LoginClientUseCase {
             throw new ApiError("Email ou senha incorretos", 401);
         }
 
-        const token = sign({nome: infoClient.nome},
+        const token = sign({tipo: "client", nome: infoClient.nome},
 
             "vamoTirar10NessaBagaca",
 
