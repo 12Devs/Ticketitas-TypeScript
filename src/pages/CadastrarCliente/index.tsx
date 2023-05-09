@@ -75,7 +75,7 @@ export default function CadastrarCliente() {
                 <Container>
 
                     <Row >
-                        <FormLabel label='Cadastro'/>
+                        <FormLabel label='Cadastro de Cliente'/>
                     </Row> 
 
                     <Row>
