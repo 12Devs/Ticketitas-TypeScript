@@ -38,7 +38,16 @@ class RefreshTokenClientUseCase {
         
         await this.tokenClientRepository.create(clientCpf, expiresDate, refreshToken);
 
-        return refreshToken;
+        const newToken = sign({tipo: "client", nome: decode.nome},
+            
+            auth.secretToken,
+
+            {subject: `${clientCpf}`,
+                expiresIn: auth.expiresInToken});
+        
+        
+        
+        return {token: newToken, refreshToken};
 
     }
 

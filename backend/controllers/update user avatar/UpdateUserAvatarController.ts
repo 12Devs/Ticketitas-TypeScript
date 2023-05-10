@@ -13,7 +13,7 @@ class UpdateUseAvatarController {
 
         const { cpf } = request.user;
         const avatarImage = request.file.filename;
-       
+
         await this.updateUserAvatarUseCase.execute(cpf, avatarImage);
         return response.status(204).send();
     }
