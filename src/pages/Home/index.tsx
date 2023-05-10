@@ -6,6 +6,7 @@ export default function Home(){
         <>
             <p>Eu sou a página Home</p>
             <Footer/>
+            
         </>
     );
 }

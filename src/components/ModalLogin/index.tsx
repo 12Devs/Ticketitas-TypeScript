@@ -7,6 +7,8 @@ import InputTexto from '../InputTexto';
 import ModalRecuperarSenha from '../ModalRecuperarSenha';
 import { Form, Row } from 'react-bootstrap';
 
+
+
 export default function ModalLogin() {
     const [show, setShow] = useState(false);
     const [cpf, setCPF] = useState('');
@@ -20,14 +22,16 @@ export default function ModalLogin() {
     function validateCaptcha() {
         setcapcthavalidate(true)
 }
-
+const modalOnShow = () => {
+    
+}
     return (
         <>
             <Button className='Botão-Terciário' onClick={handleShow}>
                 Entrar
             </Button>
 
-            <Modal show={show} onHide={handleClose} >
+            <Modal show={show} onHide={handleClose} onEntered={modalOnShow} >
                 <Modal.Body className="">
                     <Row className='justify-content-center'>
                         <img
@@ -75,7 +79,7 @@ export default function ModalLogin() {
                             </Button>
                             :
                             <Button className='Botão-Primario Texto-Branco' type='submit'>
-                            Não
+                            Entrar
                             </Button>
                             
                         }
