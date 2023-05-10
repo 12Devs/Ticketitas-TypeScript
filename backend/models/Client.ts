@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
 import { Card } from "./Card";
+import { TokenClient } from "./TokenClient";
 
 const Client = conn.define('client',{
     nome:{
@@ -31,5 +32,7 @@ const Client = conn.define('client',{
 });
 
 Client.hasOne(Card);
+Client.hasMany(TokenClient);
+
 export { Client };
 
