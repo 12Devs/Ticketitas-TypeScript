@@ -26,7 +26,7 @@ export class SendEmail{
     
 
     //Enviando email para adm com redefinicao de senha
-    SendEmail(email: string, messageSubject: string, messageText: string){
+    public async sendEmail(email: string, messageSubject: string, messageText: string){
         this.email = email,
         this.messageSubject = messageSubject,
         this.messageText = messageText
