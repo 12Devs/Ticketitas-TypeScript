@@ -1,22 +1,21 @@
 import Form from 'react-bootstrap/Form';
 import Footer from '../../components/Footer';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
-import { MouseEventHandler, useState } from 'react';
+import {useState } from 'react';
 import InputTexto from '../../components/InputTexto';
 
 import {useNavigate } from 'react-router-dom';
 
-export default function RecuperarSenha(){
-    const [senhaAtual, setSenhaAtual] = useState('');
+export default function PrimeiraSenha(){
     const [novaSenha, setNovaSenha] = useState('');
     const [novaSenhaConfirmacao, setNovaSenhaConfirmacao] = useState('');
+
     const [mensagem, setMensagem] = useState(false); //Boleano que define a exibição da mensagem de erro
     const navigate = useNavigate(); //Objeto pra navegar para outras páginas
     
     const atualizarSenha = (event: any) => {
         event.preventDefault();
         var dadosSenha: any = {
-            senhaAtual,
             novaSenha,
             novaSenhaConfirmacao
         }
@@ -43,22 +42,17 @@ export default function RecuperarSenha(){
             <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha}>
                 <Container>
                     <Row className='border-bottom border-dark mt-3'>
-                        <p className='Texto-Medio Texto-Preto'>Alterar Senha</p>
+                        <p className='Texto-Medio Texto-Preto'>Definir a senha de acesso</p>
                     </Row>
 
                     <Row className='mt-3 d-flex justify-content-center'>
                         <Col sm={4}>
-                            <InputTexto type="password" defaultValue={''} required={true} label={"Senha atual"} placeholder={"Insira a senha atual"} controlId={"inputSenhaAtual"} data={senhaAtual} setData={setSenhaAtual} />
+                            <InputTexto type="password" defaultValue={''} required={true} label={"Senha"} placeholder={"Defina a sua senha de Admin"} controlId={"inputNovaSenha"} data={novaSenha} setData={setNovaSenha} />
                         </Col>
                     </Row>
                     <Row className='mt-3 d-flex justify-content-center'>
                         <Col sm={4}>
-                            <InputTexto type="password" defaultValue={''} required={true} label={"Nova senha"} placeholder={"Insira a nova senha"} controlId={"inputNovaSenha"} data={novaSenha} setData={setNovaSenha} />
-                        </Col>
-                    </Row>
-                    <Row className='mt-3 d-flex justify-content-center'>
-                        <Col sm={4}>
-                            <InputTexto type="password" defaultValue={''} required={true} label={"Repita a nova senha"} placeholder={"Insira a senha novamente"} controlId={"inputNovaSenhaAgain"} data={novaSenhaConfirmacao} setData={setNovaSenhaConfirmacao} />
+                            <InputTexto type="password" defaultValue={''} required={true} label={"Repita a senha"} placeholder={"Insira a senha novamente"} controlId={"inputNovaSenhaAgain"} data={novaSenhaConfirmacao} setData={setNovaSenhaConfirmacao} />
                         </Col>
                     </Row>
 
@@ -69,11 +63,11 @@ export default function RecuperarSenha(){
                     </Row>
                     
                     <Row className='d-flex justify-content-center'>
-                            <Button onClick={() => mudarRota('/')} style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                            {/* <Button onClick={() => mudarRota('/')} style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
-                            </Button>
+                            </Button> */}
                             <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">
-                                Confirmar
+                                Cadastrar senha
                             </Button>
                     </Row>
                 </Container>
