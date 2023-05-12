@@ -17,7 +17,8 @@ const transporter = nodemailer.createTransport({
 export class SendEmail{
     //atributos
     public email: string;
-
+    public messageSubject: string;
+    public messageText: string;
 
     //construindo a mensagem utilizando o email fornecido
     constructor(){
@@ -25,51 +26,16 @@ export class SendEmail{
     
 
     //Enviando email para adm com redefinicao de senha
-    SendEmailAdm(email: string){
-        this.email = email
+    SendEmail(email: string, messageSubject: string, messageText: string){
+        this.email = email,
+        this.messageSubject = messageSubject,
+        this.messageText = messageText
+        
         const mailOptions2 = {
             from: 'ticketitasdb@gmail.com',
             to: this.email,
-            subject: 'SEJA BEM VINDO!',
-            text: 'Link para alterar senha e concluir o cadastro:'
-          };
-        transporter.sendMail(mailOptions2, function(error, info){
-            if (error) {
-              console.log(error);
-
-            } else {
-              console.log('Email enviado: ' + info.response);
-            }
-          });
-     }
-    
-
-     SendEmailUser(email: string){
-        this.email = email
-        const mailOptions2 = {
-            from: 'ticketitasdb@gmail.com',
-            to: this.email,
-            subject: 'SEJA BEM VINDO!',
-            text: 'Seja bem vindo a nossa plataforma.'
-          };
-        transporter.sendMail(mailOptions2, function(error, info){
-            if (error) {
-              console.log(error);
-
-            } else {
-              console.log('Email enviado: ' + info.response);
-            }
-          });
-     }
-    
-
-     SendEmailPromoter(email: string){
-        this.email = email
-        const mailOptions2 = {
-            from: 'ticketitasdb@gmail.com',
-            to: this.email,
-            subject: 'SEJA BEM VINDO!',
-            text: 'Seja bem vindo a nossa plataforma.'
+            subject: this.messageSubject,
+            text: this.messageText
           };
         transporter.sendMail(mailOptions2, function(error, info){
             if (error) {
@@ -81,10 +47,51 @@ export class SendEmail{
           });
      }
 
+    /**
+    SendEmailUser(email: string, messageSubject: string, messageText: string){
+        this.email = email,
+        this.messageSubject = messageSubject,
+        this.messageText = messageText
+      
+        const mailOptions2 = {
+            from: 'ticketitasdb@gmail.com',
+            to: this.email,
+            subject: this.messageSubject,
+            text: this.messageText
+          };
+        transporter.sendMail(mailOptions2, function(error, info){
+            if (error) {
+              console.log(error);
 
+            } else {
+              console.log('Email enviado: ' + info.response);
+            }
+          });
+     }
+    */
 
+    /**
+    SendEmailPromoter(email: string, messageSubject: string, messageText: string){
+        this.email = email,
+        this.messageSubject = messageSubject,
+        this.messageText = messageText
+      
+        const mailOptions2 = {
+            from: 'ticketitasdb@gmail.com',
+            to: this.email,
+            subject: this.messageSubject,
+            text: this.messageText
+          };
+        transporter.sendMail(mailOptions2, function(error, info){
+            if (error) {
+              console.log(error);
 
-
+            } else {
+              console.log('Email enviado: ' + info.response);
+            }
+          });
+     }
+     */
     }
 
 
