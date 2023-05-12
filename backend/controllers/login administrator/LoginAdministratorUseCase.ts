@@ -61,20 +61,20 @@ class LoginAdministratorUseCase {
 
         //Not-null password
         if (!password){
-            throw new ApiError("A password é obrigatória", 422);
+            throw new ApiError("A senha é obrigatória", 422);
         }
 
         //Checks the existence of an user with that e-mail in the system and returns an info table for the request
-        const infoAdministrator = await this.administratorRepository.findByEmail(email);
+        const infoAdministrator = await this.administratorRepository.findByEmailAndSenha(email, password);
         
         //User exists
         if (infoAdministrator === null || infoAdministrator === undefined) {
-            throw new ApiError("Email ou password incorretos", 422);
+            throw new ApiError("Email ou senha incorretos", 422);
         }
         
         //User search must not return invalid data
         if (infoAdministrator.email !== email) {
-            throw new ApiError("Email ou password incorretos", 422);
+            throw new ApiError("Email ou senha incorretos", 422);
         }
 
         //Comparing the stored hash with the once-encrypted password received
@@ -82,7 +82,7 @@ class LoginAdministratorUseCase {
 
         //User password should match
         if (!checkSenha) {
-            throw new ApiError("Email ou password incorretos", 422);
+            throw new ApiError("Email ou senha incorretos", 422);
         }
 
         /**
