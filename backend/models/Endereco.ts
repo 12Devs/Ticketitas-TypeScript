@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
 import { Client } from "./Client";
+import { Administrator } from "./Administrator";
 
 const Endereco = conn.define('endereco', {
     cep: {
@@ -30,4 +31,6 @@ const Endereco = conn.define('endereco', {
 });
 
 Endereco.hasMany(Client);
+Endereco.hasMany(Administrator);
+
 export { Endereco };
