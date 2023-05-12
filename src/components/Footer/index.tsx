@@ -11,9 +11,6 @@ export default function Footer() {
         label: 'Quem somos',
         to: '/about'
     }, {
-        label: 'Ajuda',
-        to: '/help'
-    }, {
         label: 'Contato',
         to: '/contact'
     }, {
