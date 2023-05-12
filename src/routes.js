@@ -6,6 +6,7 @@ import QuemSomos from './pages/QuemSomos';
 import CadastrarCliente from './pages/CadastrarCliente';
 import CadastrarPromoter from './pages/CadastrarPromoter';
 import CadastrarAdmin from './pages/CadastrarAdmin';
+import RecuperarSenha from './pages/RecuperarSenha';
 
 
 
@@ -17,9 +18,10 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos/>}/>
-                    <Route path='cadastrarSe' element={<CadastrarCliente/>}/>
+                    <Route path='cadastrarCliente' element={<CadastrarCliente/>}/>
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter/>}/>
                     <Route path='cadastrarAdmin' element={<CadastrarAdmin/>}/>
+                    <Route path='recuperarSenha' element={<RecuperarSenha/>}/>
                 </Routes>
                 
             </Router>

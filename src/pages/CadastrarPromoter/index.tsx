@@ -5,17 +5,9 @@ import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
 import FormLabel from '../../components/FormLabel';
 import { useState } from 'react';
-
+import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
-
-// import InputText from '../InputText'
-// import InputSelect from '../InputSelect';
-// import AbaIndicacao from '../AbaIndicacao';
-// import Footer from '../Footer';
-
-
-
-
+import { api } from '../../services/api';
 
 export default function CadastrarPromoter() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -53,15 +45,30 @@ export default function CadastrarPromoter() {
         console.log(dadosPromoter);
     }
 
-    return (
-        <Form onSubmit={realizarCadastro} className='mainContent'>
-            <Container className='p-5'>
+    // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
+    useEffect(() => {
+        if (cep.length == 8 && !isNaN(parseInt(cep))) {
 
-               
-                 
+            var cepObj: any = {
+                cep: parseInt(cep)
+            };
+
+            api.post('/endereco/complet', cepObj).then((endereco) => {
+
+                setCidade(endereco.data.localidade);
+                setEstado(endereco.data.uf);
+                setBairro(endereco.data.bairro);
+                setRua(endereco.data.logradouro);
+            });
+        }
+    }, [cep]);
+
+    return (
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
+            <Container>
                 <Row >
-                        <FormLabel label='Cadastro de Promoter'/>
-                    </Row>
+                    <FormLabel label='Cadastro de Promoter' />
+                </Row>
                 <Row>
                     <Col sm={6}>
                         <InputTexto type={''} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
@@ -90,9 +97,9 @@ export default function CadastrarPromoter() {
                     <Col sm={8}>
                         <InputTexto type={''} defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
                     </Col>
-                    {/* <Col sm={4}>
-                        <InputSelect label={"Estado"} name={'Estados'} data={estado} setData={setEstado} />
-                    </Col> */}
+                    <Col sm={4}>
+                        <InputTexto type={''} defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
+                    </Col>
                 </Row>
 
                 <Row>
@@ -126,14 +133,13 @@ export default function CadastrarPromoter() {
                 </Row>
 
                 <Row className='d-flex justify-content-center'>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
-                                Cancelar
-                            </Button>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
-                                Confirmar
-                            </Button>
-                    </Row>
-                    
+                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                        Cancelar
+                    </Button>
+                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
+                        Confirmar
+                    </Button>
+                </Row>
 
             </Container>
         </Form>

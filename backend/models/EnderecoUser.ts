@@ -2,7 +2,8 @@ import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
 import { Client } from "./Client";
 
-const Endereco = conn.define('endereco', {
+const EnderecoUser = conn.define('enderecoUser', {
+
     cep: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -29,5 +30,6 @@ const Endereco = conn.define('endereco', {
     }
 });
 
-Endereco.hasMany(Client);
-export { Endereco };
+EnderecoUser.hasMany(Client);
+
+export { EnderecoUser };

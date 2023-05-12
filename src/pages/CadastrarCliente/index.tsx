@@ -12,17 +12,8 @@ import FormLabel from '../../components/FormLabel';
 import '../../components/Texto/Texto.css';
 import '../../components/Button/Button.css';
 import Footer from '../../components/Footer';
-import { response } from 'express';
-import { api } from '../../services/api';
-
-// import InputText from '../InputText'
-// import InputSelect from '../InputSelect';
-// import AbaIndicacao from '../AbaIndicacao';
-// import Footer from '../Footer';
-
-
-
-
+import {response} from 'express';
+import {api} from '../../services/api';
 
 export default function CadastrarCliente() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -60,6 +51,23 @@ export default function CadastrarCliente() {
         
     }
 
+    // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
+    useEffect(() => {
+        if(cep.length == 8 && !isNaN(parseInt(cep))){
+            
+            var cepObj: any = {
+                cep: parseInt(cep)
+            };
+
+            api.post('/endereco/complet', cepObj).then((endereco)=>{
+                
+                setCidade(endereco.data.localidade);
+                setEstado(endereco.data.uf);
+                setBairro(endereco.data.bairro);
+                setRua(endereco.data.logradouro);
+            });
+        }
+    }, [cep]);
 
     return (
         <>
@@ -67,7 +75,7 @@ export default function CadastrarCliente() {
                 <Container>
 
                     <Row >
-                        <FormLabel label='Cadastro'/>
+                        <FormLabel label='Cadastro de Cliente'/>
                     </Row> 
 
                     <Row>

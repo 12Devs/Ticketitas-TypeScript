@@ -1,5 +1,5 @@
 import { ClientRepository } from "../../db/ClientRepository";
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
 import bcrypt from 'bcrypt';
 
 class CreateClientUseCase {
@@ -9,6 +9,7 @@ class CreateClientUseCase {
     constructor (clientRepository: ClientRepository) {
         this.clientRepository =  clientRepository;
     }
+    
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
         //Validations
         if (!nome){
@@ -35,13 +36,12 @@ class CreateClientUseCase {
             throw new ApiError("A confirmacao de senha é obrigatória!", 422);
         }
 
-        if(senha !== confirmacaoSenha){
+        if(senha !== confirmacaoSenha) {
             throw new ApiError("A senha e a confirmação de senha devem ser iguais!", 422);
         }
 
         const cpfExists = await this.clientRepository.findByCpf(cpf);
         const emailExists = await this.clientRepository.findByEmail(email);
-        
         
         if(cpfExists) {
             throw new ApiError("Utilize outro cpf", 422);

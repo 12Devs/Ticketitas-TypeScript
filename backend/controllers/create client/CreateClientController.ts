@@ -15,7 +15,7 @@ class CreateClientController {
         const { nome, cpf, email, telefone, senha, confirmacaoSenha } = request.body;
         const { cep, cidade, estado, bairro, rua, numero } = request.body;
         await this.createClienteUseCase.execute(nome, cpf, email, telefone, senha, confirmacaoSenha, cep, cidade, estado, bairro, rua, numero);
-        return response.status(201).json({message: "Client criado com sucessso!"})
+        return response.status(201).json({message: "Client criado com sucessso!"});
         
     }
 

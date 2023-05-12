@@ -1,5 +1,3 @@
-import { Handler } from "express";
-
 
 class ApiError {
 

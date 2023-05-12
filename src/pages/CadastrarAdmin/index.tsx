@@ -4,16 +4,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
-
+import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import Footer from '../../components/Footer';
-
-// import InputText from '../InputText'
-// import InputSelect from '../InputSelect';
-// import AbaIndicacao from '../AbaIndicacao';
-// import Footer from '../Footer';
-
+import { api } from '../../services/api';
 
 export default function CadastrarAdmin() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -47,6 +42,24 @@ export default function CadastrarAdmin() {
         }
         console.log(dadosAdmin);
     }
+
+    // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
+    useEffect(() => {
+        if (cep.length == 8 && !isNaN(parseInt(cep))) {
+
+            var cepObj: any = {
+                cep: parseInt(cep)
+            };
+
+            api.post('/endereco/complet', cepObj).then((endereco) => {
+
+                setCidade(endereco.data.localidade);
+                setEstado(endereco.data.uf);
+                setBairro(endereco.data.bairro);
+                setRua(endereco.data.logradouro);
+            });
+        }
+    }, [cep]);
 
     return (
         <>
