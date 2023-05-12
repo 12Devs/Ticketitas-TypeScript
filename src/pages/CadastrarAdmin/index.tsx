@@ -9,6 +9,8 @@ import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import Footer from '../../components/Footer';
 import { api } from '../../services/api';
+import '../pages.css';
+
 
 export default function CadastrarAdmin() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -63,7 +65,7 @@ export default function CadastrarAdmin() {
 
     return (
         <>
-        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro} className='mainContent'>
             <Container>
 
                 <Row>
@@ -136,8 +138,6 @@ export default function CadastrarAdmin() {
 
             </Container>
         </Form>
-
-        <Footer/>
         </>
     )
 }

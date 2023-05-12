@@ -3,6 +3,7 @@ import Footer from '../../components/Footer';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { MouseEventHandler, useState } from 'react';
 import InputTexto from '../../components/InputTexto';
+import '../pages.css';
 
 import {useNavigate } from 'react-router-dom';
 
@@ -40,7 +41,7 @@ export default function RecuperarSenha(){
 
     return (
         <>
-            <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha}>
+            <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha} className='mainContent'>
                 <Container>
                     <Row className='border-bottom border-dark mt-3'>
                         <p className='Texto-Medio Texto-Preto'>Alterar Senha</p>
@@ -78,8 +79,6 @@ export default function RecuperarSenha(){
                     </Row>
                 </Container>
             </Form>
-
-            <Footer/>
         </> 
     )
 }
