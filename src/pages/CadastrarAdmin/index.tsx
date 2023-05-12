@@ -81,7 +81,7 @@ export default function CadastrarAdmin() {
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type="" defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
                     </Col>
                     <Col sm={6}>
                         <InputTexto type="" defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />
@@ -90,31 +90,31 @@ export default function CadastrarAdmin() {
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type="" defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto type="" defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
                     </Col>
                     { <Col sm={4}>
-                        <InputTexto type="" defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
                     </Col> }
                 </Row>
 
                 <Row>
                     <Col>
-                        <InputTexto type="" defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto type="" defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
                     </Col>
                     <Col sm={4}>
-                        <InputTexto type="" defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
+                        <InputTexto type="" defaultValue={''} required={false} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
                     </Col>
                 </Row>
 
