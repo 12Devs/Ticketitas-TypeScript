@@ -66,11 +66,8 @@ class AdministratorRepository {
      */
     public async create (name: string, cpf: number, email: string, phone: number, password: string){
         
-        //Assigns null to the address ID since the registry of new administrators does not require such information
-        const enderecoId = null;
-        
         //Executes the database actions
-        await Administrator.create({name, cpf, email, phone, enderecoId});
+        await Administrator.create({name, cpf, email, phone});
         
     }
 
