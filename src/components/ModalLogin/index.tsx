@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ReCAPTCHA from "react-google-recaptcha";
@@ -6,20 +6,33 @@ import '../Button/Button.css';
 import InputTexto from '../InputTexto';
 import ModalRecuperarSenha from '../ModalRecuperarSenha';
 import { Form, Row } from 'react-bootstrap';
-
+import './ModalLogin.css'
 export default function ModalLogin() {
     const [show, setShow] = useState(false);
     const [cpf, setCPF] = useState('');
     const [senha, setSenha] = useState('');
     const [userType, setUserType] = useState('cliente');
-    const [capcthavalidate, setcapcthavalidate] = useState(false);
+    const [captchavalidate, setcaptchavalidate] = useState(false);
+    const [captchastatus, setcaptchastatus] = useState(false);
+ 
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false)
+        setcaptchavalidate(false)
+        setcaptchastatus(false)
+    };
+    const handleShow = () => {
+        setcaptchastatus(true)
+        setShow(true)};
     
-    function validateCaptcha() {
-        setcapcthavalidate(true)
-}
+    const validateCaptcha = () => {
+        setcaptchavalidate(true)
+        
+    };
+    
+    useEffect(() => {
+        console.log(captchavalidate);
+    }, [captchavalidate]);
 
     return (
         <>
@@ -55,7 +68,7 @@ export default function ModalLogin() {
                     </Row>
 
                     <Row className='justify-content-center'>
-                    <ReCAPTCHA
+                    <ReCAPTCHA 
                     sitekey="6LdLG-ElAAAAAN34jptkg-UA6ASYNmnM9_CXjvFM"
                     onChange={validateCaptcha}
                     />
@@ -66,10 +79,12 @@ export default function ModalLogin() {
                     </Row>
 
                     <Row className='justify-content-center'>
+
                         {
-                            capcthavalidate
+                            captchavalidate
                             ?
                             //Colocar ação do botão quando o captcha for validado
+                            
                             <Button className='Botão-Primario Texto-Branco' type='submit'>
                             Entrar
                             </Button>
