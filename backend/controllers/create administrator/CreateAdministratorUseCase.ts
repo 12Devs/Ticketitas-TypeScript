@@ -32,7 +32,7 @@ class CreateAdministratorUseCase {
     private administratorRepository: AdministratorRepository
 
     /**
-     * Creates an instance of {@link CreateAdministratorUseCase}
+     * Constructor for instances of {@link AdministratorRepository}
      * @date 5/8/2023 - 7:12:30 PM
      *
      * @constructor Marks this part of the code as a constructor
@@ -41,6 +41,7 @@ class CreateAdministratorUseCase {
     constructor (administratorRepository: AdministratorRepository) {
         this.administratorRepository =  administratorRepository;
     }
+    
     /**
      * Method for executing the creation of an administrator object using the parameters supplied by its controller
      * @date 5/8/2023 - 7:12:30 PM

@@ -21,13 +21,13 @@ class CreateAdministratorController {
      * Creates an instance of {@link CreateAdministratorUseCase}
      * @date 5/8/2023 - 4:56:44 PM
      *
-     * @private
+     * @private Marks this instance as having "private" visility
      * @type {CreateAdministratorUseCase}
      */
     private createAdministratorUseCase: CreateAdministratorUseCase;
 
     /**
-     * Creates an instance of {@link CreateAdministratorController}
+     * Constructor for instances of {@link CreateAdministratorController}
      * @date 5/8/2023 - 4:56:44 PM
      *
      * @constructor Marks this part of the code as a constructor

@@ -32,7 +32,7 @@ class LoginAdministratorUseCase {
     private administratorRepository: AdministratorRepository
 
     /**
-     * Creates an instance of {@linkLoginAdministratorUseCase}
+     * Constructor for instances of {@link AdministratorRepository}
      * @date 5/8/2023 - 8:03:23 PM
      *
      * @constructor Marks this part of the code as a constructor
