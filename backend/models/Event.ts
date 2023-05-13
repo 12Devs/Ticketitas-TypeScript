@@ -39,6 +39,10 @@ const Event = conn.define('event', {
     valorVip: {
         type: DataTypes.FLOAT,
         allowNull: false 
+    },
+    imageEvent: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
