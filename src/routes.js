@@ -20,7 +20,8 @@ export default function AppRouter() {
                 <NavBarGeral />
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route path='about' element={<Evento/>}/>
+                    <Route path='about' element={<QuemSomos/>}/>
+                    <Route path='evento' element={<Evento/>}/>
                     <Route path='cadastrarCliente' element={<CadastrarCliente/>}/>
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter/>}/>
                     <Route path='cadastrarAdmin' element={<CadastrarAdmin/>}/>
