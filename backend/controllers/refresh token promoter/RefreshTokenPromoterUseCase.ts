@@ -15,34 +15,34 @@ class RefreshTokenPromoterUseCase {
     public async execute (token: string){
 
         const decode: any = await verify(token, auth.secretRefreshToken);
-        const PromoterCpf = decode.sub;
+        const promoterCpf = decode.sub;
 
-        const PromoterToken: any = await this.tokenPromoterRepository.findByCpfAndRefreshToken(PromoterCpf, token);
+        const promoterToken: any = await this.tokenPromoterRepository.findByCpfAndRefreshToken(promoterCpf, token);
 
-        if (!PromoterToken) {
+        if (!promoterToken) {
             throw new ApiError("Refresh token does not exists!");
         }
 
-        await this.tokenPromoterRepository.deleteByCpf(PromoterToken.PromoterCpf);
+        await this.tokenPromoterRepository.deleteByCpf(promoterToken.promoterCpf);
 
         const refreshToken = await sign({tipo: "Promoter", nome: decode.nome},
             
             auth.secretRefreshToken,
             
-            {subject: `${PromoterCpf}`,
+            {subject: `${promoterCpf}`,
                 expiresIn: auth.expiresInRefreshToken});
         
         
         var expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 30);
         
-        await this.tokenPromoterRepository.create(PromoterCpf, expiresDate, refreshToken);
+        await this.tokenPromoterRepository.create(promoterCpf, expiresDate, refreshToken);
 
         const newToken = sign({tipo: "Promoter", nome: decode.nome},
             
             auth.secretToken,
 
-            {subject: `${PromoterCpf}`,
+            {subject: `${promoterCpf}`,
                 expiresIn: auth.expiresInToken});
         
         
