@@ -32,6 +32,10 @@ font-style: Bold;
 Font-size: 32px;
 Line-height: 50px;
 Line-height: 100%;
-Vertical-align: Top;
 
+
+}
+
+.frase-banner{
+    width: 50%;
 }
