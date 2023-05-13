@@ -10,3 +10,7 @@
 .bordaRedor{
     border: 2px solid red;
 }
+
+.sombra{
+    box-shadow: 0 1px 20px 0 #B3B5BD;
+}

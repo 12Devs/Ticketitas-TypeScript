@@ -3,6 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import './styleDescricao.css'
+import '../styleGeralEvento.css'
 
 
 
@@ -10,21 +11,24 @@ export default function Descricao() {
 
     return (
         <Container>
-            <Row className='primeiraDescricao p-3' >
-                <div className='conteudo border'>
+            <Row className='primeiraDescricao p-3 sombra' >
+                <div className='larguraMainContentEventos bordaRedor text-start'>
                     <p>Parte 1</p>
                 </div>
             </Row>
 
-            <Row className='p-5'>
-                <Col className='bordaRedor' >
-                    <p>Parte 2.1</p>
-                </Col>
+            <section className='larguraMainContentEventos mt-5'>
+                <Row className='noMarginPadding'>
+                    <Col className='bordaRedor text-start' >
+                        <p>Parte 2.1</p>
+                    </Col>
 
-                <Col className='bordaRedor'>
-                    <p>Parte 2.2</p>
-                </Col>
-            </Row>
+                    <Col className='bordaRedor text-start'>
+                        <p>Parte 2.2</p>
+                    </Col>
+                </Row>
+            </section>
+
         </Container>
     );
 }

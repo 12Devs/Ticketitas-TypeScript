@@ -10,7 +10,7 @@ import './styleGeralEvento.css'
 export default function Evento() {
     return (
 
-        <Container className='paginaCompleta corPagina' fluid>
+        <Container className='noMarginPadding corPagina' fluid>
 
             <Row >
                 <Header caminho={'img/exemploHeaderEvento.png'} />
@@ -20,8 +20,8 @@ export default function Evento() {
                 <Descricao />
             </Row>
 
-            <section className='larguraMainContentEventos border'>
-                <Row className='p-5'>
+            <section className='larguraMainContentEventos border mt-5 pb-5'>
+                <Row className='text-start'>
                     <p>Também em detaque...</p>
                 </Row>
             </section>
