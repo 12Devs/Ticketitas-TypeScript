@@ -10,7 +10,7 @@ const Promoter = conn.define('promoter',{
         allowNull: false
     },
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     },
@@ -19,7 +19,7 @@ const Promoter = conn.define('promoter',{
         allowNull: false
     },
     telefone: { 
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     senha: {

@@ -9,7 +9,7 @@ const Client = conn.define('client',{
         allowNull: false
     },
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     },
@@ -18,7 +18,7 @@ const Client = conn.define('client',{
         allowNull: false
     },
     telefone: { 
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     senha: {

@@ -9,7 +9,7 @@ const Event = conn.define('event', {
         allowNull: false
     },
     descricao: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false 
     },
     status: {

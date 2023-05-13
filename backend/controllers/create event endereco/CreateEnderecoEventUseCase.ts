@@ -31,7 +31,7 @@ class CreateEnderecoEventUseCase {
             throw new ApiError("A rua é obrigatória!", 422);
         }
 
-        if (!numero){
+        if (numero === undefined || numero === null){
             throw new ApiError("O numero é obrigatório!", 422);
         }
 

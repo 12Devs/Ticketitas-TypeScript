@@ -12,11 +12,11 @@ class EventRepository {
     }
 
 
-    public async create (nome: string, descricao: string, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
+    public async create (promoterCpf: number, nome: string, descricao: string, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
 
         await this.createEnderecoEventController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoEvent: any)=>{
             const enderecoEventId = enderecoEvent.id;
-            await Event.create({nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, enderecoEventId});
+            await Event.create({nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, promoterCpf, enderecoEventId});
         });
     }
 }
