@@ -3,6 +3,7 @@ import Footer from '../../components/Footer';
 import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { MouseEventHandler, useState } from 'react';
 import InputTexto from '../../components/InputTexto';
+import '../pages.css';
 
 import {useNavigate } from 'react-router-dom';
 
@@ -40,21 +41,25 @@ export default function RecuperarSenha(){
 
     return (
         <>
-            <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha}>
+            <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha} className='mainContent'>
                 <Container>
                     <Row className='border-bottom border-dark mt-3'>
                         <p className='Texto-Medio Texto-Preto'>Alterar Senha</p>
                     </Row>
 
-                    <Row className='mt-3 mb-5'>
+                    <Row className='mt-3 d-flex justify-content-center'>
                         <Col sm={4}>
                             <InputTexto type="password" defaultValue={''} required={true} label={"Senha atual"} placeholder={"Insira a senha atual"} controlId={"inputSenhaAtual"} data={senhaAtual} setData={setSenhaAtual} />
                         </Col>
+                    </Row>
+                    <Row className='mt-3 d-flex justify-content-center'>
                         <Col sm={4}>
                             <InputTexto type="password" defaultValue={''} required={true} label={"Nova senha"} placeholder={"Insira a nova senha"} controlId={"inputNovaSenha"} data={novaSenha} setData={setNovaSenha} />
                         </Col>
+                    </Row>
+                    <Row className='mt-3 d-flex justify-content-center'>
                         <Col sm={4}>
-                            <InputTexto type="password" defaultValue={''} required={true} label={"Repita a nova senha"} placeholder={"Repita a nova senha"} controlId={"inputNovaSenhaAgain"} data={novaSenhaConfirmacao} setData={setNovaSenhaConfirmacao} />
+                            <InputTexto type="password" defaultValue={''} required={true} label={"Repita a nova senha"} placeholder={"Insira a senha novamente"} controlId={"inputNovaSenhaAgain"} data={novaSenhaConfirmacao} setData={setNovaSenhaConfirmacao} />
                         </Col>
                     </Row>
 
@@ -74,8 +79,6 @@ export default function RecuperarSenha(){
                     </Row>
                 </Container>
             </Form>
-
-            <Footer/>
         </> 
     )
 }

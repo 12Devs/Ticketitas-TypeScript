@@ -11,10 +11,10 @@ class UpdateUseAvatarController {
     
     public async handle (request: Request, response: Response) {
 
-        const { cpf } = request.user;
+        const { cpf, tipo } = request.user;
         const avatarImage = request.file.filename;
-       
-        await this.updateUserAvatarUseCase.execute(cpf, avatarImage);
+
+        await this.updateUserAvatarUseCase.execute(tipo, cpf, avatarImage);
         return response.status(204).send();
     }
 

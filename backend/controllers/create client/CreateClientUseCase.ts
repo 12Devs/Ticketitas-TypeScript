@@ -36,7 +36,7 @@ class CreateClientUseCase {
             throw new ApiError("A confirmacao de senha é obrigatória!", 422);
         }
 
-        if(senha !== confirmacaoSenha){
+        if(senha !== confirmacaoSenha) {
             throw new ApiError("A senha e a confirmação de senha devem ser iguais!", 422);
         }
 

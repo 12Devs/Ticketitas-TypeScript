@@ -3229,6 +3229,11 @@ case-sensitive-paths-webpack-plugin@^2.4.0:
   resolved "https://registry.npmjs.org/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz"
   integrity sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw==
 
+centra@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/centra/-/centra-1.0.1.tgz"
+  integrity sha512-NyC/mxn9vTH9GXFuybc91nftdWdJUhv7HYRuXaJWQkpzpXghRBEr7WlP7wAxtHb0SrePpuJO127gJsWD+xOZrg==
+
 chalk@^2.0.0, chalk@^2.4.1:
   version "2.4.2"
   resolved "https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz"
@@ -5148,6 +5153,13 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.npmjs.org/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
+grecaptcha@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/grecaptcha/-/grecaptcha-1.0.3.tgz"
+  integrity sha512-L0yHm3V+p82zBVCqPA7gbBxf+Hvf8nxQ+h3XtVmwEWXQf7pzAQzaSsf6eTUiV/ZoZd0R4+3d7ToEHIVwWHLOzQ==
+  dependencies:
+    centra "^1.0.1"
+
 gzip-size@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmjs.org/gzip-size/-/gzip-size-6.0.0.tgz"
@@ -6514,6 +6526,11 @@ loader-utils@^3.2.0:
   version "3.2.1"
   resolved "https://registry.npmjs.org/loader-utils/-/loader-utils-3.2.1.tgz"
   integrity sha512-ZvFw1KWS3GVyYBYb7qkmRM/WwL2TQQBxgCK62rlvm4WpVQ23Nb4tYjApUlfjrEGvOs7KHEsmyUn75OHZrJMWPw==
+
+loadjs@^4.3.0-rc1:
+  version "4.3.0-rc1"
+  resolved "https://registry.npmjs.org/loadjs/-/loadjs-4.3.0-rc1.tgz"
+  integrity sha512-GvSFQ3YXbeUJAPYzYBjIYIWk6vKID4XYspMfZ0Nq4eJu0TFiD+SlhSUiQ0/gT7t3G/amHVPVrEVcbpda0lF2PA==
 
 locate-path@^3.0.0:
   version "3.0.0"

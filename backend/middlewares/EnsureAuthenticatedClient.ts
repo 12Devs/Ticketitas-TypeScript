@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
 import { ApiError } from "../errors/ApiError";
-import { ClientRepository } from "../db/ClientRepository";
+import auth from "../config/auth";
 
 
-async function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
+async function ensureAuthenticatedClient(request: Request, response: Response, next: NextFunction) {
     
     const authHeader = request.headers.authorization; // Pegando o token de dentro do header da requisição;
 
@@ -15,14 +15,11 @@ async function ensureAuthenticated(request: Request, response: Response, next: N
 
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub } = await verify(token, "vamoTirar10NessaBagaca");
-        const clientRepository = new ClientRepository();
-        const clientCpf = await clientRepository.findByCpf(sub);
-        if(!clientCpf) {
-            next(new ApiError("Client nã existe", 401));
-        }
+        const { sub } = await verify(token, auth.secretToken);
+
         request.user = {
-            cpf: clientCpf
+            tipo: "client",
+            cpf: sub
         }
         next();
     } catch {
@@ -30,4 +27,4 @@ async function ensureAuthenticated(request: Request, response: Response, next: N
     }  
 }
 
-export { ensureAuthenticated }
+export { ensureAuthenticatedClient }
