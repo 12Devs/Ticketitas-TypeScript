@@ -4,7 +4,7 @@ import { ApiError } from "../errors/ApiError";
 import auth from "../config/auth";
 
 
-async function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
+async function ensureAuthenticatedClient(request: Request, response: Response, next: NextFunction) {
     
     const authHeader = request.headers.authorization; // Pegando o token de dentro do header da requisição;
 
@@ -18,6 +18,7 @@ async function ensureAuthenticated(request: Request, response: Response, next: N
         const { sub } = await verify(token, auth.secretToken);
 
         request.user = {
+            tipo: "client",
             cpf: sub
         }
         next();
@@ -26,4 +27,4 @@ async function ensureAuthenticated(request: Request, response: Response, next: N
     }  
 }
 
-export { ensureAuthenticated }
+export { ensureAuthenticatedClient }

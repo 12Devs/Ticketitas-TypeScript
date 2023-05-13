@@ -1,27 +1,41 @@
 import { ClientRepository } from "../../db/ClientRepository";
-import { Client } from "../../models/Client";
+import { PromoterRepository } from "../../db/PromoterRepository";
 import { deleteFile } from "../../utils/file";
 
 class UpdateUseAvatarUserCase {
 
-    private userRepository: ClientRepository;
+    private clientRepository: ClientRepository;
+    private promoterRepository: PromoterRepository;
 
-    public constructor (clientRepository: ClientRepository){
-        this.userRepository = clientRepository;
+    public constructor (clientRepository: ClientRepository, promoterRepository: PromoterRepository){
+        this.clientRepository = clientRepository;
+        this.promoterRepository = promoterRepository;
     }
 
-    public async execute (cpf: any, avatarImage: string){
+    public async execute (tipo: string, cpf: number, avatarImage: string){
 
-        
-        if (this.userRepository instanceof ClientRepository){
-            const cpfAndAvatarClient: any = await this.userRepository.findByCpfAndAvatar(cpf);
+        if (tipo === "client"){
+            const cpfAndAvatarClient: any = await this.clientRepository.findByCpfAndAvatar(cpf);
             
             if(cpfAndAvatarClient.avatarImage) {
 
                 await deleteFile(`backend/uploadImages/profiles/${cpfAndAvatarClient.avatarImage}`);
             }
 
-            await this.userRepository.updateAvatar(cpfAndAvatarClient.cpf, avatarImage);
+            await this.clientRepository.updateAvatar(cpfAndAvatarClient.cpf, avatarImage);
+
+        } if (tipo === "promoter") {
+
+            const cpfAndAvatarPromoter: any = await this.promoterRepository.findByCpfAndAvatar(cpf);
+            
+            
+            
+            if(cpfAndAvatarPromoter.avatarImage) {
+
+                await deleteFile(`backend/uploadImages/profiles/${cpfAndAvatarPromoter.avatarImage}`);
+            }
+
+            await this.promoterRepository.updateAvatar(cpfAndAvatarPromoter.cpf, avatarImage);
         }
     }
 

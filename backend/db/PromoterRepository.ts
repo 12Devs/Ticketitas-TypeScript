@@ -40,6 +40,24 @@ class PromoterRepository {
         }});
         return promoter;
     }
+
+    public async findByCpfAndAvatar (cpf: number) {
+        const cpfAndAvatar = await Promoter.findOne({raw: true, attributes: ['cpf', 'avatarImage'], where: {
+            cpf: cpf
+        }});
+        return cpfAndAvatar;
+    }
+
+    public async updateAvatar (cpf: number, avatarImage: any){
+        await Promoter.update({
+            avatarImage: avatarImage
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
 }
 
 export { PromoterRepository };

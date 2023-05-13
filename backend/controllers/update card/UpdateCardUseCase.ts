@@ -1,5 +1,4 @@
 import { CardRepository } from "../../db/CardRepository";
-import { ClientRepository } from "../../db/ClientRepository";
 import { ApiError } from "../../errors/ApiError";
 import bcrypt from 'bcrypt';
 

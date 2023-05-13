@@ -25,6 +25,10 @@ const Promoter = conn.define('promoter',{
     senha: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    avatarImage: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 

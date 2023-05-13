@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { createClientController } from '../controllers/create client/index';
 import { loginClientController } from '../controllers/login client';
-import { ensureAuthenticated } from '../middlewares/EnsureAuthenticatedClient';
+import { ensureAuthenticatedClient } from '../middlewares/EnsureAuthenticatedClient';
 import { updateAvatarController } from '../controllers/update user avatar/index';
 import { imageUpload } from '../utils/ImageUpload';
 import { updateCardController } from '../controllers/update card/index';
@@ -14,7 +14,7 @@ clientRoutes.post("/client", (request: Request, response: Response, next: NextFu
     return createClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
-clientRoutes.patch("/client/avatar", ensureAuthenticated, imageUpload.single("avatar"), (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.patch("/client/avatar", ensureAuthenticatedClient, imageUpload.single("avatar"), (request: Request, response: Response, next: NextFunction)=>{
     return updateAvatarController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
@@ -26,7 +26,7 @@ clientRoutes.post("/client/refresh-token", (request: Request, response: Response
     return refreshTokenClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
-clientRoutes.post("/client/card", ensureAuthenticated, (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.post("/client/card", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return updateCardController.handle(request, response).catch((error)=>{next(error)});
 });
 
