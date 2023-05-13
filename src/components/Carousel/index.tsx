@@ -1,43 +1,44 @@
 import Carousel from 'react-bootstrap/Carousel';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function CarouselPrincipal() {
   return (
     <Carousel>
       <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=First slide&bg=373940"
-          alt="First slide"
-        />
-        <Carousel.Caption>
-          <h3>Exemplo de Evento 1</h3>
-          <p>Descrição do Evento 1.</p>
-        </Carousel.Caption>
+        <div className="row">
+          <div className="col-md-6">
+            <img
+              className="d-block w-100"
+              src="img/exemploHeaderEvento.png"
+              alt="First slide"
+            />
+          </div>
+          <div className="col-md-6">
+            <Carousel.Caption as="div" className="text-start">
+              <h3>Primeiro</h3>
+              <p>Evento de samba.</p>
+            </Carousel.Caption>
+          </div>
+        </div>
       </Carousel.Item>
       <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Second slide&bg=282c34"
-          alt="Second slide"
-        />
-
-        <Carousel.Caption>
-          <h3>Exemplo de Evento 2</h3>
-          <p>Descrição do Evento 2.</p>
-        </Carousel.Caption>
+        <div className="row">
+          <div className="col-md-6">
+            <img
+              className="d-block w-100"
+              src="img/exemploHeaderEvento.png"
+              alt="Second slide"
+            />
+          </div>
+          <div className="col-md-6">
+            <Carousel.Caption as="div" className="text-start">
+              <h3>Segundo Slide</h3>
+              <p>Evento de sertanejo.</p>
+            </Carousel.Caption>
+          </div>
+        </div>
       </Carousel.Item>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="holder.js/800x400?text=Third slide&bg=20232a"
-          alt="Third slide"
-        />
-
-        <Carousel.Caption>
-          <h3>Exemplo de Evento 3</h3>
-          <p>Descrição do Evento 3.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
+      {/* Adicione mais itens de carrossel, se necessário */}
     </Carousel>
   );
 }
