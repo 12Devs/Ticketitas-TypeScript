@@ -1,5 +1,8 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../../db/Connection";
+import { conn } from "../db/Connection";
+import { Event } from "./Event";
+import { TokenPromoter } from "./TokenPromoter";
+
 
 const Promoter = conn.define('promoter',{
     nome:{
@@ -24,6 +27,9 @@ const Promoter = conn.define('promoter',{
         allowNull: false
     }
 });
+
+Promoter.hasMany(Event);
+Promoter.hasMany(TokenPromoter);
 
 export { Promoter };
 

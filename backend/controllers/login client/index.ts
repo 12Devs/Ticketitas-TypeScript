@@ -5,7 +5,7 @@ import { LoginClientUseCase } from "./LoginClientUseCase";
 
 
 const clientRepository = new ClientRepository();
-const tokenClientRepository = new TokenClientRepository()
+const tokenClientRepository = new TokenClientRepository();
 const loginClientUseCase = new LoginClientUseCase(clientRepository, tokenClientRepository);
 const loginClientController = new LoginClientController(loginClientUseCase);
 

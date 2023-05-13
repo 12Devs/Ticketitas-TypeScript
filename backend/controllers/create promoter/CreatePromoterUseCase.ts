@@ -1,6 +1,6 @@
-import { PromoterRepository } from "../../../db/PromoterRepository";
-import { ApiError } from "../../errors/api.errors";
 import bcrypt from 'bcrypt';
+import { ApiError } from '../../errors/ApiError';
+import { PromoterRepository } from '../../db/PromoterRepository';
 
 class CreatePromoterUseCase {
 

@@ -1,14 +1,14 @@
 
-import { CreateEnderecoController} from '../controllers/create endereco/CreateEnderecoController';
-import { Promoter } from '../models/promoter';
-import { createEnderecoController } from '../controllers/create endereco';
+import { Promoter } from '../models/Promoter';
+import { CreateEnderecoUserController } from '../controllers/create user endereco/CreateEnderecoUserController';
+import { createEnderecoUserController } from '../controllers/create user endereco/index';
 
 class PromoterRepository {
 
-    private createEnderecoController: CreateEnderecoController
+    private createEnderecoController: CreateEnderecoUserController
 
     public constructor (){
-        this.createEnderecoController = createEnderecoController;
+        this.createEnderecoController = createEnderecoUserController;
     }
 
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){

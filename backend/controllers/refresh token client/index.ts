@@ -5,6 +5,6 @@ import { RefreshTokenClientUseCase } from "./RefreshTokenClientUseCase";
 
 const tokenClientRepository = new TokenClientRepository();
 const refreshTokenClientUseCase = new RefreshTokenClientUseCase(tokenClientRepository);
-const refreshTokenClietController = new RefreshTokenClientController(refreshTokenClientUseCase);
+const refreshTokenClientController = new RefreshTokenClientController(refreshTokenClientUseCase);
 
-export { refreshTokenClietController };
+export { refreshTokenClientController };

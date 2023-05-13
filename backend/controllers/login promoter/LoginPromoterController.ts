@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { createUserToken } from "../../middlewares/CreateUserToken";
 import { LoginPromoterUseCase } from "./LoginPromoterUseCase";
 
 class LoginPromoterController {
@@ -12,11 +11,9 @@ class LoginPromoterController {
     public async handle(request: Request, response: Response){
 
         const { email, senha } = request.body;
-        await this.loginPromoterUseCase.execute(email, senha).then((promoter)=>{
-            console.log(promoter)
-            createUserToken(promoter, request, response);
-        });
+        const authenticateInfo = await this.loginPromoterUseCase.execute(email, senha);
         
+        return response.json({authenticateInfo});
     }
 }
 
