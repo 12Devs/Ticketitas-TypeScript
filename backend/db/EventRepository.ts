@@ -24,6 +24,13 @@ class EventRepository {
         return allEvents;
     }
 
+    public async findOneEvent (id: number) {
+        const event = await Event.findOne({raw: true, where: {
+            id: id
+        }});
+        return event;
+    }
+
     public async findByIdAndAvatar (id: number, promoterCpf: number) {
         const idAndAvatar = await Event.findOne({raw: true, attributes: ['id', 'imageEvent'], where: {
             id: id,
