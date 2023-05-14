@@ -3,7 +3,7 @@ import { checkCepController } from '../controllers/check cep';
 
 const enderecoRoutes = Router();
 
-enderecoRoutes.post("/complet", (request: Request, response: Response, next: NextFunction)=>{
+enderecoRoutes.get("/:cep", (request: Request, response: Response, next: NextFunction)=>{
     return checkCepController.handle(request, response).catch((error)=>{next(error)});
 });
 
