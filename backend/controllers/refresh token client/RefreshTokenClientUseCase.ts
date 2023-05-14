@@ -32,7 +32,6 @@ class RefreshTokenClientUseCase {
             {subject: `${clientCpf}`,
                 expiresIn: auth.expiresInRefreshToken});
         
-        
         var expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 30);
         
@@ -45,10 +44,7 @@ class RefreshTokenClientUseCase {
             {subject: `${clientCpf}`,
                 expiresIn: auth.expiresInToken});
         
-        
-        
         return {token: newToken, refreshToken};
-
     }
 
 }
