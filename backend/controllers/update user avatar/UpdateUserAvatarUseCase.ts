@@ -14,9 +14,8 @@ class UpdateUseAvatarUserCase {
 
         
         if (this.userRepository instanceof ClientRepository){
+            const cpfAndAvatarClient: any = await this.userRepository.findByCpfAndAvatar(cpf);
             
-            const cpfAndAvatarClient: any = await this.userRepository.findByCpfAndAvatar(cpf.cpf);
-
             if(cpfAndAvatarClient.avatarImage) {
 
                 await deleteFile(`backend/uploadImages/profiles/${cpfAndAvatarClient.avatarImage}`);

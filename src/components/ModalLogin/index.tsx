@@ -25,15 +25,12 @@ export default function ModalLogin() {
         setcaptchastatus(true)
         setShow(true)};
     
+
     const validateCaptcha = () => {
         setcaptchavalidate(true)
         
     };
     
-    useEffect(() => {
-        console.log(captchavalidate);
-    }, [captchavalidate]);
-
     return (
         <>
             <Button className='Botão-Terciário' onClick={handleShow}>
@@ -90,7 +87,7 @@ export default function ModalLogin() {
                             </Button>
                             :
                             <Button className='Botão-Primario Texto-Branco' type='submit'>
-                            Não
+                            Entrar
                             </Button>
                             
                         }
