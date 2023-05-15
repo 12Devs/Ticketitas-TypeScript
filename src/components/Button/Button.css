@@ -1,11 +1,11 @@
 .Botão-Primario {
-    background: #1F82B2 !important;
-    border: 1px solid #1F82B2 !important;
-    border-radius: 5px !important;
-    gap: 10px !important;
-    width: 15vw !important;
-    height: fit-content !important;
-  }
+  background: #1F82B2 !important;
+  border: 1px solid #1F82B2 !important;
+  border-radius: 5px !important;
+  gap: 10px !important;
+  width: 15vw !important;
+  height: fit-content !important;
+}
 
 .Botão-Secundario {
   background: none !important;
@@ -19,4 +19,13 @@
 .Botão-Terciário {
   background: none !important;
   border-style: hidden !important;
+}
+
+.Botão-Redondo {
+  border-radius: 100% !important;
+  width: 30px;
+  height: 30px;
+  background: none !important;
+  color: black !important;
+  outline-color: black !important;
 }

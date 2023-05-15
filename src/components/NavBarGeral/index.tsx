@@ -57,7 +57,7 @@ const NavBarGeral = () => {
 
   return (
     <Navbar collapseOnSelect expand="lg" className='NavBar'>
-      <Container>
+      <Container fluid>
         <Navbar.Brand>
           <img
             src="/img/logo.svg"

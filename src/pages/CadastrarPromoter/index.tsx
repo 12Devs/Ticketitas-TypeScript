@@ -51,12 +51,7 @@ export default function CadastrarPromoter() {
     useEffect(() => {
         if (cep.length == 8 && !isNaN(parseInt(cep))) {
 
-            var cepObj: any = {
-                cep: parseInt(cep)
-            };
-
-            api.post('/endereco/complet', cepObj).then((endereco) => {
-
+            api.get(`/endereco/complet/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);
@@ -66,7 +61,7 @@ export default function CadastrarPromoter() {
     }, [cep]);
 
     return (
-        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro} className='mainContent'>
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
                 <Row >
                     <FormLabel label='Cadastro de Promoter' />
