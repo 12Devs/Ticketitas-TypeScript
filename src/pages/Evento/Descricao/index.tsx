@@ -18,17 +18,18 @@ export default function Descricao({idEvento}:{idEvento: number}) {
     const [cidade, setCidade] = useState('Cidade');
     const [estado, setEstado] = useState('Estado');
     const [imageEvent, setImageEvent] = useState('./img/exemploHeaderEvento.png');
-
-    const endereco = `${rua} - ${cidade} - ${estado}`;
     
     api.get(`/event/${idEvento}`).then((response) => {
+        console.log(response.data);
         setTitulo(response.data.eventInfos.event.nome);
         setDescricao(response.data.eventInfos.event.descricao);
-        setRua(response.data.enderecoEvent.rua);
-        setCidade(response.data.enderecoEvent.cidade);
-        setEstado(response.data.enderecoEvent.estado);
+        setRua(response.data.eventInfos.enderecoEvent.rua);
+        setCidade(response.data.eventInfos.enderecoEvent.cidade);
+        setEstado(response.data.eventInfos.enderecoEvent.estado);
         setImageEvent(response.data.eventInfos.event.imageEvent);
     });
+
+    const endereco = `${rua} - ${cidade} - ${estado}`;
 
     return (
         <Container>
