@@ -1,6 +1,51 @@
-.container{
-   background-image: "./assets/bd105827581fec266b4cbf19068befc2.jpg";
-   width: auto;
-   height: 261px;
 
-}
+
+.container1{
+   width: auto;
+   height: 420px;
+   border: 100px;
+   
+   }
+   .imagem{
+     
+       background: url(../../components/bannerPublicidade/assets/bd105827581fec266b4cbf19068befc2.jpg);
+       width: 100%;
+       height: 100%;
+       position: center;
+       background-repeat: no-repeat;
+       background-position: center;
+      
+    
+    }
+    .texto-banner{
+      width: 60%;
+      left: 20%;
+      margin-left: -15%;
+      position:center;
+      text-align: left;
+      position: absolute;
+      margin-top: 100px;
+      color: #FFFFFF;
+       
+  }
+  .buttom{
+   border-radius: 2px;
+   margin-top: 20px;
+   width: 350px;
+   height: 40px;
+   left: 165.11px;
+   top: 781.32px;
+   background-color: #1F82B2;
+   border: none;
+   color: #FFFFFF;
+}  
+
+.titulo-banner{
+
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   font-style: normal;
+   font-weight: 500;
+   font-size: 32px;
+   line-height: 42px;
+   color: #FFFFFF;
+   }

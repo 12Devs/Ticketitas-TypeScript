@@ -1,0 +1,13 @@
+.paginaCompleta {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.corPagina {
+    background-color: #B3B5BD !important;
+}
+
+.larguraMainContentEventos {
+    width: 80vw;
+    margin: 0 auto;
+}

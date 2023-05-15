@@ -18,9 +18,6 @@ const NavBarGeral = () => {
     label: 'Quem somos',
     to: '/about'
   }, {
-    label: 'Ajuda',
-    to: '/help'
-  }, {
     label: 'Seja um promoter',
     to: '/cadastrarPromoter'
   }];

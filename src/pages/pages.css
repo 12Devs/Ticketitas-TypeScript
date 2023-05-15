@@ -1,0 +1,4 @@
+.mainContent {
+    height: calc(100vh - 57.8px);
+    min-height: calc(100vh - 57.8px);
+}
