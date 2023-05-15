@@ -7,7 +7,6 @@ import { useState } from 'react';
 import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
-import Footer from '../../components/Footer';
 import { api } from '../../services/api';
 import '../pages.css';
 
@@ -48,13 +47,8 @@ export default function CadastrarAdmin() {
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
     useEffect(() => {
         if (cep.length == 8 && !isNaN(parseInt(cep))) {
-
-            var cepObj: any = {
-                cep: parseInt(cep)
-            };
-
-            api.post('/endereco/complet', cepObj).then((endereco) => {
-
+            
+            api.get(`/endereco/complet/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);
@@ -65,7 +59,7 @@ export default function CadastrarAdmin() {
 
     return (
         <>
-        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro} className='mainContent'>
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
 
                 <Row>

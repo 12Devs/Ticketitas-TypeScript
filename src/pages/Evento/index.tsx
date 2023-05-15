@@ -1,28 +1,27 @@
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
-import Header from './Header';
 import Descricao from './Descricao';
+import { useState } from 'react';
 
 import '../pages.css'
 import './styleGeralEvento.css'
 
 
 export default function Evento() {
+    const [idEvento, setIdEvento] = useState(1);
+
     return (
 
         <Container className='noMarginPadding corPagina' fluid>
 
-            <Row >
-                <Header caminho={'img/exemploHeaderEvento.png'} />
-            </Row>
-
             <Row>
-                <Descricao />
+                <Descricao idEvento={idEvento}/>
             </Row>
 
-            <section className='larguraMainContentEventos border mt-5 pb-5'>
+            <section className='larguraMainContentEventos mt-5 pb-5'>
                 <Row className='text-start'>
-                    <p>Também em detaque...</p>
+                    <p className='Texto-Preto Texto-Pequeno'>Também em detaque...</p>
+                    
                 </Row>
             </section>
 
