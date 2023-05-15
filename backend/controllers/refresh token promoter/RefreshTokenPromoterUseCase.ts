@@ -31,8 +31,7 @@ class RefreshTokenPromoterUseCase {
             
             {subject: `${promoterCpf}`,
                 expiresIn: auth.expiresInRefreshToken});
-        
-        
+
         var expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 30);
         
@@ -45,10 +44,7 @@ class RefreshTokenPromoterUseCase {
             {subject: `${promoterCpf}`,
                 expiresIn: auth.expiresInToken});
         
-        
-        
         return {token: newToken, refreshToken};
-
     }
 
 }

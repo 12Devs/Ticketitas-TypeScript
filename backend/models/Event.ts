@@ -9,7 +9,7 @@ const Event = conn.define('event', {
         allowNull: false
     },
     descricao: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT('long'),
         allowNull: false 
     },
     status: {
@@ -39,6 +39,10 @@ const Event = conn.define('event', {
     valorVip: {
         type: DataTypes.FLOAT,
         allowNull: false 
+    },
+    imageEvent: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 

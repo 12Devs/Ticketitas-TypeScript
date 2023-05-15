@@ -26,7 +26,7 @@ const EnderecoEvent = conn.define('enderecoEvent', {
     },
     numero: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 });
 
