@@ -10,6 +10,7 @@ import RecuperarSenha from './pages/RecuperarSenha';
 import PrimeiraSenha from './pages/PrimeiraSenha';
 import Footer from './components/Footer';
 import Evento from './pages/Evento';
+import LoginAdm from './pages/LoginAdm';
 
 
 
@@ -20,15 +21,17 @@ export default function AppRouter() {
                 <NavBarGeral />
                 <Routes>
                     <Route path='/' element={<Home />} />
-                    <Route path='about' element={<QuemSomos/>}/>
-                    <Route path='evento' element={<Evento/>}/>
-                    <Route path='cadastrarCliente' element={<CadastrarCliente/>}/>
-                    <Route path='cadastrarPromoter' element={<CadastrarPromoter/>}/>
-                    <Route path='cadastrarAdmin' element={<CadastrarAdmin/>}/>
-                    <Route path='recuperarSenha' element={<RecuperarSenha/>}/>
-                    <Route path='PrimeiraSenha' element={<PrimeiraSenha/>}/>
+                    <Route path='about' element={<QuemSomos />} />
+                    <Route path='evento' element={<Evento />} />
+                    <Route path='cadastrarCliente' element={<CadastrarCliente />} />
+                    <Route path='cadastrarPromoter' element={<CadastrarPromoter />} />
+                    <Route path='cadastrarAdmin' element={<CadastrarAdmin />} />
+                    <Route path='recuperarSenha' element={<RecuperarSenha />} />
+                    <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
+                    <Route path='evento' element={<Evento />} />
+                    <Route path='loginAdm' element={<LoginAdm/>}/>
                 </Routes>
-                <Footer/>
+                <Footer />
             </Router>
         </main>
     );

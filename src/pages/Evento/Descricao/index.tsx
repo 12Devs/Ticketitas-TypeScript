@@ -1,30 +1,65 @@
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
+import AdicionarIngresso from '../AdicionarIngresso';
 import Col from "react-bootstrap/Col";
+import { useState } from 'react';
+import Header from '../Header';
 
-import './styleDescricao.css'
+import './styleDescricao.css';
+import '../styleGeralEvento.css';
+import '../../../components/Texto/Texto.css';
+import { api } from '../../../services/api';
 
+export default function Descricao({idEvento}:{idEvento: number}) {
+    const [titulo, setTitulo] = useState('Titulo');
+    const [dataHora, setDataHora] = useState('Data e hora');
+    const [descricao, setDescricao] = useState('Descrição');
+    const [rua, setRua] = useState('Rua');
+    const [cidade, setCidade] = useState('Cidade');
+    const [estado, setEstado] = useState('Estado');
+    const [imageEvent, setImageEvent] = useState('./img/exemploHeaderEvento.png');
+    
+    api.get(`/event/${idEvento}`).then((response) => {
+        console.log(response.data);
+        setTitulo(response.data.eventInfos.event.nome);
+        setDescricao(response.data.eventInfos.event.descricao);
+        setRua(response.data.eventInfos.enderecoEvent.rua);
+        setCidade(response.data.eventInfos.enderecoEvent.cidade);
+        setEstado(response.data.eventInfos.enderecoEvent.estado);
+        setImageEvent(response.data.eventInfos.event.imageEvent);
+    });
 
-
-export default function Descricao() {
+    const endereco = `${rua} - ${cidade} - ${estado}`;
 
     return (
         <Container>
-            <Row className='primeiraDescricao p-3' >
-                <div className='conteudo border'>
-                    <p>Parte 1</p>
+            <Row >
+                <Header caminho={imageEvent} />
+            </Row>
+
+            <Row className='primeiraDescricao p-3 sombra' >
+                <div className='larguraMainContentEventos text-start'>
+                    <h4 className='Texto-Azul Texto-Pequeno fw-bold'>{dataHora}</h4>
+                    <h3 className='Texto-Preto Texto-Grande fw-bold'>{titulo}</h3>
+                    <h5 className='Texto-Preto Texto-MuitoPequeno'>{endereco}</h5>
                 </div>
             </Row>
 
-            <Row className='p-5'>
-                <Col className='bordaRedor' >
-                    <p>Parte 2.1</p>
-                </Col>
+            <section className='larguraMainContentEventos mt-5'>
+                <Row className='noMarginPadding'>
+                    <Col sm={7}>
+                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Descrição do evento</h4>
+                        <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
+                           {descricao}
+                        </p>
+                    </Col>
 
-                <Col className='bordaRedor'>
-                    <p>Parte 2.2</p>
-                </Col>
-            </Row>
+                    <Col sm={5} className='pe-5 ps-5'>
+                        <AdicionarIngresso/>
+                    </Col>
+                </Row>
+            </section>
+
         </Container>
     );
 }

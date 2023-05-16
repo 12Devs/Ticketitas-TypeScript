@@ -25,11 +25,7 @@ export default function QuemSomos(){
                 </div>
             </div>
 
-           
             <BannerPublicidade></BannerPublicidade>
-            
-            
-
             
           
                 

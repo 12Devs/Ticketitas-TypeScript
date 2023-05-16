@@ -11,8 +11,8 @@ class ListOneEventController {
 
     public async handle (request: Request, response: Response){
         const { id }: any = request.params;
-        const event = await this.listOneEventUseCase.execute(id);
-        return response.status(200).json({event});
+        const eventInfos = await this.listOneEventUseCase.execute(id);
+        return response.status(200).json({eventInfos});
     }
 
 }
