@@ -7,7 +7,7 @@ import { AdministratorRepository } from "../../db/AdministratorRepository";
 /**
  * Import of the class {@link ApiError}
  */
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
 /**
  * Import of the {@link https://www.npmjs.com/package/bcrypt bcrypt} module
  */

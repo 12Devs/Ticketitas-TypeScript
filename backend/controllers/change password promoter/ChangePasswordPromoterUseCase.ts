@@ -7,7 +7,7 @@ import { PromoterRepository } from "../../db/PromoterRepository";
 /**
  * Import of the class {@link ApiError}
  */
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
 /**
  * Import of the class {@link SendEmail}
  */

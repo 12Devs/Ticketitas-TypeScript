@@ -1,6 +1,6 @@
 
 import { EnderecoRepository } from "../../db/EnderecoRepository";
-import { ApiError } from "../../errors/api.errors";
+import { ApiError } from "../../errors/ApiError";
 import { pesquisarCep } from "../../middlewares/PesquisarCep";
 
 class CreateEnderecoUseCase {
