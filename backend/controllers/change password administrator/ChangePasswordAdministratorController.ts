@@ -22,7 +22,7 @@ class ChangePasswordAdministratorController {
      * Creates an instance of {@link ChangePasswordAdministratorUseCase}
      * @date 5/12/2023 - 5:08:52 PM
      *
-     * @private Marks this instance as having "private" visility
+     * @private Marks this instance as having "private" visibility
      * @type {ChangePasswordAdministratorUseCase}
      */
     private changePasswordAdministratorUseCase: ChangePasswordAdministratorUseCase;
