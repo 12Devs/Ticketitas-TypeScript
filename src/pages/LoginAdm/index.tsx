@@ -27,9 +27,7 @@ export default function LoginAdm() {
                         className="align-items-center"
                         alt=''
                     />{''}
-                    <p className='Texto-MuitoPequeno Texto-Preto text-center' style={{marginTop: '20px'}}>
-                        Bem vindo novamente! Por gentileza realize o Login em sua conta.
-                    </p>
+            
                 </Row>
 
 
