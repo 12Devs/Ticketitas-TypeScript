@@ -48,11 +48,6 @@ export default function ModalLogin() {
                             setData={setEmail} 
                             type=''/>
                     </Row>
-
-                    <Row className='justify-content-center'>
-                        aqui vai ter um captcha
-                    </Row>
-
                     <Row className='justify-content-center'>
                         <Button className='Botão-Primario Texto-Branco' type='submit'>
                             Enviar

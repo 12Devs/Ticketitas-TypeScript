@@ -44,7 +44,7 @@ export default function CadastrarPromoter() {
             senha,
             senhaConfirmacao
         }
-        console.log(dadosPromoter);
+        api.post("/user/promoter", dadosPromoter).then((response)=>{console.log(response)});
     }
 
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem

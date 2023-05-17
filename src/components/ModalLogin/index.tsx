@@ -9,7 +9,21 @@ import { Form, Row } from 'react-bootstrap';
 
 import "./ModalLogin.css"
 export default function ModalLogin() {
+    const fazerLogin = (event: any) => {
+        event.preventDefault();
+        var data: any = {
+            cpf,
+            senha,
+        }
+        if(userType == 'promoter'){
+            ///api promoter
+        }
+        else if(userType == 'cliente'){
+            /// api cliente
+        }
 
+        
+    }
     const [show, setShow] = useState(false);
     const [cpf, setCPF] = useState('');
     const [senha, setSenha] = useState('');
@@ -55,12 +69,13 @@ export default function ModalLogin() {
                     </Row>
 
                     <Row className='justify-content-center'>
-                        <Form.Select aria-label="Sou cliente" style={{width: '150px', borderStyle: 'hidden', backgroundColor: '#1F82B2',color: 'white'}}>
-                            <option value="cliente">Sou cliente</option>
+                        <Form.Select aria-label="Sou cliente" style={{width: '150px', borderStyle: 'hidden', backgroundColor: '#1F82B2',color: 'white'}} 
+                        onChange={(event) => setUserType(event.target.value)}>
+                            <option value="cliente" >Sou cliente</option>
                             <option value="promoter">Sou promoter</option>
                         </Form.Select>
                     </Row>
-
+                    <Form onSubmit={fazerLogin}>
                     <Row className='justify-content-center'>
                         <InputTexto defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCPF} type=''/>
                         <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password"/>
@@ -76,28 +91,18 @@ export default function ModalLogin() {
                          */
                     }
 
-                    <Row className='justify-content-center'>
+                    <Row className='justify-content-center' >
                         <ModalRecuperarSenha />
                     </Row>
 
                     <Row className='justify-content-center'>
 
-                        {
-                            captchavalidate
-                            ?
-                            //Colocar ação do botão quando o captcha for validado
-                            
-                            <Button className='Botão-Primario Texto-Branco' type='submit'>
+                    <Button className='Botão-Primario Texto-Branco' type='submit'>
                             Entrar
-                            </Button>
-                            :
-                            <Button className='Botão-Primario Texto-Branco' type='submit'>
-                            Entrar
-                            </Button>
-                            
-                        }
-                        
+                    </Button>
+                
                     </Row>
+                </Form>
                 </Modal.Body>
             </Modal>
         </>
