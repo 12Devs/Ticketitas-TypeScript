@@ -5,16 +5,10 @@ import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
 import FormLabel from '../../components/FormLabel';
 import { useState } from 'react';
-
+import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
-
-// import InputText from '../InputText'
-// import InputSelect from '../InputSelect';
-// import AbaIndicacao from '../AbaIndicacao';
-// import Footer from '../Footer';
-
-
-
+import { api } from '../../services/api';
+import '../pages.css'
 
 
 export default function CadastrarPromoter() {
@@ -53,66 +47,76 @@ export default function CadastrarPromoter() {
         console.log(dadosPromoter);
     }
 
+    // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
+    useEffect(() => {
+        if (cep.length == 8 && !isNaN(parseInt(cep))) {
+
+            api.get(`/endereco/complet/${cep}`).then((endereco) => {
+                setCidade(endereco.data.localidade);
+                setEstado(endereco.data.uf);
+                setBairro(endereco.data.bairro);
+                setRua(endereco.data.logradouro);
+            });
+        }
+    }, [cep]);
+
     return (
-        <Form onSubmit={realizarCadastro} className='mainContent'>
-            <Container className='p-5'>
-
-               
-                 
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
+            <Container>
                 <Row >
-                        <FormLabel label='Cadastro de Promoter'/>
-                    </Row>
+                    <FormLabel label='Cadastro de Promoter' />
+                </Row>
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
                     </Col>
                     <Col sm={6}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
                     </Col>
                     <Col sm={6}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col sm={8}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
-                    </Col>
-                    {/* <Col sm={4}>
-                        <InputSelect label={"Estado"} name={'Estados'} data={estado} setData={setEstado} />
-                    </Col> */}
-                </Row>
-
-                <Row>
-                    <Col>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
                     </Col>
                     <Col sm={4}>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col>
-                        <InputTexto type={''} defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col sm={8}>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
+                    </Col>
+                    <Col sm={4}>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col>
+                        <InputTexto type={'email'} defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
                     </Col>
                 </Row>
 
@@ -126,13 +130,13 @@ export default function CadastrarPromoter() {
                 </Row>
 
                 <Row className='d-flex justify-content-center'>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
-                                Cancelar
-                            </Button>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
-                                Confirmar
-                            </Button>
-                    </Row>
+                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                        Cancelar
+                    </Button>
+                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
+                        Confirmar
+                    </Button>
+                </Row>
 
             </Container>
         </Form>

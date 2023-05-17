@@ -1,8 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
 import { router } from "./routes/IndexRoutes";
 import { conn } from "./db/Connection";
-import { ApiError } from "./errors/api.errors";
+import { ApiError } from "./errors/ApiError";
 import cors from "cors";
+import { FillDataBase } from "./config/fillDb";
 
 
     const app = express();
@@ -23,6 +24,11 @@ import cors from "cors";
         message: `Internal server error => ${error.message}`});
     });
 
-    conn.sync().then(()=>{
-        app.listen(3333, ()=> console.log("Server on! Porta => 3333"));
-    }). catch((error) => console.log(error));
+    conn.sync().then(async ()=>{
+        // await FillDataBase.fillClients();
+        // await FillDataBase.fillPromoters();
+        // await FillDataBase.fillEvents();
+        app.listen(3333, ()=> console.log("Server on! Porta => 3333"));       
+    }).catch((error) => console.log(error));
+
+    

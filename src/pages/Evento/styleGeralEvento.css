@@ -1,0 +1,13 @@
+.noMarginPadding {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.corPagina {
+    background-color: #F5F5F5 !important;
+}
+
+.larguraMainContentEventos {
+    width: 70vw!important;
+    margin: 0 auto;
+}

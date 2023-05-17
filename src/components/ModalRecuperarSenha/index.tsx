@@ -1,17 +1,20 @@
 import React, { ReactNode, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-
+import ReCAPTCHA from "react-google-recaptcha";
 import '../Button/Button.css';
 import InputTexto from '../InputTexto';
-import { Row } from 'react-bootstrap';
+import ModalRecuperarSenha from '../ModalRecuperarSenha';
+import { Form, Row } from 'react-bootstrap';
 
-export default function ModalRecuperarSenha() {
+export default function ModalLogin() {
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    
+    
 
     return (
         <>
@@ -19,7 +22,7 @@ export default function ModalRecuperarSenha() {
                 Esqueci minha senha
             </Button>
 
-            <Modal show={show} onHide={handleClose} style={{backgroundColor: "#23272E"}}>
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Body>
                     <Row className='justify-content-center'>
                         <img

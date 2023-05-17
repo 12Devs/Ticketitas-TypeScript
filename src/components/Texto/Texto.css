@@ -25,3 +25,23 @@
 .Texto-Azul{
     color: #1F82B2 !important;
 }
+
+.Texto-Cinza{
+    color: #70737A !important;
+}
+
+.Texto-Justificado{
+    text-align: justify;
+}
+
+.TituloGeral
+{
+    font-style: Bold;
+    Font-size: 32px;
+    Line-height: 50px;
+    Line-height: 100%;
+}
+
+.frase-banner{
+    width: 50%;
+}

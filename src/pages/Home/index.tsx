@@ -1,11 +1,15 @@
-import Footer from "../../components/Footer";
-
+import '../pages.css';
+import CarouselPrincipal from '../../components/Carousel';
+import CardEvento from '../../components/CardEvento';
+import CardGrupo from '../../components/CardGrupo';
 
 export default function Home(){
     return(
-        <>
-            <p>Eu sou a página Home</p>
-            <Footer/>
-        </>
+
+        <div className="">
+            <CarouselPrincipal></CarouselPrincipal>
+            <CardGrupo></CardGrupo>
+        </div>
+        
     );
 }

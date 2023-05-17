@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
+import { Card } from "./Card";
+import { TokenClient } from "./TokenClient";
 
 const Client = conn.define('client',{
     nome:{
@@ -7,7 +9,7 @@ const Client = conn.define('client',{
         allowNull: false
     },
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     },
@@ -16,14 +18,21 @@ const Client = conn.define('client',{
         allowNull: false
     },
     telefone: { 
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     senha: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    avatarImage: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
+
+Client.hasOne(Card);
+Client.hasMany(TokenClient);
 
 export { Client };
 
