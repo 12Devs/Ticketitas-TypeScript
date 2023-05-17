@@ -137,6 +137,16 @@ class AdministratorRepository {
             }
         });
     }
+    public async updatePassword (cpf: number, newPassword: string){
+        await Administrator.update({
+            password: newPassword
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
 }
 
 //Class export declarator

@@ -5,6 +5,10 @@
  */
 import { AdministratorRepository } from "../../db/AdministratorRepository";
 /**
+ * Import of the class {@link AdministratorPasswordChangeCodeRepository}
+ */
+import { AdministratorPasswordChangeCodeRepository } from "../../db/AdministratorPasswordChangeCodeRepository";
+/**
  * Import of the class {@link ApiError}
  */
 import { ApiError } from "../../errors/ApiError";
@@ -30,6 +34,15 @@ class ChangePasswordAdministratorUseCase {
      * @type {AdministratorRepository}
      */
     private administratorRepository: AdministratorRepository;
+
+     /**
+     * Creates an instance of {@link AdministratorPasswordChangeCodeRepository}
+     * @date 5/17/2023 - 4:05:07 AM
+     *
+     * @private Marks this instance as having "private" visibility
+     * @type {AdministratorPasswordChangeCodeRepository}
+     */
+     private administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository;
     
     /**
      * Creates an instance of {@link SendEmail}
@@ -75,13 +88,32 @@ class ChangePasswordAdministratorUseCase {
             throw new ApiError("Endereco de e-mail nao consta no sistema!", 422);
         }
         
+        //Random code obtained from the password change code repository
+        const randomCode = this.administratorPasswordChangeCodeRepository.generateUniqueCode();
+
         //Message subject text
-        const subject = "BEM-VINDO, ADMINISTRADOR";
+        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
         //Message description text
-        const message = "Como procedimento padrão para autorizar o acesso de novos administradores, pedimos que altere sua senha temporaria por meio do link:";
+        const message = (`O código para alteração da sua senha é: ${randomCode}`);
 
         //Sends information for the "sendEmail" util method to forward the message
         await this.sendEmail.sendEmail(email, subject, message);
+
+        const cpfOfTheEmail = emailExists.cpf;
+
+        //Method used to check if a code is already registered for the cpf
+        const cpfForTheEmailExists = await this.administratorPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
+
+        //Conditional for existing or non-existing password change code registry
+        if(!cpfForTheEmailExists) {
+            
+            //Creation of a new entry
+            this.administratorPasswordChangeCodeRepository.create(randomCode, cpfOfTheEmail);
+        }
+        else{
+            //Updating of an existing one
+            this.administratorPasswordChangeCodeRepository.updateCode(randomCode);
+        }
     }
 }
 
