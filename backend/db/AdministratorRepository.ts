@@ -119,6 +119,24 @@ class AdministratorRepository {
         }});
         return administrator;
     }
+
+    public async findByCpfAndAvatar (cpf: number) {
+        const cpfAndAvatar = await Administrator.findOne({raw: true, attributes: ['cpf', 'avatarImage'], where: {
+            cpf: cpf
+        }});
+        return cpfAndAvatar;
+    }
+
+    public async updateAvatar (cpf: number, avatarImage: any){
+        await Administrator.update({
+            avatarImage: avatarImage
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
 }
 
 //Class export declarator

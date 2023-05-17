@@ -6,6 +6,10 @@ import { DataTypes } from "sequelize";
  * Import of the class {@link Connection}
  */
 import { conn } from "../db/Connection";
+/**
+ * Import of the class {@link TokenAdministrator}
+ */
+import { TokenAdministrator } from "./TokenAdministrator";
 
 /**
  * Class containing the "model" for administrator type of users and their respective object type
@@ -39,8 +43,14 @@ const Administrator = conn.define('administrator',{
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    //User avatar image
+    avatarImage: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
-//Class export declarator
+Administrator.hasMany(TokenAdministrator);
+
 export { Administrator };
