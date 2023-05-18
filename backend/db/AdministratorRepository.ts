@@ -3,11 +3,11 @@
 /**
  * Import of the class {@link CreateEnderecoController}
  */
-import { CreateEnderecoController } from "../controllers/create endereco/CreateEnderecoController";
+import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
 /**
  * Import of the instance {@link createEnderecoController}
  */
-import { createEnderecoController } from "../controllers/create endereco/index";
+import { createEnderecoUserController } from "../controllers/create user endereco/index";
 /**
  * Import of the class {@link Administrator}
  */
@@ -29,7 +29,7 @@ class AdministratorRepository {
      * @private Marks this object as private
      * @type {createEnderecoController}
      */
-    private createEnderecoController
+    private createEnderecoUserController: CreateEnderecoUserController;
     
     /**
      * Declaration of the instance of this class (AdministratorRepository)
@@ -48,7 +48,7 @@ class AdministratorRepository {
      * @public Marks this constructor as having "public" visibility
      */
     public constructor (){
-        this.createEnderecoController = createEnderecoController;
+        this.createEnderecoUserController = createEnderecoUserController;
     }
 
     /**
@@ -137,6 +137,7 @@ class AdministratorRepository {
             }
         });
     }
+    
     public async updatePassword (cpf: number, newPassword: string){
         await Administrator.update({
             password: newPassword
