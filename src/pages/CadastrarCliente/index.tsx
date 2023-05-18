@@ -84,7 +84,7 @@ export default function CadastrarCliente() {
 
                     <Row>
                         <Col sm={6}>
-                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone}  />
                         </Col>
                         <Col sm={6}>
                             <InputTexto type='number' defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />

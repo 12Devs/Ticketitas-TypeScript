@@ -24,16 +24,15 @@ export default function CadastrarPromoter() {
     const [numero, setNumero] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [senhaConfirmacao, setSenhaConfirmacao] = useState('');
+    const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
 
         var dadosPromoter = {
-            primeiroNome,
-            sobrenome,
+            nome: `${primeiroNome} ${sobrenome}`,
             telefone,
-            cpfCnpj,
+            cpf: cpfCnpj,
             cep,
             cidade,
             estado,
@@ -42,16 +41,16 @@ export default function CadastrarPromoter() {
             numero,
             email,
             senha,
-            senhaConfirmacao
+            confirmacaoSenha
         }
-        console.log(dadosPromoter);
+        api.post("/user/promoter", dadosPromoter).then((response)=>{console.log(response)});
     }
 
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
     useEffect(() => {
         if (cep.length == 8 && !isNaN(parseInt(cep))) {
 
-            api.get(`/endereco/complet/${cep}`).then((endereco) => {
+            api.get(`/endereco/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);
@@ -125,7 +124,7 @@ export default function CadastrarPromoter() {
                         <InputTexto type={'password'} defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
                     </Col>
                     <Col sm={6}>
-                        <InputTexto type={'password'} defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={senhaConfirmacao} setData={setSenhaConfirmacao} />
+                        <InputTexto type={'password'} defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={confirmacaoSenha} setData={setConfirmacaoSenha} />
                     </Col>
                 </Row>
 
