@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { createClientController } from '../controllers/create client/index';
 import { loginClientController } from '../controllers/login client';
+import { changePasswordClientController } from '../controllers/change password client/index'
+import { newPasswordClientController } from '../controllers/new password client/index'
 import { ensureAuthenticatedClient } from '../middlewares/EnsureAuthenticatedClient';
 import { updateAvatarController } from '../controllers/update user avatar/index';
 import { imageUpload } from '../utils/ImageUpload';
 import { updateCardController } from '../controllers/update card/index';
 import { refreshTokenClientController } from '../controllers/refresh token client/index';
-
 
 const clientRoutes = Router();
 
@@ -20,6 +21,14 @@ clientRoutes.patch("/client/avatar", ensureAuthenticatedClient, imageUpload.sing
 
 clientRoutes.post("/client/login", (request: Request, response: Response, next: NextFunction)=>{
     return loginClientController.handle(request, response).catch((error)=>{next(error)});
+});
+
+clientRoutes.post("/client/change-password", (request: Request, response: Response, next: NextFunction)=>{
+    return changePasswordClientController.handle(request, response).catch((error)=>{next(error)});
+});
+
+clientRoutes.post("/client/new-password", (request: Request, response: Response, next: NextFunction)=>{
+    return newPasswordClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
 clientRoutes.post("/client/refresh-token", (request: Request, response: Response, next: NextFunction)=>{
