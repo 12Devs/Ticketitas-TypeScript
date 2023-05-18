@@ -4,9 +4,8 @@ import ModalLogin from '../../components/ModalLogin';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import InputTexto from '../../components/InputTexto';
 import ModalRecuperarSenha from '../../components/ModalRecuperarSenha';
-import NavBarAdm from '../../components/NavBarAdm';
 import "./LoginAdm.css"
-
+import NavBarGeral from '../../components/NavBarGeral';
 export default function LoginAdm() {
     const [show, setShow] = useState(false);
     const [cpf, setCPF] = useState('');
@@ -16,7 +15,7 @@ export default function LoginAdm() {
     const [captchastatus, setcaptchastatus] = useState(false);
     return(
         <>
-       <NavBarAdm/>
+        <NavBarGeral user='admLogin'/>
         <Container className="containerModal">
             <Modal.Body className=" modal-content-adm">
                 <Row className='justify-content-center' >

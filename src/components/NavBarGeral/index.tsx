@@ -10,7 +10,7 @@ import ModalLogin from '../ModalLogin';
 import './Navbar.css';
 import { Dropdown } from 'react-bootstrap';
 
-const NavBarGeral = () => {
+const NavBarGeral = ({user}:{user:string}) => {
   const rotasDefault = [{
     label: 'Home',
     to: '/'
@@ -42,7 +42,7 @@ const NavBarGeral = () => {
 
   const navigate = useNavigate();
   const [busca, setBusca] = useState('');
-  const [usuarioTipo, setUsuarioTipo] = useState('default');
+  const [usuarioTipo, setUsuarioTipo] = useState(user);
 
   function mudarRota(rota: string) {
     navigate(rota); 
@@ -56,21 +56,22 @@ const NavBarGeral = () => {
   }
 
   return (
-    <Navbar collapseOnSelect expand="lg" className='NavBar'>
-      <Container fluid>
-        <Navbar.Brand>
-          <img
-            src="/img/logo.svg"
-            width="30"
-            height="30"
-            className="d-inline-block"
-            alt=''
-          />{''}
-          <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
-            {"Ticketitas"}
-          </Link>
-        </Navbar.Brand>
 
+    <Navbar collapseOnSelect expand="lg" className='NavBar'>
+
+      <Container fluid className={usuarioTipo === 'admLogin' ? 'justify-content-center' : ''}>
+      <Navbar.Brand>
+      <img
+        src="/img/logo.svg"
+        width="30"
+        height="30"
+        className="d-inline-block"
+        alt=''
+      />{''}
+      <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+      {"Ticketitas"}
+      </Link>
+      </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
@@ -229,6 +230,7 @@ const NavBarGeral = () => {
 
           </Navbar.Collapse>
         }
+       
 
       </Container>
     </Navbar>
