@@ -2,7 +2,6 @@ import { EventRepository } from "../../db/EventRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
-
 class CreateEventUseCase {
 
     private eventRepository: EventRepository;
@@ -12,7 +11,7 @@ class CreateEventUseCase {
         this.eventRepository = eventRepository;
     }
 
-    public async execute (promoterCpf: number, nome: string, descricao: string, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
+    public async execute (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
 
         //Validations
         if (!promoterCpf) {
@@ -25,6 +24,10 @@ class CreateEventUseCase {
 
         if (!descricao){
             throw new ApiError("A descrição do evento é obrigatória!", 422);
+        }
+
+        if (!dataEvento){
+            throw new ApiError("A data do evento é obrigatório!", 422);
         }
 
         if (!status){
@@ -55,7 +58,7 @@ class CreateEventUseCase {
             throw new ApiError("O valor dos ingressos no setor vip é obrigatório!", 422);
         }
 
-        await this.eventRepository.create(promoterCpf, nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, cidade, estado, bairro, rua, numero);
+        await this.eventRepository.create(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, cidade, estado, bairro, rua, numero);
         
     }
 

@@ -37,17 +37,25 @@ class FillDataBase {
         const fvs = "Festival de Verão Salvador, é um evento musical brasileiro que ocorre anualmente em Salvador, capital da Bahia."
         const sjSerrinha = "Vai ter Alok!!!"
 
-        await createEventUseCase.execute(45850724974, "Oktoberfest Feira City", oktoberFest, true, 30000, 1, 500, 120.98, 1, 300.99, 44075516, "Feira de Santa", "BA", "Centro", "Av. Presidente Dutra", 1226);
+        const oktoberFestDate = new Date("2023-08-13T22:36:06.000Z");
+        const tomorrowlandDate = new Date("2023-10-16T22:36:06.000Z");
+        const computaliDate = new Date("2023-08-22T22:36:06.000Z");
+        const fibaDate = new Date("2024-01-22T22:36:06.000Z");
 
-        await createEventUseCase.execute(82231237709, "Tomorrowland", tomorrowland, true, 100000, 20000, 10000, 300.00, 420.00, 1230.48, 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua da Festa", 420);
+        const fvsDate = new Date("2023-12-12T22:36:06.000Z");
+        const sjSerrinhaDate = new Date("2024-06-24T22:36:06.000Z");
 
-        await createEventUseCase.execute(75316609549, "Computali", computali, true, 500, 0, 90, 30.00, 0, 40.50, 44036900, "Feira de Santa", "BA", "Novo Horizonte", "Av. Transnordestina", 0);
+        await createEventUseCase.execute(45850724974, "Oktoberfest Feira City", oktoberFest, oktoberFestDate, true, 30000, 1, 500, 120.98, 1, 300.99, 44075516, "Feira de Santa", "BA", "Centro", "Av. Presidente Dutra", 1226);
 
-        await createEventUseCase.execute(82231237709, "Festival de Inverno Bahia", fiba, true, 30000, 8000, 8000, 300.00, 390.00, 700.00, 44036900, "Vitória da Conquista", "BA", "Centro", "Av. Siqueira Campos", 1320);
+        await createEventUseCase.execute(82231237709, "Tomorrowland", tomorrowland, tomorrowlandDate, true, 100000, 20000, 10000, 300.00, 420.00, 1230.48, 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua da Festa", 420);
 
-        await createEventUseCase.execute(45850724974, "Festival de Verão Salvador", fvs, true, 900000, 20000, 50000, 300.00, 390.00, 1032.99, 41730101, "Salvador", "BA", "Itapuã", "Av. Luís Viana Filho", 0);
+        await createEventUseCase.execute(75316609549, "Computali", computali, computaliDate, true, 500, 0, 90, 30.00, 0, 40.50, 44036900, "Feira de Santa", "BA", "Novo Horizonte", "Av. Transnordestina", 0);
 
-        await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, true, 40000, 3000, 0, 0, 0, 0, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
+        await createEventUseCase.execute(82231237709, "Festival de Inverno Bahia", fiba, fibaDate, true, 30000, 8000, 8000, 300.00, 390.00, 700.00, 44036900, "Vitória da Conquista", "BA", "Centro", "Av. Siqueira Campos", 1320);
+
+        await createEventUseCase.execute(45850724974, "Festival de Verão Salvador", fvs, fvsDate, true, 900000, 20000, 50000, 300.00, 390.00, 1032.99, 41730101, "Salvador", "BA", "Itapuã", "Av. Luís Viana Filho", 0);
+
+        await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, sjSerrinhaDate, true, 40000, 3000, 0, 0, 0, 0, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
     }
 
 }
