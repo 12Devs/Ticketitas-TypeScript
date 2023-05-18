@@ -8,26 +8,42 @@ import ModalRecuperarSenha from '../ModalRecuperarSenha';
 import { Form, Row } from 'react-bootstrap';
 import {response} from 'express';
 import {api} from '../../services/api';
+import {useNavigate } from 'react-router-dom';
 
 import "./ModalLogin.css"
 export default function ModalLogin() {
     const fazerLogin = (event: any) => {
         event.preventDefault();
-        var data: any = {
+        var dados: any = {
             email,
             senha,
         }
         if(userType == 'promoter'){
-           api.post('user/promoter/login',data)
-           .then((response)=>{console.log(response)})
+           api.post('user/promoter/login',dados)
+           .then((response)=>{
+            console.log(response)
+            console.log('sucesso')
+            mudarRota('/')
+           })
+           .catch((error)=>{
+            console.log(response)
+           })
         }
         else if(userType == 'cliente'){
-            api.post('user/cliente/login',data)
-            .then((response)=>{console.log(response)}) 
+            api.post('user/cliente/login',dados)
+            .then((response)=>{
+                console.log(response)
+                mudarRota('/')
+            })
+            .catch((error)=>{
+                console.log(response)
+               })
         }
-
-        
     }
+    const navigate = useNavigate();
+    function mudarRota(rota: string) {
+        navigate(rota); 
+      }
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
