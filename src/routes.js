@@ -18,7 +18,6 @@ export default function AppRouter() {
     return (
         <main>
             <Router>
-                <NavBarGeral />
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos />} />

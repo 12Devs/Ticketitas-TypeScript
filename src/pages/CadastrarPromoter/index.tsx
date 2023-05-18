@@ -9,7 +9,7 @@ import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import { api } from '../../services/api';
 import '../pages.css'
-
+import NavBarGeral from '../../components/NavBarGeral';
 
 export default function CadastrarPromoter() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -60,6 +60,8 @@ export default function CadastrarPromoter() {
     }, [cep]);
 
     return (
+        <>
+        <NavBarGeral user='default'/>
         <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
                 <Row >
@@ -139,5 +141,6 @@ export default function CadastrarPromoter() {
 
             </Container>
         </Form>
+        </>
     )
 }

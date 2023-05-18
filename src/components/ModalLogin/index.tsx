@@ -6,26 +6,30 @@ import '../Button/Button.css';
 import InputTexto from '../InputTexto';
 import ModalRecuperarSenha from '../ModalRecuperarSenha';
 import { Form, Row } from 'react-bootstrap';
+import {response} from 'express';
+import {api} from '../../services/api';
 
 import "./ModalLogin.css"
 export default function ModalLogin() {
     const fazerLogin = (event: any) => {
         event.preventDefault();
         var data: any = {
-            cpf,
+            email,
             senha,
         }
         if(userType == 'promoter'){
-            ///api promoter
+           api.post('user/promoter/login',data)
+           .then((response)=>{console.log(response)})
         }
         else if(userType == 'cliente'){
-            /// api cliente
+            api.post('user/cliente/login',data)
+            .then((response)=>{console.log(response)}) 
         }
 
         
     }
     const [show, setShow] = useState(false);
-    const [cpf, setCPF] = useState('');
+    const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [userType, setUserType] = useState('cliente');
     const [captchavalidate, setcaptchavalidate] = useState(false);
@@ -77,7 +81,7 @@ export default function ModalLogin() {
                     </Row>
                     <Form onSubmit={fazerLogin}>
                     <Row className='justify-content-center'>
-                        <InputTexto defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCPF} type=''/>
+                        <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='email'/>
                         <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password"/>
                     </Row>
                     {
