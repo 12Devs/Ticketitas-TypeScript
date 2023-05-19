@@ -16,6 +16,13 @@ export default function ModalLogin() {
     const [mensagem, setMensagem] = useState(false);
     const navigate = useNavigate();
     const [mensagemString, setMensagemString] = useState('');
+    const [userType, setUserType] = useState('cliente');
+    const [show, setShow] = useState(false);
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [captchavalidate, setcaptchavalidate] = useState(false);
+    const [captchastatus, setcaptchastatus] = useState(false);
+
 
     const fazerLogin = (event: any) => {
         event.preventDefault();
@@ -27,21 +34,15 @@ export default function ModalLogin() {
         }
         if (userType == 'promoter') {
             api.post('user/promoter/login', data)
-                .then((response) => { (response.status == 200) ? navigate('/') : console.log(response) }).catch((erro) => {setMensagem(true)});
+                .then((response) => { (response.status == 200) ? navigate('/',{state: {userType}}) : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
         }
         else if (userType == 'cliente') {
             api.post('user/client/login', data)
-                .then((response) => { (response.status == 200) ? navigate('/') : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
+                .then((response) => { (response.status == 200) ? navigate('/',{state: {userType}}) : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
         }
     }
 
-    const [show, setShow] = useState(false);
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [userType, setUserType] = useState('cliente');
-    const [captchavalidate, setcaptchavalidate] = useState(false);
-    const [captchastatus, setcaptchastatus] = useState(false);
-
+    
 
     const handleClose = () => {
         setShow(false)

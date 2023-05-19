@@ -60,8 +60,10 @@ class ChangePasswordAdministratorUseCase {
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
      */
-    constructor (administratorRepository: AdministratorRepository) {
+    constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository, sendEmail: SendEmail) {
         this.administratorRepository =  administratorRepository;
+        this.administratorPasswordChangeCodeRepository = administratorPasswordChangeCodeRepository;
+        this.sendEmail = sendEmail;
     }
 
     /**
@@ -89,8 +91,9 @@ class ChangePasswordAdministratorUseCase {
         }
         
         //Random code obtained from the password change code repository
-        const randomCode = this.administratorPasswordChangeCodeRepository.generateUniqueCode();
+        const randomCode = await this.administratorPasswordChangeCodeRepository.generateUniqueCode();
 
+        console.log("AQUIII: ", randomCode);
         //Message subject text
         const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
         //Message description text
