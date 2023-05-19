@@ -130,7 +130,7 @@ export default function CadastrarAdmin() {
                         <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                             Cancelar
                         </Button>
-                        <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
+                        <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >
                             Confirmar
                         </Button>
                 </Row>
