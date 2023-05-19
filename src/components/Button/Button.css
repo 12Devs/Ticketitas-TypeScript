@@ -1,10 +1,22 @@
 .Botão-Primario {
   background: #1F82B2 !important;
-  border: 1px solid #1F82B2 !important;
+  border: 1px none !important;
   border-radius: 5px !important;
   gap: 10px !important;
   width: 15vw !important;
   height: fit-content !important;
+}
+
+.Botão-Primario:hover {
+  background: #4C9BC1 !important;
+}
+
+.Botão-Primario:active {
+  background: #6cb9dd !important;
+}
+
+.Botão-Primario:disabled {
+  background: #B3B5BD !important;
 }
 
 .Botão-Secundario {
