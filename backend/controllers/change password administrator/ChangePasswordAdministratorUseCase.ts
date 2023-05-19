@@ -81,7 +81,7 @@ class ChangePasswordAdministratorUseCase {
         }
 
         //Method used to check the existence of the chosen e-mail address in the database registry
-        const emailExists = await this.administratorRepository.findByEmail(email);
+        const emailExists:any = await this.administratorRepository.findByEmail(email);
         
         //Invalid user e-mail address
         if(!emailExists) {

@@ -81,7 +81,7 @@ class ChangePasswordPromoterUseCase {
         }
 
         //Method used to check the existence of the chosen e-mail address in the database registry
-        const emailExists = await this.promoterRepository.findByEmail(email);
+        const emailExists:any = await this.promoterRepository.findByEmail(email);
         
         //Invalid user e-mail address
         if(!emailExists) {
