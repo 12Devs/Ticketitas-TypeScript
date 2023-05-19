@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import AdicionarIngresso from '../AdicionarIngresso';
 import Col from "react-bootstrap/Col";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../Header';
 import { api } from '../../../services/api';
 
@@ -10,7 +10,7 @@ import './styleDescricao.css';
 import '../styleGeralEvento.css';
 import '../../../components/Texto/Texto.css';
 
-export default function Descricao({idEvento}:{idEvento: number}) {
+export default function Descricao({ idEvento }: { idEvento: number }) {
     const [titulo, setTitulo] = useState('Titulo');
     const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
     const [descricao, setDescricao] = useState('Descrição');
@@ -18,22 +18,23 @@ export default function Descricao({idEvento}:{idEvento: number}) {
     const [cidade, setCidade] = useState('Cidade');
     const [estado, setEstado] = useState('Estado');
     const [imageEvent, setImageEvent] = useState('./img/exemploHeaderEvento.png');
-    
-    api.get(`/event/${idEvento}`).then((response) => {
-        console.log(response.data);
-        setTitulo(response.data.eventInfos.event.nome);
-        setDescricao(response.data.eventInfos.event.descricao);
-        setRua(response.data.eventInfos.enderecoEvent.rua);
-        setCidade(response.data.eventInfos.enderecoEvent.cidade);
-        setEstado(response.data.eventInfos.enderecoEvent.estado);
-        setImageEvent(response.data.eventInfos.event.imageEvent);
-        setDataHora(response.data.eventInfos.event.dataEvento);
-    });
 
     const endereco = `${rua} - ${cidade} - ${estado}`;
-    
+
     const dataHoraOBJ = new Date(dataHora);
-    const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "-" + (dataHoraOBJ.getMonth() + 1) + "-" + dataHoraOBJ.getFullYear();
+    const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
+
+    useEffect(() => {
+        api.get(`/event/${idEvento}`).then((response) => {
+            setTitulo(response.data.eventInfos.event.nome);
+            setDescricao(response.data.eventInfos.event.descricao);
+            setRua(response.data.eventInfos.enderecoEvent.rua);
+            setCidade(response.data.eventInfos.enderecoEvent.cidade);
+            setEstado(response.data.eventInfos.enderecoEvent.estado);
+            setImageEvent(response.data.eventInfos.event.imageEvent);
+            setDataHora(response.data.eventInfos.event.dataEvento);
+        });
+    }, []);
 
     return (
         <Container>
@@ -54,12 +55,12 @@ export default function Descricao({idEvento}:{idEvento: number}) {
                     <Col sm={7}>
                         <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Descrição do evento</h4>
                         <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
-                           {descricao}
+                            {descricao}
                         </p>
                     </Col>
 
                     <Col sm={5} className='pe-5 ps-5'>
-                        <AdicionarIngresso/>
+                        <AdicionarIngresso />
                     </Col>
                 </Row>
             </section>

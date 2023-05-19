@@ -55,7 +55,7 @@ export default function CadastrarCliente() {
     useEffect(() => {
         if(cep.length == 8 && !isNaN(parseInt(cep))){
             
-            api.get(`/endereco/complet/${cep}`).then((endereco) => {
+            api.get(`/endereco/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);

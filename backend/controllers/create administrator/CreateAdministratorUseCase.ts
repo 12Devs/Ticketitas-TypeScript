@@ -12,6 +12,10 @@ import { ApiError } from "../../errors/ApiError";
  * Import of the {@link https://www.npmjs.com/package/randomstring randomstring} module
  */
 import randomstring from 'randomstring';
+/**
+ * Import of the class {@link SendEmail}
+ */
+import { SendEmail } from "../../utils/SendEmail";
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
@@ -38,9 +42,19 @@ class CreateAdministratorUseCase {
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
      */
-    constructor (administratorRepository: AdministratorRepository) {
+    constructor (administratorRepository: AdministratorRepository, sendEmail: SendEmail) {
         this.administratorRepository =  administratorRepository;
+        this.sendEmail = sendEmail;
     }
+
+    /**
+     * Creates an instance of {@link SendEmail}
+     * @date 5/18/2023 - 22:25:48 PM
+     *
+     * @private Marks this instance as having "private" visibility
+     * @type {SendEmail}
+     */
+    private sendEmail: SendEmail;
     
     /**
      * Method for executing the creation of an administrator object using the parameters supplied by its controller
@@ -92,9 +106,17 @@ class CreateAdministratorUseCase {
 
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long random temporary password
         const password = await randomstring.generate(32);
-
+        
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
         await this.administratorRepository.create(name, cpf, email, phone, password);
+
+        //Message subject text
+        const subject = "BEM-VINDO, ADMINISTRADOR";
+        //Message description text
+        const message = ("Como é procedimento padrão aos novos administradores, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal; Atenciosamente, Equipe Ticketitas.");
+
+        //Sends information for the "sendEmail" util method to forward the message
+        await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 

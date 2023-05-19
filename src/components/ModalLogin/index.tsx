@@ -5,36 +5,43 @@ import ReCAPTCHA from "react-google-recaptcha";
 import '../Button/Button.css';
 import InputTexto from '../InputTexto';
 import ModalRecuperarSenha from '../ModalRecuperarSenha';
-import { Form, Row } from 'react-bootstrap';
-import {response} from 'express';
-import {api} from '../../services/api';
+import { Alert, Form, Row } from 'react-bootstrap';
+import { response } from 'express';
+import { api } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 import "./ModalLogin.css"
+
 export default function ModalLogin() {
+    const [mensagem, setMensagem] = useState(false);
+    const navigate = useNavigate();
+    const [mensagemString, setMensagemString] = useState('');
+
     const fazerLogin = (event: any) => {
         event.preventDefault();
+        setMensagem(false);
+
         var data: any = {
             email,
             senha,
         }
-        if(userType == 'promoter'){
-           api.post('user/promoter/login',data)
-           .then((response)=>{console.log(response)})
+        if (userType == 'promoter') {
+            api.post('user/promoter/login', data)
+                .then((response) => { (response.status == 200) ? navigate('/') : console.log(response) }).catch((erro) => {setMensagem(true)});
         }
-        else if(userType == 'cliente'){
-            api.post('user/cliente/login',data)
-            .then((response)=>{console.log(response)}) 
+        else if (userType == 'cliente') {
+            api.post('user/client/login', data)
+                .then((response) => { (response.status == 200) ? navigate('/') : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
         }
-
-        
     }
+
     const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [userType, setUserType] = useState('cliente');
     const [captchavalidate, setcaptchavalidate] = useState(false);
     const [captchastatus, setcaptchastatus] = useState(false);
- 
+
 
     const handleClose = () => {
         setShow(false)
@@ -43,14 +50,15 @@ export default function ModalLogin() {
     };
     const handleShow = () => {
         setcaptchastatus(true)
-        setShow(true)};
-    
+        setShow(true)
+    };
+
 
     const validateCaptcha = () => {
         setcaptchavalidate(true)
-        
+
     };
-    
+
     return (
         <>
             <Button className='Botão-Terciário' onClick={handleShow}>
@@ -67,46 +75,50 @@ export default function ModalLogin() {
                             className="align-items-center"
                             alt=''
                         />{''}
-                        <p className='Texto-MuitoPequeno Texto-Preto text-center' style={{marginTop: '20px'}}>
+                        <p className='Texto-MuitoPequeno Texto-Preto text-center' style={{ marginTop: '20px' }}>
                             Bem vindo novamente! Por gentileza realize o Login em sua conta.
                         </p>
                     </Row>
 
                     <Row className='justify-content-center'>
-                        <Form.Select aria-label="Sou cliente" style={{width: '150px', borderStyle: 'hidden', backgroundColor: '#1F82B2',color: 'white'}} 
-                        onChange={(event) => setUserType(event.target.value)}>
+                        <Form.Select aria-label="Sou cliente" style={{ width: '150px', borderStyle: 'hidden', backgroundColor: '#1F82B2', color: 'white' }}
+                            onChange={(event) => setUserType(event.target.value)}>
                             <option value="cliente" >Sou cliente</option>
                             <option value="promoter">Sou promoter</option>
                         </Form.Select>
                     </Row>
                     <Form onSubmit={fazerLogin}>
-                    <Row className='justify-content-center'>
-                        <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='email'/>
-                        <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password"/>
-                    </Row>
-                    {
-                         /*
-                         <Row className='justify-content-center'>
-                         <ReCAPTCHA 
-                         sitekey="6LdLG-ElAAAAAN34jptkg-UA6ASYNmnM9_CXjvFM"
-                         onChange={validateCaptcha}
-                         />
-                         </Row>
-                         */
-                    }
+                        <Row className='justify-content-center'>
+                            <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='email' />
+                            <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password" />
+                        </Row>
 
-                    <Row className='justify-content-center' >
-                        <ModalRecuperarSenha />
-                    </Row>
+                        <Alert style={{ width: 'fit-content' }} show={mensagem} variant="danger">
+                            <p>{mensagemString}</p>
+                        </Alert>
+                        {
+                            /*
+                            <Row className='justify-content-center'>
+                            <ReCAPTCHA 
+                            sitekey="6LdLG-ElAAAAAN34jptkg-UA6ASYNmnM9_CXjvFM"
+                            onChange={validateCaptcha}
+                            />
+                            </Row>
+                            */
+                        }
 
-                    <Row className='justify-content-center'>
+                        <Row className='justify-content-center' >
+                            <ModalRecuperarSenha />
+                        </Row>
 
-                    <Button className='Botão-Primario Texto-Branco' type='submit'>
-                            Entrar
-                    </Button>
-                
-                    </Row>
-                </Form>
+                        <Row className='justify-content-center'>
+
+                            <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                Entrar
+                            </Button>
+
+                        </Row>
+                    </Form>
                 </Modal.Body>
             </Modal>
         </>
