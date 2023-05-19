@@ -18,6 +18,8 @@ function CardDestaques() {
       <CardEvento dados={arrayEventos.allEvents[0]}/>
       <CardEvento dados={arrayEventos.allEvents[1]}/>
       <CardEvento dados={arrayEventos.allEvents[2]}/>
+      <CardEvento dados={arrayEventos.allEvents[2]}/>
+      <CardEvento dados={arrayEventos.allEvents[2]}/>
     </CardGroup>
   );
 }
