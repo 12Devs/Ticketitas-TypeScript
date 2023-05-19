@@ -4,7 +4,7 @@ import CardEvento from '../CardEvento';
 
 function CardDestaques() {
   return (
-    <CardGroup>
+    <CardGroup style={{width: '70vw'}}>
       <CardEvento></CardEvento>
       <CardEvento></CardEvento>
       <CardEvento></CardEvento>

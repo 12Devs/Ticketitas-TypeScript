@@ -2,9 +2,11 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import Descricao from './Descricao';
 import { useState } from 'react';
+import CardDestaques from '../../components/CardDestaques';
 
 import '../pages.css'
 import './styleGeralEvento.css'
+import '../Home/styleHome.css';
 
 
 export default function Evento() {
@@ -15,16 +17,16 @@ export default function Evento() {
         <Container className='noMarginPadding corPagina' fluid>
 
             <Row>
-                <Descricao idEvento={idEvento}/>
+                <Descricao idEvento={idEvento} />
             </Row>
 
-            <section className='larguraMainContentEventos mt-5 pb-5'>
-                <Row className='text-start'>
-                    <p className='Texto-Preto Texto-Pequeno'>Também em destaque...</p>
-                    
-                </Row>
-            </section>
+            <Row className='d-flex justify-content-center'>
+                <section className='larguraMainContentEventos pt-5'>
+                    <p className='Texto-Preto Texto-Pequeno text-start'>Também em destaque...</p>
+                </section>
 
+                <CardDestaques />
+            </Row>
         </Container>
 
 
