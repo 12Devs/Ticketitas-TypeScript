@@ -34,7 +34,7 @@ export default function ModalLogin() {
         }
         if (userType == 'promoter') {
             api.post('user/promoter/login', data)
-                .then((response) => { (response.status == 200) ? navigate('/',{state: {userType}}) : console.log(response) }).catch((erro) => {setMensagem(true)});
+                .then((response) => { (response.status == 200) ? navigate('/',{state: {userType}}) : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
         }
         else if (userType == 'cliente') {
             api.post('user/client/login', data)

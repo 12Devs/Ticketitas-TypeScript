@@ -11,7 +11,7 @@ export default function Home() {
     const location = useLocation();
     let typeUser = location.state?.userType;
     if (location.state) {
-        typeUser = location.state.idEvento;
+        typeUser = location.state.userType;
     } 
     else{
         typeUser = 'default';
