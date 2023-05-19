@@ -84,7 +84,7 @@ class CreateAdministratorUseCase {
         if (!email){
             throw new ApiError("O email é obrigatório!", 422);
         }
-
+        
         //Not-null user telephone number
         if (!phone){
             throw new ApiError("O phone é obrigatório!", 422);

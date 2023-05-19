@@ -24,7 +24,7 @@ import { FillDataBase } from "./config/fillDb";
         message: `Internal server error => ${error.message}`});
     });
 
-    conn.sync({force: true}).then(async ()=>{
+    conn.sync().then(async ()=>{
         // await FillDataBase.fillClients();
         // await FillDataBase.fillPromoters();
         // await FillDataBase.fillEvents();
