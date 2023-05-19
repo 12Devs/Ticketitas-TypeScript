@@ -22,7 +22,7 @@ export default function ModalLogin() {
            .then((response)=>{console.log(response)})
         }
         else if(userType == 'cliente'){
-            api.post('user/cliente/login',data)
+            api.post('user/client/login',data)
             .then((response)=>{console.log(response)}) 
         }
 
