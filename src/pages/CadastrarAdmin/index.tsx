@@ -11,54 +11,55 @@ import { api } from '../../services/api';
 import NavBarGeral from '../../components/NavBarGeral';
 import '../pages.css';
 
+// {
+//     "name": "João Gabriel",
+//     "cpf": 8587090,
+//     "email": "gcmorais66@gmail.com",
+//     "phone": 222
+// }
 
 export default function CadastrarAdmin() {
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
     const [telefone, setTelefone] = useState('');
     const [cpf, setCpf] = useState('');
-    const [cep, setCep] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [rua, setRua] = useState('');
-    const [numero, setNumero] = useState('');
     const [email, setEmail] = useState('');
 
+    // const [cep, setCep] = useState('');
+    // const [cidade, setCidade] = useState('');
+    // const [estado, setEstado] = useState('');
+    // const [bairro, setBairro] = useState('');
+    // const [rua, setRua] = useState('');
+    // const [numero, setNumero] = useState('');
+    
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
-
-        var dadosAdmin = {
-            primeiroNome,
-            sobrenome,
-            telefone,
+        var dadosAdmin: any = {
+            name: `${primeiroNome} ${sobrenome}`,
+            phone: telefone,
             cpf,
-            cep,
-            cidade,
-            estado,
-            bairro,
-            rua,
-            numero,
-            email,
+            email
         }
-        console.log(dadosAdmin);
-    }
 
+        api.post("/user/administrator", dadosAdmin).then((response)=>{console.log(response)});
+
+    }
+    
     
 
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
-    useEffect(() => {
-        if (cep.length == 8 && !isNaN(parseInt(cep))) {
+    // useEffect(() => {
+    //     if (cep.length == 8 && !isNaN(parseInt(cep))) {
             
-            api.get(`/endereco/complet/${cep}`).then((endereco) => {
-                setCidade(endereco.data.localidade);
-                setEstado(endereco.data.uf);
-                setBairro(endereco.data.bairro);
-                setRua(endereco.data.logradouro);
-            });
-        }
-    }, [cep]);
+    //         api.get(`/endereco/${cep}`).then((endereco) => {
+    //             setCidade(endereco.data.localidade);
+    //             setEstado(endereco.data.uf);
+    //             setBairro(endereco.data.bairro);
+    //             setRua(endereco.data.logradouro);
+    //         });
+    //     }
+    // }, [cep]);
 
     return (
         <>
@@ -88,12 +89,12 @@ export default function CadastrarAdmin() {
                     </Col>
                 </Row>
 
-                <Row>
+                {/* <Row>
                     <Col sm={6}>
                         <InputTexto type="number" defaultValue={''} required={false} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
                     </Col>
-                </Row>
-
+                </Row> */}
+{/* 
                 <Row>
                     <Col sm={8}>
                         <InputTexto type="text" defaultValue={''} required={false} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
@@ -101,9 +102,9 @@ export default function CadastrarAdmin() {
                     { <Col sm={4}>
                         <InputTexto type="text" defaultValue={''} required={false} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
                     </Col> }
-                </Row>
+                </Row> */}
 
-                <Row>
+                {/* <Row>
                     <Col>
                         <InputTexto type="text" defaultValue={''} required={false} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
                     </Col>
@@ -116,7 +117,7 @@ export default function CadastrarAdmin() {
                     <Col sm={4}>
                         <InputTexto type="text" defaultValue={''} required={false} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
                     </Col>
-                </Row>
+                </Row> */}
 
                 <Row>
                     <Col>
@@ -126,7 +127,7 @@ export default function CadastrarAdmin() {
 
 
                 <Row className='d-flex justify-content-center'>
-                        <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                        <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                             Cancelar
                         </Button>
                         <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit" >

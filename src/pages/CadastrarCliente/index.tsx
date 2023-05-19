@@ -55,7 +55,7 @@ export default function CadastrarCliente() {
     useEffect(() => {
         if(cep.length == 8 && !isNaN(parseInt(cep))){
             
-            api.get(`/endereco/complet/${cep}`).then((endereco) => {
+            api.get(`/endereco/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);
@@ -138,7 +138,7 @@ export default function CadastrarCliente() {
                     </Row>
 
                     <Row className='d-flex justify-content-center'>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                            <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
                             </Button>
                             <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">

@@ -67,7 +67,7 @@ class AdministratorRepository {
     public async create (name: string, cpf: number, email: string, phone: number, password: string){
         
         //Executes the database actions
-        await Administrator.create({name, cpf, email, phone});
+        await Administrator.create({name, cpf, email, phone, password});
         
     }
 
