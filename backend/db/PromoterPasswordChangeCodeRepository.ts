@@ -7,7 +7,7 @@ import { PromoterPasswordChangeCode } from "../models/PromoterPasswordChangeCode
 /**
  * Import of the {@link https://www.npmjs.com/package/randomstring randomstring} module
  */
-import randomstring from 'node-randomstring';
+import randomstring from 'randomstring';
 
 /**
  * Class for handling the IO of database info

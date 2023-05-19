@@ -11,7 +11,7 @@ import { ApiError } from "../../errors/ApiError";
 /**
  * Import of the {@link https://www.npmjs.com/package/randomstring randomstring} module
  */
-import randomstring from 'node-randomstring';
+import randomstring from 'randomstring';
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
