@@ -29,3 +29,7 @@
     font-weight: 600 !important;
     
 }
+
+.noPadding {
+    padding: 0 !important;
+}
