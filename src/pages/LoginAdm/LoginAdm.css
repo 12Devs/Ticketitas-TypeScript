@@ -1,0 +1,15 @@
+.containerModal{
+    display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.modal-content-adm{
+    width: 40% !important;
+    margin: 40px 40px !important;
+    padding: 40px !important;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 20px;
+}

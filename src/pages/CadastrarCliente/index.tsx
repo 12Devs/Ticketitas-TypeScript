@@ -9,7 +9,7 @@ import '../pages.css';
 
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
-
+import NavBarGeral from '../../components/NavBarGeral';
 import '../../components/Texto/Texto.css';
 import '../../components/Button/Button.css';
 import {response} from 'express';
@@ -66,6 +66,7 @@ export default function CadastrarCliente() {
 
     return (
         <>
+            <NavBarGeral user='default'/>
             <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
                 <Container>
 
@@ -84,7 +85,7 @@ export default function CadastrarCliente() {
 
                     <Row>
                         <Col sm={6}>
-                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone}  />
                         </Col>
                         <Col sm={6}>
                             <InputTexto type='number' defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />

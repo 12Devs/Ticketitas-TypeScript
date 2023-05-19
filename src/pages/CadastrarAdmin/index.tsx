@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import { api } from '../../services/api';
+import NavBarGeral from '../../components/NavBarGeral';
 import '../pages.css';
 
 
@@ -61,6 +62,7 @@ export default function CadastrarAdmin() {
 
     return (
         <>
+        <NavBarGeral user='default'/>
         <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
 
