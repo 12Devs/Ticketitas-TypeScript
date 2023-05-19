@@ -4,15 +4,15 @@ import AdicionarIngresso from '../AdicionarIngresso';
 import Col from "react-bootstrap/Col";
 import { useState } from 'react';
 import Header from '../Header';
+import { api } from '../../../services/api';
 
 import './styleDescricao.css';
 import '../styleGeralEvento.css';
 import '../../../components/Texto/Texto.css';
-import { api } from '../../../services/api';
 
 export default function Descricao({idEvento}:{idEvento: number}) {
     const [titulo, setTitulo] = useState('Titulo');
-    const [dataHora, setDataHora] = useState('Data e hora');
+    const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
     const [descricao, setDescricao] = useState('Descrição');
     const [rua, setRua] = useState('Rua');
     const [cidade, setCidade] = useState('Cidade');
@@ -27,9 +27,13 @@ export default function Descricao({idEvento}:{idEvento: number}) {
         setCidade(response.data.eventInfos.enderecoEvent.cidade);
         setEstado(response.data.eventInfos.enderecoEvent.estado);
         setImageEvent(response.data.eventInfos.event.imageEvent);
+        setDataHora(response.data.eventInfos.event.dataEvento);
     });
 
     const endereco = `${rua} - ${cidade} - ${estado}`;
+    
+    const dataHoraOBJ = new Date(dataHora);
+    const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "-" + (dataHoraOBJ.getMonth() + 1) + "-" + dataHoraOBJ.getFullYear();
 
     return (
         <Container>
@@ -39,7 +43,7 @@ export default function Descricao({idEvento}:{idEvento: number}) {
 
             <Row className='primeiraDescricao p-3 sombra' >
                 <div className='larguraMainContentEventos text-start'>
-                    <h4 className='Texto-Azul Texto-Pequeno fw-bold'>{dataHora}</h4>
+                    <h4 className='Texto-Azul Texto-Pequeno fw-bold'>{dataHoraFormatada}</h4>
                     <h3 className='Texto-Preto Texto-Grande fw-bold'>{titulo}</h3>
                     <h5 className='Texto-Preto Texto-MuitoPequeno'>{endereco}</h5>
                 </div>
