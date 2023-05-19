@@ -20,7 +20,7 @@ export default function Evento() {
 
             <section className='larguraMainContentEventos mt-5 pb-5'>
                 <Row className='text-start'>
-                    <p className='Texto-Preto Texto-Pequeno'>Também em detaque...</p>
+                    <p className='Texto-Preto Texto-Pequeno'>Também em destaque...</p>
                     
                 </Row>
             </section>

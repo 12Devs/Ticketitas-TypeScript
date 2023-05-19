@@ -4,8 +4,8 @@ import './style.css';
 
 const CardEvento = ({}) => {
     return(
-    <Card className="card-container" style={{border:'none', borderRadius: '11px'}}>
-      <Card.Img className="cardImg" variant="top" src="../public/eventPic.jpg" />
+    <Card className="card-container noPadding m-2" style={{border:'none', borderRadius: '11px'}}>
+      <Card.Img className="cardImg" variant="top" src="img/eventPic.jpg" />
       <Card.Body>
         
         <Card.Title className="cardTitle">Nome do Evento</Card.Title>

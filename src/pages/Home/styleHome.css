@@ -1,0 +1,17 @@
+.corPagina {
+    background-color: #B3B5BD !important;
+}
+
+.larguraMainContentEventos {
+    width: 70vw!important;
+    margin: 0 auto;
+}
+
+.bordaRedor{
+    border: 2px solid red;
+}
+
+.noMarginPadding {
+    margin: 0 !important;
+    padding: 0 !important;
+}
