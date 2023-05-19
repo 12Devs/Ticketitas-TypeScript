@@ -58,6 +58,17 @@ class PromoterRepository {
             }
         });
     }
+
+    public async updatePassword (cpf: number, newPassword: string){
+        await Promoter.update({
+            password: newPassword
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
 }
 
 export { PromoterRepository };
