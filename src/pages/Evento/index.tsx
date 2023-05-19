@@ -4,12 +4,12 @@ import Header from './Header';
 import Descricao from './Descricao';
 
 import '../pages.css'
-import './styleGeralEvento.css'
+import './styleGeralEvento.css';
 
 
 export default function Evento() {
     return (
-
+        
         <Container className='noMarginPadding corPagina' fluid>
 
             <Row >

@@ -7,7 +7,6 @@ import { useState } from 'react';
 import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
-import Footer from '../../components/Footer';
 import { api } from '../../services/api';
 import '../pages.css';
 
