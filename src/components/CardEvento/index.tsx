@@ -14,7 +14,6 @@ const CardEvento = ({dados}:{dados: any}) => {
 
   // const endereco = `${rua} - ${cidade} - ${estado}`;
 
-
   const handleNavigate = () => {
     navigate('/evento', { state: { idEvento } });
   }
