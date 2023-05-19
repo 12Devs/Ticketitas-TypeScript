@@ -42,8 +42,9 @@ class CreateAdministratorUseCase {
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
      */
-    constructor (administratorRepository: AdministratorRepository) {
+    constructor (administratorRepository: AdministratorRepository, sendEmail: SendEmail) {
         this.administratorRepository =  administratorRepository;
+        this.sendEmail = sendEmail;
     }
 
     /**
@@ -105,7 +106,7 @@ class CreateAdministratorUseCase {
 
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long random temporary password
         const password = await randomstring.generate(32);
-
+        
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
         await this.administratorRepository.create(name, cpf, email, phone, password);
 
