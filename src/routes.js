@@ -10,6 +10,7 @@ import RecuperarSenha from './pages/RecuperarSenha';
 import PrimeiraSenha from './pages/PrimeiraSenha';
 import Footer from './components/Footer';
 import Evento from './pages/Evento';
+import LoginAdm from './pages/LoginAdm';
 
 
 
@@ -17,7 +18,6 @@ export default function AppRouter() {
     return (
         <main>
             <Router>
-                <NavBarGeral />
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos />} />
@@ -28,7 +28,7 @@ export default function AppRouter() {
                     <Route path='recuperarSenha' element={<RecuperarSenha />} />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='evento' element={<Evento />} />
-
+                    <Route path='loginAdm' element={<LoginAdm/>}/>
                 </Routes>
                 <Footer />
             </Router>

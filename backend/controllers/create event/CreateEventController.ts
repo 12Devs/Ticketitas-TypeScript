@@ -13,10 +13,10 @@ class CreateEventController {
 
     public async handle (request: Request, response: Response) {
         
-        const {nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip} = request.body;
+        const {promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip} = request.body;
         const { cep, cidade, estado, bairro, rua, numero } = request.body;
 
-        await this.createEventUseCase.execute(nome, descricao, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, cidade, estado, bairro, rua, numero);
+        await this.createEventUseCase.execute(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, cidade, estado, bairro, rua, numero);
 
         return response.status(201).json({message: "Evento criado com sucessso!"});
     }

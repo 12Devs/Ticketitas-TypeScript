@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import { api } from '../../services/api';
+import NavBarGeral from '../../components/NavBarGeral';
 import '../pages.css';
 
 
@@ -44,16 +45,13 @@ export default function CadastrarAdmin() {
         console.log(dadosAdmin);
     }
 
+    
+
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
     useEffect(() => {
         if (cep.length == 8 && !isNaN(parseInt(cep))) {
-
-            var cepObj: any = {
-                cep: parseInt(cep)
-            };
-
-            api.post('/endereco/complet', cepObj).then((endereco) => {
-
+            
+            api.get(`/endereco/complet/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);
@@ -64,7 +62,8 @@ export default function CadastrarAdmin() {
 
     return (
         <>
-        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro} className='mainContent'>
+        <NavBarGeral user='default'/>
+        <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
 
                 <Row>
@@ -91,31 +90,31 @@ export default function CadastrarAdmin() {
 
                 <Row>
                     <Col sm={6}>
-                        <InputTexto type="number" defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
+                        <InputTexto type="number" defaultValue={''} required={false} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto type="text" defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
+                        <InputTexto type="text" defaultValue={''} required={false} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
                     </Col>
                     { <Col sm={4}>
-                        <InputTexto type="text" defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
+                        <InputTexto type="text" defaultValue={''} required={false} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
                     </Col> }
                 </Row>
 
                 <Row>
                     <Col>
-                        <InputTexto type="text" defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
+                        <InputTexto type="text" defaultValue={''} required={false} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
                     </Col>
                 </Row>
 
                 <Row>
                     <Col sm={8}>
-                        <InputTexto type="text" defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
+                        <InputTexto type="text" defaultValue={''} required={false} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
                     </Col>
                     <Col sm={4}>
-                        <InputTexto type="text" defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
+                        <InputTexto type="text" defaultValue={''} required={false} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
                     </Col>
                 </Row>
 

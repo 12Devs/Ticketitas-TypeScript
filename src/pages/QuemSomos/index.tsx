@@ -1,15 +1,13 @@
 import Footer from '../../components/Footer';
 import "../../../src/components/Texto/Texto.css"
 import "../QuemSomos/style.css";
-
+import NavBarGeral from '../../components/NavBarGeral';
 import BannerPublicidade from '../../components/bannerPublicidade';
 
 export default function QuemSomos(){
     return (
         <>
-            
-                
-        
+            <NavBarGeral user='default'/>
             <div className='nav-texto' >
                 <div className='texto'>
                     <p className='Titulo-Geral'>
@@ -25,17 +23,12 @@ export default function QuemSomos(){
                 </div>
             </div>
 
-           
             <BannerPublicidade></BannerPublicidade>
-            
-            
-
             
           
                 
             
 
-            <Footer/>
         </> 
     );
 }

@@ -26,7 +26,7 @@ const EnderecoUser = conn.define('enderecoUser', {
     },
     numero: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     }
 });
 
