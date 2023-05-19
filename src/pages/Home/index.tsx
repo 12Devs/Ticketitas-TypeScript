@@ -5,13 +5,21 @@ import NavBarGeral from '../../components/NavBarGeral';
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import CardDestaques from '../../components/CardDestaques';
+import { useLocation } from 'react-router-dom';
 
 export default function Home() {
+    const location = useLocation();
+    let typeUser = location.state?.userType;
+    if (location.state) {
+        typeUser = location.state.idEvento;
+    } 
+    else{
+        typeUser = 'default';
+    }
     return (
         <section className='corPagina'>
-            <NavBarGeral user='default' />
+            <NavBarGeral user={typeUser} />
             <Container className='noMarginPadding' fluid>
-
                 <Row className='text-start larguraMainContentEventos mt-3'>
                     <p className='Texto-Preto Texto-Pequeno'>Eventos em destaque na Ticketitas</p>
                     <CarouselPrincipal></CarouselPrincipal>
