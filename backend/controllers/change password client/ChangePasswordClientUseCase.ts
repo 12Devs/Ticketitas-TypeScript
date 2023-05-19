@@ -81,7 +81,7 @@ class ChangePasswordClientUseCase {
         }
 
         //Method used to check the existence of the chosen e-mail address in the database registry
-        const emailExists = await this.clientRepository.findByEmail(email);
+        const emailExists:any = await this.clientRepository.findByEmail(email);
         
         //Invalid user e-mail address
         if(!emailExists) {

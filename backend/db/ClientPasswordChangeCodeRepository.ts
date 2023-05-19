@@ -3,11 +3,12 @@
 /**
  * Import of the class {@link ClientPasswordChangeCode}
  */
-import { ClientPasswordChangeCode } from "../models/ClientPasswordChangeCode";
+
 /**
  * Import of the {@link https://www.npmjs.com/package/randomstring randomstring} module
  */
-import randomstring from 'node-randomstring';
+import randomstring from 'randomstring';
+import { ClientPasswordChangeCode } from '../models/ClientPasswordChangeCode';
 
 /**
  * Class for handling the IO of database info
