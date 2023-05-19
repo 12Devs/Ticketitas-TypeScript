@@ -63,7 +63,7 @@ export default function CadastrarAdmin() {
 
     return (
         <>
-        <NavBarGeral user='default'/>
+        <NavBarGeral />
         <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
 

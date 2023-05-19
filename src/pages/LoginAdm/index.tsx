@@ -15,7 +15,7 @@ export default function LoginAdm() {
     const [captchastatus, setcaptchastatus] = useState(false);
     return(
         <>
-        <NavBarGeral user='admLogin'/>
+        <NavBarGeral />
         <Container className="containerModal">
             <Modal.Body className=" modal-content-adm">
                 <Row className='justify-content-center' >

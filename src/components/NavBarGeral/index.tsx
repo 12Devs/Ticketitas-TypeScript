@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InputBuscar from '../InputBuscar';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -10,7 +10,7 @@ import ModalLogin from '../ModalLogin';
 import './Navbar.css';
 import { Dropdown } from 'react-bootstrap';
 
-const NavBarGeral = ({user}:{user:string}) => {
+const NavBarGeral = () => {
   const rotasDefault = [{
     label: 'Home',
     to: '/'
@@ -40,9 +40,16 @@ const NavBarGeral = ({user}:{user:string}) => {
     to: '/solicitacoesCadastro'
   }]
 
+  // PROVISÓRIO, tem que buscar com cookie depois
+  const location = useLocation();
+  let typeUser = location.state?.userType;
+  if (typeUser == undefined) {
+      typeUser = 'default';
+  } 
+  
   const navigate = useNavigate();
   const [busca, setBusca] = useState('');
-  const [usuarioTipo, setUsuarioTipo] = useState(user);
+  const [usuarioTipo, setUsuarioTipo] = useState(typeUser);
 
   function mudarRota(rota: string) {
     navigate(rota); 

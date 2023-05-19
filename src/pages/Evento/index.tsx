@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import '../pages.css'
 import './styleGeralEvento.css';
 import '../Home/styleHome.css';
+import NavBarGeral from '../../components/NavBarGeral';
 
 export default function Evento() {
     const location = useLocation();
@@ -22,7 +23,8 @@ export default function Evento() {
     window.scrollTo(0, 0);
     
     return (
-        
+        <>
+        <NavBarGeral />
         <Container className='noMarginPadding corPagina' fluid>
 
             <Row>
@@ -37,7 +39,7 @@ export default function Evento() {
                 <CardDestaques />
             </Row>
         </Container>
-
+        </>
 
     );
 }

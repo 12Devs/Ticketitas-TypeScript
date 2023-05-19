@@ -61,7 +61,7 @@ export default function CadastrarPromoter() {
 
     return (
         <>
-        <NavBarGeral user='default'/>
+        <NavBarGeral />
         <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
             <Container>
                 <Row >

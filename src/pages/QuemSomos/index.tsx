@@ -7,7 +7,7 @@ import BannerPublicidade from '../../components/bannerPublicidade';
 export default function QuemSomos(){
     return (
         <>
-            <NavBarGeral user='default'/>
+            <NavBarGeral />
             <div className='nav-texto' >
                 <div className='texto'>
                     <p className='Titulo-Geral'>
@@ -24,10 +24,6 @@ export default function QuemSomos(){
             </div>
 
             <BannerPublicidade></BannerPublicidade>
-            
-          
-                
-            
 
         </> 
     );

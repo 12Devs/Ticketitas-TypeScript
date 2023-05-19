@@ -41,7 +41,7 @@ export default function PrimeiraSenha(){
 
     return (
         <>
-            <NavBarGeral user='default'/>
+            <NavBarGeral />
             <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha} className='mainContent'>
                 <Container>
                     <Row className='border-bottom border-dark mt-3'>
