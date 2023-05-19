@@ -60,6 +60,17 @@ class ClientRepository {
         });
     }
 
+    public async updatePassword (cpf: number, newPassword: string){
+        await Client.update({
+            password: newPassword
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
 }
 
 export { ClientRepository };
