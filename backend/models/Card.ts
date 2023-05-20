@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize"
 import { conn } from "../db/Connection"
-import { Client } from "./Client";
 
 
 const Card = conn.define('card', {
@@ -13,7 +12,7 @@ const Card = conn.define('card', {
         allowNull: false,
     },
     expirationDate: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false
     },
     cvv: {
@@ -21,6 +20,5 @@ const Card = conn.define('card', {
         allowNull: false
     }
 });
-
 
 export { Card }
