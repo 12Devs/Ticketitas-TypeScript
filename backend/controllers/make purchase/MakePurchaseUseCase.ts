@@ -3,6 +3,8 @@ import { EventRepository } from "../../db/EventRepository";
 import { SaleRepository } from "../../db/SaleRepository";
 import { TicketRepository } from "../../db/TicketRepository";
 import { ApiError } from "../../errors/ApiError";
+import { EmailProvider } from "../../utils/EmailProvider";
+import { resolve } from "path";
 
 class MakePurchaseUseCase {
 
@@ -10,15 +12,17 @@ class MakePurchaseUseCase {
     private ticketRepository: TicketRepository;
     private eventRepository: EventRepository;
     private cardRepository: CardRepository;
+    private emailProvider: EmailProvider;
 
-    public constructor (saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository) {
+    public constructor (saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, emailProvider: EmailProvider) {
         this.saleRepository = saleRepository;
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.cardRepository = cardRepository;
+        this.emailProvider = emailProvider;
     }
 
-    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, clientCpf: number, eventId){
+    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, clientCpf: number, email: string, eventId: number){
 
         //Validations
         if(!pistaAmount) {
@@ -56,21 +60,36 @@ class MakePurchaseUseCase {
 
         const event: any = await this.eventRepository.findOneEvent(eventId);
 
+        const amount = (pistaAmount*event.valorPista) + (stageAmount*event.valorStage) + (vipAmount*event.valorVip);
+
+        await this.saleRepository.create(amount, clientCpf, eventId);
+
+        const idSale: any = await this.saleRepository.findIdByCpf(clientCpf);
+        
         for (let i = 0; i < pistaAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "pista", "inteira", event.valorPista, event.dataEvento);
+            await this.ticketRepository.create(clientCpf, "pista", "inteira", event.valorPista, event.dataEvento, idSale.id);
         }
 
         for (let i = 0; i < stageAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "stage", "inteira", event.valorStage, event.dataEvento);
+            await this.ticketRepository.create(clientCpf, "stage", "inteira", event.valorStage, event.dataEvento, idSale.id);
         }
 
         for (let i = 0; i < vipAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "vip", "inteira", event.valorVip, event.dataEvento);
+            await this.ticketRepository.create(clientCpf, "vip", "inteira", event.valorVip, event.dataEvento, idSale.id);
         }
 
-        const amount = (pistaAmount*event.valorPista) + (stageAmount*event.valorStage) + (vipAmount*event.valorVip);
+        const templatePath = resolve(__dirname, '..', '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
         
-        await this.saleRepository.create(amount, clientCpf, eventId);
+        const variables = {
+            name: card.holder,
+            amount: amount,
+            eventName: event.nome,
+            eventDate: event.dataEvento,
+            
+
+        }
+        await this.emailProvider.sendEmail(email, `Ingressos: ${event.name}`, variables, templatePath);
+        
     }
 }
 

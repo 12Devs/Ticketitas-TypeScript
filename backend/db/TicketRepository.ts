@@ -3,9 +3,9 @@ import { Ticket } from "../models/Ticket";
 
 class TicketRepository {
 
-    public create (clientCpf: number, sector: string, profile: string, value: number, dateEvent: Date) {
+    public async create (clientCpf: number, sector: string, profile: string, value: number, dateEvent: Date, saleId: number) {
 
-        Ticket.create({sector, profile, value, dateEvent, clientCpf});
+        await Ticket.create({sector, profile, value, dateEvent, saleId, clientCpf});
     }
 }
 

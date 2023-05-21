@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
+import { Ticket } from "./Ticket";
 
 const Sale = conn.define('sale',{
     amount:{
@@ -8,4 +9,5 @@ const Sale = conn.define('sale',{
     }
 });
 
+Sale.hasMany(Ticket);
 export { Sale };

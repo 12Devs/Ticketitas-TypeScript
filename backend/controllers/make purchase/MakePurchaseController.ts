@@ -12,9 +12,9 @@ class MakePurchaseController {
     public async handle (request: Request, response: Response) {
 
         
-        const {pistaAmount, stageAmount, vipAmount, clientCpf, eventId} = request.body;
+        const {pistaAmount, stageAmount, vipAmount, clientCpf, email, eventId} = request.body;
 
-        await this.makePurchaseUseCase.execute(pistaAmount, stageAmount, vipAmount, clientCpf, eventId);
+        await this.makePurchaseUseCase.execute(pistaAmount, stageAmount, vipAmount, clientCpf, email, eventId);
         
         return response.status(201).json({message: "Venda efetuada com sucesso!"});
     }
