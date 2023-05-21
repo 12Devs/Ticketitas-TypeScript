@@ -16,6 +16,9 @@ import randomstring from 'randomstring';
  * Import of the class {@link SendEmail}
  */
 import { SendEmail } from "../../utils/SendEmail";
+/**
+ * Import of the {@link https://www.npmjs.com/package/bcrypt bcrypt} module
+ */import bcrypt from 'bcrypt';
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
@@ -87,7 +90,7 @@ class CreateAdministratorUseCase {
         
         //Not-null user telephone number
         if (!phone){
-            throw new ApiError("O phone é obrigatório!", 422);
+            throw new ApiError("O telefone é obrigatório!", 422);
         }
 
         //Methods used to check the existence of the chosen CPF number and e-mail address in the database registry
@@ -106,9 +109,16 @@ class CreateAdministratorUseCase {
 
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long random temporary password
         const password = await randomstring.generate(32);
+
+        //Logging of the unencrypted version in the console
+        console.log(`\n SENHA ALEATORIA DO ADMINISTRADOR DE EMAIL ${email}: ${password} \n`);
+
+        //Encryption of the password
+        const salt = await bcrypt.genSalt(12);
+        const passwordHash = await bcrypt.hash(password, salt);
         
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
-        await this.administratorRepository.create(name, cpf, email, phone, password);
+        await this.administratorRepository.create(name, cpf, email, phone, passwordHash);
 
         //Message subject text
         const subject = "BEM-VINDO, ADMINISTRADOR";

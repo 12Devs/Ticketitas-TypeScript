@@ -35,13 +35,13 @@ class LoginAdministratorUseCase {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.senha);
+        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.password);
 
         if (!checkSenha) {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const token = sign({tipo: "administrator", nome: infoAdministrator.nome},
+        const token = sign({tipo: "administrator", nome: infoAdministrator.name},
             
         auth.secretToken,
 
@@ -49,7 +49,7 @@ class LoginAdministratorUseCase {
             expiresIn: auth.expiresInToken});
     
     
-    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.nome},
+    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
         
         auth.secretRefreshToken,
         
@@ -62,7 +62,7 @@ class LoginAdministratorUseCase {
     await this.tokenAdministratorRepository.create(infoAdministrator.cpf, expiresDate, refreshToken);
 
     const administrator = {
-        nome: infoAdministrator.nome,
+        nome: infoAdministrator.name,
         cpf: infoAdministrator.cpf,
         email: infoAdministrator.email
     }
