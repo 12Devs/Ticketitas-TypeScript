@@ -21,7 +21,7 @@ export default function Home() {
 
                 <Row className='text-start larguraMainContentEventos mt-5'>
                     <p className='Texto-Preto Texto-Pequeno'>Também em destaque...</p>
-                    <CardDestaques></CardDestaques>
+                    <CardDestaques/>
                 </Row>
 
 

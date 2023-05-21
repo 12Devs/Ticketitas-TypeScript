@@ -13,9 +13,14 @@ const CardEvento = ({dados}:{dados: any}) => {
   const [estado, setEstado] = useState('');
   const [idEvento, setIdEvento] = useState('');
 
+  // Recarrega a tela
+  const refresh = () => window.location.reload();
+
   const navigate = useNavigate();
   const handleNavigate = () => {
+    // Provisório
     navigate('/evento', { state: { idEvento } });
+    refresh();
   }
 
   // Formata a data e hora
