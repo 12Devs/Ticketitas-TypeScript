@@ -10,7 +10,7 @@ class UpdateImageEventUseCase {
         this.eventRepository = eventRepository;
     }
 
-    public async execute (id: number, cpf: number, imageEvent: string){
+    public async execute (id: string, cpf: number, imageEvent: string){
         const idAndImageEvent: any = await this.eventRepository.findByIdAndAvatar(id, cpf);
         
         if(!idAndImageEvent) {

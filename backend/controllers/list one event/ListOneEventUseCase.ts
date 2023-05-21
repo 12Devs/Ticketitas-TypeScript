@@ -13,7 +13,7 @@ class ListOneEventUseCase {
         this.enderecoEventRepository = enderecoEventRepository;
     }
 
-    public async execute (id: number){
+    public async execute (id: string){
         const event: any = await this.eventRepository.findOneEvent(id);
     
         if(!event) {

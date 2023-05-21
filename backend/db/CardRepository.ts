@@ -8,13 +8,13 @@ class CardRepository {
         await Card.create({cardNumber, holder, expirationDate, cvv, clientCpf});
     }
 
-    public async remove (id: number) {
+    public async remove (id: string) {
         await Card.destroy({
             where: {id: id}
         })
     }
 
-    public async findById (id: number) {
+    public async findById (id: string) {
         const idExists = await Card.findOne({raw: true, attributes: ['id'], where: {
             id: id
         }});

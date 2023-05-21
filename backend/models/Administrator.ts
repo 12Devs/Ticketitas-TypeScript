@@ -18,11 +18,6 @@ import { TokenAdministrator } from "./TokenAdministrator";
  * @type {*}
  */
 const Administrator = conn.define('administrator',{
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-    },
     //User name
     name:{
         type: DataTypes.STRING,

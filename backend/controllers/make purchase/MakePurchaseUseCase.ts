@@ -22,7 +22,7 @@ class MakePurchaseUseCase {
         this.emailProvider = emailProvider;
     }
 
-    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, clientCpf: number, email: string, eventId: number){
+    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, clientCpf: number, email: string, eventId: string){
 
         //Validations
         if(!pistaAmount) {

@@ -24,14 +24,14 @@ class EventRepository {
         return allEvents;
     }
 
-    public async findOneEvent (id: number) {
+    public async findOneEvent (id: string) {
         const event = await Event.findOne({raw: true, where: {
             id: id
         }});
         return event;
     }
 
-    public async findByIdAndAvatar (id: number, promoterCpf: number) {
+    public async findByIdAndAvatar (id: string, promoterCpf: number) {
         const idAndAvatar = await Event.findOne({raw: true, attributes: ['id', 'imageEvent'], where: {
             id: id,
             promoterCpf: promoterCpf
@@ -39,7 +39,7 @@ class EventRepository {
         return idAndAvatar;
     }
 
-    public async updateImage (id: number, promoterCpf: number, imageEvent: any){
+    public async updateImage (id: string, promoterCpf: number, imageEvent: any){
         await Event.update({
             imageEvent: imageEvent
         },
@@ -51,6 +51,16 @@ class EventRepository {
         });
     }
 
+    public async setFeatured (id: string){
+        await Event.update({
+            destaque: true
+        },
+        {
+            where: {
+                id: id
+            }
+        });
+    }
 }
 
 export { EventRepository };
