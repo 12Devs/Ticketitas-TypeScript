@@ -14,6 +14,11 @@ import { conn } from "../db/Connection";
  * @type {*}
  */
 const AdministratorPasswordChangeCode = conn.define('administratorpasswordchangeCode',{
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     //User password change code
     code:{
         type: DataTypes.STRING,

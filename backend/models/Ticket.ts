@@ -2,6 +2,11 @@ import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
 
 const Ticket = conn.define('ticket', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     sector: {
         type: DataTypes.STRING,
         allowNull: false

@@ -3,6 +3,11 @@ import { conn } from "../db/Connection"
 
 
 const Card = conn.define('card', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     cardNumber:{
         type: DataTypes.STRING,
         allowNull: false

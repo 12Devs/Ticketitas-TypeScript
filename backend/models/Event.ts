@@ -2,9 +2,12 @@ import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
 import { Sale } from "./Sale";
 
-
 const Event = conn.define('event', {
-
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     nome: {
         type: DataTypes.STRING,
         allowNull: false
@@ -48,6 +51,11 @@ const Event = conn.define('event', {
     imageEvent: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    destaque: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 });
 

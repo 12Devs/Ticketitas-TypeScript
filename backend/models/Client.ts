@@ -6,6 +6,11 @@ import { Sale } from "./Sale";
 import { Ticket } from "./Ticket";
 
 const Client = conn.define('client',{
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     nome:{
         type: DataTypes.STRING,
         allowNull: false

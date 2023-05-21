@@ -5,6 +5,11 @@ import { TokenPromoter } from "./TokenPromoter";
 
 
 const Promoter = conn.define('promoter',{
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     nome:{
         type: DataTypes.STRING,
         allowNull: false
