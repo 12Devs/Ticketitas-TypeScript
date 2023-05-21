@@ -5,7 +5,7 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import InputTexto from '../../components/InputTexto';
 import ModalRecuperarSenha from '../../components/ModalRecuperarSenha';
 import "./LoginAdm.css"
-
+import NavBarGeral from '../../components/NavBarGeral';
 export default function LoginAdm() {
     const [show, setShow] = useState(false);
     const [cpf, setCPF] = useState('');
@@ -14,6 +14,8 @@ export default function LoginAdm() {
     const [captchavalidate, setcaptchavalidate] = useState(false);
     const [captchastatus, setcaptchastatus] = useState(false);
     return(
+        <>
+        <NavBarGeral />
         <Container className="containerModal">
             <Modal.Body className=" modal-content-adm">
                 <Row className='justify-content-center' >
@@ -24,9 +26,7 @@ export default function LoginAdm() {
                         className="align-items-center"
                         alt=''
                     />{''}
-                    <p className='Texto-MuitoPequeno Texto-Preto text-center' style={{marginTop: '20px'}}>
-                        Bem vindo novamente! Por gentileza realize o Login em sua conta.
-                    </p>
+            
                 </Row>
 
 
@@ -57,6 +57,7 @@ export default function LoginAdm() {
                 </Row>
         </Modal.Body>
     </Container>
+    </>
 
     );
 }

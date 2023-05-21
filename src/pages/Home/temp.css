@@ -1,0 +1,16 @@
+.bordaRedor {
+    border: 2px solid red;
+}
+
+.noMarginPadding {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.configImg {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+

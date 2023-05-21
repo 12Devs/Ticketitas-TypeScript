@@ -9,7 +9,7 @@ import '../pages.css';
 
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
-
+import NavBarGeral from '../../components/NavBarGeral';
 import '../../components/Texto/Texto.css';
 import '../../components/Button/Button.css';
 import {response} from 'express';
@@ -55,7 +55,7 @@ export default function CadastrarCliente() {
     useEffect(() => {
         if(cep.length == 8 && !isNaN(parseInt(cep))){
             
-            api.get(`/endereco/complet/${cep}`).then((endereco) => {
+            api.get(`/endereco/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
                 setBairro(endereco.data.bairro);
@@ -66,6 +66,7 @@ export default function CadastrarCliente() {
 
     return (
         <>
+            <NavBarGeral />
             <Form style={{minHeight: '75vh'}} onSubmit={realizarCadastro}>
                 <Container>
 
@@ -84,7 +85,7 @@ export default function CadastrarCliente() {
 
                     <Row>
                         <Col sm={6}>
-                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone}  />
                         </Col>
                         <Col sm={6}>
                             <InputTexto type='number' defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />
@@ -137,7 +138,7 @@ export default function CadastrarCliente() {
                     </Row>
 
                     <Row className='d-flex justify-content-center'>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                            <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
                             </Button>
                             <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">

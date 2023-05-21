@@ -4,7 +4,7 @@ import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import {useState } from 'react';
 import InputTexto from '../../components/InputTexto';
 import '../pages.css';
-
+import NavBarGeral from '../../components/NavBarGeral';
 
 import {useNavigate } from 'react-router-dom';
 
@@ -41,6 +41,7 @@ export default function PrimeiraSenha(){
 
     return (
         <>
+            <NavBarGeral />
             <Form style={{minHeight: '75vh'}} onSubmit={atualizarSenha} className='mainContent'>
                 <Container>
                     <Row className='border-bottom border-dark mt-3'>

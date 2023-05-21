@@ -12,6 +12,10 @@ const Event = conn.define('event', {
         type: DataTypes.TEXT('long'),
         allowNull: false 
     },
+    dataEvento: {
+        type: DataTypes.DATE(),
+        allowNull: false 
+    },
     status: {
         type: DataTypes.BOOLEAN,
         allowNull: false

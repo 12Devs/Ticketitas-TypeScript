@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InputBuscar from '../InputBuscar';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
@@ -40,9 +40,16 @@ const NavBarGeral = () => {
     to: '/solicitacoesCadastro'
   }]
 
+  // PROVISÓRIO, tem que buscar com cookie depois
+  const location = useLocation();
+  let typeUser = location.state?.userType;
+  if (typeUser == undefined) {
+      typeUser = 'default';
+  } 
+  
   const navigate = useNavigate();
   const [busca, setBusca] = useState('');
-  const [usuarioTipo, setUsuarioTipo] = useState('default');
+  const [usuarioTipo, setUsuarioTipo] = useState(typeUser);
 
   function mudarRota(rota: string) {
     navigate(rota); 
@@ -56,21 +63,22 @@ const NavBarGeral = () => {
   }
 
   return (
-    <Navbar collapseOnSelect expand="lg" className='NavBar'>
-      <Container fluid>
-        <Navbar.Brand>
-          <img
-            src="/img/logo.svg"
-            width="30"
-            height="30"
-            className="d-inline-block"
-            alt=''
-          />{''}
-          <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
-            {"Ticketitas"}
-          </Link>
-        </Navbar.Brand>
 
+    <Navbar collapseOnSelect expand="lg" className='NavBar'>
+
+      <Container fluid className={usuarioTipo === 'admLogin' ? 'justify-content-center' : ''}>
+      <Navbar.Brand>
+      <img
+        src="/img/logo.svg"
+        width="30"
+        height="30"
+        className="d-inline-block"
+        alt=''
+      />{''}
+      <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+      {"Ticketitas"}
+      </Link>
+      </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
@@ -229,6 +237,7 @@ const NavBarGeral = () => {
 
           </Navbar.Collapse>
         }
+       
 
       </Container>
     </Navbar>
