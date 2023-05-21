@@ -6,7 +6,6 @@ import { imageUpload } from '../utils/ImageUpload';
 import { updateImageEventController } from '../controllers/update image event';
 import { listOneEventController } from '../controllers/list one event/index';
 import { setFeaturedEventController } from '../controllers/set featured event/index';
-import { ensureAuthenticatedAdministrator } from '../middlewares/EnsureAuthenticatedAdministrator';
 
 const eventRoutes = Router();
 
@@ -29,5 +28,6 @@ eventRoutes.patch("/image", ensureAuthenticatedPromoter, imageUpload.single("ima
 eventRoutes.patch("/set-featured/:id", (request: Request, response: Response, next: NextFunction)=>{
     return setFeaturedEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
+
 
 export { eventRoutes };
