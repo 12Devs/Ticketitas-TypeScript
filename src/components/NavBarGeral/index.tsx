@@ -1,9 +1,9 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import InputBuscar from '../InputBuscar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ModalLogin from '../ModalLogin';
 
@@ -40,49 +40,44 @@ const NavBarGeral = () => {
     to: '/solicitacoesCadastro'
   }]
 
-  // PROVISÓRIO, tem que buscar com cookie depois
-  const location = useLocation();
-  let typeUser = location.state?.userType;
-  if (typeUser == undefined) {
-      typeUser = 'default';
-  } 
-  
-  const navigate = useNavigate();
+  const [typeUser, setTypeUser] = useState('default');
   const [busca, setBusca] = useState('');
-  const [usuarioTipo, setUsuarioTipo] = useState(typeUser);
+  const navigate = useNavigate();
 
-  function mudarRota(rota: string) {
-    navigate(rota); 
-  }
+  // Recarrega a tela
+  const refresh = () => window.location.reload();
 
+  // Limpa os dados salvos localmente
   function logout() {
-    // chamar função de logout do backend
-
-    setUsuarioTipo('default');
-    navigate('/')
+    localStorage.clear();
+    navigate('/');
+    refresh();
   }
-
+  
+  useEffect(() => {
+    setTypeUser(localStorage.getItem("userType")? '' + localStorage.getItem("userType") : 'default');
+  }, []); 
   return (
 
     <Navbar collapseOnSelect expand="lg" className='NavBar'>
 
-      <Container fluid className={usuarioTipo === 'admLogin' ? 'justify-content-center' : ''}>
-      <Navbar.Brand>
-      <img
-        src="/img/logo.svg"
-        width="30"
-        height="30"
-        className="d-inline-block"
-        alt=''
-      />{''}
-      <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
-      {"Ticketitas"}
-      </Link>
-      </Navbar.Brand>
+      <Container fluid className={typeUser == 'admLogin' ? 'justify-content-center' : ''}>
+        <Navbar.Brand>
+          <img
+            src="/img/logo.svg"
+            width="30"
+            height="30"
+            className="d-inline-block"
+            alt=''
+          />{''}
+          <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
+            {"Ticketitas"}
+          </Link>
+        </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-        {usuarioTipo == 'default' &&
+        {typeUser == 'default' &&
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" />
 
@@ -113,7 +108,7 @@ const NavBarGeral = () => {
           </Navbar.Collapse>
         }
 
-        {usuarioTipo == 'cliente' &&
+        {typeUser == 'cliente' &&
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" />
 
@@ -144,18 +139,18 @@ const NavBarGeral = () => {
                 />{''}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => mudarRota('/perfil')}>Perfil</Dropdown.Item>
-                <Dropdown.Item onClick={() => mudarRota('/meusIngressos')}>Meus ingressos</Dropdown.Item>
-                <Dropdown.Item onClick={() => mudarRota('/cartoes')}>Gerenciar cartão</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/perfil')}>Perfil</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/meusIngressos')}>Meus ingressos</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/cartoes')}>Gerenciar cartão</Dropdown.Item>
                 <Dropdown.Divider></Dropdown.Divider>
-                <Dropdown.Item onClick={logout}>Sair</Dropdown.Item> 
+                <Dropdown.Item onClick={logout}>Sair</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
           </Navbar.Collapse>
         }
 
-        {usuarioTipo == 'admin' &&
+        {typeUser == 'admin' &&
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" />
 
@@ -186,19 +181,19 @@ const NavBarGeral = () => {
                 />{''}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => mudarRota('/perfil')}>Perfil</Dropdown.Item>
-                <Dropdown.Item onClick={() => mudarRota('/gerenciarPromoters')}>Gerenciar promoters</Dropdown.Item>
-                <Dropdown.Item onClick={() => mudarRota('/gerenciarAdmins')}>Gerenciar administradores</Dropdown.Item>
-                <Dropdown.Item onClick={() => mudarRota('/relatorioEventos')}>Eventos cadastrados</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/perfil')}>Perfil</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/gerenciarPromoters')}>Gerenciar promoters</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/gerenciarAdmins')}>Gerenciar administradores</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/relatorioEventos')}>Eventos cadastrados</Dropdown.Item>
                 <Dropdown.Divider></Dropdown.Divider>
-                <Dropdown.Item onClick={logout}>Sair</Dropdown.Item> 
+                <Dropdown.Item onClick={logout}>Sair</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
           </Navbar.Collapse>
         }
 
-        {usuarioTipo == 'promoter' &&
+        {typeUser == 'promoter' &&
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto" />
 
@@ -229,15 +224,15 @@ const NavBarGeral = () => {
                 />{''}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => mudarRota('/perfil')}>Perfil</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/perfil')}>Perfil</Dropdown.Item>
                 <Dropdown.Divider></Dropdown.Divider>
-                <Dropdown.Item onClick={logout}>Sair</Dropdown.Item> 
+                <Dropdown.Item onClick={logout}>Sair</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
           </Navbar.Collapse>
         }
-       
+
 
       </Container>
     </Navbar>
