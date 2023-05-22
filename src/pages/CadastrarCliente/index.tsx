@@ -5,15 +5,15 @@ import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
 import { useState } from 'react';
 import React, { useEffect } from 'react';
-import '../pages.css';
-
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import NavBarGeral from '../../components/NavBarGeral';
+import {api} from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+
+import '../pages.css';
 import '../../components/Texto/Texto.css';
 import '../../components/Button/Button.css';
-import {response} from 'express';
-import {api} from '../../services/api';
 
 export default function CadastrarCliente() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -29,6 +29,7 @@ export default function CadastrarCliente() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
+    const navigate = useNavigate();
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
@@ -48,6 +49,8 @@ export default function CadastrarCliente() {
         }
         
         api.post("/user/client", dadosCliente).then((response)=>{console.log(response)});
+
+        navigate('/');
         
     }
 

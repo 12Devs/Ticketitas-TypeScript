@@ -10,6 +10,7 @@ import InputTexto from '../../components/InputTexto';
 import { api } from '../../services/api';
 import '../pages.css'
 import NavBarGeral from '../../components/NavBarGeral';
+import { useNavigate } from 'react-router-dom';
 
 export default function CadastrarPromoter() {
     const [primeiroNome, setprimeiroNome] = useState('');
@@ -25,6 +26,7 @@ export default function CadastrarPromoter() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
+    const navigate = useNavigate();
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
@@ -44,6 +46,8 @@ export default function CadastrarPromoter() {
             confirmacaoSenha
         }
         api.post("/user/promoter", dadosPromoter).then((response)=>{console.log(response)});
+
+        navigate('/');
     }
 
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
