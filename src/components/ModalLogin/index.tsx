@@ -109,7 +109,7 @@ export default function ModalLogin() {
                     </Row>
                     <Form onSubmit={fazerLogin}>
                         <Row className='justify-content-center'>
-                            <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='email' />
+                            <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} type='email' />
                             <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password" />
                         </Row>
 
