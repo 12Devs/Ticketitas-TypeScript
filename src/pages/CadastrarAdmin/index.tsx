@@ -9,6 +9,8 @@ import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import { api } from '../../services/api';
 import NavBarGeral from '../../components/NavBarGeral';
+import { useNavigate } from 'react-router-dom';
+
 import '../pages.css';
 
 // {
@@ -24,6 +26,7 @@ export default function CadastrarAdmin() {
     const [telefone, setTelefone] = useState('');
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
 
     // const [cep, setCep] = useState('');
     // const [cidade, setCidade] = useState('');
@@ -44,6 +47,7 @@ export default function CadastrarAdmin() {
 
         api.post("/user/administrator", dadosAdmin).then((response)=>{console.log(response)});
 
+        navigate('/');
     }
     
     
