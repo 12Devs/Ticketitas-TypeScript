@@ -2,15 +2,14 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ReCAPTCHA from "react-google-recaptcha";
-import '../Button/Button.css';
 import InputTexto from '../InputTexto';
 import ModalRecuperarSenha from '../ModalRecuperarSenha';
 import { Alert, Form, Row } from 'react-bootstrap';
-import { response } from 'express';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 import "./ModalLogin.css"
+import '../Button/Button.css';
 
 export default function ModalLogin() {
     const [mensagem, setMensagem] = useState(false);
@@ -23,7 +22,10 @@ export default function ModalLogin() {
     const [captchavalidate, setcaptchavalidate] = useState(false);
     const [captchastatus, setcaptchastatus] = useState(false);
 
+    // Recarrega a tela
+    const refresh = () => window.location.reload();
 
+    // Login
     const fazerLogin = (event: any) => {
         event.preventDefault();
         setMensagem(false);
@@ -32,18 +34,37 @@ export default function ModalLogin() {
             email,
             senha,
         }
+
         if (userType == 'promoter') {
             api.post('user/promoter/login', data)
-                .then((response) => { (response.status == 200) ? navigate('/',{state: {userType}}) : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
+                .then((response) => { (response.status == 200) ?  loginPromoterAccepted(response) : console.log(response) })
+                .catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
         }
         else if (userType == 'cliente') {
             api.post('user/client/login', data)
-                .then((response) => { (response.status == 200) ? navigate('/',{state: {userType}}) : console.log(response) }).catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
+                .then((response) => { (response.status == 200) ? loginClienteAccepted(response) : console.log(response) })
+                .catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
         }
     }
 
+    // Pós login actions
+    const loginPromoterAccepted = (response: any) => {
+        localStorage.setItem("userType", "promoter");
+        localStorage.setItem("token", response.data.authenticateInfo.token);
+        localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);
+        navigate('/');
+        refresh();
+    }
+    const loginClienteAccepted = (response: any) => {
+        localStorage.setItem("userType", "cliente");
+        localStorage.setItem("token", response.data.authenticateInfo.token);
+        localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);
+        navigate('/');
+        refresh();
+    }
     
 
+    // Captcha
     const handleClose = () => {
         setShow(false)
         setcaptchavalidate(false)
@@ -53,8 +74,6 @@ export default function ModalLogin() {
         setcaptchastatus(true)
         setShow(true)
     };
-
-
     const validateCaptcha = () => {
         setcaptchavalidate(true)
 
@@ -90,7 +109,7 @@ export default function ModalLogin() {
                     </Row>
                     <Form onSubmit={fazerLogin}>
                         <Row className='justify-content-center'>
-                            <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='email' />
+                            <InputTexto defaultValue={''} required={true} label={"E-mail"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} type='email' />
                             <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password" />
                         </Row>
 

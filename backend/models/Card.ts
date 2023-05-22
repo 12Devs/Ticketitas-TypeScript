@@ -1,9 +1,13 @@
 import { DataTypes } from "sequelize"
 import { conn } from "../db/Connection"
-import { Client } from "./Client";
 
 
 const Card = conn.define('card', {
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     cardNumber:{
         type: DataTypes.STRING,
         allowNull: false
@@ -13,7 +17,7 @@ const Card = conn.define('card', {
         allowNull: false,
     },
     expirationDate: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
         allowNull: false
     },
     cvv: {
@@ -21,6 +25,5 @@ const Card = conn.define('card', {
         allowNull: false
     }
 });
-
 
 export { Card }

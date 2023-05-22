@@ -3,7 +3,11 @@ import { conn } from "../db/Connection";
 import { Event } from "./Event";
 
 const EnderecoEvent = conn.define('enderecoEvent', {
-
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     cep: {
         type: DataTypes.INTEGER,
         allowNull: false

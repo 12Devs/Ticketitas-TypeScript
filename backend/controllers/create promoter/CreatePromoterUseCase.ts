@@ -9,6 +9,7 @@ class CreatePromoterUseCase {
     constructor (promoterRepository: PromoterRepository) {
         this.promoterRepository =  promoterRepository;
     }
+    
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
         //Validations
         if (!nome){

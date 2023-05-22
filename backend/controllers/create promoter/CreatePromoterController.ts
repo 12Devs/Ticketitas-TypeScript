@@ -1,7 +1,6 @@
 import { CreatePromoterUseCase } from "./CreatePromoterUseCase";
 import { Request, Response } from "express";
 
-
 class CreatePromoterController {
 
     private createPromoterUseCase: CreatePromoterUseCase;

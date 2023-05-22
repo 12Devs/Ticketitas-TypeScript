@@ -3,7 +3,11 @@ import { conn } from "../db/Connection";
 import { Client } from "./Client";
 
 const EnderecoUser = conn.define('enderecoUser', {
-
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     cep: {
         type: DataTypes.INTEGER,
         allowNull: false

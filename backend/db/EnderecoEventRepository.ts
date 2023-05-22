@@ -19,7 +19,7 @@ class EnderecoEventRepository {
         return enderecoExists;
     }
 
-    public async findOneEnderecoEvent (id: number) {
+    public async findOneEnderecoEvent (id: string) {
         const enderecoEvent = await EnderecoEvent.findOne({raw: true, where: {
             id: id
         }});

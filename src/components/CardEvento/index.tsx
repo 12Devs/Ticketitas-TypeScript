@@ -8,14 +8,19 @@ import './style.css';
 const CardEvento = ({dados}:{dados: any}) => {
   const [nome, setNome] = useState('');
   const [dataEvento, setDataEvento] = useState('');
+  const [rua, setRua] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [estado, setEstado] = useState('');
   const [idEvento, setIdEvento] = useState('');
 
+  // Recarrega a tela
+  const refresh = () => window.location.reload();
+
   const navigate = useNavigate();
-
-  // const endereco = `${rua} - ${cidade} - ${estado}`;
-
   const handleNavigate = () => {
+    // Provisório
     navigate('/evento', { state: { idEvento } });
+    refresh();
   }
 
   // Formata a data e hora
@@ -24,6 +29,9 @@ const CardEvento = ({dados}:{dados: any}) => {
     var dataHoraOBJ = new Date(dataEvento);
     dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
   }
+  
+  // Formata o local
+  const endereco = `${rua} - ${cidade} - ${estado}`;
 
   useEffect(() => {
     if (dados !== undefined ) {
@@ -42,7 +50,7 @@ const CardEvento = ({dados}:{dados: any}) => {
         
         <Card.Text className='cardText'>
           {dataHoraFormatada} <br />
-          ---
+          {endereco}
         </Card.Text>
 
         <Button className="cardButton" onClick={handleNavigate}>Saiba mais</Button>
