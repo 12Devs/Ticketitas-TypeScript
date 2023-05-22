@@ -1,7 +1,6 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import handlebars from 'handlebars';
 import fs from 'fs';
-import path from 'path';
 
 //configurando login e senha do send email
   //gerando a classe
@@ -27,25 +26,27 @@ import path from 'path';
     }).catch(err => console.error(err));
       
     }
-    
 
-    //Enviando email para adm com redefinicao de senha
-    public async sendEmail(to: string, subject: string, variables: any, path: string){
+    public async sendEmail(to: string, subject: string, variables: any, path: string, attachment){
 
       const templateFileContent = fs.readFileSync(path).toString("utf-8");
-
       const templateParse = handlebars.compile(templateFileContent);
-
       const templateHTML = templateParse(variables);
+      const mail: any = {};
 
+      mail.to = to
+      mail.from = 'Ticketitas <ticketitas@email.com.br>';
+      mail.subject = subject;
+      mail.html = templateHTML;
 
-
-      const message = await this.client.sendMail({
-        to,
-        from: 'Ticketitas <ticketitas@email.com.br>',
-        subject,
-        html: templateHTML,
-      });
+      if(attachment !== null){
+        mail.attachments = [];
+        mail.attachments.push({
+            filename: attachment.originalname,
+            content: attachment.buffer});
+      }
+      
+      const message = await this.client.sendMail(mail);
 
       console.log('Message sent: %s', message.messageId);
         // Preview only available when sending through an Ethereal account
