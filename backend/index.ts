@@ -26,9 +26,9 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
 });
 
 conn.sync().then(async () => {
-  // await FillDataBase.fillClients();
-  // await FillDataBase.fillPromoters();
-  // await FillDataBase.fillEvents();
+   await FillDataBase.fillClients();
+   await FillDataBase.fillPromoters();
+   await FillDataBase.fillEvents();
   app.listen(process.env.PORT_DEV, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
 
