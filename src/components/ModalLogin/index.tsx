@@ -3,7 +3,6 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ReCAPTCHA from "react-google-recaptcha";
 import InputTexto from '../InputTexto';
-import ModalRecuperarSenha from '../ModalRecuperarSenha';
 import { Alert, Form, Row } from 'react-bootstrap';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -16,11 +15,15 @@ export default function ModalLogin() {
     const navigate = useNavigate();
     const [mensagemString, setMensagemString] = useState('');
     const [userType, setUserType] = useState('cliente');
-    const [show, setShow] = useState(false);
     const [email, setEmail] = useState('');
+    const [emailRecuperacao, setEmailRecuperacao] = useState('');
     const [senha, setSenha] = useState('');
+
     const [captchavalidate, setcaptchavalidate] = useState(false);
     const [captchastatus, setcaptchastatus] = useState(false);
+
+    const [show, setShow] = useState(false);
+    const [showRecuperar, setShowRecuperar] = useState(false);
 
     // Recarrega a tela
     const refresh = () => window.location.reload();
@@ -47,6 +50,8 @@ export default function ModalLogin() {
         }
     }
 
+    // Recuperar senha
+
     // Pós login actions
     const loginPromoterAccepted = (response: any) => {
         localStorage.setItem("userType", "promoter");
@@ -63,8 +68,16 @@ export default function ModalLogin() {
         refresh();
     }
     
+    // Handlers modal de recuperar senha
+    const handleCloseRecuperar = () => {
+        setShowRecuperar(false)
+    };
+    const handleShowRecuperar = () => {
+        setShowRecuperar(true);
+        setShow(false)
+    };
 
-    // Captcha
+    // Handlers modal de login
     const handleClose = () => {
         setShow(false)
         setcaptchavalidate(false)
@@ -128,7 +141,9 @@ export default function ModalLogin() {
                         }
 
                         <Row className='justify-content-center' >
-                            <ModalRecuperarSenha />
+                            <Button className='Botão-Terciário Texto-Azul' onClick={handleShowRecuperar}>
+                                Esqueci minha senha
+                            </Button>
                         </Row>
 
                         <Row className='justify-content-center'>
@@ -141,7 +156,40 @@ export default function ModalLogin() {
                     </Form>
                 </Modal.Body>
             </Modal>
+
+            <Modal show={showRecuperar} onHide={handleCloseRecuperar}>
+                <Modal.Body>
+                    <Row className='justify-content-center'>
+                        <img
+                            src="/img/logo.svg"
+                            width="100"
+                            height="100"
+                            className="align-items-center"
+                            alt=''
+                        />{''}
+                        <p className='Texto-Grande Texto-Preto text-center'>
+                            Recuperar senha
+                        </p>
+                    </Row>
+
+                    <Row className='justify-content-center'>
+                        <InputTexto 
+                            defaultValue={''} 
+                            required={true} 
+                            label={"Email"} 
+                            placeholder={"Digite o email associado a sua conta"} 
+                            controlId={"email"} 
+                            data={emailRecuperacao} 
+                            setData={setEmailRecuperacao} 
+                            type=''/>
+                    </Row>
+                    <Row className='justify-content-center'>
+                        <Button className='Botão-Primario Texto-Branco' type='submit'>
+                            Enviar
+                        </Button>
+                    </Row>
+                </Modal.Body>
+            </Modal>
         </>
     );
 }
-

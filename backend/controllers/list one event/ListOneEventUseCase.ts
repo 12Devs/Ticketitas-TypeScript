@@ -20,7 +20,7 @@ class ListOneEventUseCase {
             throw new ApiError("Evento não encontrado", 400);
         }
 
-        const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.id);
+        const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.enderecoEventId);
 
         
         return { event, enderecoEvent };
