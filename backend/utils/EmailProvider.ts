@@ -1,57 +1,112 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import handlebars from 'handlebars';
 import fs from 'fs';
+import PdfPrinter from 'pdfmake';
+import { TDocumentDefinitions } from "pdfmake/interfaces";
+import { resolve } from "path";
 
 //configurando login e senha do send email
   //gerando a classe
   class EmailProvider{
     
-    private client: Transporter;
+    private transporter: Transporter;
     //construindo a mensagem utilizando o email fornecido
     public constructor(){
-
-      nodemailer.createTestAccount().then((account)=>{
         
-        const transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-            user: account.user,
-            pass: account.pass
+      const transporter = nodemailer.createTransport({
+        service: 'gmail', 
+        auth: { 
+            user: 'ticketitas@gmail.com', 
+            pass: 'snlxjijwsxqeegiw' 
           }
       });
 
-      this.client = transporter;
-    }).catch(err => console.error(err));
+      this.transporter = transporter;
       
     }
 
-    public async sendEmail(to: string, subject: string, variables: any, path: string, attachment){
+    public async sendEmailTicketAttached(to: string, ticketInfo) {
+    
+    //Envio do email
+    const templatePath = resolve(__dirname, '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
 
-      const templateFileContent = fs.readFileSync(path).toString("utf-8");
-      const templateParse = handlebars.compile(templateFileContent);
-      const templateHTML = templateParse(variables);
-      const mail: any = {};
+    const templateFileContent = fs.readFileSync(templatePath).toString("utf-8");
+    const templateParse = handlebars.compile(templateFileContent);
+    const templateHTML = templateParse(templateParse);
+    const mail: any = {
+      to: to,
+      from: 'ticketitas@gmail.com',
+      subject: `Ingressos para ${ticketInfo.nameEvent}`,
+      html: templateHTML,
+      attachments: []
+    };
 
-      mail.to = to
-      mail.from = 'Ticketitas <ticketitas@email.com.br>';
-      mail.subject = subject;
-      mail.html = templateHTML;
-
-      if(attachment !== null){
-        mail.attachments = [];
-        mail.attachments.push({
-            filename: attachment.originalname,
-            content: attachment.buffer});
+    
+    const fonts = {
+      Helvetica: {
+        normal: 'Helvetica',
+        bold: 'Helvetica-Bold',
+        italics: 'Helvetica-Oblique',
+        bolditalics: 'Helvetica-BoldOblique'
       }
-      
-      const message = await this.client.sendMail(mail);
-
-      console.log('Message sent: %s', message.messageId);
-        // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
     }
+
+    for (let index = 0; index < ticketInfo.amount; index++) {
+
+      const printer = new PdfPrinter(fonts);
+        
+      const docDefinitions: TDocumentDefinitions = {
+            defaultStyle: { font: 'Helvetica'},
+            content: [
+                {
+                    style: 'tableExample',
+                    table: {
+                        body: [
+                            [ticketInfo.nameEvent],
+                            [ticketInfo.dateEvent],
+                            [ticketInfo.enderecoEvent],
+                            [ticketInfo.cidadeEvent]
+                        ]
+                    }
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        body: [
+                            ['INGRESSO'],
+                            [`${ticketInfo.sector} - ${ticketInfo.profile}`],
+                            [ticketInfo.value],
+                            [`Ingresso comprado dia ${ticketInfo.dateSale}`],
+                            ['CLIENTE'],
+                            [`${ticketInfo.clientName} - ${ticketInfo.clientCpf}`]
+                        ]
+                    }
+                },
+                {
+                    style: 'tableExample',
+                    table: {
+                        body: [
+                            ['ATENÇAO'],
+                            ['-Ingressos são pessoais e nominais.'],
+                            ['- Ao comprar o ingresso, você concorda com os termos e políticas do evento.'],
+                            ['-O não comparecimento ao evento invalidará o ingresso e não permitirá reembolso.']
+                        ]
+                    }
+                }
+            ]
+      };
+    
+    var pdfDoc = printer.createPdfKitDocument(docDefinitions);
+
+      await mail.attachments.push({
+        filename: `ticket.pdf`,
+        content: pdfDoc});
+    pdfDoc.end();
+    }
+    
+    
+    await this.transporter.sendMail(mail);
+  }
 }
 
 export { EmailProvider };

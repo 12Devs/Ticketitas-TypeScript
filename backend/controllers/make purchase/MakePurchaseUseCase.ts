@@ -4,8 +4,7 @@ import { SaleRepository } from "../../db/SaleRepository";
 import { TicketRepository } from "../../db/TicketRepository";
 import { ApiError } from "../../errors/ApiError";
 import { EmailProvider } from "../../utils/EmailProvider";
-import { resolve } from "path";
-import { GeneratePdf } from "../../utils/GeneratePdf";
+import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 
 class MakePurchaseUseCase {
 
@@ -13,17 +12,19 @@ class MakePurchaseUseCase {
     private ticketRepository: TicketRepository;
     private eventRepository: EventRepository;
     private cardRepository: CardRepository;
+    private enderecoEventRepository: EnderecoEventRepository;
     private emailProvider: EmailProvider;
 
-    public constructor (saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, emailProvider: EmailProvider) {
+    public constructor (saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, emailProvider: EmailProvider) {
         this.saleRepository = saleRepository;
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.cardRepository = cardRepository;
+        this.enderecoEventRepository = enderecoEventRepository;
         this.emailProvider = emailProvider;
     }
 
-    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, clientCpf: number, email: string, eventId: string){
+    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, clientName: string, clientCpf: number, email: string, eventId: string){
 
         //Validations
         if(!pistaAmount) {
@@ -79,62 +80,143 @@ class MakePurchaseUseCase {
 
         const idSale: any = await this.saleRepository.findIdByCpf(clientCpf);
         
-        const generatePdf = new GeneratePdf();
-
         for (let i = 0; i < pistaAmount; i++) {
             await this.ticketRepository.create(clientCpf, "Pista", "Inteira", event.valorPista, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Pista', 'Inteira', idSale, event.valorPista, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
         for (let i = 0; i < stageAmount; i++) {
             await this.ticketRepository.create(clientCpf, "Stage", "Inteira", event.valorStage, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Stage', 'Inteira', idSale, event.valorStage, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
         for (let i = 0; i < vipAmount; i++) {
             await this.ticketRepository.create(clientCpf, "Vip", "Inteira", event.valorVip, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Vip', 'Inteira', idSale, event.valorVip, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
         for (let i = 0; i < pistaAmountHalf; i++) {
             await this.ticketRepository.create(clientCpf, "Pista", "Meia-entrada", event.valorPista, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Pista', 'Meia-entrada', idSale, event.valorPista, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
         for (let i = 0; i < stageAmountHalf; i++) {
             await this.ticketRepository.create(clientCpf, "Stage", "Meia-entrada", event.valorStage, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Stage', 'Meia-entrada', idSale, event.valorStage, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
         for (let i = 0; i < vipAmountHalf; i++) {
             await this.ticketRepository.create(clientCpf, "Vip", "Meia-entrada", event.valorVip, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Vip', 'Meia-entrada', idSale, event.valorVip, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
         for (let i = 0; i < freeAmount; i++) {
             await this.ticketRepository.create(clientCpf, "Pista", "Grátis", 0.00, event.dataEvento, idSale.id);
-
-            await generatePdf.createTicket(event.nome, 'Vip', 'Meia-entrada', idSale, 0.00, event.dataEvento, "Endereco", "NomeClient", clientCpf);
         }
 
-        const templatePath = resolve(__dirname, '..', '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
-        
-        const variables = {
-            name: card.holder,
-            amount: amount,
-            eventName: event.nome,
-            eventDate: event.dataEvento
+        const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.enderecoEventId);
+        const eventDate = new Date(event.dataEvento);
+        const dateEvent = (eventDate.getUTCDate()) + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
+
+        const ticketsPistaInfo = {
+            nameEvent: event.nome,
+            amount: pistaAmount,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'Pista',
+            profile: 'Inteira',
+            value: event.valorPista,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
         }
-        
-        
-        await this.emailProvider.sendEmail(email, `Ingressos: ${event.name}`, variables, templatePath, null);
-        
+
+        const ticketsStageInfo = {
+            nameEvent: event.nome,
+            amount: stageAmount,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'Stage',
+            profile: 'Inteira',
+            value: event.valorStage,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
+        }
+
+        const ticketsVipInfo = {
+            nameEvent: event.nome,
+            amount: vipAmount,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'Vip',
+            profile: 'Inteira',
+            value: event.valorVip,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
+        }
+
+        const ticketsPistaHalfInfo = {
+            nameEvent: event.nome,
+            amount: pistaAmountHalf,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'Pista',
+            profile: 'Meia-Entrada',
+            value: event.valorPista/2,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
+        }
+
+        const ticketsStageHalfInfo = {
+            nameEvent: event.nome,
+            amount: stageAmountHalf,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'Stage',
+            profile: 'Meia-Entrada',
+            value: event.valorStage/2,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
+        }
+
+        const ticketsVipHalfInfo = {
+            nameEvent: event.nome,
+            amount: vipAmountHalf,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'vip',
+            profile: 'Meia-Entrada',
+            value: event.valorVip/2,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
+        }
+
+        const ticketsFreeInfo = {
+            nameEvent: event.nome,
+            amount: freeAmount,
+            dateEvent,
+            enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
+            cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
+            sector: 'Pista',
+            profile: 'Grátis',
+            value: 0.00,
+            dateSale: dateEvent,
+            clientCpf,
+            clientName,
+        }
+
+        this.emailProvider.sendEmailTicketAttached(email, ticketsPistaInfo);
+        this.emailProvider.sendEmailTicketAttached(email, ticketsStageInfo);
+        this.emailProvider.sendEmailTicketAttached(email, ticketsVipInfo);
+        this.emailProvider.sendEmailTicketAttached(email, ticketsPistaHalfInfo);
+        this.emailProvider.sendEmailTicketAttached(email, ticketsStageHalfInfo);
+        this.emailProvider.sendEmailTicketAttached(email, ticketsVipHalfInfo);
+        this.emailProvider.sendEmailTicketAttached(email, ticketsFreeInfo); 
     }
 }
 

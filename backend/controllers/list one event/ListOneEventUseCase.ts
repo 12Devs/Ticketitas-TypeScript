@@ -2,7 +2,6 @@ import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { EventRepository } from "../../db/EventRepository";
 import { ApiError } from "../../errors/ApiError";
 
-
 class ListOneEventUseCase {
 
     private eventRepository: EventRepository;

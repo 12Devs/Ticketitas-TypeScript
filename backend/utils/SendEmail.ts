@@ -11,13 +11,11 @@ import nodemailer, { Transporter } from 'nodemailer';
       nodemailer.createTestAccount().then((account)=>{
         
         const transporter = nodemailer.createTransport({
-        host: account.smtp.host,
-        port: account.smtp.port,
-        secure: account.smtp.secure,
-        auth: {
-            user: account.user,
-            pass: account.pass
-          }
+          service: 'gmail', 
+          auth: { 
+             user: 'ticketitas@gmail.com', 
+             pass: 'snlxjijwsxqeegiw' 
+           }
       });
 
       this.client = transporter;
@@ -29,9 +27,9 @@ import nodemailer, { Transporter } from 'nodemailer';
     //Enviando email para adm com redefinicao de senha
     public async sendEmail(to: string, subject: string, body: string){
 
-      const message = this.client.sendEmail({
+      const message: any = this.client.sendMail({
         to,
-        from: 'Ticketitas <ticketitas@email.com.br>',
+        from: 'Ticketitas <ticketitas@gmail.com>',
         subject,
         text: body,
         html: body,
