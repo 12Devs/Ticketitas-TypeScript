@@ -5,6 +5,7 @@ import { TicketRepository } from "../../db/TicketRepository";
 import { ApiError } from "../../errors/ApiError";
 import { EmailProvider } from "../../utils/EmailProvider";
 import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
+import { generateQrCode } from "../../utils/GenerateQrCode";
 
 class MakePurchaseUseCase {
 
@@ -27,28 +28,32 @@ class MakePurchaseUseCase {
     public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, clientName: string, clientCpf: number, email: string, eventId: string){
 
         //Validations
-        if(!pistaAmount) {
+        if(!pistaAmount && pistaAmount !== 0) {
             throw new ApiError("A quantidade de ingressos pista é obrigatória!", 422);
         }
 
-        if(!stageAmount) {
+        if(!stageAmount && stageAmount !== 0) {
             throw new ApiError("A quantidade de ingressos stage é obrigatória!", 422);
         }
 
-        if(!vipAmount) {
+        if(!vipAmount && vipAmount !== 0) {
             throw new ApiError("A quantidade de ingressos vip é obrigatória!", 422);
         }
 
-        if(!pistaAmountHalf) {
+        if(!pistaAmountHalf && pistaAmountHalf !== 0) {
             throw new ApiError("A quantidade de ingressos meia-entrada pista é obrigatória!", 422);
         }
 
-        if(!stageAmountHalf) {
+        if(!stageAmountHalf && stageAmountHalf !== 0) {
             throw new ApiError("A quantidade de ingressos meia-entrada stage é obrigatória!", 422);
         }
-
-        if(!vipAmountHalf) {
+        
+        if(!vipAmountHalf && vipAmountHalf !== 0) {
             throw new ApiError("A quantidade de ingressos meia-entrada vip é obrigatória!", 422);
+        }
+
+        if(!freeAmount && freeAmount !== 0) {
+            throw new ApiError("A quantidade de ingressos grátis é obrigatória!", 422);
         }
 
         if(!clientCpf) {
@@ -66,7 +71,8 @@ class MakePurchaseUseCase {
         }
 
         const cardExpiration = new Date(card.expirationDate);
-        const dateNow = new Date(Date.now());
+        const dateNow = new Date();
+        const dateNowFormated = (dateNow.getUTCDate()) + "/" + (dateNow.getMonth() + 1) + "/" + dateNow.getFullYear();
 
         if (cardExpiration < dateNow) {
             throw new ApiError("Cartão de crédito expirado! Não foi possível prosseguir com a compra!", 422);
@@ -79,33 +85,62 @@ class MakePurchaseUseCase {
         await this.saleRepository.create(amount, clientCpf, eventId);
 
         const idSale: any = await this.saleRepository.findIdByCpf(clientCpf);
+
+        const IdsTicketsPista: any = [];
+        const IdsTicketsStage: any = [];
+        const IdsTicketsVip: any = [];
+        const IdsTicketsPistaHalf: any = [];
+        const IdsTicketsStageHalf: any = [];
+        const IdsTicketsVipHalf: any = [];
+        const IdsTicketsFree: any = [];
         
         for (let i = 0; i < pistaAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "Pista", "Inteira", event.valorPista, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Pista", "Inteira", event.valorStage, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsPista.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < stageAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "Stage", "Inteira", event.valorStage, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Stage", "Inteira", event.valorStage, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsStage.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < vipAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "Vip", "Inteira", event.valorVip, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Vip", "Inteira", event.valorVip, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsVip.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < pistaAmountHalf; i++) {
-            await this.ticketRepository.create(clientCpf, "Pista", "Meia-entrada", event.valorPista, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Pista", "Meia-entrada", event.valorPista, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsPistaHalf.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < stageAmountHalf; i++) {
-            await this.ticketRepository.create(clientCpf, "Stage", "Meia-entrada", event.valorStage, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Stage", "Meia-entrada", event.valorStage, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsStageHalf.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < vipAmountHalf; i++) {
-            await this.ticketRepository.create(clientCpf, "Vip", "Meia-entrada", event.valorVip, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Vip", "Meia-entrada", event.valorVip, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsVipHalf.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < freeAmount; i++) {
-            await this.ticketRepository.create(clientCpf, "Pista", "Grátis", 0.00, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(clientCpf, "Pista", "Grátis", 0.00, event.dataEvento, idSale.id);
+            const fileName = newTicket.id.replace(/-/g, ""); 
+            IdsTicketsFree.push(fileName);
+            await generateQrCode(fileName, fileName);
         }
 
         const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.enderecoEventId);
@@ -116,20 +151,23 @@ class MakePurchaseUseCase {
             nameEvent: event.nome,
             amount: pistaAmount,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Pista',
             profile: 'Inteira',
-            value: event.valorPista,
+            value: event.valorStage,
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsPista
         }
 
         const ticketsStageInfo = {
             nameEvent: event.nome,
             amount: stageAmount,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Stage',
@@ -138,12 +176,14 @@ class MakePurchaseUseCase {
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsStage
         }
 
         const ticketsVipInfo = {
             nameEvent: event.nome,
             amount: vipAmount,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Vip',
@@ -152,12 +192,14 @@ class MakePurchaseUseCase {
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsVip
         }
 
         const ticketsPistaHalfInfo = {
             nameEvent: event.nome,
             amount: pistaAmountHalf,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Pista',
@@ -166,12 +208,14 @@ class MakePurchaseUseCase {
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsPistaHalf
         }
 
         const ticketsStageHalfInfo = {
             nameEvent: event.nome,
             amount: stageAmountHalf,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Stage',
@@ -180,12 +224,14 @@ class MakePurchaseUseCase {
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsStageHalf
         }
 
         const ticketsVipHalfInfo = {
             nameEvent: event.nome,
             amount: vipAmountHalf,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'vip',
@@ -194,12 +240,14 @@ class MakePurchaseUseCase {
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsVipHalf
         }
 
         const ticketsFreeInfo = {
             nameEvent: event.nome,
             amount: freeAmount,
             dateEvent,
+            dateNow: dateNowFormated,
             enderecoEvent: `${enderecoEvent.rua}, nº ${enderecoEvent.numero} - ${enderecoEvent.bairro}`,
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Pista',
@@ -208,15 +256,16 @@ class MakePurchaseUseCase {
             dateSale: dateEvent,
             clientCpf,
             clientName,
+            IdsTickets: IdsTicketsFree
         }
 
-        this.emailProvider.sendEmailTicketAttached(email, ticketsPistaInfo);
-        this.emailProvider.sendEmailTicketAttached(email, ticketsStageInfo);
-        this.emailProvider.sendEmailTicketAttached(email, ticketsVipInfo);
-        this.emailProvider.sendEmailTicketAttached(email, ticketsPistaHalfInfo);
-        this.emailProvider.sendEmailTicketAttached(email, ticketsStageHalfInfo);
-        this.emailProvider.sendEmailTicketAttached(email, ticketsVipHalfInfo);
-        this.emailProvider.sendEmailTicketAttached(email, ticketsFreeInfo); 
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsPistaInfo);
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsStageInfo);
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsVipInfo);
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsPistaHalfInfo);
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsStageHalfInfo);
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsVipHalfInfo);
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsFreeInfo); 
     }
 }
 

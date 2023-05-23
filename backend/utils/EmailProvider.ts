@@ -36,7 +36,7 @@ import { resolve } from "path";
     const mail: any = {
       to: to,
       from: 'ticketitas@gmail.com',
-      subject: `Ingressos para ${ticketInfo.nameEvent}`,
+      subject: `TICKETITAS - Ingressos para ${ticketInfo.nameEvent}`,
       html: templateHTML,
       attachments: []
     };
@@ -56,45 +56,56 @@ import { resolve } from "path";
       const printer = new PdfPrinter(fonts);
         
       const docDefinitions: TDocumentDefinitions = {
-            defaultStyle: { font: 'Helvetica'},
+            defaultStyle: {font: 'Helvetica',
+            margin: [0, 5, 0, 5]},
             content: [
-                {
-                    style: 'tableExample',
-                    table: {
+              {
+                image: 'backend/utils/templates/logo.png',
+                alignment: 'center'
+              },
+              {
+                  style: 'tableExample',
+                  table: {
+                      body: [
+                          [{text: `${ticketInfo.nameEvent} - ${ticketInfo.dateEvent}`, fontSize: 14}],
+                          [{text:ticketInfo.enderecoEvent, fontSize: 14}],
+                          [{text:ticketInfo.cidadeEvent, fontSize: 14}]
+                      ]
+                  }, layout: 'noBorders'
+              },
+              {
+                style: 'tableExample',
+                table: {
+                  body: [
+                    [{text: 'INGRESSO', fontSize: 18, bold: true, colSpan: 2}, '',],
+                    [{
+                      style: 'tableExemple',
+                      table: {
                         body: [
-                            [ticketInfo.nameEvent],
-                            [ticketInfo.dateEvent],
-                            [ticketInfo.enderecoEvent],
-                            [ticketInfo.cidadeEvent]
+                          [{text: 'Dados do Ticket: ', fontSize: 14, bold: true}],
+                          [{text: `Setor: ${ticketInfo.sector} - ${ticketInfo.profile}`, fontSize: 12}],
+                          [{text: `Valor: ${ticketInfo.value}`, fontSize: 12}],
+                          [{text: `Data de emissão: ${ticketInfo.dateSale}`, fontSize: 12}],
+                          [{text: 'Dados do Cliente: ', fontSize: 14, bold: true}],
+                          [{text: `${ticketInfo.clientName} - ${ticketInfo.clientCpf}`, fontSize: 12}]
                         ]
-                    }
-                },
-                {
-                    style: 'tableExample',
-                    table: {
-                        body: [
-                            ['INGRESSO'],
-                            [`${ticketInfo.sector} - ${ticketInfo.profile}`],
-                            [ticketInfo.value],
-                            [`Ingresso comprado dia ${ticketInfo.dateSale}`],
-                            ['CLIENTE'],
-                            [`${ticketInfo.clientName} - ${ticketInfo.clientCpf}`]
-                        ]
-                    }
-                },
-                {
-                    style: 'tableExample',
-                    table: {
-                        body: [
-                            ['ATENÇAO'],
-                            ['-Ingressos são pessoais e nominais.'],
-                            ['- Ao comprar o ingresso, você concorda com os termos e políticas do evento.'],
-                            ['-O não comparecimento ao evento invalidará o ingresso e não permitirá reembolso.']
-                        ]
-                    }
+                      }, layout: 'noBorders'
+                    },
+                      {
+                        image: `backend/temp/${ticketInfo.IdsTickets[index]}.jpg`,
+                        alignment: 'center'
+                      }
+                    ]
+                  ]
                 }
-            ]
-      };
+              }
+            ],
+            styles: {
+              tableExample: {
+                margin: [0, 5, 0, 15]
+              }
+            }        
+  };
     
     var pdfDoc = printer.createPdfKitDocument(docDefinitions);
 

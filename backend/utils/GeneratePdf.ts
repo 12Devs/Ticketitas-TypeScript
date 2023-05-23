@@ -23,7 +23,7 @@ class GeneratePdf {
 
 
     public async createTickets (nameEvent: string, sector: string, profile: string, email: string, value: number, dateEvent: Date, enderecoEvent: string, clientName: string, clientCpf: number, amountTickets) {
-
+        
         for (let index = 0; index < amountTickets; index++) {
             const eventDate = new Date(dateEvent);
             const data = (eventDate.getUTCDate()) + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
