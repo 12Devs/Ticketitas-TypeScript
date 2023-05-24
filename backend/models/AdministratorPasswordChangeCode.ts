@@ -5,7 +5,7 @@ import { DataTypes } from "sequelize";
 /**
  * Import of the class {@link Connection}
  */
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 
 /**
  * Class containing the "model" for the password change code of administrator type of users and their respective object type
