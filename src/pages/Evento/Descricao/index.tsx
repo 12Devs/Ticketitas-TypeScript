@@ -10,7 +10,7 @@ import './styleDescricao.css';
 import '../styleGeralEvento.css';
 import '../../../components/Texto/Texto.css';
 
-export default function Descricao({ idEvento }: { idEvento: number }) {
+export default function Descricao({ idEvento }: { idEvento: string }) {
     const [titulo, setTitulo] = useState('Titulo');
     const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
     const [descricao, setDescricao] = useState('Descrição');
@@ -26,13 +26,14 @@ export default function Descricao({ idEvento }: { idEvento: number }) {
 
     useEffect(() => {
         api.get(`/event/${idEvento}`).then((response) => {
+            console.log(response);
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
+            setDataHora(response.data.eventInfos.event.dataEvento);
+            setImageEvent(response.data.eventInfos.event.imageEvent);
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);
-            setImageEvent(response.data.eventInfos.event.imageEvent);
-            setDataHora(response.data.eventInfos.event.dataEvento);
         });
     }, []);
 

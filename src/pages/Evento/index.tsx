@@ -11,7 +11,7 @@ import NavBarGeral from '../../components/NavBarGeral';
 
 export default function Evento() {
     const location = useLocation();
-    var infoID = 0;
+    var infoID = '0';
 
     window.scrollTo(0, 0);
 
@@ -25,7 +25,7 @@ export default function Evento() {
         <Container className='noMarginPadding corPagina' fluid>
 
             <Row>
-                <Descricao idEvento={infoID? infoID : 0} />
+                <Descricao idEvento={infoID? infoID : '0'} />
             </Row>
 
             <Row className='text-start larguraMainContentEventos mt-5'>
