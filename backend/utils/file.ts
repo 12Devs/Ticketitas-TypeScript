@@ -5,11 +5,11 @@ const deleteFile = async (filename: string) => {
     try {
         await fs.promises.stat(filename); //Verifica se o arquivo existe no diretorio
         
-    } catch {
+    } catch (err){
         return;
     }
 
-    fs.promises.unlink(filename); //Remove o arquivo;
+    await fs.promises.unlink(filename); //Remove o arquivo;
 }
 
 

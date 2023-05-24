@@ -2,7 +2,6 @@ import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { EventRepository } from "../../db/EventRepository";
 import { ApiError } from "../../errors/ApiError";
 
-
 class ListOneEventUseCase {
 
     private eventRepository: EventRepository;
@@ -20,7 +19,7 @@ class ListOneEventUseCase {
             throw new ApiError("Evento não encontrado", 400);
         }
 
-        const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.id);
+        const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.enderecoEventId);
 
         
         return { event, enderecoEvent };
