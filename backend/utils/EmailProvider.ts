@@ -27,6 +27,7 @@ import { resolve } from "path";
 
     public async sendEmailTicketAttached(to: string, ticketInfo) {
     
+      
     //Envio do email
     const templatePath = resolve(__dirname, '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
 
@@ -53,7 +54,10 @@ import { resolve } from "path";
 
     for (let index = 0; index < ticketInfo.amount; index++) {
 
-      const printer = new PdfPrinter(fonts);
+      try {
+        await fs.promises.stat(`backend/temp/${ticketInfo.IdsTickets[index]}.jpg`); //Verifica se o arquivo existe no diretorio
+        
+        const printer = new PdfPrinter(fonts);
         
       const docDefinitions: TDocumentDefinitions = {
             defaultStyle: {font: 'Helvetica',
@@ -113,11 +117,16 @@ import { resolve } from "path";
         filename: `ticket.pdf`,
         content: pdfDoc});
     pdfDoc.end();
+    if (ticketInfo.amount !== 0 ){
+      await this.transporter.sendMail(mail);
+    }
+    }
+    catch (err) {
+      await this.sendEmailTicketAttached(to, ticketInfo);
     }
     
-    
-    await this.transporter.sendMail(mail);
+  }
+
   }
 }
-
 export { EmailProvider };

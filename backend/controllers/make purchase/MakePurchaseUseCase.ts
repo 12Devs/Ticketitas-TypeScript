@@ -6,6 +6,7 @@ import { ApiError } from "../../errors/ApiError";
 import { EmailProvider } from "../../utils/EmailProvider";
 import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { generateQrCode } from "../../utils/GenerateQrCode";
+import { deleteFile } from "../../utils/file";
 
 class MakePurchaseUseCase {
 
@@ -265,7 +266,14 @@ class MakePurchaseUseCase {
         await this.emailProvider.sendEmailTicketAttached(email, ticketsPistaHalfInfo);
         await this.emailProvider.sendEmailTicketAttached(email, ticketsStageHalfInfo);
         await this.emailProvider.sendEmailTicketAttached(email, ticketsVipHalfInfo);
-        await this.emailProvider.sendEmailTicketAttached(email, ticketsFreeInfo); 
+        await this.emailProvider.sendEmailTicketAttached(email, ticketsFreeInfo);
+
+        var arrayRemove: any = [];
+        arrayRemove = ticketsPistaInfo.IdsTickets.concat(ticketsStageInfo.IdsTickets, ticketsVipInfo.IdsTickets, ticketsPistaHalfInfo.IdsTickets, ticketsStageHalfInfo.IdsTickets, ticketsVipHalfInfo.IdsTickets, ticketsFreeInfo);
+        
+        for (let img of arrayRemove) {
+            await deleteFile(`./backend/temp/${img}.png`);
+        }
     }
 }
 
