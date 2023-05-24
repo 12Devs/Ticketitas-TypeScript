@@ -14,6 +14,11 @@ import { conn } from "../db/Connection";
  * @type {*}
  */
 const PromoterPasswordChangeCode = conn.define('promoterpasswordchangeCode',{
+    id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true
+    },
     //User password change code
     code:{
         type: DataTypes.STRING,

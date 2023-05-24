@@ -1,9 +1,8 @@
 import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { EventRepository } from "../../db/EventRepository";
-import { ApiError } from "../../errors/ApiError";
 
 
-class ListOneEventUseCase {
+class ListHighlightsUseCase {
 
     private eventRepository: EventRepository;
     private enderecoEventRepository: EnderecoEventRepository;
@@ -13,19 +12,17 @@ class ListOneEventUseCase {
         this.enderecoEventRepository = enderecoEventRepository;
     }
 
-    public async execute (id: string){
-        const event: any = await this.eventRepository.findOneEvent(id);
-    
-        if(!event) {
-            throw new ApiError("Evento não encontrado", 400);
-        }
-
-        const enderecoEvent: any = await this.enderecoEventRepository.findOneEnderecoEvent(event.enderecoEventId);
-
+    public async execute (){
         
-        return { event, enderecoEvent };
+        const allHighlights: any = await this.eventRepository.findAllHighlights();
+
+        for(let highlight of allHighlights) {
+            const enderecoHighlight = await this.enderecoEventRepository.findOneEnderecoEvent(highlight.enderecoEventId);
+            highlight.enderecoEvent = enderecoHighlight;
+        }
+        return allHighlights;
     }
 
 }
 
-export { ListOneEventUseCase };
+export { ListHighlightsUseCase };

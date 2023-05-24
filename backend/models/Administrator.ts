@@ -19,7 +19,7 @@ import { TokenAdministrator } from "./TokenAdministrator";
  */
 const Administrator = conn.define('administrator',{
     //User name
-    name:{
+    nome:{
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -35,12 +35,12 @@ const Administrator = conn.define('administrator',{
         allowNull: false
     },
     //User telephone number
-    phone: { 
+    telefone: { 
         type: DataTypes.INTEGER,
         allowNull: false
     },
     //User once-encrypted password hash
-    password: {
+    senha: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -51,6 +51,12 @@ const Administrator = conn.define('administrator',{
     }
 });
 
-Administrator.hasMany(TokenAdministrator);
+
+
+Administrator.sync({alter: true});
+
+
+    
+//Administrator.hasMany(TokenAdministrator);
 
 export { Administrator };

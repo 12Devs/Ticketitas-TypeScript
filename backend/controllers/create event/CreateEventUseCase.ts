@@ -1,4 +1,5 @@
 import { EventRepository } from "../../db/EventRepository";
+import { TicketRepository } from "../../db/TicketRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
@@ -7,7 +8,6 @@ class CreateEventUseCase {
     private eventRepository: EventRepository;
 
     public constructor (eventRepository: EventRepository) {
-
         this.eventRepository = eventRepository;
     }
 

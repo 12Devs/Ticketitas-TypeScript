@@ -5,7 +5,7 @@ class ListOneEventController {
 
     private listOneEventUseCase: ListOneEventUseCase;
 
-    constructor (listOneEventUseCase: ListOneEventUseCase) {
+    public constructor (listOneEventUseCase: ListOneEventUseCase) {
         this.listOneEventUseCase = listOneEventUseCase;
     }
 

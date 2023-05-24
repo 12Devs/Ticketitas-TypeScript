@@ -10,7 +10,7 @@ class UpdateCardUseCase {
         this.cardRepository = cardRepository;
     }
 
-    public async execute (cpf: number, cardNumber: number, holder: string, expirationDate: string, cvv: number){
+    public async execute (cpf: number, cardNumber: number, holder: string, monthExpirationDate: number, yearExpirationDate: number, cvv: number){
 
         //Validations
         if(!cardNumber) {
@@ -25,7 +25,11 @@ class UpdateCardUseCase {
             throw new ApiError("O nome do titular do cartão é obrigatório!", 422);
         }
 
-        if(!expirationDate) {
+        if(!monthExpirationDate) {
+            throw new ApiError("A data de validade do cartão é obrigatória!", 422);
+        }
+
+        if(!yearExpirationDate) {
             throw new ApiError("A data de validade do cartão é obrigatória!", 422);
         }
 
@@ -40,7 +44,8 @@ class UpdateCardUseCase {
         const salt = await bcrypt.genSalt(11);
         const cardNumberHash = await bcrypt.hash("cardNumber", salt);
         const holderHash = await bcrypt.hash(holder, salt);
-        const expirationDateHash = await bcrypt.hash(expirationDate, salt);
+        const expirationDateHash = new Date(yearExpirationDate,monthExpirationDate);
+        
         const cvvHash = await bcrypt.hash("cvv", salt);
         
         const cardExists: any = await this.cardRepository.findByCpf(cpf);
