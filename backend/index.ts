@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { router } from "./routes/IndexRoutes";
-import { conn } from "./db/Connection";
+import { conn } from "./db/connection";
 import { ApiError } from "./errors/ApiError";
 import cors from "cors";
 import { FillDataBase } from "./config/fillDb";

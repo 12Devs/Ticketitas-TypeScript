@@ -4,42 +4,45 @@ import './AdicionarIngresso.css';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState } from 'react';
 
-export default function AdicionarIngresso() {
+export default function AdicionarIngresso({ event }: { event: any }) {
     var [valorteste, setValorteste] = useState(0);
     const valorLimiteTeste = 10;
 
     // Forma exemplo como o backend envia as informações para o
     var evento = {
-        "event": {
-            "id": 5,
-            "nome": "Festival de Verão Salvador",
-            "descricao": "Festival de Verão Salvador, é um evento musical brasileiro que ocorre anualmente em Salvador, capital da Bahia.",
-            "status": 1,
-            "quantPista": 900000,
-            "quantStage": 20000,
-            "quantVip": 50000,
-            "valorPista": 300,
-            "valorStage": 390,
-            "valorVip": 1032.99,
-            "imageEvent": null,
-            "createdAt": "2023-05-13T22:36:06.000Z",
-            "updatedAt": "2023-05-13T22:36:06.000Z",
-            "promoterCpf": 45850724974,
-            "enderecoEventId": 5
+        "id": 5,
+        "nome": "Festival de Verão Salvador",
+        "descricao": "Festival de Verão Salvador, é um evento musical brasileiro que ocorre anualmente em Salvador, capital da Bahia.",
+        "status": 1,
+        "quantPista": 900000,
+        "quantStage": 20000,
+        "quantVip": 50000,
+        "valorPista": 300,
+        "valorStage": 390,
+        "valorVip": 1032.99,
+        "imageEvent": null,
+        "createdAt": "2023-05-13T22:36:06.000Z",
+        "updatedAt": "2023-05-13T22:36:06.000Z",
+        "promoterCpf": 45850724974,
+        "enderecoEventId": 5
+    }
+
+
+    function subtrai(valor: number, setValor: Function) {
+        if (valor > 0) {
+            setValor((valor - 1));
         }
     }
 
-    function subtrai(valor: number, setValor: Function) {
-        if(valor > 0) {
-            setValor((valor-1));
-        }
-    }
-    
     function soma(valor: number, setValor: Function, valorLimite: number) {
-        if(valor < valorLimite){
-            setValor((valor+1));
+        if (valor < valorLimite) {
+            setValor((valor + 1));
         }
     }
+
+
+    console.log("Evento addIngresso: ", event)
+    // parseInt(quantidade);
 
     return (
         <>
@@ -58,8 +61,8 @@ export default function AdicionarIngresso() {
                                     <h5 className='text-start Texto-Pequeno Texto-Cinza pb-2 fw-light'>
                                         R$ 19,90
                                     </h5>
-                                    <p className='text-start Texto-Cinza' 
-                                        style={{fontSize: '12px'}}>
+                                    <p className='text-start Texto-Cinza'
+                                        style={{ fontSize: '12px' }}>
                                         Disponível até 31/03/2023
                                     </p>
                                 </Col>
@@ -67,7 +70,7 @@ export default function AdicionarIngresso() {
                                 
 
                                 <Col sm={4} className='d-flex justify-content-between align-items-center'>
-                                    <img 
+                                    <img
                                         src='img/add_circle.svg'
                                         width="25"
                                         height="25"
@@ -78,7 +81,7 @@ export default function AdicionarIngresso() {
 
                                     {valorteste}
 
-                                    <img 
+                                    <img
                                         src='img/delete_circle.svg'
                                         width="25"
                                         height="25"
