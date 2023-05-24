@@ -18,7 +18,22 @@ function InputBuscar({ placeholder, controlId, data, setData }:
                 value={data}
                 onChange={(e) => setData(e.target.value)}
             />
+            {/* <InputGroup.Text className='Input-Primario' id="basic-addon1">🔍︎</InputGroup.Text> */}
         </InputGroup>
+
+        // <Form.Group controlId={controlId}>
+        //     <Form.Control
+        //         type="search"
+        //         placeholder={placeholder}
+        //         aria-label="Barra de pesquisa"
+        //         className='Input-Primario Texto-Branco'
+        //         value={data}
+        //         onChange={(e) => setData(e.target.value)}
+        //     />
+        //     {/* <Button variant="none" id="button-addon2">
+        //         🔍︎
+        //     </Button> */}
+        // </Form.Group>
     )
 }
 

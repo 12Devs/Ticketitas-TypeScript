@@ -19,6 +19,9 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
     const [estado, setEstado] = useState('Estado');
     const [imageEvent, setImageEvent] = useState('./img/exemploHeaderEvento.png');
 
+    const [event, setEvent] = useState();
+
+
     const endereco = `${rua} - ${cidade} - ${estado}`;
 
     const dataHoraOBJ = new Date(dataHora);
@@ -34,8 +37,11 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);
+
+            setEvent(response.data.eventInfos.event)
         });
     }, []);
+
 
     return (
         <Container>
@@ -61,7 +67,7 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
                     </Col>
 
                     <Col sm={5} className='pe-5 ps-5'>
-                        <AdicionarIngresso />
+                        <AdicionarIngresso event={event} />
                     </Col>
                 </Row>
             </section>

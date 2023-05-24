@@ -37,7 +37,7 @@ function CarouselPrincipal() {
 
             const handleNavigate = () => {
                 navigate('/evento', { state: { idEvento } });
-              }
+            }
 
             return (
                 <Carousel.Item >
