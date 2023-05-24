@@ -59,7 +59,7 @@ import { resolve } from "path";
         
         const printer = new PdfPrinter(fonts);
         
-      const docDefinitions: TDocumentDefinitions = {
+        const docDefinitions: TDocumentDefinitions = {
             defaultStyle: {font: 'Helvetica',
             margin: [0, 5, 0, 5]},
             content: [
