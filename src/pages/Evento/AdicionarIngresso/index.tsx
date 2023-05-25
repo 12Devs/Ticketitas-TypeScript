@@ -5,9 +5,6 @@ import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 
 export default function AdicionarIngresso({ event }: { event: any }) {
-    var [valorteste, setValorteste] = useState(0);
-    const valorLimiteTeste = 10;
-
 
     const [quantidadePistaInteira, setQuantidadePistaInteira] = useState(0);
     const [quantidadeStageInteira, setQuantidadeStageInteira] = useState(0);
@@ -36,6 +33,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             event
         }
 
+        // colocar o navigate
         console.log(dados)
     }
 
