@@ -157,7 +157,7 @@ class MakePurchaseUseCase {
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Pista',
             profile: 'Inteira',
-            value: event.valorStage,
+            value: event.valorPista,
             dateSale: dateEvent,
             clientCpf,
             clientName,
