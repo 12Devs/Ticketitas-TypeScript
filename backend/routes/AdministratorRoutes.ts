@@ -7,9 +7,14 @@ import { refreshTokenAdministratorController } from '../controllers/refresh toke
 import { imageUpload } from '../utils/ImageUpload';
 import { ensureAuthenticatedAdministrator } from '../middlewares/EnsureAuthenticatedAdministrator';
 import { updateAvatarController } from '../controllers/update user avatar';
+import { listOneAdministratorController } from '../controllers/list one administrator';
 
 
 const administratorRoutes = Router();
+
+administratorRoutes.get("/administrator/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+    return listOneAdministratorController.handle(request, response).catch((error)=>{next(error)});
+});
 
 administratorRoutes.post("/administrator", (request: Request, response: Response, next: NextFunction)=>{
     return createAdministratorController.handle(request, response).catch((error)=>{next(error)});   
