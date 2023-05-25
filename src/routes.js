@@ -6,6 +6,7 @@ import QuemSomos from './pages/QuemSomos';
 import CadastrarCliente from './pages/CadastrarCliente';
 import CadastrarPromoter from './pages/CadastrarPromoter';
 import CadastrarAdmin from './pages/CadastrarAdmin';
+import EditarAdmin from './pages/EditarAdmin';
 import RecuperarSenha from './pages/RecuperarSenha';
 import PrimeiraSenha from './pages/PrimeiraSenha';
 import Footer from './components/Footer';
@@ -25,6 +26,7 @@ export default function AppRouter() {
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter />} />
                     <Route path='cadastrarAdmin' element={<CadastrarAdmin />} />
+                    <Route path='editarAdmin' element={<EditarAdmin/>}/>
                     <Route path='recuperarSenha' element={<RecuperarSenha />} />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='evento' element={<Evento />} />
