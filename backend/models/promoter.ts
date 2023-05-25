@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 import { Event } from "./Event";
 import { TokenPromoter } from "./TokenPromoter";
 import { PromoterRegistrationRequest } from "./PromoterRegistrationRequest";

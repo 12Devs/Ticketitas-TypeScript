@@ -10,77 +10,70 @@ import { api } from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
 import './carousel.css';
 import '../styleHome.css';
-import CarouselItem from '../CarouselItem';
 
 function CarouselPrincipal() {
-  const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
+    const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
-  useEffect(() => { 
-    api.get(`/event`).then((response) => {
-      setArrayEventos(response.data);
-    });
-  }, []);
+    useEffect(() => {
+        api.get(`/event`).then((response) => {
+            setArrayEventos(response.data);
+        });
+    }, []);
 
-  return (
-    <Carousel className='noMarginPadding' variant='dark'>
-      <Carousel.Item className=''>
-            <Container>
-                <Row>
-                    <Col sm={8} className='noMarginPadding'>
+    const navigate = useNavigate();
 
-                        <Image className='configImg' src="img/exemploHeaderEvento.png" />
 
-                    </Col>
-                    <Col sm={4} className=''>
+    function renderCarouselItem(dados: any) {
+
+        if (dados == null) {
+            return (
+                <p>Sem eventos cadastrados</p>
+            )
+        } else {
+            var dataHoraOBJ = new Date(dados.dataEvento);
+            var dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
+
+            var idEvento = dados.id;
+
+            const handleNavigate = () => {
+                navigate('/evento', { state: { idEvento } });
+            }
+
+            return (
+                <Carousel.Item >
+                    <Container>
                         <Row>
-                            <h4 className='Texto-Azul Texto-Pequeno fw-bold'>Data e Hora</h4>
-                        </Row>
-                        <Row>
-                            <h3 className='Texto-Preto Texto-Grande fw-bold'>Evento 1</h3>
-                        </Row>
-                        <Row>
-                            <h5 className='Texto-Preto Texto-MuitoPequeno'>Descrição</h5>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Button variant="outline-primary">Saiba mais</Button>
+                            <Col sm={8} className='noMarginPadding'>
+
+                                <Image className='configImg' src="img/exemploHeaderEvento.png" />
+
+                            </Col>
+                            <Col sm={4} className=''>
+                                <Row>
+                                    <h4 className='Texto-Azul Texto-Pequeno fw-bold'>{dataHoraFormatada}</h4>
+                                </Row>
+                                <Row>
+                                    <h3 className='Texto-Preto Texto-Grande fw-bold'>{dados.nome}</h3>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Button variant="outline-primary" onClick={handleNavigate}>Saiba mais</Button>
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                    </Col>
-                </Row>
-            </Container>
-        </Carousel.Item>
+                    </Container>
+                </Carousel.Item>
+            )
+        }
+    }
 
-        <Carousel.Item className=''>
-            <Container>
-                <Row>
-                    <Col sm={8} className='noMarginPadding'>
-
-                        <Image className='configImg' src="img/exemploHeaderEvento.png" />
-
-                    </Col>
-                    <Col sm={4} className=''>
-                        <Row>
-                            <h4 className='Texto-Azul Texto-Pequeno fw-bold'>Data e Hora</h4>
-                        </Row>
-                        <Row>
-                            <h3 className='Texto-Preto Texto-Grande fw-bold'>Evento 1</h3>
-                        </Row>
-                        <Row>
-                            <h5 className='Texto-Preto Texto-MuitoPequeno'>Descrição</h5>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Button variant="outline-primary">Saiba mais</Button>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </Container>
-        </Carousel.Item>
-        
-    </Carousel>
-  );
+    return (
+        <Carousel className='noMarginPadding' variant='dark'>
+            {renderCarouselItem(arrayEventos.allEvents[0])}
+            {renderCarouselItem(arrayEventos.allEvents[1])}
+        </Carousel>
+    );
 }
 
 export default CarouselPrincipal;

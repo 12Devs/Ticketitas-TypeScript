@@ -7,7 +7,7 @@ import { api } from '../../services/api';
 function CardDestaques() {
   const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
-  useEffect(() => { 
+  useEffect(() => {
     api.get(`/event`).then((response) => {
       setArrayEventos(response.data);
     });
@@ -15,9 +15,9 @@ function CardDestaques() {
 
   return (
     <CardGroup style={{ width: '70vw' }}>
-      <CardEvento dados={arrayEventos.allEvents[0]}/>
-      <CardEvento dados={arrayEventos.allEvents[1]}/>
-      <CardEvento dados={arrayEventos.allEvents[2]}/>
+      <CardEvento dados={arrayEventos.allEvents[0]} />
+      <CardEvento dados={arrayEventos.allEvents[1]} />
+      <CardEvento dados={arrayEventos.allEvents[2]} />
     </CardGroup>
   );
 }

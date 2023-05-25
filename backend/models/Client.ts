@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 import { Card } from "./Card";
 import { TokenClient } from "./TokenClient";
 import { Sale } from "./Sale";
