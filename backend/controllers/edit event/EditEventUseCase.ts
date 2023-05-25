@@ -1,5 +1,7 @@
 import { EventRepository } from "../../db/EventRepository";
 
+
+//class
 class EditEventUseCase{
     private eventRepository: EventRepository;
 
