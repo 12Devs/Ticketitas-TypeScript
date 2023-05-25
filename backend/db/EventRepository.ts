@@ -57,7 +57,6 @@ class EventRepository {
             }
         });
     }
-
     public async setFeatured (id: string){
         await Event.update({
             destaque: true
@@ -68,6 +67,48 @@ class EventRepository {
             }
         });
     }
+
+
+
+
+
+    public async updateData (promoterCpf: number, id: string, nome: string, descricao: string, dataEvento: Date, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
+
+        await Event.update({
+            nome : nome,
+            descricao : descricao,
+            dataEvento: dataEvento,
+            quantPista : quantPista,
+            quantStage : quantStage,
+            quantVip : quantVip,
+            valorPista : valorPista,
+            valorStage : valorStage,
+            valorVip : valorVip,
+            cep : cep,
+            estado : estado,
+            cidade : cidade,
+            bairro : bairro,
+            rua : rua,
+            numero : numero
+        },
+        {
+            where: {
+                id: id,
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
 
 export { EventRepository };
