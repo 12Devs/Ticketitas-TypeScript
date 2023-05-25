@@ -157,7 +157,7 @@ class MakePurchaseUseCase {
             cidadeEvent: `${enderecoEvent.cidade} - ${enderecoEvent.estado}`,
             sector: 'Pista',
             profile: 'Inteira',
-            value: event.valorStage,
+            value: event.valorPista,
             dateSale: dateEvent,
             clientCpf,
             clientName,
@@ -272,7 +272,7 @@ class MakePurchaseUseCase {
         arrayRemove = ticketsPistaInfo.IdsTickets.concat(ticketsStageInfo.IdsTickets, ticketsVipInfo.IdsTickets, ticketsPistaHalfInfo.IdsTickets, ticketsStageHalfInfo.IdsTickets, ticketsVipHalfInfo.IdsTickets, ticketsFreeInfo);
         
         for (let img of arrayRemove) {
-            await deleteFile(`./backend/temp/${img}.png`);
+            await deleteFile(`backend/temp/${img}.jpg`);
         }
     }
 }

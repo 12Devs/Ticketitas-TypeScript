@@ -1,22 +1,21 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/connection";
 
-const TokenClient = conn.define('tokenClient', {
+
+const PromoterRegistrationRequest = conn.define('promoterRegistrationRequest', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    refreshToken: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    expiresDate: {
-        type: DataTypes.DATE,
-        allowNull: false 
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 });
 
-
-
-export { TokenClient };
+export { PromoterRegistrationRequest }

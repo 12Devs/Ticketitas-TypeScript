@@ -20,6 +20,15 @@ class ClientRepository {
         
     }
 
+    public async findOneClient(cpf: number) {
+
+        const clientExists = await Client.findOne({raw: true,
+            where: {
+            cpf: cpf
+        }});
+        return clientExists;
+    }
+
     public async findByCpf (cpf: number) {
         const cpfExists = await Client.findOne({raw: true, attributes: ['cpf'], where: {
             cpf: cpf

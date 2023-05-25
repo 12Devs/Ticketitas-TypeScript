@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 import { Sale } from "./Sale";
 
 const Event = conn.define('event', {
@@ -56,6 +56,16 @@ const Event = conn.define('event', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
+    },
+    porcentagemMeia: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 40.00
+    },
+    porcentagemGratis: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0.00
     }
 });
 
