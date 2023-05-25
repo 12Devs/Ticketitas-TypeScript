@@ -62,10 +62,16 @@ import { resolve } from "path";
         const docDefinitions: TDocumentDefinitions = {
             defaultStyle: {font: 'Helvetica',
             margin: [0, 5, 0, 5]},
+            footer: {
+              columns: [
+                { text: 'Ticketitas™', alignment: 'center' }
+              ]
+            },
             content: [
               {
-                image: 'backend/utils/templates/logo.png',
-                alignment: 'center'
+                image: 'backend/utils/templates/logoTicket.png',
+                alignment: 'center',
+                width: 300
               },
               {
                   style: 'tableExample',
@@ -86,12 +92,12 @@ import { resolve } from "path";
                       style: 'tableExemple',
                       table: {
                         body: [
+                          [{text: 'Dados do Cliente: ', fontSize: 14, bold: true}],
+                          [{text: `${ticketInfo.clientName} - ${ticketInfo.clientCpf}`, fontSize: 12,  margin: [ 0, 0, 0, 20 ]}],
                           [{text: 'Dados do Ticket: ', fontSize: 14, bold: true}],
                           [{text: `Setor: ${ticketInfo.sector} - ${ticketInfo.profile}`, fontSize: 12}],
-                          [{text: `Valor: ${ticketInfo.value}`, fontSize: 12}],
-                          [{text: `Data de emissão: ${ticketInfo.dateSale}`, fontSize: 12}],
-                          [{text: 'Dados do Cliente: ', fontSize: 14, bold: true}],
-                          [{text: `${ticketInfo.clientName} - ${ticketInfo.clientCpf}`, fontSize: 12}]
+                          [{text: `Valor: R$ ${ticketInfo.value}`, fontSize: 12}],
+                          [{text: `Data de emissão: ${ticketInfo.dateNow}`, fontSize: 12}]
                         ]
                       }, layout: 'noBorders'
                     },

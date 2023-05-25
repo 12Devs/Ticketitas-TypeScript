@@ -1,13 +1,16 @@
 import bcrypt from 'bcrypt';
 import { ApiError } from '../../errors/ApiError';
 import { PromoterRepository } from '../../db/PromoterRepository';
+import { PromoterRegistrationRequestRepository } from '../../db/PromoterRegistrationRequestRepository';
 
 class CreatePromoterUseCase {
 
-    private promoterRepository: PromoterRepository
+    private promoterRepository: PromoterRepository;
+    private promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository;
 
-    constructor (promoterRepository: PromoterRepository) {
+    constructor (promoterRepository: PromoterRepository, promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository) {
         this.promoterRepository =  promoterRepository;
+        this.promoterRegistrationRequestRepository = promoterRegistrationRequestRepository;
     }
     
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
@@ -54,7 +57,10 @@ class CreatePromoterUseCase {
 
         const salt = await bcrypt.genSalt(12);
         const senhaHash = await bcrypt.hash(senha, salt);
+
         await this.promoterRepository.create(nome, cpf, email, telefone, senhaHash, cep, cidade, estado, bairro, rua, numero);
+
+        await this.promoterRegistrationRequestRepository.create(nome, email, cpf);
     }
 }
 
