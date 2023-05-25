@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { conn } from "../db/Connection";
 import { Event } from "./Event";
 import { TokenPromoter } from "./TokenPromoter";
+import { PromoterRegistrationRequest } from "./PromoterRegistrationRequest";
 
 
 const Promoter = conn.define('promoter',{
@@ -29,11 +30,17 @@ const Promoter = conn.define('promoter',{
     avatarImage: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 });
 
 Promoter.hasMany(Event);
 Promoter.hasMany(TokenPromoter);
+Promoter.hasOne(PromoterRegistrationRequest);
 
 export { Promoter };
 

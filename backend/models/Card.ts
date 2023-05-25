@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize"
 import { conn } from "../db/Connection"
 
-
 const Card = conn.define('card', {
     id: {
         type: DataTypes.UUID,
