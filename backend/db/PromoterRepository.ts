@@ -1,5 +1,5 @@
 
-import { Promoter } from '../models/promoter';
+import { Promoter } from '../models/Promoter';
 import { CreateEnderecoUserController } from '../controllers/create user endereco/CreateEnderecoUserController';
 import { createEnderecoUserController } from '../controllers/create user endereco/index';
 

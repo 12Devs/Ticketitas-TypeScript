@@ -25,7 +25,7 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
   });
 });
 
-conn.sync().then(async () => {
+conn.sync({}).then(async () => {
   //  await FillDataBase.fillClients();
   //  await FillDataBase.fillPromoters();
   //  await FillDataBase.fillEvents();
