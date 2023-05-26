@@ -21,7 +21,7 @@ const AdministratorPasswordChangeCode = conn.define('administratorpasswordchange
     },
     //User CPF number
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     }

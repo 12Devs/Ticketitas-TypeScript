@@ -21,7 +21,7 @@ const ClientPasswordChangeCode = conn.define('clientpasswordchangeCode',{
     },
     //User CPF number
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     }

@@ -21,7 +21,7 @@ const PromoterPasswordChangeCode = conn.define('promoterpasswordchangeCode',{
     },
     //User CPF number
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     }

@@ -75,7 +75,7 @@ class PromoterPasswordChangeCodeRepository {
      * @returns {Array} Array of promoters password change code entries, matching the search (or none if no match is found)
      */
     public async findByCode (code: string) {
-        const codeExists = await PromoterPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const codeExists = await PromoterPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             code: code
         }});
         return codeExists;
@@ -91,7 +91,7 @@ class PromoterPasswordChangeCodeRepository {
      * @returns {Array} Array of promoters password change code entries, matching the search (or none if no match is found)
      */
     public async findByCpf (cpf: number) {
-        const cpfExists = await PromoterPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const cpfExists = await PromoterPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             cpf: cpf
         }});
         return cpfExists;

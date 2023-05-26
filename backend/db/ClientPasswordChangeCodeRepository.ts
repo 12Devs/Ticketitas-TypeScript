@@ -76,7 +76,7 @@ class ClientPasswordChangeCodeRepository {
      * @returns {Array} Array of clients password change code entries, matching the search (or none if no match is found)
      */
     public async findByCode (code: string) {
-        const codeExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const codeExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             code: code
         }});
         return codeExists;
@@ -92,7 +92,7 @@ class ClientPasswordChangeCodeRepository {
      * @returns {Array} Array of clients password change code entries, matching the search (or none if no match is found)
      */
     public async findByCpf (cpf: number) {
-        const cpfExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const cpfExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             cpf: cpf
         }});
         return cpfExists;
