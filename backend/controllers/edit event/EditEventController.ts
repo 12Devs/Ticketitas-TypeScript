@@ -11,12 +11,12 @@ class EditEventController {
     
 
     //Alterando dados do evento
-    public async handle (request: Request, response: Response, id: string){
-        const allEvents = await this.editEventUseCase.execute(id);
+    public async handle (request: Request, response: Response, promoterCpf: number, id: string, nome: string, descricao: string, dataEvento: Date, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
+        const oneEvent = await this.editEventUseCase.execute(promoterCpf, id, nome, descricao, dataEvento, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, estado, cidade, bairro, rua, numero);
 
         
         
-        return response.status(200).json({allEvents});
+        return response.status(200).json({oneEvent});
     }
 
 

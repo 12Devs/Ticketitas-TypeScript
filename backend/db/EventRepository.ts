@@ -101,14 +101,8 @@ class EventRepository {
 
 
 
-
-
-
-
-
-
-
-
 }
+
+
 
 export { EventRepository };

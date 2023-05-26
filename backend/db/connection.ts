@@ -9,7 +9,7 @@ dotenv.config();
 // const dbHost = process.env.DB_HOST as string;
 // const dbPort: any = process.env.DB_PORT;
 
-const conn = new Sequelize('ticketitasdb', 'root', '',{
+const conn = new Sequelize('ticketitasdb', 'root', 'password',{
     host: 'localhost',
     dialect: 'mysql'
 });
