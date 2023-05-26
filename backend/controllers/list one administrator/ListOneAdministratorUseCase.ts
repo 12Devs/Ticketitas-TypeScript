@@ -5,11 +5,9 @@ import { ApiError } from "../../errors/ApiError";
 class ListOneAdministratorUseCase {
 
     private administratorRepository: AdministratorRepository;
-    private enderecoUserRepository: EnderecoUserRepository;
 
-    constructor (administratorRepository: AdministratorRepository, enderecoUserRepository: EnderecoUserRepository) {
+    constructor (administratorRepository: AdministratorRepository) {
         this.administratorRepository = administratorRepository;
-        this.enderecoUserRepository = enderecoUserRepository;
     }
 
     public async execute (cpf: number){
