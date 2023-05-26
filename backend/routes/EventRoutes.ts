@@ -6,7 +6,8 @@ import { imageUpload } from '../utils/ImageUpload';
 import { updateImageEventController } from '../controllers/update image event';
 import { listOneEventController } from '../controllers/list one event/index';
 import { setFeaturedEventController } from '../controllers/set featured event/index';
-import { updateStatusEventController } from '../controllers/suspend event promoter';
+import { updateStatusEventController } from '../controllers/update status event';
+import { ensureAuthenticatedAdministrator } from '../middlewares/EnsureAuthenticatedAdministrator';
 
 const eventRoutes = Router();
 
@@ -26,11 +27,15 @@ eventRoutes.patch("/image", ensureAuthenticatedPromoter, imageUpload.single("ima
     return updateImageEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-eventRoutes.patch("/update-status", (request: Request, response: Response, next: NextFunction)=>{
+eventRoutes.patch("/update-status", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-eventRoutes.patch("/set-featured/:id", (request: Request, response: Response, next: NextFunction)=>{
+eventRoutes.patch("/administrator/update-status", ensureAuthenticatedAdministrator,(request: Request, response: Response, next: NextFunction)=>{
+    return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+eventRoutes.patch("/set-featured/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return setFeaturedEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 

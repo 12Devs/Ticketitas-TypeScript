@@ -5,9 +5,7 @@
  */
 import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
 /**
- * Import of the instance {@link createEnderecoController}
- */
-import { createEnderecoUserController } from "../controllers/create user endereco/index";
+ 
 /**
  * Import of the class {@link Administrator}
  */
@@ -26,10 +24,6 @@ class AdministratorRepository {
      * Declaration of the {@link createEnderecoController} instance
      * @date 5/8/2023 - 8:57:34 PM
      *
-     * @private Marks this object as private
-     * @type {createEnderecoController}
-     */
-    private createEnderecoUserController: CreateEnderecoUserController;
     
     /**
      * Declaration of the instance of this class (AdministratorRepository)
@@ -47,9 +41,6 @@ class AdministratorRepository {
      * @constructor Marks this part of the code as a constructor
      * @public Marks this constructor as having "public" visibility
      */
-    public constructor (){
-        this.createEnderecoUserController = createEnderecoUserController;
-    }
 
     /**
      * Method for requesting the insertion of (a) new row(s) in the server database in order to store the information of a new administrator registry
