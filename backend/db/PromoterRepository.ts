@@ -43,8 +43,9 @@ class PromoterRepository {
         return emailExists;
     }
 
-    public async findByEmailAndSenha (email: string, senha: string) {
-        const promoter = await Promoter.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'], where: {
+    public async findInfosByEmail (email: string) {
+        const promoter = await Promoter.findOne({raw: true,
+            where: {
             email: email
         }});
         return promoter;
