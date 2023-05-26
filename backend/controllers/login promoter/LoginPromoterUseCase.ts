@@ -45,7 +45,7 @@ class LoginPromoterUseCase {
             throw new ApiError("Cadastro aguardando aprovação", 422);
         }
 
-        if (infoPromoter.status !== true) {
+        if (infoPromoter.status != true) {
             throw new ApiError("Promoter suspenso", 422);
         }
 

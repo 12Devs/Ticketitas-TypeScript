@@ -69,6 +69,17 @@ class PromoterRepository {
         });
     }
 
+    public async updateStatus (cpf: number){
+        await Promoter.update({
+            status: true
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
     public async updatePassword (cpf: number, newPassword: string){
         await Promoter.update({
             senha: newPassword

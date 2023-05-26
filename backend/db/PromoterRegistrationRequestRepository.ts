@@ -15,6 +15,12 @@ class PromoterRegistrationRequestRepository {
 
         return registrationRequest;
     }
+
+    public async remove (promoterCpf: number) {
+        await PromoterRegistrationRequest.destroy({
+            where: {promoterCpf: promoterCpf}
+        });
+    }
 }
 
 export { PromoterRegistrationRequestRepository };
