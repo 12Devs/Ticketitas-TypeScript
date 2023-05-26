@@ -6,6 +6,7 @@ import { enderecoRoutes } from "./EnderecoRoutes";
 import { promoterRoutes } from './PromoterRoutes'
 import { saleRoutes } from "./SaleRoutes";
 import { highlightsRoutes } from "./HighlightsRoutes";
+import { testRoutes } from "./TestRoutes";
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/event', eventRoutes);
 router.use('/endereco', enderecoRoutes);
 router.use('/sale', saleRoutes);
 router.use('/highlights', highlightsRoutes);
+router.use('/test', testRoutes);
 
 export {router};
