@@ -26,6 +26,7 @@ class EventRepository {
 
     public async findAllHighlights () {
         const allHighlights = await Event.findAll({raw: true, where: {
+            status: true,
             destaque: true
         }});
         return allHighlights;
