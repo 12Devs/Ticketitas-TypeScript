@@ -40,8 +40,13 @@ class UpdateUserPasswordUseCase {
             if (!passwordCheck) {
                 throw new ApiError("Senha incorreta. Caso tenha esquecido sua senha, solicite uma mudança de senha provendo seu email.", 422);
             }
+
+            //Encryption of the password
+            const salt = await bcrypt.genSalt(12);
+            const passwordHash = await bcrypt.hash(newPassword, salt);
             
-            await this.clientRepository.updatePassword(cpfClient.cpf, newPassword);
+            
+            await this.clientRepository.updatePassword(cpfClient.cpf, passwordHash);
         } 
         else if (tipo === "promoter"){
             const cpfPromoter: any = await this.promoterRepository.findByCpfAndSenha(cpf);
@@ -50,8 +55,12 @@ class UpdateUserPasswordUseCase {
             if (!passwordCheck) {
                 throw new ApiError("Senha incorreta. Caso tenha esquecido sua senha, solicite uma mudança de senha provendo seu email.", 422);
             }
+
+            //Encryption of the password
+            const salt = await bcrypt.genSalt(12);
+            const passwordHash = await bcrypt.hash(newPassword, salt);
             
-            await this.promoterRepository.updatePassword(cpfPromoter.cpf, newPassword);
+            await this.promoterRepository.updatePassword(cpfPromoter.cpf, passwordHash);
         } 
         else if (tipo === "administrator"){
             const cpfAdministrator: any = await this.administratorRepository.findByCpfAndSenha(cpf);
@@ -60,8 +69,13 @@ class UpdateUserPasswordUseCase {
             if (!passwordCheck) {
                 throw new ApiError("Senha incorreta. Caso tenha esquecido sua senha, solicite uma mudança de senha provendo seu email.", 422);
             }
+
             
-            await this.administratorRepository.updatePassword(cpfAdministrator.cpf, newPassword);
+            //Encryption of the password
+            const salt = await bcrypt.genSalt(12);
+            const passwordHash = await bcrypt.hash(newPassword, salt);
+            
+            await this.administratorRepository.updatePassword(cpfAdministrator.cpf, passwordHash);
         } 
     }
 
