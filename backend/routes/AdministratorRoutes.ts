@@ -9,7 +9,6 @@ import { updateUserCpfController } from '../controllers/update user cpf';
 import { updateUserNameController } from '../controllers/update user name';
 import { updateUserEmailController } from '../controllers/update user email';
 import { updateUserPasswordController } from '../controllers/update user password';
-import { updateUserAddressController } from '../controllers/update user address';
 import { updateUserPhoneController } from '../controllers/update user phone';
 
 const administratorRoutes = Router();
@@ -48,10 +47,6 @@ administratorRoutes.post("/administrator/update-email", ensureAuthenticatedAdmin
 
 administratorRoutes.post("/administrator/update-password", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserPasswordController.handle(request, response).catch((error)=>{next(error)}); 
-});
-
-administratorRoutes.post("/administrator/update-address", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
-    return updateUserAddressController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
 administratorRoutes.post("/administrator/update-phone", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
