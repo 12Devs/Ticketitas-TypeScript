@@ -39,9 +39,10 @@ class PromoterPasswordChangeCodeRepository {
      */
     public async create (code: string, cpf: number){
         
+        console.log("this is 1");
         //Executes the database actions
         await PromoterPasswordChangeCode.create({code, cpf});
-        
+        console.log("this is 2");
     }
 
     /**
@@ -97,13 +98,13 @@ class PromoterPasswordChangeCodeRepository {
         return cpfExists;
     }
 
-    public async updateCode (code: string){
+    public async updateCode (oldCode: string, newCode: string){
         await PromoterPasswordChangeCode.update({
-            code: code
+            code: newCode
         },
         {
             where: {
-                code: code
+                code: oldCode
             }
         });
     }

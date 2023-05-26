@@ -6,7 +6,7 @@ import { NewPasswordClientController } from "./NewPasswordClientController";
 const clientPasswordChangeCodeRepository = new ClientPasswordChangeCodeRepository();
 const clientRepository = new ClientRepository();
 
-const newPasswordClientUseCase = new NewPasswordClientUseCase(clientRepository);
+const newPasswordClientUseCase = new NewPasswordClientUseCase(clientRepository, clientPasswordChangeCodeRepository);
 const newPasswordClientController = new NewPasswordClientController(newPasswordClientUseCase);
 
 export { newPasswordClientController };

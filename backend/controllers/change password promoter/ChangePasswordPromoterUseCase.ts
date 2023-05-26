@@ -1,7 +1,7 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
 /**
- * Import of the class {@link PromoterRepository}
+ * Import of the class {@link ClientRepository}
  */
 import { PromoterRepository } from "../../db/PromoterRepository";
 /**
@@ -54,14 +54,18 @@ class ChangePasswordPromoterUseCase {
     private sendEmail: SendEmail;
 
     /**
-     * Constructor for instances of {@link PromoterRepository}
+     * Constructor for instances of {@link PromoterRepository}, {@link PromoterPasswordChangeCodeRepository} and {@link SendEmail}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {PromoterRepository} promoterRepository Private instance of the PromoterRepository class
+     * @param {PromoterPasswordChangeCodeRepository} promoterPasswordChangeCodeRepository Private instance of the PromoterPasswordChangeCodeRepository class
+     * @param {SendEmail} sendEmail Private instance of the SendEmail class
      */
-    constructor (promoterRepository: PromoterRepository) {
+    constructor (promoterRepository: PromoterRepository, promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository, sendEmail: SendEmail) {
         this.promoterRepository =  promoterRepository;
+        this.promoterPasswordChangeCodeRepository = promoterPasswordChangeCodeRepository;
+        this.sendEmail = sendEmail;
     }
 
     /**
@@ -89,10 +93,10 @@ class ChangePasswordPromoterUseCase {
         }
         
         //Random code obtained from the password change code repository
-        const randomCode = this.promoterPasswordChangeCodeRepository.generateUniqueCode();
+        const randomCode = await this.promoterPasswordChangeCodeRepository.generateUniqueCode();
 
         //Message subject text
-        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR DE EVENTOS RECEBIDO";
+        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR RECEBIDO";
         //Message description text
         const message = (`O código para alteração da sua senha é: ${randomCode}`);
 
@@ -102,7 +106,7 @@ class ChangePasswordPromoterUseCase {
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
-        const cpfForTheEmailExists = await this.promoterPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
+        const cpfForTheEmailExists:any = await this.promoterPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
 
         //Conditional for existing or non-existing password change code registry
         if(!cpfForTheEmailExists) {
@@ -112,7 +116,7 @@ class ChangePasswordPromoterUseCase {
         }
         else{
             //Updating of an existing one
-            this.promoterPasswordChangeCodeRepository.updateCode(randomCode);
+            this.promoterPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
         }
     }
 }

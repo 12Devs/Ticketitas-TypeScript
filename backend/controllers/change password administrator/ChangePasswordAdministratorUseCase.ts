@@ -93,7 +93,6 @@ class ChangePasswordAdministratorUseCase {
         //Random code obtained from the password change code repository
         const randomCode = await this.administratorPasswordChangeCodeRepository.generateUniqueCode();
 
-        console.log("AQUIII: ", randomCode);
         //Message subject text
         const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
         //Message description text
@@ -105,7 +104,7 @@ class ChangePasswordAdministratorUseCase {
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
-        const cpfForTheEmailExists = await this.administratorPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
+        const cpfForTheEmailExists:any = await this.administratorPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
 
         //Conditional for existing or non-existing password change code registry
         if(!cpfForTheEmailExists) {
@@ -115,7 +114,7 @@ class ChangePasswordAdministratorUseCase {
         }
         else{
             //Updating of an existing one
-            this.administratorPasswordChangeCodeRepository.updateCode(randomCode);
+            this.administratorPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
         }
     }
 }

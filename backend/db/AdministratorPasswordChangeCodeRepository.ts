@@ -97,13 +97,13 @@ class AdministratorPasswordChangeCodeRepository {
         return cpfExists;
     }
 
-    public async updateCode (code: string){
+    public async updateCode (oldCode: string, newCode: string){
         await AdministratorPasswordChangeCode.update({
-            code: code
+            code: newCode
         },
         {
             where: {
-                code: code
+                code: oldCode
             }
         });
     }

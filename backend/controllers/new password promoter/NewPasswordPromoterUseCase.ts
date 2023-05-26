@@ -45,14 +45,16 @@ class NewPasswordPromoterUseCase {
     private promoterRepository: PromoterRepository;
 
     /**
-     * Constructor for instances of {@link PromoterRepository}
+     * Constructor for instances of {@link PromoterRepository} and {@link PromoterPasswordChangeCodeRepository}
      * @date @date 5/17/2023 - 1:32:27 AM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {PromoterRepository} promoterRepository Private instance of the PromoterRepository class
+     * @param {PromoterPasswordChangeCodeRepository} promoterPasswordChangeCodeRepository Private instance of the PromoterPasswordChangeCodeRepository class
      */
-    constructor (promoterRepository: PromoterRepository) {
+    constructor (promoterRepository: PromoterRepository, promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository) {
         this.promoterRepository =  promoterRepository;
+        this.promoterPasswordChangeCodeRepository = promoterPasswordChangeCodeRepository;
     }
 
     /**
@@ -65,6 +67,16 @@ class NewPasswordPromoterUseCase {
      * @returns {*}
      */
     public async execute (userPasswordChangeCode: string, newPassword: string, newPasswordConfirmation: string) {
+        
+        //Password cannot be empty
+        if (!newPassword){
+            throw new ApiError("A nova senha não pode ser vazia!", 422);
+        }
+
+        //Password confirmation cannot be empty
+        if (!newPasswordConfirmation){
+            throw new ApiError("A confirmação da nova senha não pode ser vazia!", 422);
+        }
 
         //Confirmation matches the first entry
         if (newPassword !== newPasswordConfirmation){

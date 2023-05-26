@@ -6,7 +6,7 @@ import { NewPasswordPromoterController } from "./NewPasswordPromoterController";
 const promoterPasswordChangeCodeRepository = new PromoterPasswordChangeCodeRepository();
 const promoterRepository = new PromoterRepository();
 
-const newPasswordPromoterUseCase = new NewPasswordPromoterUseCase(promoterRepository);
+const newPasswordPromoterUseCase = new NewPasswordPromoterUseCase(promoterRepository, promoterPasswordChangeCodeRepository);
 const newPasswordPromoterController = new NewPasswordPromoterController(newPasswordPromoterUseCase);
 
 export { newPasswordPromoterController };

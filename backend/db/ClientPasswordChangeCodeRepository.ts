@@ -98,19 +98,18 @@ class ClientPasswordChangeCodeRepository {
         return cpfExists;
     }
 
-    public async updateCode (code: string){
+    public async updateCode (oldCode: string, newCode: string){
         await ClientPasswordChangeCode.update({
-            code: code
+            code: newCode
         },
         {
             where: {
-                code: code
+                code: oldCode
             }
         });
     }
 
     public async generateUniqueCode () {
-
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long password change code
         const randomCode = await randomstring.generate(32);
 

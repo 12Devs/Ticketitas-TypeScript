@@ -6,7 +6,7 @@ import { NewPasswordAdministratorController } from "./NewPasswordAdministratorCo
 const administratorPasswordChangeCodeRepository = new AdministratorPasswordChangeCodeRepository();
 const administratorRepository = new AdministratorRepository();
 
-const newPasswordAdministratorUseCase = new NewPasswordAdministratorUseCase(administratorRepository);
+const newPasswordAdministratorUseCase = new NewPasswordAdministratorUseCase(administratorRepository, administratorPasswordChangeCodeRepository);
 const newPasswordAdministratorController = new NewPasswordAdministratorController(newPasswordAdministratorUseCase);
 
 export { newPasswordAdministratorController };

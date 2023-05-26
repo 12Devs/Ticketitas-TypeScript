@@ -45,14 +45,16 @@ class NewPasswordAdministratorUseCase {
     private administratorRepository: AdministratorRepository;
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}
+     * Constructor for instances of {@link AdministratorRepository} and {@link AdministratorPasswordChangeCodeRepository}
      * @date @date 5/17/2023 - 1:32:27 AM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
+     * @param {AdministratorPasswordChangeCodeRepository} administratorPasswordChangeCodeRepositor Private instance of the AdministratorPasswordChangeCodeRepositor class
      */
-    constructor (administratorRepository: AdministratorRepository) {
+    constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository) {
         this.administratorRepository =  administratorRepository;
+        this.administratorPasswordChangeCodeRepository = administratorPasswordChangeCodeRepository;
     }
 
     /**
@@ -65,6 +67,16 @@ class NewPasswordAdministratorUseCase {
      * @returns {*}
      */
     public async execute (userPasswordChangeCode: string, newPassword: string, newPasswordConfirmation: string) {
+
+        //Password cannot be empty
+        if (!newPassword){
+            throw new ApiError("A nova senha não pode ser vazia!", 422);
+        }
+
+        //Password confirmation cannot be empty
+        if (!newPasswordConfirmation){
+            throw new ApiError("A confirmação da nova senha não pode ser vazia!", 422);
+        }
 
         //Confirmation matches the first entry
         if (newPassword !== newPasswordConfirmation){

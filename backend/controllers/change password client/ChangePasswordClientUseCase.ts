@@ -54,14 +54,18 @@ class ChangePasswordClientUseCase {
     private sendEmail: SendEmail;
 
     /**
-     * Constructor for instances of {@link ClientRepository}
+     * Constructor for instances of {@link ClientRepository}, {@link ClientPasswordChangeCodeRepository} and {@link SendEmail}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {ClientRepository} clientRepository Private instance of the ClientRepository class
+     * @param {ClientPasswordChangeCodeRepository} clientPasswordChangeCodeRepository Private instance of the ClientPasswordChangeCodeRepository class
+     * @param {SendEmail} sendEmail Private instance of the SendEmail class
      */
-    constructor (clientRepository: ClientRepository) {
+    constructor (clientRepository: ClientRepository, clientPasswordChangeCodeRepository: ClientPasswordChangeCodeRepository, sendEmail: SendEmail) {
         this.clientRepository =  clientRepository;
+        this.clientPasswordChangeCodeRepository = clientPasswordChangeCodeRepository;
+        this.sendEmail = sendEmail;
     }
 
     /**
@@ -89,7 +93,7 @@ class ChangePasswordClientUseCase {
         }
         
         //Random code obtained from the password change code repository
-        const randomCode = this.clientPasswordChangeCodeRepository.generateUniqueCode();
+        const randomCode = await this.clientPasswordChangeCodeRepository.generateUniqueCode();
 
         //Message subject text
         const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO CLIENTE RECEBIDO";
@@ -102,7 +106,7 @@ class ChangePasswordClientUseCase {
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
-        const cpfForTheEmailExists = await this.clientPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
+        const cpfForTheEmailExists:any = await this.clientPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
 
         //Conditional for existing or non-existing password change code registry
         if(!cpfForTheEmailExists) {
@@ -112,7 +116,7 @@ class ChangePasswordClientUseCase {
         }
         else{
             //Updating of an existing one
-            this.clientPasswordChangeCodeRepository.updateCode(randomCode);
+            this.clientPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
         }
     }
 }
