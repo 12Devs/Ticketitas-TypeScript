@@ -47,6 +47,9 @@ class UpdateUserAddressUseCase {
         else if (tipo === "promoter"){
             await this.promoterRepository.updateAddress(cpf, cep, cidade, estado, bairro, rua, numero);
         }
+        else {
+            throw new ApiError("Administradores não possuem endereço de residência em seu cadastro!", 422);
+        }
     }
 
 }
