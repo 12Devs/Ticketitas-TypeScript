@@ -113,7 +113,7 @@ class AdministratorRepository {
      * @param {string} password user once-encrypted password hash
      * @returns {Array} Array of administrators found, matching the search (or none if no match is found)
      */
-    public async findByEmailAndSenha (email: string, password: string) {
+    public async findByEmailAndSenha (email: string) {
         const administrator = await Administrator.findOne({raw: true, attributes: ['name', 'cpf', 'email', 'password'], where: {
             email: email
         }});
@@ -125,6 +125,13 @@ class AdministratorRepository {
             cpf: cpf
         }});
         return cpfAndAvatar;
+    }
+
+    public async findByCpfAndSenha (cpf: number) {
+        const cpfAndSenha = await Administrator.findOne({raw: true, attributes: ['cpf', 'password'], where: {
+            cpf: cpf
+        }});
+        return cpfAndSenha;
     }
 
     public async updateAvatar (cpf: number, avatarImage: any){
@@ -141,6 +148,50 @@ class AdministratorRepository {
     public async updatePassword (cpf: number, newPassword: string){
         await Administrator.update({
             password: newPassword
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateCpf (cpf: number, newCpf: number){
+        await Administrator.update({
+            cpf: newCpf
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateName (cpf: number, newName: string){
+        await Administrator.update({
+            name: newName
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateEmail (cpf: number, newEmail: string){
+        await Administrator.update({
+            email: newEmail
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updatePhone (cpf: number, newPhone: number){
+        await Administrator.update({
+            phone: newPhone
         },
         {
             where: {

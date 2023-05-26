@@ -7,9 +7,12 @@ import { refreshTokenPromoterController } from '../controllers/refresh token pro
 import { imageUpload } from '../utils/ImageUpload';
 import { ensureAuthenticatedPromoter } from '../middlewares/EnsureAuthenticatedPromoter';
 import { updateAvatarController } from '../controllers/update user avatar';
-//import { updateUserCpfController } from '../controllers/update user cpf';
-//import { updateUserNameController } from '../controllers/update user name';
-//import { updateUserEmailController } from '../controllers/update user email';
+import { updateUserCpfController } from '../controllers/update user cpf';
+import { updateUserNameController } from '../controllers/update user name';
+import { updateUserEmailController } from '../controllers/update user email';
+import { updateUserPasswordController } from '../controllers/update user password';
+import { updateUserAddressController } from '../controllers/update user address';
+import { updateUserPhoneController } from '../controllers/update user phone';
 
 const promoterRoutes = Router();
 
@@ -37,17 +40,29 @@ promoterRoutes.patch("/promoter/avatar", ensureAuthenticatedPromoter, imageUploa
     return updateAvatarController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-//promoterRoutes.patch("/promoter/update-cpf", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
-//    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
-//});
+promoterRoutes.post("/promoter/update-cpf", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
+});
 
-//promoterRoutes.patch("/promoter/update-name", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
-   // return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 
-//});
+promoterRoutes.post("/promoter/update-name", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 
+});
 
-//promoterRoutes.post("/promoter/update-email", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
-    //return updateUserEmailController.handle(request, response).catch((error)=>{next(error)}); 
-//});
+promoterRoutes.post("/promoter/update-email", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return updateUserEmailController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+promoterRoutes.post("/promoter/update-password", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return updateUserPasswordController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+promoterRoutes.post("/promoter/update-address", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return updateUserAddressController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+promoterRoutes.post("/promoter/update-phone", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return updateUserPhoneController.handle(request, response).catch((error)=>{next(error)}); 
+});
 
 
 export { promoterRoutes };
