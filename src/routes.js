@@ -14,6 +14,7 @@ import PrimeiraSenha from './pages/PrimeiraSenha';
 import Footer from './components/Footer';
 import Evento from './pages/Evento';
 import LoginAdm from './pages/LoginAdm';
+import Perfil from './pages/Perfil';
 
 
 export default function AppRouter() {
@@ -34,6 +35,7 @@ export default function AppRouter() {
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='evento' element={<Evento />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>
+                    <Route path='perfil' element={<Perfil/>}/>
                 </Routes>
                 <Footer />
             </Router>
