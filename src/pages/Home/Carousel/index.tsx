@@ -70,8 +70,8 @@ function CarouselPrincipal() {
 
     return (
         <Carousel className='noMarginPadding' variant='dark'>
-            {renderCarouselItem(arrayEventos.allEvents[0])}
             {renderCarouselItem(arrayEventos.allEvents[1])}
+            {renderCarouselItem(arrayEventos.allEvents[2])}
         </Carousel>
     );
 }

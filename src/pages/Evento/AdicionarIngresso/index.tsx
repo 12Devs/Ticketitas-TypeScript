@@ -224,97 +224,11 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Ingressos</h4>
 
             <div className='Modal-Ingresos p-3'>
-                
                 <Modal.Dialog className='modal-dialog-scrollable'>
                     <Modal.Body>
-<<<<<<< HEAD
-                        <Container>
-                            <Row>
-                                <Col sm={8} className=''>
-                                    <h4 className='text-start Texto-Pequeno Texto-Preto fw-bold'>
-                                        Meia-Entrada
-                                    </h4>
-                                    <h5 className='text-start Texto-Pequeno Texto-Cinza pb-2 fw-light'>
-                                        R$ 19,90
-                                    </h5>
-                                    <p className='text-start Texto-Cinza'
-                                        style={{ fontSize: '12px' }}>
-                                        Disponível até 31/03/2023
-                                    </p>
-                                </Col>
-
-                                
-
-                                <Col sm={4} className='d-flex justify-content-between align-items-center'>
-                                    <img
-                                        src='img/add_circle.svg'
-                                        width="25"
-                                        height="25"
-                                        className="d-inline-block"
-                                        alt='Adicionar'
-                                        onClick={() => soma(valorteste, setValorteste, valorLimiteTeste)}
-                                    />
-
-                                    {valorteste}
-
-                                    <img
-                                        src='img/delete_circle.svg'
-                                        width="25"
-                                        height="25"
-                                        className="d-inline-block"
-                                        alt='Remover'
-                                        onClick={() => subtrai(valorteste, setValorteste)}
-                                    />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col sm={8} className=''>
-                                    <h4 className='text-start Texto-Pequeno Texto-Preto fw-bold'>
-                                        Inteira
-                                    </h4>
-                                    <h5 className='text-start Texto-Pequeno Texto-Cinza pb-2 fw-light'>
-                                        R$ 39,90
-                                    </h5>
-                                    <p className='text-start Texto-Cinza' 
-                                        style={{fontSize: '12px'}}>
-                                        Disponível até 31/03/2023
-                                    </p>
-                                </Col>
-
-                                
-
-                                <Col sm={4} className='d-flex justify-content-between align-items-center'>
-                                    <img 
-                                        src='img/add_circle.svg'
-                                        width="25"
-                                        height="25"
-                                        className="d-inline-block"
-                                        alt='Adicionar'
-                                        onClick={() => soma(valorteste, setValorteste, valorLimiteTeste)}
-                                    />
-
-                                    {valorteste}
-
-                                    <img 
-                                        src='img/delete_circle.svg'
-                                        width="25"
-                                        height="25"
-                                        className="d-inline-block"
-                                        alt='Remover'
-                                        onClick={() => subtrai(valorteste, setValorteste)}
-                                    />
-                                </Col>
-                            </Row>
-
-
-                            <hr></hr>
-                        </Container>
-=======
                         {renderPistaInteira()}
                         {renderStageInteira()}
                         {renderVipInteira()}
->>>>>>> 5d86ed49e581f8c0461d236d11e35fa2e4aad11b
                     </Modal.Body>
 
                     <Modal.Footer className='justify-content-center'>
