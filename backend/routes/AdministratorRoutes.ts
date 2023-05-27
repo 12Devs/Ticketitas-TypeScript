@@ -10,6 +10,9 @@ import { updateUserNameController } from '../controllers/update user name';
 import { updateUserEmailController } from '../controllers/update user email';
 import { updateUserPasswordController } from '../controllers/update user password';
 import { updateUserPhoneController } from '../controllers/update user phone';
+import { createSuperAdministratorController } from '../controllers/create super administrator/index';
+
+import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config/env"
 
 const administratorRoutes = Router();
 
@@ -51,6 +54,17 @@ administratorRoutes.post("/administrator/update-password", ensureAuthenticatedAd
 
 administratorRoutes.post("/administrator/update-phone", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserPhoneController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+administratorRoutes.get("/administrator/super/:id", (request: Request, response: Response, next: NextFunction)=>{
+    const generationCode = request.params.id
+
+    if (generationCode !== null && generationCode !== undefined && generationCode === superAdminGenerationCode) {
+        return createSuperAdministratorController.handle(request, response).catch((error)=>{next(error)});
+    }
+    else {
+        return response.status(201).json({message: "Código de Geração de Super Administradores Inválido!"})
+    }
 });
 
 
