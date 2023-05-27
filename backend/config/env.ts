@@ -14,7 +14,7 @@ const SUPER_ADMIN_GENERATION_CODE= "GeraIssoPraMim2023ESNaMalevolenciaDoPaiBola"
 const SUPER_ADMIN_INFO= 
 [
     {
-        "email": "chefao@email.com", 
+        "email": "tofstreak01@gmail.com",
         "password": "umaSenhaParaTodosModificar07457",
         "name": "Poderoso Chefao",
         "cpf": 99999999999,
