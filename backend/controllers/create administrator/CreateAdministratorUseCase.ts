@@ -18,7 +18,12 @@ import randomstring from 'randomstring';
 import { SendEmail } from "../../utils/SendEmail";
 /**
  * Import of the {@link https://www.npmjs.com/package/bcrypt bcrypt} module
- */import bcrypt from 'bcrypt';
+ */
+import bcrypt from 'bcrypt';
+/**
+ * Import of the class {@link SuperAdministratorRelationRepository}
+ */
+import { SuperAdministratorRelationRepository } from "../../db/SuperAdministratorRelationRepository";
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
@@ -48,15 +53,27 @@ class CreateAdministratorUseCase {
     private sendEmail: SendEmail;
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}
+     * Creates an instance of {@link SuperAdministratorRelationRepository}
+     * @date 5/18/2023 - 22:25:48 PM
+     *
+     * @private Marks this instance as having "private" visibility
+     * @type {SuperAdministratorRelationRepository}
+     */
+    private superAdministratorRelationRepository: SuperAdministratorRelationRepository;
+
+    /**
+     * Constructor for instances of {@link AdministratorRepository}, {@link SendEmail} and {@link SuperAdministratorRelationRepository}
      * @date 5/8/2023 - 7:12:30 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
+     * @param {SendEmail} sendEmail Private instance of the SendEmail class
+     * @param {SuperAdministratorRelationRepository} superAdministratorRelationRepository Private instance of the SuperAdministratorRelationRepository class
      */
-    constructor (administratorRepository: AdministratorRepository, sendEmail: SendEmail) {
+    constructor (administratorRepository: AdministratorRepository, sendEmail: SendEmail, superAdministratorRelationRepository: SuperAdministratorRelationRepository) {
         this.administratorRepository =  administratorRepository;
         this.sendEmail = sendEmail;
+        this.superAdministratorRelationRepository = superAdministratorRelationRepository;
     }
     
     /**
@@ -71,8 +88,20 @@ class CreateAdministratorUseCase {
      * @param {number} phone user telephone number
      * @returns {*}
      */
-    public async execute (name: string, cpf: number, email: string, phone: number) {
+    public async execute (name: string, cpf: number, email: string, phone: number, superAdminCpf:number, tipo: string) {
         
+        //Type of user is "administrator"
+        if (tipo !== "administrator") {
+            throw new ApiError("Esta tarefa só pode ser executada por administradores autorizados!", 422);
+        }
+
+        //Look for the logged-in administrator CPF in the "super admin" table
+        const superAdministrator = await this.superAdministratorRelationRepository.findByCpf(superAdminCpf);
+        
+        if(!superAdministrator) {
+            throw new ApiError("Administradores regulares não estão autorizados a cadastrar novos administradores!", 422);
+        }
+
         //Not-null user name
         if (!name){
             throw new ApiError("O name é obrigatório!", 422);

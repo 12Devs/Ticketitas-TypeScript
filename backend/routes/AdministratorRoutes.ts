@@ -16,8 +16,8 @@ import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config
 
 const administratorRoutes = Router();
 
-administratorRoutes.post("/administrator", (request: Request, response: Response, next: NextFunction)=>{
-    return createAdministratorController.handle(request, response).catch((error)=>{next(error)});   
+administratorRoutes.post("/administrator", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return createAdministratorController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
 administratorRoutes.post("/administrator/login", (request: Request, response: Response, next: NextFunction)=>{
