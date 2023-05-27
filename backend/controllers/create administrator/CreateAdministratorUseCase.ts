@@ -37,6 +37,15 @@ class CreateAdministratorUseCase {
      * @type {AdministratorRepository}
      */
     private administratorRepository: AdministratorRepository
+    
+    /**
+     * Creates an instance of {@link SendEmail}
+     * @date 5/18/2023 - 22:25:48 PM
+     *
+     * @private Marks this instance as having "private" visibility
+     * @type {SendEmail}
+     */
+    private sendEmail: SendEmail;
 
     /**
      * Constructor for instances of {@link AdministratorRepository}
@@ -49,15 +58,6 @@ class CreateAdministratorUseCase {
         this.administratorRepository =  administratorRepository;
         this.sendEmail = sendEmail;
     }
-
-    /**
-     * Creates an instance of {@link SendEmail}
-     * @date 5/18/2023 - 22:25:48 PM
-     *
-     * @private Marks this instance as having "private" visibility
-     * @type {SendEmail}
-     */
-    private sendEmail: SendEmail;
     
     /**
      * Method for executing the creation of an administrator object using the parameters supplied by its controller
@@ -110,9 +110,6 @@ class CreateAdministratorUseCase {
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long random temporary password
         const password = await randomstring.generate(32);
 
-        //Logging of the unencrypted version in the console
-        console.log(`\n SENHA ALEATORIA DO ADMINISTRADOR DE EMAIL ${email}: ${password} \n`);
-
         //Encryption of the password
         const salt = await bcrypt.genSalt(12);
         const passwordHash = await bcrypt.hash(password, salt);
@@ -123,7 +120,7 @@ class CreateAdministratorUseCase {
         //Message subject text
         const subject = "BEM-VINDO, ADMINISTRADOR";
         //Message description text
-        const message = ("Como é procedimento padrão aos novos administradores, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal; Atenciosamente, Equipe Ticketitas.");
+        const message = (`  Caro ${name}:\n\nComo é procedimento padrão aos novos administradores regulares, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
         await this.sendEmail.sendEmail(email, subject, message);

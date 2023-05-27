@@ -98,7 +98,7 @@ class ChangePasswordClientUseCase {
         //Message subject text
         const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO CLIENTE RECEBIDO";
         //Message description text
-        const message = (`O código para alteração da sua senha é: ${randomCode}`);
+        const message = (`  Caro Cliente:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
         await this.sendEmail.sendEmail(email, subject, message);

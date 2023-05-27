@@ -54,11 +54,13 @@ class ChangePasswordAdministratorUseCase {
     private sendEmail: SendEmail;
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}
+     * Constructor for instances of {@link AdministratorRepository}, {@link AdministratorPasswordChangeCodeRepository} and {@link SendEmail}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
+     * @param {AdministratorPasswordChangeCodeRepository} administratorPasswordChangeCodeRepository Private instance of the AdministratorPasswordChangeCodeRepository class
+     * @param {SendEmail} sendEmail Private instance of the SendEmail class
      */
     constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository, sendEmail: SendEmail) {
         this.administratorRepository =  administratorRepository;
@@ -96,7 +98,7 @@ class ChangePasswordAdministratorUseCase {
         //Message subject text
         const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
         //Message description text
-        const message = (`O código para alteração da sua senha é: ${randomCode}`);
+        const message = (`  Caro Administrador:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
         await this.sendEmail.sendEmail(email, subject, message);
