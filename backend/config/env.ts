@@ -16,7 +16,7 @@ const SUPER_ADMIN_INFO=
     {
         "email": "tofstreak01@gmail.com",
         "password": "umaSenhaParaTodosModificar07457",
-        "name": "Poderoso Chefao",
+        "name": "Escravo do MI",
         "cpf": 99999999999,
         "phone": 5575998765432
     }
