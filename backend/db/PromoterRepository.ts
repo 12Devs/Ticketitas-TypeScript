@@ -36,6 +36,15 @@ class PromoterRepository {
         return cpfExists;
     }
 
+    public async findStatusByCpf (cpf: number) {
+        const promoterExists = await Promoter.findOne({raw: true,
+            attributes: ['cpf','status'],
+            where: {
+            cpf: cpf
+        }});
+        return promoterExists;
+    }
+
     public async findByEmail (email: string) {
         const emailExists = await Promoter.findOne({raw: true, attributes: ['cpf'], where: {
             email: email
@@ -69,7 +78,7 @@ class PromoterRepository {
         });
     }
 
-    public async updateStatus (cpf: number){
+    public async updateStatusRegistration (cpf: number){
         await Promoter.update({
             status: true
         },
@@ -80,6 +89,17 @@ class PromoterRepository {
         });
     }
 
+    public async updateStatus (cpf: number, newStatus: boolean){
+        await Promoter.update({
+            status: newStatus
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+    
     public async updatePassword (cpf: number, newPassword: string){
         await Promoter.update({
             senha: newPassword
