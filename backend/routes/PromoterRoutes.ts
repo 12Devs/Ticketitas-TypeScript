@@ -40,9 +40,9 @@ promoterRoutes.patch("/promoter/avatar", ensureAuthenticatedPromoter, imageUploa
     return updateAvatarController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-promoterRoutes.post("/promoter/update-cpf", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
-    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
-});
+//promoterRoutes.post("/promoter/update-cpf", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+//    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
+//});
 
 promoterRoutes.post("/promoter/update-name", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 

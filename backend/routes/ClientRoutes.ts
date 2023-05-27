@@ -45,9 +45,9 @@ clientRoutes.post("/client/card", ensureAuthenticatedClient, (request: Request, 
     return updateCardController.handle(request, response).catch((error)=>{next(error)});
 });
 
-clientRoutes.post("/client/update-cpf", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
-    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
-});
+//clientRoutes.post("/client/update-cpf", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
+//    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
+//});
 
 clientRoutes.post("/client/update-name", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 

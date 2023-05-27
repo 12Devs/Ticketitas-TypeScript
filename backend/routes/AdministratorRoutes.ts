@@ -36,9 +36,9 @@ administratorRoutes.post("/administrator/refresh-token", (request: Request, resp
     return refreshTokenAdministratorController.handle(request, response).catch((error)=>{next(error)});
 });
 
-administratorRoutes.post("/administrator/update-cpf", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
-    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
-});
+//administratorRoutes.post("/administrator/update-cpf", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+//    return updateUserCpfController.handle(request, response).catch((error)=>{next(error)}); 
+//});
 
 administratorRoutes.post("/administrator/update-name", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 
