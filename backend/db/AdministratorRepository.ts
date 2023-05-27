@@ -71,6 +71,15 @@ class AdministratorRepository {
         
     }
 
+    public async findOneAdministrator(cpf: number) {
+
+        const AdministratorExists = await Administrator.findOne({raw: true,
+            where: {
+            cpf: cpf
+        }});
+        return AdministratorExists;
+    }
+
     /**
      * Method for searching an administrator by their CPF number
      * @date 5/8/2023 - 8:57:34 PM

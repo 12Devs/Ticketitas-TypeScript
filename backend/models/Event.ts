@@ -56,6 +56,16 @@ const Event = conn.define('event', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
+    },
+    porcentagemMeia: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 40.00
+    },
+    porcentagemGratis: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0.00
     }
 });
 

@@ -7,9 +7,14 @@ import { refreshTokenPromoterController } from '../controllers/refresh token pro
 import { imageUpload } from '../utils/ImageUpload';
 import { ensureAuthenticatedPromoter } from '../middlewares/EnsureAuthenticatedPromoter';
 import { updateAvatarController } from '../controllers/update user avatar';
+import { listOnePromoterController } from '../controllers/list one promoter';
 
 
 const promoterRoutes = Router();
+
+promoterRoutes.get("/promoter/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+    return listOnePromoterController.handle(request, response).catch((error)=>{next(error)});
+});
 
 promoterRoutes.post("/promoter", (request: Request, response: Response, next: NextFunction)=>{
     return createPromoterController.handle(request, response).catch((error)=>{next(error)});   

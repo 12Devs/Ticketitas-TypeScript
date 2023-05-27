@@ -8,8 +8,13 @@ import { updateAvatarController } from '../controllers/update user avatar/index'
 import { imageUpload } from '../utils/ImageUpload';
 import { updateCardController } from '../controllers/update card/index';
 import { refreshTokenClientController } from '../controllers/refresh token client/index';
+import { listOneClientController } from '../controllers/list one client';
 
 const clientRoutes = Router();
+
+clientRoutes.get("/client/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+    return listOneClientController.handle(request, response).catch((error)=>{next(error)});
+});
 
 clientRoutes.post("/client", (request: Request, response: Response, next: NextFunction)=>{
     return createClientController.handle(request, response).catch((error)=>{next(error)});
