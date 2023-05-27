@@ -6,6 +6,10 @@ import { DataTypes } from "sequelize";
  * Import of the class {@link Connection}
  */
 import { conn } from "../db/Connection";
+/**
+ * Import of the class {@link Administrator}
+ */
+import { Administrator } from "./Administrator";
 
 /**
  * Class containing the "model" for the cpf relation of "super user" kind of administrator
@@ -18,7 +22,11 @@ const SuperAdministratorRelation = conn.define('superadminrelation',{
     cpf:{
         type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        references: {
+            model: Administrator,
+            key: 'cpf'
+        }
     }
 });
 

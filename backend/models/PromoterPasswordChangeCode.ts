@@ -6,6 +6,10 @@ import { DataTypes } from "sequelize";
  * Import of the class {@link Connection}
  */
 import { conn } from "../db/Connection";
+/**
+ * Import of the class {@link Promoter}
+ */
+import { Promoter } from "./Promoter";
 
 /**
  * Class containing the "model" for the password change code of promoter type of users and their respective object type
@@ -23,7 +27,11 @@ const PromoterPasswordChangeCode = conn.define('promoterpasswordchangeCode',{
     cpf:{
         type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        references: {
+            model: Promoter,
+            key: 'cpf'
+        }
     }
 });
 
