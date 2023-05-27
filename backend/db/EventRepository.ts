@@ -19,6 +19,20 @@ class EventRepository {
         });
     }
 
+    public async makeSale (id: string, promoterCpf: number, pistaAmount: number, stageAmount: number, vipAmount: number){
+        await Event.update({
+            quantPista: pistaAmount,
+            quantStage: stageAmount,
+            quantVip: vipAmount
+        },
+        {
+            where: {
+                id: id,
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
     public async findAllEvents () {
         const allEvents = await Event.findAll();
         return allEvents;
