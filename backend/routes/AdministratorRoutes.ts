@@ -42,7 +42,7 @@ administratorRoutes.patch("/administrator/avatar", ensureAuthenticatedAdministra
     return updateAvatarController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-administratorRoutes.post("/administrator/aprove-registration/:promoterCpf", (request: Request, response: Response, next: NextFunction)=>{
+administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", (request: Request, response: Response, next: NextFunction)=>{
     return aprovePromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
 });
 
