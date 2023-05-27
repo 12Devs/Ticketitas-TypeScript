@@ -26,6 +26,7 @@ class EventRepository {
 
     public async findAllHighlights () {
         const allHighlights = await Event.findAll({raw: true, where: {
+            status: true,
             destaque: true
         }});
         return allHighlights;
@@ -46,6 +47,14 @@ class EventRepository {
         return idAndAvatar;
     }
 
+    public async findByIdAndCpfPromoter (id: string, promoterCpf: number) {
+        const belongsToPromoter = await Event.findOne({raw: true, attributes: ['promoterCpf', 'status'], where: {
+            id: id,
+            promoterCpf: promoterCpf
+        }});
+        return belongsToPromoter;
+    }
+
     public async updateImage (id: string, promoterCpf: number, imageEvent: any){
         await Event.update({
             imageEvent: imageEvent
@@ -57,6 +66,19 @@ class EventRepository {
             }
         });
     }
+
+    public async updateStatus (id: string, promoterCpf: number, newStatus: boolean){
+        await Event.update({
+            status: newStatus
+        },
+        {
+            where: {
+                id: id,
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
     public async setFeatured (id: string){
         await Event.update({
             destaque: true

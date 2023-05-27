@@ -43,8 +43,9 @@ class PromoterRepository {
         return emailExists;
     }
 
-    public async findByEmailAndSenha (email: string, senha: string) {
-        const promoter = await Promoter.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'], where: {
+    public async findInfosByEmail (email: string) {
+        const promoter = await Promoter.findOne({raw: true,
+            where: {
             email: email
         }});
         return promoter;
@@ -60,6 +61,17 @@ class PromoterRepository {
     public async updateAvatar (cpf: number, avatarImage: any){
         await Promoter.update({
             avatarImage: avatarImage
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateStatus (cpf: number){
+        await Promoter.update({
+            status: true
         },
         {
             where: {

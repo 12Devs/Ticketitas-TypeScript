@@ -25,10 +25,11 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
   });
 });
 
-conn.sync({force:true}).then(async () => {
-  //await FillDataBase.fillClients();
-   //await FillDataBase.fillPromoters();
-   //await FillDataBase.fillEvents();
+conn.sync().then(async () => {
+  //  await FillDataBase.fillClients();
+  //  await FillDataBase.fillPromoters();
+  //  await FillDataBase.fillSuperAdministrator();
+  //  await FillDataBase.fillEvents();
   app.listen(process.env.PORT_DEV, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
 

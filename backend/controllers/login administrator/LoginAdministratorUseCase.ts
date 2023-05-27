@@ -35,7 +35,7 @@ class LoginAdministratorUseCase {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.senha);
+        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.password);
 
         if (!checkSenha) {
             throw new ApiError("Email ou senha incorretos", 422);

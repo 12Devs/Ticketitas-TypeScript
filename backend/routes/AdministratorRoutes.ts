@@ -8,6 +8,7 @@ import { imageUpload } from '../utils/ImageUpload';
 import { ensureAuthenticatedAdministrator } from '../middlewares/EnsureAuthenticatedAdministrator';
 import { updateAvatarController } from '../controllers/update user avatar';
 import { listOneAdministratorController } from '../controllers/list one administrator';
+import { aprovePromoterRegistrationController } from '../controllers/approve promoter registration';
 
 
 const administratorRoutes = Router();
@@ -40,5 +41,8 @@ administratorRoutes.patch("/administrator/avatar", ensureAuthenticatedAdministra
     return updateAvatarController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
+administratorRoutes.post("/administrator/aprove-registration/:promoterCpf", (request: Request, response: Response, next: NextFunction)=>{
+    return aprovePromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
+});
 
 export { administratorRoutes };

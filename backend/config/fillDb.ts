@@ -1,10 +1,13 @@
+import { CreateAdministratorUseCase } from "../controllers/create administrator/CreateAdministratorUseCase";
 import { CreateClientUseCase } from "../controllers/create client/CreateClientUseCase";
 import { CreateEventUseCase } from "../controllers/create event/CreateEventUseCase";
 import { CreatePromoterUseCase } from "../controllers/create promoter/CreatePromoterUseCase";
+import { AdministratorRepository } from "../db/AdministratorRepository";
 import { ClientRepository } from "../db/ClientRepository";
 import { EventRepository } from "../db/EventRepository";
 import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistrationRequestRepository";
 import { PromoterRepository } from "../db/PromoterRepository";
+import bcrypt from 'bcrypt';
 
 class FillDataBase {
 
@@ -26,6 +29,13 @@ class FillDataBase {
         await createPromoterUseCase.execute("Ian Promoter", 75316609549, "joaogabriel@email.com", 75981275522, "123abc", "123abc", 48725000, "Ichu", "BA", "Troca Tapa", "Rua do Problema", 2);
 
         await createPromoterUseCase.execute("Caldinho Promoter", 82231237709, "caldinhopromoter@email.com", 75991151505, "123abc", "123abc", 45400000, "Valença", "BA", "Centro", "Rua da Festa", 22);
+    }
+
+    public static async fillSuperAdministrator() {
+        const administratorRepository = new AdministratorRepository();
+        const salt = await bcrypt.genSalt(12);
+        const senhaHash = await bcrypt.hash("12devsticketitas", salt);
+        administratorRepository.create("12Devs", 0, "ticketitas@gmail.com", 0, senhaHash);
     }
 
     public static async fillEvents() {

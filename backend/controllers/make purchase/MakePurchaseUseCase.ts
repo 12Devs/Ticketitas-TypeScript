@@ -81,6 +81,14 @@ class MakePurchaseUseCase {
 
         const event: any = await this.eventRepository.findOneEvent(eventId);
 
+        if (!event) {
+            throw new ApiError("Evento não encontrado", 422);
+        }
+
+        if (event.status == false) {
+            throw new ApiError("Evento suspenso! não é possível vender ingressos!", 422);
+        }
+
         const amount = (pistaAmount*event.valorPista) + (stageAmount*event.valorStage) + (vipAmount*event.valorVip) + ((pistaAmountHalf*event.valorPista)/2) + ((stageAmountHalf*event.valorStage)/2) + ((vipAmountHalf*event.valorVip)/2);
 
         await this.saleRepository.create(amount, clientCpf, eventId);
@@ -96,49 +104,49 @@ class MakePurchaseUseCase {
         const IdsTicketsFree: any = [];
         
         for (let i = 0; i < pistaAmount; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Pista", "Inteira", event.valorStage, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Pista", "Inteira", event.valorPista, event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsPista.push(fileName);
             await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < stageAmount; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Stage", "Inteira", event.valorStage, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Stage", "Inteira", event.valorStage, event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsStage.push(fileName);
             await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < vipAmount; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Vip", "Inteira", event.valorVip, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Vip", "Inteira", event.valorVip, event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsVip.push(fileName);
             await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < pistaAmountHalf; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Pista", "Meia-entrada", event.valorPista, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Pista", "Meia-entrada", (event.valorPista/2), event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsPistaHalf.push(fileName);
             await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < stageAmountHalf; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Stage", "Meia-entrada", event.valorStage, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Stage", "Meia-entrada", (event.valorStage/2), event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsStageHalf.push(fileName);
             await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < vipAmountHalf; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Vip", "Meia-entrada", event.valorVip, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Vip", "Meia-entrada", (event.valorVip/2), event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsVipHalf.push(fileName);
             await generateQrCode(fileName, fileName);
         }
 
         for (let i = 0; i < freeAmount; i++) {
-            const newTicket: any = await this.ticketRepository.create(clientCpf, "Pista", "Grátis", 0.00, event.dataEvento, idSale.id);
+            const newTicket: any = await this.ticketRepository.create(event.nome, clientCpf, "Pista", "Grátis", 0.00, event.dataEvento, idSale.id);
             const fileName = newTicket.id.replace(/-/g, ""); 
             IdsTicketsFree.push(fileName);
             await generateQrCode(fileName, fileName);
