@@ -65,9 +65,9 @@ class CreatePromoterUseCase {
         await this.promoterRegistrationRequestRepository.create(nome, email, cpf);
         
         //Message subject text
-        //const subject = "BEM-VINDO, PROMOTOR DE VENDAS";
+        const subject = "BEM-VINDO, PROMOTOR DE VENDAS";
         //Message description text
-        //const message = (`  Caro ${nome}:\n\nÉ com prazer que damos as boas-vindas a um novo promotor em nossa plataforma! Aguarde a liberação por parte um de nossos colaboradores para poder registrar seus eventos;\n\n      Atenciosamente, Equipe Ticketitas.`);
+        const message = (`  Caro ${nome}:\n\nÉ com prazer que damos as boas-vindas a um novo promotor em nossa plataforma! Aguarde a liberação por parte um de nossos colaboradores para poder registrar seus eventos;\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
         //await this.sendEmail.sendEmail(email, subject, message);
