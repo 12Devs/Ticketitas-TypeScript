@@ -1,18 +1,13 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link CreateSuperAdministratorUseCase}
- */
+//Import of the CreateSuperAdministratorUseCase class
 import { CreateSuperAdministratorUseCase as CreateSuperAdministratorUseCase } from "./CreateSuperAdministratorUseCase";
-/**
- * Import of the Request and Response submodules of the {@link https://www.npmjs.com/package/express express} module
- */
-import { Request, Response } from "express";
 
-import {SUPER_ADMIN_INFO as superAdminInfo} from "../../config/env"
+import { Request, Response } from "express"; //Import of the Request and Response submodules of the express module (https://www.npmjs.com/package/express)
+import {SUPER_ADMIN_INFO as superAdminInfo} from "../../config/env" //Import of the super administrator user information from the config file (config/env.ts)
 
 /**
- * Class for controlling the creation of an administrator type of user
+ * Class for controlling the creation of a super administrator type of user
  * @date 5/8/2023 - 4:56:44 PM
  * 
  * @typedef {CreateSuperAdministratorController}
@@ -23,13 +18,13 @@ class CreateSuperAdministratorController {
      * Creates an instance of {@link CreateSuperAdministratorUseCase}
      * @date 5/8/2023 - 4:56:44 PM
      *
-     * @private Marks this instance as having "private" visility
+     * @private Marks this instance as having "private" visibility
      * @type {CreateSuperAdministratorUseCase}
      */
     private createSuperAdministratorUseCase: CreateSuperAdministratorUseCase;
 
     /**
-     * Constructor for instances of {@link CreateSuperAdministratorController}
+     * Constructor for instances of {@link CreateSuperAdministratorUseCase}
      * @date 5/8/2023 - 4:56:44 PM
      *
      * @constructor Marks this part of the code as a constructor
@@ -40,7 +35,7 @@ class CreateSuperAdministratorController {
     }
 
     /**
-     * Method for requesting the creation of an administrator and forwarding the response received from such a request
+     * Method for requesting the creation of super administrators and forwarding the response received from such a request
      * @date 5/8/2023 - 4:56:43 PM
      *
      * @public Marks this method as having "public" visibility
@@ -51,9 +46,11 @@ class CreateSuperAdministratorController {
      */
     public async handle (request: Request, response: Response){
         
+        //Looping through the array of super administrator info dictionaries
         for (var index in superAdminInfo) {
             const actualAdminInfo = superAdminInfo[index];
             
+            //Executes the Use Case for every info dictionary by passing the information
             await this.createSuperAdministratorUseCase.execute(actualAdminInfo.name, actualAdminInfo.cpf, actualAdminInfo.email, actualAdminInfo.phone, actualAdminInfo.password);
         }
             
@@ -63,5 +60,4 @@ class CreateSuperAdministratorController {
 
 }
 
-//Class export declarator
-export { CreateSuperAdministratorController };
+export { CreateSuperAdministratorController }; //Class export declarator

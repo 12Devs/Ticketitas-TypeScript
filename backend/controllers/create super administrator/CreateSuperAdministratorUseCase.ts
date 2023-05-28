@@ -1,20 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link AdministratorRepository}
- */
+//Import of the repository classes
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-/**
- * Import of the class {@link SendEmail}
- */
-import { SendEmail } from "../../utils/SendEmail";
-/**
- * Import of the class {@link SuperAdministratorRelationRepository}
- */
 import { SuperAdministratorRelationRepository} from "../../db/SuperAdministratorRelationRepository";
-/**
- * Import of the {@link https://www.npmjs.com/package/bcrypt bcrypt} module
- */import bcrypt from 'bcrypt';
+
+import bcrypt from 'bcrypt'; // Import of the bcrypt module (https://www.npmjs.com/package/bcrypt)
+import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
@@ -117,7 +108,9 @@ class CreateSuperAdministratorUseCase {
             isThisLoopValid = false;
         }
 
+        //Checks if the current administrator object can be created
         if(isThisLoopValid === true) {
+            
             //Encryption of the password
             const salt = await bcrypt.genSalt(12);
             const passwordHash = await bcrypt.hash(password, salt);
@@ -137,5 +130,4 @@ class CreateSuperAdministratorUseCase {
     }
 }
 
-//Class export declarator
-export { CreateSuperAdministratorUseCase as CreateSuperAdministratorUseCase };
+export { CreateSuperAdministratorUseCase as CreateSuperAdministratorUseCase }; //Class export declarator
