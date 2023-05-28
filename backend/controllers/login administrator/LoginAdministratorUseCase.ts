@@ -24,7 +24,7 @@ class LoginAdministratorUseCase {
             throw new ApiError("A senha é obrigatória", 422);
         }
 
-        const infoAdministrator: any = await this.administratorRepository.findByEmailAndSenha(email, senha);
+        const infoAdministrator: any = await this.administratorRepository.findByEmailAndSenha(email);
         
         if (infoAdministrator === null || infoAdministrator === undefined) {
             throw new ApiError("Email ou senha incorretos", 422);

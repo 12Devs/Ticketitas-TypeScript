@@ -64,7 +64,7 @@ class CreateClientUseCase {
         const message = (`  Caro ${nome}:\n\nA sua conta na nossa plataforma acaba de ser registrada para este email. Confira nossos eventos e garanta já o seu ingresso!\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
-        await this.sendEmail.sendEmail(email, subject, message);
+        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 

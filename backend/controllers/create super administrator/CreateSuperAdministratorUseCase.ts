@@ -125,7 +125,7 @@ class CreateSuperAdministratorUseCase {
             const message = (`  Caro ${name}:\n\nSua conta foi associada a uma senha definida pelo proprietário do sistema. Por favor, entre em contato com o mesmo para obter a senha, ou utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n     Atenciosamente, Equipe Ticketitas.`);
 
             //Sends information for the "sendEmail" util method to forward the message
-            await this.sendEmail.sendEmail(email, subject, message);
+            //await this.sendEmail.sendEmail(email, subject, message);
         }
     }
 }

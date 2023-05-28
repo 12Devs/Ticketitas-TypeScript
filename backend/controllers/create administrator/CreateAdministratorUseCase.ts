@@ -152,7 +152,7 @@ class CreateAdministratorUseCase {
         const message = (`  Caro ${name}:\n\nComo é procedimento padrão aos novos administradores regulares, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
-        await this.sendEmail.sendEmail(email, subject, message);
+        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 

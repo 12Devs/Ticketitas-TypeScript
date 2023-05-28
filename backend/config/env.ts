@@ -27,8 +27,8 @@ const EMAIL_HOST= "smtp.gmail.com";
 const EMAIL_SERVICE= 'gmail';
 const EMAIL_PORT= 465;
 const EMAIL_SECURE= true;
-const EMAIL_USER= "ticketitasdb@gmail.com";
-const EMAIL_PASSWORD= "j l s l n q c b b w m k m v v k";
+const EMAIL_USER= "ticketitas@gmail.com";
+const EMAIL_PASSWORD= "snlxjijwsxqeegiw";
 const EMAIL_REJECT_UNAUTHORIZED= false;
 
 export {NODE_ENV, PORT}; //Export node variables

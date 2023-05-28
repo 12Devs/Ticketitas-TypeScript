@@ -91,7 +91,7 @@ class ChangePasswordPromoterUseCase {
         const message = (`  Caro Promotor de Vendas:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
-        await this.sendEmail.sendEmail(email, subject, message);
+        //await this.sendEmail.sendEmail(email, subject, message);
 
         const cpfOfTheEmail = emailExists.cpf;
 

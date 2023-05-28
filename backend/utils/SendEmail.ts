@@ -12,15 +12,15 @@ import nodemailer, { Transporter } from 'nodemailer';
       nodemailer.createTestAccount().then((account)=>{
         
         const transporter = nodemailer.createTransport({
-          host: emailhost,
+          //host: emailhost,
           service: emailservice,
-          port: emailport,
-          secure: emailsecure, // true for 465, false for other ports
+          //port: emailport,
+          //secure: emailsecure, // true for 465, false for other ports
           auth: {
             user: emailuser,
             pass: emailpassword
-          },
-          tls: { rejectUnauthorized: emailrejectunauthorized }
+          }
+          //,tls: { rejectUnauthorized: emailrejectunauthorized }
         });
 
         this.client = transporter;
