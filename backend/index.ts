@@ -30,7 +30,7 @@ conn.sync().then(async () => {
   //  await FillDataBase.fillPromoters();
   //  await FillDataBase.fillSuperAdministrator();
   //  await FillDataBase.fillEvents();
-  app.listen(process.env.PORT, () => console.log("Server on! Porta => 3333"));
+  app.listen(process.env.PORT_BACK, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
 
 
