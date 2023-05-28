@@ -83,12 +83,12 @@ class CreateAdministratorUseCase {
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
      * @param {string} name user full name
-     * @param {number} cpf "CPF" (Brazilian national Physical Person Registry) number of the citizen that is to be registered as a new user
+     * @param {number} cpf user cpf number
      * @param {string} email user e-mail address
      * @param {number} phone user telephone number
      * @returns {*}
      */
-    public async execute (name: string, cpf: number, email: string, phone: number, superAdminCpf:number, tipo: string) {
+    public async execute (name: string, newAdminCpf: number, email: string, phone: number, superAdminCpf:number, tipo: string) {
         
         //Type of user is "administrator"
         if (tipo !== "administrator") {
@@ -108,7 +108,7 @@ class CreateAdministratorUseCase {
         }
 
         //Not-null user CPF number
-        if (!cpf){
+        if (!newAdminCpf){
             throw new ApiError("O cpf é obrigatório!", 422);
         }
 
@@ -123,7 +123,7 @@ class CreateAdministratorUseCase {
         }
 
         //Methods used to check the existence of the chosen CPF number and e-mail address in the database registry
-        const cpfExists = await this.administratorRepository.findByCpf(cpf);
+        const cpfExists = await this.administratorRepository.findByCpf(newAdminCpf);
         const emailExists = await this.administratorRepository.findByEmail(email);
         
         //Conflicting user CPF number 
@@ -144,7 +144,7 @@ class CreateAdministratorUseCase {
         const passwordHash = await bcrypt.hash(password, salt);
         
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
-        await this.administratorRepository.create(name, cpf, email, phone, passwordHash);
+        await this.administratorRepository.create(name, newAdminCpf, email, phone, passwordHash);
 
         //Message subject text
         const subject = "BEM-VINDO, ADMINISTRADOR";
