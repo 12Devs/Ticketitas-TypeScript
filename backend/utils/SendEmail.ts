@@ -1,5 +1,6 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import {EMAIL_HOST as emailhost, EMAIL_SERVICE as emailservice, EMAIL_PORT as emailport, EMAIL_SECURE as emailsecure, EMAIL_USER as emailuser, EMAIL_PASSWORD as emailpassword, EMAIL_REJECT_UNAUTHORIZED as emailrejectunauthorized} from '../config/env';
 
+import nodemailer, { Transporter } from 'nodemailer';
 //configurando login e senha do send email
   //gerando a classe
   class SendEmail{
@@ -11,14 +12,18 @@ import nodemailer, { Transporter } from 'nodemailer';
       nodemailer.createTestAccount().then((account)=>{
         
         const transporter = nodemailer.createTransport({
-          service: 'gmail', 
-          auth: { 
-             user: 'ticketitas@gmail.com', 
-             pass: 'snlxjijwsxqeegiw' 
-           }
-      });
+          host: emailhost,
+          service: emailservice,
+          port: emailport,
+          secure: emailsecure, // true for 465, false for other ports
+          auth: {
+            user: emailuser,
+            pass: emailpassword
+          },
+          tls: { rejectUnauthorized: emailrejectunauthorized }
+        });
 
-      this.client = transporter;
+        this.client = transporter;
     }).catch(err => console.error(err));
       
     }
@@ -29,7 +34,7 @@ import nodemailer, { Transporter } from 'nodemailer';
 
       const message: any = this.client.sendMail({
         to,
-        from: 'Ticketitas <ticketitas@gmail.com>',
+        from: `Ticketitas <${emailuser}>`,
         subject,
         text: body,
         html: body,
@@ -41,66 +46,11 @@ import nodemailer, { Transporter } from 'nodemailer';
     }
 }
 
-    export { SendEmail };
+export { SendEmail };
 
-    // const mailOptions2 = {
-    //         from: 'ticketitasdb@gmail.com',
-    //         to: email,
-    //         subject: messageSubject,
-    //         text: messageText
-    //       };
-          
-    //     this.transporter.sendMail(mailOptions2, function(error, info){
-    //         if (error) {
-    //           console.log(error);
 
-    //         } else {
-    //           console.log('Email enviado: ' + info.response);
-    //         }
-    //       });
+
+
+
+
     
-    /**
-    SendEmailUser(email: string, messageSubject: string, messageText: string){
-        this.email = email,
-        this.messageSubject = messageSubject,
-        this.messageText = messageText
-      
-        const mailOptions2 = {
-            from: 'ticketitasdb@gmail.com',
-            to: this.email,
-            subject: this.messageSubject,
-            text: this.messageText
-          };
-        transporter.sendMail(mailOptions2, function(error, info){
-            if (error) {
-              console.log(error);
-
-            } else {
-              console.log('Email enviado: ' + info.response);
-            }
-          });
-     }
-    */
-
-    /**
-    SendEmailPromoter(email: string, messageSubject: string, messageText: string){
-        this.email = email,
-        this.messageSubject = messageSubject,
-        this.messageText = messageText
-      
-        const mailOptions2 = {
-            from: 'ticketitasdb@gmail.com',
-            to: this.email,
-            subject: this.messageSubject,
-            text: this.messageText
-          };
-        transporter.sendMail(mailOptions2, function(error, info){
-            if (error) {
-              console.log(error);
-
-            } else {
-              console.log('Email enviado: ' + info.response);
-            }
-          });
-     }
-     */  
