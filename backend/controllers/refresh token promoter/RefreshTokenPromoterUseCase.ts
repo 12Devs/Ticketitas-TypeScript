@@ -3,13 +3,16 @@ import { TokenPromoterRepository } from "../../db/TokenPromoterRepository";
 import auth from "../../config/auth";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
+import { PromoterRepository } from "../../db/PromoterRepository";
 
 class RefreshTokenPromoterUseCase {
 
     private tokenPromoterRepository: TokenPromoterRepository;
+    private promoterRepository: PromoterRepository;
 
-    public constructor (tokenPromoterRepository: TokenPromoterRepository) {
+    public constructor (tokenPromoterRepository: TokenPromoterRepository, promoterRepository: PromoterRepository) {
         this.tokenPromoterRepository = tokenPromoterRepository;
+        this.promoterRepository = promoterRepository;
     }
     
     public async execute (token: string){
@@ -25,6 +28,11 @@ class RefreshTokenPromoterUseCase {
 
         await this.tokenPromoterRepository.deleteByCpf(promoterToken.promoterCpf);
 
+        const promoterStatus: any = await this.promoterRepository.findStatusByCpf(promoterToken.promoterCpf);
+
+        if (promoterStatus.status == false) {
+            throw new ApiError("Promoter suspenso", 401);
+        }
         const refreshToken = await sign({tipo: "Promoter", nome: decode.nome},
             
             auth.secretRefreshToken,

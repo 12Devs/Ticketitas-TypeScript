@@ -78,7 +78,8 @@ class LoginPromoterUseCase {
     const promoter = {
         nome: infoPromoter.nome,
         cpf: infoPromoter.cpf,
-        email: infoPromoter.email
+        email: infoPromoter.email,
+        status: infoPromoter.status
     }
     
     return { promoter, token, refreshToken };
