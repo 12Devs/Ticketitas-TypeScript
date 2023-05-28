@@ -22,6 +22,16 @@ const SUPER_ADMIN_INFO=
     }
 ];
 
-export {NODE_ENV, PORT};
-export {DB_HOST, DB_USER, DB_NAME, DB_PASSWORD, DB_DIALECT};
-export {SUPER_ADMIN_GENERATION_CODE, SUPER_ADMIN_INFO};
+//EMAIL SERVICE DATA
+const EMAIL_HOST= "smtp.gmail.com";
+const EMAIL_SERVICE= 'gmail';
+const EMAIL_PORT= 465;
+const EMAIL_SECURE= true;
+const EMAIL_USER= "ticketitasdb@gmail.com";
+const EMAIL_PASSWORD= "j l s l n q c b b w m k m v v k";
+const EMAIL_REJECT_UNAUTHORIZED= false;
+
+export {NODE_ENV, PORT}; //Export node variables
+export {DB_HOST, DB_USER, DB_NAME, DB_PASSWORD, DB_DIALECT}; //Export database variables
+export {SUPER_ADMIN_GENERATION_CODE, SUPER_ADMIN_INFO}; //Export super administrator information
+export {EMAIL_HOST, EMAIL_SERVICE, EMAIL_PORT, EMAIL_SECURE, EMAIL_USER, EMAIL_PASSWORD, EMAIL_REJECT_UNAUTHORIZED}; //Export email service variables
