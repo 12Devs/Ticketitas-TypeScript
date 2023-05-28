@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link PromoterPasswordChangeCodeRepository}
- */
+//Import of repository classes
 import { PromoterPasswordChangeCodeRepository } from "../../db/PromoterPasswordChangeCodeRepository";
-/**
- * Import of the class {@link PromoterRepository}
- */
 import { PromoterRepository } from "../../db/PromoterRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the {@link https://www.npmjs.com/package/bcrypt randomstring} module
- */
-import bcrypt from 'bcrypt';
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import bcrypt from 'bcrypt'; //Import of the bcrypt module (https://www.npmjs.com/package/bcrypt)
 
 /**
  * Class that contains the methods and procedures necessary to authenticate a password change code and new the related password
@@ -106,5 +96,4 @@ class NewPasswordPromoterUseCase {
     }
 }
 
-//Class export declarator
-export { NewPasswordPromoterUseCase as NewPasswordPromoterUseCase };
+export { NewPasswordPromoterUseCase as NewPasswordPromoterUseCase }; //Class export declarator

@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link ClientRepository}
- */
+//Import of the repository classes
 import { ClientRepository } from "../../db/ClientRepository";
-/**
- * Import of the class {@link ClientPasswordChangeCodeRepository}
- */
 import { ClientPasswordChangeCodeRepository } from "../../db/ClientPasswordChangeCodeRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the class {@link SendEmail}
- */
-import { SendEmail } from "../../utils/SendEmail";
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
 
 /**
  * Class that contains the methods and procedures necessary to send an email with the link with which an user can change their password
@@ -121,5 +111,4 @@ class ChangePasswordClientUseCase {
     }
 }
 
-//Class export declarator
-export { ChangePasswordClientUseCase as ChangePasswordClientUseCase };
+export { ChangePasswordClientUseCase as ChangePasswordClientUseCase }; //Class export declarator

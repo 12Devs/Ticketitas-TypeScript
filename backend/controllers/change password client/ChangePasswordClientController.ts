@@ -1,13 +1,9 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link ChangePasswordClientUseCase}
- */
+//Import of the ChangePasswordClientUseCase class
 import { ChangePasswordClientUseCase as ChangePasswordClientUseCase} from "./ChangePasswordClientUseCase";
-/**
- * Import of the Request and Response submodules of the {@link https://www.npmjs.com/package/express express} module
- */
-import { Request, Response } from "express";
+
+import { Request, Response } from "express"; //Import of the Request and Response submodules of the express module (https://www.npmjs.com/package/express)
 
 /**
  * Class for controlling the sending of emails with which an user can change their password
@@ -50,12 +46,13 @@ class ChangePasswordClientController {
      */
     public async handle (request: Request, response: Response){
 
-        const { email } = request.body;
+        const { email } = request.body; //Obtaining json form info
+
+        //Executes the administrator remote password update request
         await this.changePasswordClientUseCase.execute(email);
         return response.status(201).json({message: "O link de recuperacao foi enviado ao e-mail do usuario cadastrado!"})
         
     }
 }
 
-//Class export declarator
-export { ChangePasswordClientController };
+export { ChangePasswordClientController }; //Class export declarator

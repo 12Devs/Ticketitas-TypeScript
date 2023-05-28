@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link AdministratorPasswordChangeCodeRepository}
- */
+//Import of repository classes
 import { AdministratorPasswordChangeCodeRepository } from "../../db/AdministratorPasswordChangeCodeRepository";
-/**
- * Import of the class {@link AdministratorRepository}
- */
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the {@link https://www.npmjs.com/package/bcrypt randomstring} module
- */
-import bcrypt from 'bcrypt';
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import bcrypt from 'bcrypt'; //Import of the bcrypt module (https://www.npmjs.com/package/bcrypt)
 
 /**
  * Class that contains the methods and procedures necessary to authenticate a password change code and new the related password
@@ -106,5 +96,4 @@ class NewPasswordAdministratorUseCase {
     }
 }
 
-//Class export declarator
-export { NewPasswordAdministratorUseCase as NewPasswordAdministratorUseCase };
+export { NewPasswordAdministratorUseCase as NewPasswordAdministratorUseCase }; //Class export declarator

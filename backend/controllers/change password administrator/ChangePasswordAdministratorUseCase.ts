@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link AdministratorRepository}
- */
+//Import of the repository classes
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-/**
- * Import of the class {@link AdministratorPasswordChangeCodeRepository}
- */
 import { AdministratorPasswordChangeCodeRepository } from "../../db/AdministratorPasswordChangeCodeRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the class {@link SendEmail}
- */
-import { SendEmail } from "../../utils/SendEmail";
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
 
 /**
  * Class that contains the methods and procedures necessary to send an email with the link with which an user can change their password
@@ -110,16 +100,12 @@ class ChangePasswordAdministratorUseCase {
 
         //Conditional for existing or non-existing password change code registry
         if(!cpfForTheEmailExists) {
-            
-            //Creation of a new entry
-            this.administratorPasswordChangeCodeRepository.create(randomCode, cpfOfTheEmail);
+            this.administratorPasswordChangeCodeRepository.create(randomCode, cpfOfTheEmail); //Creation of a new entry
         }
         else{
-            //Updating of an existing one
-            this.administratorPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
+            this.administratorPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode); //Updating an existing entry
         }
     }
 }
 
-//Class export declarator
-export { ChangePasswordAdministratorUseCase as ChangePasswordAdministratorUseCase };
+export { ChangePasswordAdministratorUseCase as ChangePasswordAdministratorUseCase }; //Class export declarator
