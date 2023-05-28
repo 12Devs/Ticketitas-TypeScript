@@ -2,6 +2,7 @@ import { CreateAdministratorUseCase } from "../controllers/create administrator/
 import { CreateClientUseCase } from "../controllers/create client/CreateClientUseCase";
 import { CreateEventUseCase } from "../controllers/create event/CreateEventUseCase";
 import { CreatePromoterUseCase } from "../controllers/create promoter/CreatePromoterUseCase";
+import { SetFeaturedEventUseCase } from "../controllers/set featured event/SetFeaturedEventUseCase";
 import { AdministratorRepository } from "../db/AdministratorRepository";
 import { ClientRepository } from "../db/ClientRepository";
 import { EventRepository } from "../db/EventRepository";
@@ -69,6 +70,15 @@ class FillDataBase {
         await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, sjSerrinhaDate, true, 40000, 3000, 0, 0, 0, 0,  50.00, 0.00, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
     }
 
+    public static async setHighlights() {
+        const repository = new EventRepository();
+        const events : any = await repository.findAllEvents();
+        const setHighlights = new SetFeaturedEventUseCase(repository);
+
+        for (let event of events) {
+            await setHighlights.execute(event.id);
+        }
+    }
 }
 
 export { FillDataBase };
