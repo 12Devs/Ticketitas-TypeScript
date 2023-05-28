@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
 import { ApiError } from "../errors/ApiError";
-import auth from "../config/auth";
 import { PromoterRepository } from "../db/PromoterRepository";
 
 
@@ -16,7 +15,7 @@ async function ensureAuthenticatedPromoter(request: Request, response: Response,
     
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub } = await verify(token, auth.secretToken);
+        const { sub } = await verify(token, process.env.JWT_SECRET);
         
         const promoterStatus: any = await new PromoterRepository().findStatusByCpf(parseInt(sub));
 

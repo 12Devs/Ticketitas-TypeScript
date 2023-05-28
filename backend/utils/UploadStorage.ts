@@ -12,9 +12,6 @@ const uploadFileStorage = async (fileObject: any) => {
         scopes: SCOPES,
     });
 
-    const bufferStream = new stream.PassThrough();
-    bufferStream.end(fileObject.buffer);
-
     const { data } = await google.drive({ version: 'v3', auth }).files.create({
       media: {
         mimeType: 'image/jpg',
