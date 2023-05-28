@@ -1,3 +1,4 @@
+import { uploadFileStorage } from "../../utils/UploadStorage";
 import { UpdateStatusEventUseCase } from "./UpdateStatusEventUseCase";
 import { Request, Response } from "express";
 
