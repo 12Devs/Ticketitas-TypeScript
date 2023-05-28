@@ -19,6 +19,12 @@ class AprovePromoterRegistrationUseCase {
             throw new ApiError("O cpf do promoter é obrigatório!", 422);
         }
 
+        const registrationRequestExists = await this.promoterRegistrationRequestRepository.registrationRequestExists(promoterCpf);
+        
+        if (!registrationRequestExists) {
+            throw new ApiError("Não existe solicitação de cadastro para esse promoter!", 422);
+        }
+
         await this.promoterRegistrationRequestRepository.remove(promoterCpf);
         
         await this.promoterRepository.updateStatus(promoterCpf);
