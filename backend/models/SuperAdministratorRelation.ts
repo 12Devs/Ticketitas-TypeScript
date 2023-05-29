@@ -5,7 +5,7 @@ import { DataTypes } from "sequelize";
 /**
  * Import of the class {@link Connection}
  */
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 /**
  * Import of the class {@link Administrator}
  */
