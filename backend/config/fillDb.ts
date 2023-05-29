@@ -1,3 +1,4 @@
+import { AprovePromoterRegistrationUseCase } from "../controllers/approve promoter registration/AprovePromoterRegistrationUseCase";
 import { CreateAdministratorUseCase } from "../controllers/create administrator/CreateAdministratorUseCase";
 import { CreateClientUseCase } from "../controllers/create client/CreateClientUseCase";
 import { CreateEventUseCase } from "../controllers/create event/CreateEventUseCase";
@@ -9,11 +10,12 @@ import { EventRepository } from "../db/EventRepository";
 import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistrationRequestRepository";
 import { PromoterRepository } from "../db/PromoterRepository";
 import bcrypt from 'bcrypt';
+import { SendEmail } from "../utils/SendEmail";
 
 class FillDataBase {
 
     public static async fillClients() {
-        const createClientUseCase = new CreateClientUseCase(new ClientRepository());
+        const createClientUseCase = new CreateClientUseCase(new ClientRepository(), new SendEmail());
 
         await createClientUseCase.execute("Gabriel", 45850724974, "gabriel@email.com", 75988532244, "abc123", "abc123", 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua de Cima", 13);
 
@@ -23,7 +25,7 @@ class FillDataBase {
     }
 
     public static async fillPromoters() {
-        const createPromoterUseCase = new CreatePromoterUseCase(new PromoterRepository(), new PromoterRegistrationRequestRepository());
+        const createPromoterUseCase = new CreatePromoterUseCase(new PromoterRepository(), new PromoterRegistrationRequestRepository(), new SendEmail());
 
         await createPromoterUseCase.execute("Itamar Promoter", 45850724974, "itamarpromoter@email.com", 75988532244, "abc123", "abc123", 44230000, "Feira de Santana", "BA", "Feira 6", "Caminho I", 13);
 
@@ -78,6 +80,12 @@ class FillDataBase {
         for (let event of events) {
             await setHighlights.execute(event.id);
         }
+    }
+
+    public static async promoterAprove() {
+        const promoterRepository = new PromoterRepository();
+        const promoterAprove = new AprovePromoterRegistrationUseCase(new PromoterRegistrationRequestRepository(), promoterRepository);
+        await promoterAprove.execute(75316609549);
     }
 }
 
