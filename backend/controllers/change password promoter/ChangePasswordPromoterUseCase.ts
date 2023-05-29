@@ -85,14 +85,6 @@ class ChangePasswordPromoterUseCase {
         //Random code obtained from the password change code repository
         const randomCode = await this.promoterPasswordChangeCodeRepository.generateUniqueCode();
 
-        //Message subject text
-        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR RECEBIDO";
-        //Message description text
-        const message = (`  Caro Promotor de Vendas:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        //await this.sendEmail.sendEmail(email, subject, message);
-
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
@@ -108,6 +100,22 @@ class ChangePasswordPromoterUseCase {
             //Updating of an existing one
             this.promoterPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
         }
+
+        const resetPromoterPassword = {
+            email: email,
+            resetCode: randomCode
+        }
+
+        return { resetPromoterPassword };
+
+        //Message subject text
+        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR RECEBIDO";
+        //Message description text
+        //const message = (`  Caro Promotor de Vendas:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
+
+        //Sends information for the "sendEmail" util method to forward the message
+        //await this.sendEmail.sendEmail(email, subject, message);
+
     }
 }
 

@@ -51,8 +51,8 @@ class CreateAdministratorController {
 
         const { cpf, tipo } = request.user;
         const { name, newAdminCpf, email, phone } = request.body;
-        await this.createAdministratorUseCase.execute(name, newAdminCpf, email, phone, cpf, tipo);
-        return response.status(201).json({message: "Admin criado com sucessso!"})
+        const createInfo = await this.createAdministratorUseCase.execute(name, newAdminCpf, email, phone, cpf, tipo);
+        return response.status(201).json({createInfo})
         
     }
 

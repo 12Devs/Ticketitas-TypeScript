@@ -86,7 +86,7 @@ class CreateAdministratorUseCase {
      * @param {number} cpf user cpf number
      * @param {string} email user e-mail address
      * @param {number} phone user telephone number
-     * @returns {*}
+     * @returns {string}
      */
     public async execute (name: string, newAdminCpf: number, email: string, phone: number, superAdminCpf:number, tipo: string) {
         
@@ -146,10 +146,18 @@ class CreateAdministratorUseCase {
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
         await this.administratorRepository.create(name, newAdminCpf, email, phone, passwordHash);
 
+        const newAdministrator = {
+            name: name,
+            email: email,
+            password: password
+        }
+
+        return { newAdministrator };
+
         //Message subject text
-        const subject = "BEM-VINDO, ADMINISTRADOR";
+        //const subject = "BEM-VINDO, ADMINISTRADOR";
         //Message description text
-        const message = (`  Caro ${name}:\n\nComo é procedimento padrão aos novos administradores regulares, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n      Atenciosamente, Equipe Ticketitas.`);
+        //const message = (`  Caro ${name}:\n\nComo é procedimento padrão aos novos administradores regulares, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n      Atenciosamente, Equipe Ticketitas.`);
 
         //Sends information for the "sendEmail" util method to forward the message
         //await this.sendEmail.sendEmail(email, subject, message);

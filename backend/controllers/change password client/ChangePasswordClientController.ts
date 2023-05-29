@@ -49,8 +49,8 @@ class ChangePasswordClientController {
         const { email } = request.body; //Obtaining json form info
 
         //Executes the administrator remote password update request
-        await this.changePasswordClientUseCase.execute(email);
-        return response.status(201).json({message: "O link de recuperacao foi enviado ao e-mail do usuario cadastrado!"})
+        const resetPasswordInfo = await this.changePasswordClientUseCase.execute(email);
+        return response.status(201).json({resetPasswordInfo})
         
     }
 }

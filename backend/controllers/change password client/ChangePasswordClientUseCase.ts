@@ -85,14 +85,6 @@ class ChangePasswordClientUseCase {
         //Random code obtained from the password change code repository
         const randomCode = await this.clientPasswordChangeCodeRepository.generateUniqueCode();
 
-        //Message subject text
-        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO CLIENTE RECEBIDO";
-        //Message description text
-        const message = (`  Caro Cliente:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        //await this.sendEmail.sendEmail(email, subject, message);
-
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
@@ -108,6 +100,21 @@ class ChangePasswordClientUseCase {
             //Updating of an existing one
             this.clientPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
         }
+
+        const resetClientPassword = {
+            email: email,
+            resetCode: randomCode
+        }
+
+        return { resetClientPassword };
+
+        //Message subject text
+        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO CLIENTE RECEBIDO";
+        //Message description text
+        //const message = (`  Caro Cliente:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
+
+        //Sends information for the "sendEmail" util method to forward the message
+        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 

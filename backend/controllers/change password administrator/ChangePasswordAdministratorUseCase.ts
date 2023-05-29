@@ -65,7 +65,7 @@ class ChangePasswordAdministratorUseCase {
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
      * @param {string} email user e-mail address
-     * @returns {*}
+     * @returns {string}
      */
     public async execute (email: string) {
         
@@ -85,14 +85,6 @@ class ChangePasswordAdministratorUseCase {
         //Random code obtained from the password change code repository
         const randomCode = await this.administratorPasswordChangeCodeRepository.generateUniqueCode();
 
-        //Message subject text
-        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
-        //Message description text
-        const message = (`  Caro Administrador:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        //await this.sendEmail.sendEmail(email, subject, message);
-
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
@@ -105,6 +97,21 @@ class ChangePasswordAdministratorUseCase {
         else{
             this.administratorPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode); //Updating an existing entry
         }
+
+        const resetAdministratorPassword = {
+            email: email,
+            resetCode: randomCode
+        }
+
+        return { resetAdministratorPassword };
+
+        //Message subject text
+        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
+        //Message description text
+        //const message = (`  Caro Administrador:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
+
+        //Sends information for the "sendEmail" util method to forward the message
+        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 
