@@ -1,22 +1,29 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ModalLogin from '../../components/ModalLogin';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import InputTexto from '../../components/InputTexto';
 import "./LoginAdm.css"
 import NavBarGeral from '../../components/NavBarGeral';
+import { api } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function LoginAdm() {
-    const [show, setShow] = useState(false);
-    const [cpf, setCPF] = useState('');
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [userType, setUserType] = useState('cliente');
     const [emailRecuperacao, setEmailRecuperacao] = useState('');
+    const [mensagem, setMensagem] = useState(false);
+    const [mensagemString, setMensagemString] = useState('');
 
     const [showRecuperar, setShowRecuperar] = useState(false);
 
     const [captchavalidate, setcaptchavalidate] = useState(false);
     const [captchastatus, setcaptchastatus] = useState(false);
+
+    // Recarrega a tela
+    const refresh = () => window.location.reload();
 
     // Handlers modal de recuperar senha
     const handleCloseRecuperar = () => {
@@ -25,6 +32,30 @@ export default function LoginAdm() {
     const handleShowRecuperar = () => {
         setShowRecuperar(true);
     };
+
+    const fazerLogin = (event: any) => {
+        event.preventDefault();
+        setMensagem(false);
+
+        var data: any = {
+            email,
+            senha,
+        }
+
+        api.post('/user/administrator/login', data)
+        .then((response) => { (response.status == 200) ?  loginAccepted(response) : console.log(response) })
+        .catch((erro) => {setMensagem(true); setMensagemString(erro.response.data.message)});
+        
+    }
+
+    const loginAccepted = (response: any) => {
+        console.log(response);
+        localStorage.setItem("userType", "admin");
+        localStorage.setItem("token", response.data.authenticateInfo.token);
+        localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);
+        navigate('/');
+        refresh();
+    }
 
     return (
         <>
@@ -39,12 +70,10 @@ export default function LoginAdm() {
                             className="align-items-center"
                             alt=''
                         />{''}
-
                     </Row>
-
-
+                <Form onSubmit={fazerLogin}>
                     <Row className='justify-content-center'>
-                        <InputTexto defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCPF} type='' />
+                        <InputTexto defaultValue={''} required={true} label={"Email"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='' />
                         <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password" />
                     </Row>
                     {
@@ -63,6 +92,10 @@ export default function LoginAdm() {
                             Esqueci minha senha
                         </Button>
                     </Row>
+                    
+                    <Alert style={{ width: 'fit-content' }} show={mensagem} variant="danger">
+                            <p>{mensagemString}</p>
+                    </Alert>
 
                     <Row className='justify-content-center'>
 
@@ -70,6 +103,7 @@ export default function LoginAdm() {
                             Entrar
                         </Button>
                     </Row>
+                </Form>
                 </Modal.Body>
             </Container>
 

@@ -28,6 +28,10 @@ export default function CadastrarAdmin() {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    };
+
     // const [cep, setCep] = useState('');
     // const [cidade, setCidade] = useState('');
     // const [estado, setEstado] = useState('');
@@ -45,7 +49,7 @@ export default function CadastrarAdmin() {
             email
         }
 
-        api.post("/user/administrator", dadosAdmin).then((response)=>{console.log(response)});
+        api.post("/user/administrator", dadosAdmin, config).then((response)=>{console.log(response)});
 
         navigate('/');
     }
