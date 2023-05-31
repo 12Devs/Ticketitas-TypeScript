@@ -13,18 +13,11 @@ import { useNavigate } from 'react-router-dom';
 
 import '../pages.css';
 
-// {
-//     "name": "João Gabriel",
-//     "cpf": 8587090,
-//     "email": "gcmorais66@gmail.com",
-//     "phone": 222
-// }
-
 export default function CadastrarAdmin() {
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
     const [telefone, setTelefone] = useState('');
-    const [cpf, setCpf] = useState('');
+    const [newAdminCpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
@@ -32,20 +25,12 @@ export default function CadastrarAdmin() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
 
-    // const [cep, setCep] = useState('');
-    // const [cidade, setCidade] = useState('');
-    // const [estado, setEstado] = useState('');
-    // const [bairro, setBairro] = useState('');
-    // const [rua, setRua] = useState('');
-    // const [numero, setNumero] = useState('');
-    
-
     const realizarCadastro = (event: any) => {
         event.preventDefault();
         var dadosAdmin: any = {
             name: `${primeiroNome} ${sobrenome}`,
             phone: telefone,
-            cpf,
+            newAdminCpf,
             email
         }
 
@@ -53,21 +38,6 @@ export default function CadastrarAdmin() {
 
         navigate('/');
     }
-    
-    
-
-    // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
-    // useEffect(() => {
-    //     if (cep.length == 8 && !isNaN(parseInt(cep))) {
-            
-    //         api.get(`/endereco/${cep}`).then((endereco) => {
-    //             setCidade(endereco.data.localidade);
-    //             setEstado(endereco.data.uf);
-    //             setBairro(endereco.data.bairro);
-    //             setRua(endereco.data.logradouro);
-    //         });
-    //     }
-    // }, [cep]);
 
     return (
         <>
@@ -93,39 +63,9 @@ export default function CadastrarAdmin() {
                         <InputTexto type="number" defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
                     </Col>
                     <Col sm={6}>
-                        <InputTexto type="number" defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={cpf} setData={setCpf} />
+                        <InputTexto type="number" defaultValue={''} required={true} label={"CPF"} placeholder={""} controlId={"cpf"} data={newAdminCpf} setData={setCpf} />
                     </Col>
                 </Row>
-
-                {/* <Row>
-                    <Col sm={6}>
-                        <InputTexto type="number" defaultValue={''} required={false} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
-                    </Col>
-                </Row> */}
-{/* 
-                <Row>
-                    <Col sm={8}>
-                        <InputTexto type="text" defaultValue={''} required={false} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
-                    </Col>
-                    { <Col sm={4}>
-                        <InputTexto type="text" defaultValue={''} required={false} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
-                    </Col> }
-                </Row> */}
-
-                {/* <Row>
-                    <Col>
-                        <InputTexto type="text" defaultValue={''} required={false} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
-                    </Col>
-                </Row>
-
-                <Row>
-                    <Col sm={8}>
-                        <InputTexto type="text" defaultValue={''} required={false} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
-                    </Col>
-                    <Col sm={4}>
-                        <InputTexto type="text" defaultValue={''} required={false} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
-                    </Col>
-                </Row> */}
 
                 <Row>
                     <Col>

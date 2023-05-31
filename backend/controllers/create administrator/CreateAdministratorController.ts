@@ -49,9 +49,8 @@ class CreateAdministratorController {
      */
     public async handle (request: Request, response: Response){
 
-        const { cpf, tipo } = request.user;
         const { name, newAdminCpf, email, phone } = request.body;
-        const createInfo = await this.createAdministratorUseCase.execute(name, newAdminCpf, email, phone, cpf, tipo);
+        const createInfo = await this.createAdministratorUseCase.execute(name, newAdminCpf, email, phone);
         return response.status(201).json({createInfo})
         
     }
