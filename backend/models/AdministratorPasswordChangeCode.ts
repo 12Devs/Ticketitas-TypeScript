@@ -6,6 +6,10 @@ import { DataTypes } from "sequelize";
  * Import of the class {@link Connection}
  */
 import { conn } from "../db/connection";
+/**
+ * Import of the class {@link Administrator}
+ */
+import { Administrator } from "./Administrator";
 
 /**
  * Class containing the "model" for the password change code of administrator type of users and their respective object type
@@ -13,7 +17,7 @@ import { conn } from "../db/connection";
  *
  * @type {*}
  */
-const AdministratorPasswordChangeCode = conn.define('administratorpasswordchangeCode',{
+const AdministratorPasswordChangeCode = conn.define('administratorpasswordchangecode',{
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -26,9 +30,13 @@ const AdministratorPasswordChangeCode = conn.define('administratorpasswordchange
     },
     //User CPF number
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        references: {
+            model: Administrator,
+            key: 'cpf'
+        }
     }
 });
 

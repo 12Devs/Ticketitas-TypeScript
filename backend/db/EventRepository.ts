@@ -19,6 +19,20 @@ class EventRepository {
         });
     }
 
+    public async makeSale (id: string, promoterCpf: number, pistaAmount: number, stageAmount: number, vipAmount: number){
+        await Event.update({
+            quantPista: pistaAmount,
+            quantStage: stageAmount,
+            quantVip: vipAmount
+        },
+        {
+            where: {
+                id: id,
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
     public async findAllEvents () {
         const allEvents = await Event.findAll();
         return allEvents;
@@ -30,6 +44,15 @@ class EventRepository {
             destaque: true
         }});
         return allHighlights;
+    }
+
+    public async findIdStatuByCpfPromoter (cpf: number) {
+        const allEventsByPromoter = await Event.findAll({raw: true,  attributes: ['promoterCpf'],
+        where: {
+            Promotercpf: cpf
+        }});
+
+        return allEventsByPromoter;
     }
 
     public async findOneEvent (id: string) {
@@ -79,6 +102,17 @@ class EventRepository {
         });
     }
 
+    public async supendEvent (promoterCpf: number){
+        await Event.update({
+            status: false
+        },
+        {
+            where: {
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
     public async setFeatured (id: string){
         await Event.update({
             destaque: true
@@ -89,10 +123,6 @@ class EventRepository {
             }
         });
     }
-
-
-
-
 
     public async updateData (promoterCpf: number, id: string, nome: string, descricao: string, dataEvento: Date, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
 

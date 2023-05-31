@@ -65,6 +65,10 @@ class MakePurchaseUseCase {
             throw new ApiError("O id do evento é obrigatório!", 422);
         }
 
+        if (pistaAmount <= 0 && stageAmount <= 0 && vipAmount <= 0 && pistaAmountHalf <= 0 && stageAmountHalf <= 0 && freeAmount <= 0) {
+            return
+        }
+        
         const card: any = await this.cardRepository.findAllByCpf(clientCpf);
 
         if (!card) {
@@ -88,10 +92,36 @@ class MakePurchaseUseCase {
         if (event.status == false) {
             throw new ApiError("Evento suspenso! não é possível vender ingressos!", 422);
         }
+        
+        const amountHalfTicketsPista = ((event.porcentagemMeia/100) * event.quantPista);
+        const amountHalfTicketsStage = ((event.porcentagemMeia/100) * event.quantStage);
+        const amountHalfTicketsVip = ((event.porcentagemMeia/100) * event.quantVip);
+        const amountFreeTickets = ((event.porcentagemGratis/100) * event.quantStage);
+
+        if ((event.quantPista < pistaAmount || event.quantPista < pistaAmountHalf || event.quantPista <= amountHalfTicketsPista) && event.quantPista > 0) {
+            throw new ApiError("Ingressos no setor pista esgotados!", 422);
+        }
+
+        if ((event.quantStage < stageAmount || event.quantStage < stageAmountHalf || event.quantStage <= amountHalfTicketsStage) && event.quantStage > 0) {
+            throw new ApiError("Ingressos no setor stage esgotados!", 422);
+        }
+
+        if ((event.quantVip <= vipAmount || event.quantVip <= vipAmountHalf || event.quantVip <= amountHalfTicketsVip) && event.quantVip > 0) {
+            throw new ApiError("Ingressos no setor vip esgotados!", 422);
+        }
+
+        if ((event.quantPista <= amountFreeTickets) && event.quantPista > 0) {
+            throw new ApiError("Ingressos grátis esgotados!", 422);
+        }
 
         const amount = (pistaAmount*event.valorPista) + (stageAmount*event.valorStage) + (vipAmount*event.valorVip) + ((pistaAmountHalf*event.valorPista)/2) + ((stageAmountHalf*event.valorStage)/2) + ((vipAmountHalf*event.valorVip)/2);
 
         await this.saleRepository.create(amount, clientCpf, eventId);
+
+        const quantPista = (event.quantPista - (pistaAmount + pistaAmountHalf));
+        const quantStage = (event.quantStage - (stageAmount + stageAmountHalf));
+        const quantVip = (event.quantVip - (vipAmount + vipAmountHalf));
+        await this.eventRepository.makeSale(event.id, event.promoterCpf, quantPista, quantStage, quantVip);
 
         const idSale: any = await this.saleRepository.findIdByCpf(clientCpf);
 
