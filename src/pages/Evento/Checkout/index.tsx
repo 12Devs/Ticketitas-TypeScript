@@ -1,13 +1,13 @@
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
-import Descricao from './Descricao';
-import CardDestaques from '../../components/CardDestaques';
+import ResumoCompra from '../ResumoCompra';
+
 import { useLocation } from 'react-router-dom';
 
-import '../pages.css'
-import './styleGeralEvento.css';
-import '../Home/styleHome.css';
-import NavBarGeral from '../../components/NavBarGeral';
+import '../../pages.css'
+import '../styleGeralEvento.css';
+import '../../Home/styleHome.css';
+import NavBarGeral from '../../../components/NavBarGeral';
 
 export default function Evento() {
     const location = useLocation();
@@ -18,6 +18,8 @@ export default function Evento() {
     if (location.state) {
         infoID = location.state.idEvento;
     }
+
+    console.log()
     
     return (
         <>
@@ -25,15 +27,13 @@ export default function Evento() {
         <Container className='noMarginPadding corPagina' fluid>
 
             <Row>
-                <Descricao idEvento={infoID? infoID : '0'} />
+                <ResumoCompra idEvento={infoID? infoID : '0'} />
             </Row>
 
             <Row className='text-start larguraMainContentEventos mt-5'>
-                <section className='larguraMainContentEventos pt-5'>
-                    <p className='Texto-Preto Texto-Pequeno text-start'>Também em destaque...</p>
-                </section>
+                
 
-                <CardDestaques />
+                
             </Row>
         </Container>
         </>

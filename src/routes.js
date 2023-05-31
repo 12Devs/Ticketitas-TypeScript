@@ -14,6 +14,8 @@ import PrimeiraSenha from './pages/PrimeiraSenha';
 import Footer from './components/Footer';
 import Evento from './pages/Evento';
 import LoginAdm from './pages/LoginAdm';
+import Checkout from './pages/Evento/Checkout';
+
 import Perfil from './pages/Perfil';
 import CadastrarEvento from './pages/CadastrarEvento';
 
@@ -36,6 +38,7 @@ export default function AppRouter() {
                     <Route path='recuperarSenha' element={<RecuperarSenha />} />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='evento' element={<Evento />} />
+                    <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>
                     <Route path='perfil' element={<Perfil/>}/>
                 </Routes>
