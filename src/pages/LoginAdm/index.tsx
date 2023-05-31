@@ -49,6 +49,9 @@ export default function LoginAdm() {
     }
 
     const loginAccepted = (response: any) => {
+        localStorage.setItem("CPF", response.data.authenticateInfo.administrator.cpf);
+        localStorage.setItem("email", response.data.authenticateInfo.administrator.email);
+        localStorage.setItem("nome", response.data.authenticateInfo.administrator.nome);
         localStorage.setItem("userType", "admin");
         localStorage.setItem("token", response.data.authenticateInfo.token);
         localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);

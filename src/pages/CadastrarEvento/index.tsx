@@ -18,7 +18,6 @@ import { InputGroup } from 'react-bootstrap';
 
 export default function CadastrarEvento() {
     const [nome, setNome] = useState('');
-    const [promoterCpf, setPromoterCpf] = useState(Number);
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
     const [status, setStatus] = useState(true);
@@ -48,6 +47,12 @@ export default function CadastrarEvento() {
     const realizarCadastro = (event: any) => {
         event.preventDefault();
         
+    var promoterCpf = 0;
+        if (localStorage.getItem("CPF") !== null) {
+            var promoterCpfString = localStorage.getItem("CPF");
+            promoterCpf = parseInt(promoterCpfString !== null? promoterCpfString : "0");
+        }
+
         var dadosEvento: any = {
             promoterCpf,
             nome,
