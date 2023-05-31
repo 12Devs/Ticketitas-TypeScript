@@ -1,5 +1,5 @@
 import { TicketRepository } from "../../db/TicketRepository";
-
+import { Request, Response}  from "express";
 
 class ListTicketsUseCase {
 
@@ -9,7 +9,8 @@ class ListTicketsUseCase {
         this.ticketRepository = ticketrepository;
     }
 
-    public async execute(){
-        const allTickets = await this.ticketRepository
+    public async handle(request: Request, response: Response){
+        const allTickets = await this.ticketRepository;
+        return response.status(200).json({allTickets})
     }
 }
