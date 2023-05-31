@@ -116,29 +116,6 @@ export default function CadastrarEvento() {
                         </Col>
                     </Row>
 
-                    <Row>
-                        <Col sm={8}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
-                        </Col>
-                        <Col sm={4}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col>
-                            <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type='password' defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type='password' defaultValue={''} required={true} label={"Confirmar senha"} placeholder={""} controlId={"confirmarSenha"} data={confirmacaoSenha} setData={setConfirmacaoSenha} />
-                        </Col>
-                    </Row>
 
                     <Row className='d-flex justify-content-center'>
                             <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
