@@ -1,6 +1,5 @@
 import { Sale } from "../models/Sale";
 
-
 class SaleRepository {
 
     public async create (amount: number, clientCpf: number, eventId: string) {
@@ -13,6 +12,7 @@ class SaleRepository {
         }});
         return saleExists;
     }
+
 }
 
 export { SaleRepository };
