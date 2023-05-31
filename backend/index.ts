@@ -31,5 +31,3 @@ conn.sync().then(async () => {
   // await FillDataBase.fillEvents();
   app.listen(process.env.PORT_DEV, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
-
-
