@@ -49,7 +49,6 @@ export default function LoginAdm() {
     }
 
     const loginAccepted = (response: any) => {
-        console.log(response);
         localStorage.setItem("userType", "admin");
         localStorage.setItem("token", response.data.authenticateInfo.token);
         localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);

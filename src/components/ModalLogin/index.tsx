@@ -50,8 +50,6 @@ export default function ModalLogin() {
         }
     }
 
-    // Recuperar senha
-
     // Pós login actions
     const loginPromoterAccepted = (response: any) => {
         localStorage.setItem("userType", "promoter");
@@ -60,6 +58,7 @@ export default function ModalLogin() {
         navigate('/');
         refresh();
     }
+
     const loginClienteAccepted = (response: any) => {
         localStorage.setItem("userType", "cliente");
         localStorage.setItem("token", response.data.authenticateInfo.token);
