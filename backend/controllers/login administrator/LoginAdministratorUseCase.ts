@@ -24,7 +24,7 @@ class LoginAdministratorUseCase {
             throw new ApiError("A senha é obrigatória", 422);
         }
 
-        const infoAdministrator: any = await this.administratorRepository.findByEmailAndSenha(email, senha);
+        const infoAdministrator: any = await this.administratorRepository.findByEmailAndSenha(email);
         
         if (infoAdministrator === null || infoAdministrator === undefined) {
             throw new ApiError("Email ou senha incorretos", 422);
@@ -40,7 +40,7 @@ class LoginAdministratorUseCase {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const token = sign({tipo: "administrator", nome: infoAdministrator.nome},
+        const token = sign({tipo: "administrator", nome: infoAdministrator.name},
             
         process.env.JWT_SECRET,
 
@@ -48,7 +48,7 @@ class LoginAdministratorUseCase {
             expiresIn: process.env.EXPIRES_TOKEN});
     
     
-    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.nome},
+    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
         
         process.env.JWT_REFRESH_SECRET,
         
@@ -61,7 +61,7 @@ class LoginAdministratorUseCase {
     await this.tokenAdministratorRepository.create(infoAdministrator.cpf, expiresDate, refreshToken);
 
     const administrator = {
-        nome: infoAdministrator.nome,
+        nome: infoAdministrator.name,
         cpf: infoAdministrator.cpf,
         email: infoAdministrator.email
     }

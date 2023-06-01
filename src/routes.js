@@ -17,6 +17,7 @@ import LoginAdm from './pages/LoginAdm';
 import Checkout from './pages/Evento/Checkout';
 
 import Perfil from './pages/Perfil';
+import CadastrarEvento from './pages/CadastrarEvento';
 
 
 export default function AppRouter() {
@@ -28,6 +29,7 @@ export default function AppRouter() {
                     <Route path='about' element={<QuemSomos />} />
                     <Route path='evento' element={<Evento />} />
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
+                    <Route path='cadastrarEvento' element={<CadastrarEvento />} />
                     <Route path='editarCliente' element={<EditarCliente/>}/>
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter />} />
                     <Route path='editarPromoter' element={<EditarPromoter/>}/>

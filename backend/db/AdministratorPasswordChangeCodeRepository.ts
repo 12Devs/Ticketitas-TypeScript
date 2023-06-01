@@ -75,7 +75,7 @@ class AdministratorPasswordChangeCodeRepository {
      * @returns {Array} Array of administrators password change code entries, matching the search (or none if no match is found)
      */
     public async findByCode (code: string) {
-        const codeExists = await AdministratorPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const codeExists = await AdministratorPasswordChangeCode.findOne({raw: true, attributes: ['code', 'cpf'], where: {
             code: code
         }});
         return codeExists;
@@ -91,19 +91,19 @@ class AdministratorPasswordChangeCodeRepository {
      * @returns {Array} Array of administrators password change code entries, matching the search (or none if no match is found)
      */
     public async findByCpf (cpf: number) {
-        const cpfExists = await AdministratorPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const cpfExists = await AdministratorPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             cpf: cpf
         }});
         return cpfExists;
     }
 
-    public async updateCode (code: string){
+    public async updateCode (oldCode: string, newCode: string){
         await AdministratorPasswordChangeCode.update({
-            code: code
+            code: newCode
         },
         {
             where: {
-                code: code
+                code: oldCode
             }
         });
     }

@@ -1,13 +1,9 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link NewPasswordAdministratorUseCase}
- */
+//Import of the NewPasswordAdministratorUseCase class
 import { NewPasswordAdministratorUseCase as NewPasswordAdministratorUseCase} from "./NewPasswordAdministratorUseCase";
-/**
- * Import of the Request and Response submodules of the {@link https://www.npmjs.com/package/express express} module
- */
-import { Request, Response } from "express";
+
+import { Request, Response } from "express"; //Import of the Request and Response submodules of the express module (https://www.npmjs.com/package/express)
 
 /**
  * Class for controlling the proccess of authenticating password new codes and changing the passwords
@@ -50,12 +46,13 @@ class NewPasswordAdministratorController {
      */
     public async handle (request: Request, response: Response){
 
-        const { passwordChangeCode, newPassword, newPasswordConfirmation } = request.body;
+        const { passwordChangeCode, newPassword, newPasswordConfirmation } = request.body; //Obtaining json form info
+        
+        //Executes the administrator remote password update request
         await this.newPasswordAdministratorUseCase.execute(passwordChangeCode, newPassword, newPasswordConfirmation);
         return response.status(201).json({message: "A senha do usuário que recebu o código foi alterada com sucesso!"})
         
     }
 }
 
-//Class export declarator
-export { NewPasswordAdministratorController };
+export { NewPasswordAdministratorController }; //Class export declarator

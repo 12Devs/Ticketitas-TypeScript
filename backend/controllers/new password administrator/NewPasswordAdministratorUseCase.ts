@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link AdministratorPasswordChangeCodeRepository}
- */
+//Import of repository classes
 import { AdministratorPasswordChangeCodeRepository } from "../../db/AdministratorPasswordChangeCodeRepository";
-/**
- * Import of the class {@link AdministratorRepository}
- */
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the {@link https://www.npmjs.com/package/bcrypt randomstring} module
- */
-import bcrypt from 'bcrypt';
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import bcrypt from 'bcrypt'; //Import of the bcrypt module (https://www.npmjs.com/package/bcrypt)
 
 /**
  * Class that contains the methods and procedures necessary to authenticate a password change code and new the related password
@@ -45,14 +35,16 @@ class NewPasswordAdministratorUseCase {
     private administratorRepository: AdministratorRepository;
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}
+     * Constructor for instances of {@link AdministratorRepository} and {@link AdministratorPasswordChangeCodeRepository}
      * @date @date 5/17/2023 - 1:32:27 AM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
+     * @param {AdministratorPasswordChangeCodeRepository} administratorPasswordChangeCodeRepositor Private instance of the AdministratorPasswordChangeCodeRepositor class
      */
-    constructor (administratorRepository: AdministratorRepository) {
+    constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository) {
         this.administratorRepository =  administratorRepository;
+        this.administratorPasswordChangeCodeRepository = administratorPasswordChangeCodeRepository;
     }
 
     /**
@@ -65,6 +57,16 @@ class NewPasswordAdministratorUseCase {
      * @returns {*}
      */
     public async execute (userPasswordChangeCode: string, newPassword: string, newPasswordConfirmation: string) {
+
+        //Password cannot be empty
+        if (!newPassword){
+            throw new ApiError("A nova senha não pode ser vazia!", 422);
+        }
+
+        //Password confirmation cannot be empty
+        if (!newPasswordConfirmation){
+            throw new ApiError("A confirmação da nova senha não pode ser vazia!", 422);
+        }
 
         //Confirmation matches the first entry
         if (newPassword !== newPasswordConfirmation){
@@ -94,5 +96,4 @@ class NewPasswordAdministratorUseCase {
     }
 }
 
-//Class export declarator
-export { NewPasswordAdministratorUseCase as NewPasswordAdministratorUseCase };
+export { NewPasswordAdministratorUseCase as NewPasswordAdministratorUseCase }; //Class export declarator

@@ -18,8 +18,6 @@ export default function Evento() {
     if (location.state) {
         infoID = location.state.idEvento;
     }
-
-    console.log()
     
     return (
         <>
