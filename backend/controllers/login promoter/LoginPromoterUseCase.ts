@@ -2,7 +2,6 @@ import { PromoterRepository } from "../../db/PromoterRepository";
 import bcrypt from "bcrypt";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
-import auth from "../../config/auth";
 import { TokenPromoterRepository } from "../../db/TokenPromoterRepository";
 import { PromoterRegistrationRequestRepository } from "../../db/PromoterRegistrationRequestRepository";
 
@@ -57,18 +56,18 @@ class LoginPromoterUseCase {
 
         const token = sign({tipo: "promoter", nome: infoPromoter.nome},
             
-        auth.secretToken,
+        process.env.JWT_SECRET,
 
         {subject: `${infoPromoter.cpf}`,
-            expiresIn: auth.expiresInToken});
+            expiresIn: process.env.EXPIRES_TOKEN});
     
     
     const refreshToken = await sign({tipo: "promoter", nome: infoPromoter.nome},
         
-        auth.secretRefreshToken,
+        process.env.JWT_REFRESH_SECRET,
         
         {subject: `${infoPromoter.cpf}`,
-            expiresIn: auth.expiresInRefreshToken});
+            expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
     
     var expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + 30);
@@ -78,7 +77,8 @@ class LoginPromoterUseCase {
     const promoter = {
         nome: infoPromoter.nome,
         cpf: infoPromoter.cpf,
-        email: infoPromoter.email
+        email: infoPromoter.email,
+        status: infoPromoter.status
     }
     
     return { promoter, token, refreshToken };

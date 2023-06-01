@@ -27,7 +27,7 @@ class AprovePromoterRegistrationUseCase {
 
         await this.promoterRegistrationRequestRepository.remove(promoterCpf);
         
-        await this.promoterRepository.updateStatus(promoterCpf);
+        await this.promoterRepository.updateStatusRegistration(promoterCpf);
     }
 
 }

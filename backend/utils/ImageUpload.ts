@@ -5,16 +5,7 @@ import { ApiError } from "../errors/ApiError";
 
 const imageStore = multer.diskStorage({
     destination: function(request: Request, file, callBack) {
-
-        let folder = ""
-
-        if(request.baseUrl.includes("user")) {
-            folder = "profiles"
-        } else if(request.baseUrl.includes("event")){
-            folder = "events"
-        }
-
-        callBack(null, `./backend/uploadImages/${folder}`);
+        callBack(null, `./backend/temp`);
     },
     filename: function(request: Request, file, callBack) {
         const nomeOriginal = file.originalname;

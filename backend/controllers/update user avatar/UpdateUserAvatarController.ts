@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UpdateUseAvatarUserCase } from "./UpdateUserAvatarUseCase";
+import { uploadFile } from "../../utils/UploadStorage";
 
 class UpdateUseAvatarController {
 
@@ -12,7 +13,7 @@ class UpdateUseAvatarController {
     public async handle (request: Request, response: Response) {
 
         const { cpf, tipo } = request.user;
-        const avatarImage = request.file.filename;
+        const avatarImage = request.file;
 
         await this.updateUserAvatarUseCase.execute(tipo, cpf, avatarImage);
         return response.status(204).send();

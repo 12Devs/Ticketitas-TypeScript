@@ -1,6 +1,5 @@
 import { verify } from "jsonwebtoken";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
-import auth from "../../config/auth";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 
@@ -14,7 +13,7 @@ class RefreshTokenAdministratorUseCase {
     
     public async execute (token: string){
 
-        const decode: any = await verify(token, auth.secretRefreshToken);
+        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
         const administratorCpf = decode.sub;
 
         const administratorToken: any = await this.tokenAdministratorRepository.findByCpfAndRefreshToken(administratorCpf, token);
@@ -27,10 +26,10 @@ class RefreshTokenAdministratorUseCase {
 
         const refreshToken = await sign({tipo: "Administrator", nome: decode.nome},
             
-            auth.secretRefreshToken,
+            process.env.JWT_REFRESH_SECRET,
             
             {subject: `${administratorCpf}`,
-                expiresIn: auth.expiresInRefreshToken});
+                expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
 
         var expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 30);
@@ -39,10 +38,10 @@ class RefreshTokenAdministratorUseCase {
 
         const newToken = sign({tipo: "Administrator", nome: decode.nome},
             
-            auth.secretToken,
+            process.env.JWT_SECRET,
 
             {subject: `${administratorCpf}`,
-                expiresIn: auth.expiresInToken});
+                expiresIn: process.env.EXPIRES_TOKEN});
         
         return {token: newToken, refreshToken};
     }

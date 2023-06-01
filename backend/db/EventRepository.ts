@@ -46,6 +46,15 @@ class EventRepository {
         return allHighlights;
     }
 
+    public async findIdStatuByCpfPromoter (cpf: number) {
+        const allEventsByPromoter = await Event.findAll({raw: true,  attributes: ['promoterCpf'],
+        where: {
+            Promotercpf: cpf
+        }});
+
+        return allEventsByPromoter;
+    }
+
     public async findOneEvent (id: string) {
         const event = await Event.findOne({raw: true, where: {
             id: id
@@ -93,6 +102,17 @@ class EventRepository {
         });
     }
 
+    public async supendEvent (promoterCpf: number){
+        await Event.update({
+            status: false
+        },
+        {
+            where: {
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
     public async setFeatured (id: string){
         await Event.update({
             destaque: true
@@ -103,10 +123,6 @@ class EventRepository {
             }
         });
     }
-
-
-
-
 
     public async updateData (promoterCpf: number, id: string, nome: string, descricao: string, dataEvento: Date, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
 
