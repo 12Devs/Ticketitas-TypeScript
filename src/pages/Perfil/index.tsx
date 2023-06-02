@@ -8,7 +8,7 @@ import NavBarGeral from '../../components/NavBarGeral';
 import FormLabel from '../../components/FormLabel';
 import OutputInfo from '../../components/OutputInfo';
 import jwtDecode from 'jwt-decode';
-
+import "./Perfil.css";
 
 
 export default function Perfil() {
@@ -37,74 +37,84 @@ export default function Perfil() {
         if(user != null){
             setUserType(user)
         }
-        console.log(cpf)
-        api.get(`user/client/${cpf}`).then((response) => {console.log(response)});
+
+        api.get(`user/client/${dados.sub}`).then((response) => {
+            console.log(response)
+            setprimeiroNome(response.data.ClientInfos.client.nome)
+            setEmail(response.data.ClientInfos.client.email)
+            setTelefone(response.data.ClientInfos.client.telefone)
+            setCep(response.data.enderecoClient.enderecoClient.cep)
+            setEstado(response.data.ClientInfos.enderecoClient.estado)
+            setBairro(response.data.ClientInfos.enderecoClient.bairro)
+            setRua(response.data.ClientInfos.enderecoClient.rua)
+            setBairro(response.data.ClientInfos.enderecoClient.bairro)
+        });
+        
         
     },[])
-    const typePerfil = 'Perfil ' + userType;
     
     return(
         <>
         <NavBarGeral/>
         <Container className='justify-content-center'>
-            <Row className='d-flex justify-content-center'>
+            <Row className='d-flex justify-content-center container-perfil'>
                 <Col md={8}>
-                <FormLabel label={typePerfil}/>
+                <FormLabel label={"Meu perfil"}/>
                 </Col>
             </Row> 
            
             <Row className='d-flex justify-content-center'>
                 <Col md={4}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='Nome' text={primeiroNome}/>
                 </Col>
                 <Col md={4}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='Sobrenome' text='default'/>
                 </Col>
 
             </Row>
             <Row className='d-flex justify-content-center'>
                 <Col md={8}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
 
             </Row>
             <Row className='d-flex justify-content-center'>
                 <Col md={1}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
 
             </Row>
             <Row className='d-flex justify-content-center'>
                 <Col md={1}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
 
             </Row>
             <Row className='d-flex justify-content-center'>
                 <Col md={2}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
                 <Col md={2}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
 
             </Row>
             <Row className='d-flex justify-content-center'>
                 <Col md={1}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
                 <Col md={1}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
 
             </Row>
 
             <Row className='d-flex justify-content-center'>
                 <Col md={2}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
                 <Col md={2}>
-                <OutputInfo label='' text=''/>
+                <OutputInfo label='defalt' text='defalt'/>
                 </Col>
 
             </Row>
