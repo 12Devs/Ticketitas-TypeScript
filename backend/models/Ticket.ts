@@ -7,6 +7,10 @@ const Ticket = conn.define('ticket', {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
+    nameEvent: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     sector: {
         type: DataTypes.STRING,
         allowNull: false

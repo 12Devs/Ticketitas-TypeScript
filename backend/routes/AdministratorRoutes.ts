@@ -7,9 +7,16 @@ import { refreshTokenAdministratorController } from '../controllers/refresh toke
 import { imageUpload } from '../utils/ImageUpload';
 import { ensureAuthenticatedAdministrator } from '../middlewares/EnsureAuthenticatedAdministrator';
 import { updateAvatarController } from '../controllers/update user avatar';
+import { listOneAdministratorController } from '../controllers/list one administrator';
+import { aprovePromoterRegistrationController } from '../controllers/approve promoter registration';
+import { updateStatusPromoterController } from '../controllers/update status promoter';
 
 
 const administratorRoutes = Router();
+
+administratorRoutes.get("/administrator/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+    return listOneAdministratorController.handle(request, response).catch((error)=>{next(error)});
+});
 
 administratorRoutes.post("/administrator", (request: Request, response: Response, next: NextFunction)=>{
     return createAdministratorController.handle(request, response).catch((error)=>{next(error)});   
@@ -35,5 +42,12 @@ administratorRoutes.patch("/administrator/avatar", ensureAuthenticatedAdministra
     return updateAvatarController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
+administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", (request: Request, response: Response, next: NextFunction)=>{
+    return aprovePromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
+});
+
+administratorRoutes.patch("/administrator/update-status-promoter/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+    return updateStatusPromoterController.handle(request, response).catch((error)=>{next(error)});   
+});
 
 export { administratorRoutes };

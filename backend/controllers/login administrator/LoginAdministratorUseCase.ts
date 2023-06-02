@@ -2,7 +2,6 @@ import { AdministratorRepository } from "../../db/AdministratorRepository";
 import bcrypt from "bcrypt";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
-import auth from "../../config/auth";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
 
 class LoginAdministratorUseCase {
@@ -35,7 +34,7 @@ class LoginAdministratorUseCase {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.senha);
+        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.password);
 
         if (!checkSenha) {
             throw new ApiError("Email ou senha incorretos", 422);
@@ -43,18 +42,18 @@ class LoginAdministratorUseCase {
 
         const token = sign({tipo: "administrator", nome: infoAdministrator.nome},
             
-        auth.secretToken,
+        process.env.JWT_SECRET,
 
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: auth.expiresInToken});
+            expiresIn: process.env.EXPIRES_TOKEN});
     
     
     const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.nome},
         
-        auth.secretRefreshToken,
+        process.env.JWT_REFRESH_SECRET,
         
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: auth.expiresInRefreshToken});
+            expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
     
     var expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + 30);

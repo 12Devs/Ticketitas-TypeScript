@@ -11,11 +11,25 @@ class EventRepository {
         this.createEnderecoEventController = createEnderecoEventController;
     }
 
-    public async create (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
+    public async create (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number,  porcentagemMeia: number, porcentagemGratis: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
 
         await this.createEnderecoEventController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoEvent: any)=>{
             const enderecoEventId = enderecoEvent.id;
-            await Event.create({nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, promoterCpf, enderecoEventId});
+            await Event.create({nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, promoterCpf, enderecoEventId});
+        });
+    }
+
+    public async makeSale (id: string, promoterCpf: number, pistaAmount: number, stageAmount: number, vipAmount: number){
+        await Event.update({
+            quantPista: pistaAmount,
+            quantStage: stageAmount,
+            quantVip: vipAmount
+        },
+        {
+            where: {
+                id: id,
+                promoterCpf: promoterCpf
+            }
         });
     }
 
@@ -26,17 +40,25 @@ class EventRepository {
 
     public async findAllHighlights () {
         const allHighlights = await Event.findAll({raw: true, where: {
+            status: true,
             destaque: true
         }});
         return allHighlights;
     }
 
-    public async findOneEvent (id: string) {
-        const event = await Event.findOne({raw: true, where: {
-            id: id
+    public async findIdStatuByCpfPromoter (cpf: number) {
+        const allEventsByPromoter = await Event.findAll({raw: true,  attributes: ['promoterCpf'],
+        where: {
+            Promotercpf: cpf
         }});
-        return event;
+
+        return allEventsByPromoter;
     }
+
+    public async findOneEvent(id: string): Promise<Event | null> {
+        const event = await Event.findOne({ raw: true, where: { id } }) as (Event | null);
+        return event;
+      }
 
     public async findByIdAndAvatar (id: string, promoterCpf: number) {
         const idAndAvatar = await Event.findOne({raw: true, attributes: ['id', 'imageEvent'], where: {
@@ -44,6 +66,14 @@ class EventRepository {
             promoterCpf: promoterCpf
         }});
         return idAndAvatar;
+    }
+
+    public async findByIdAndCpfPromoter (id: string, promoterCpf: number) {
+        const belongsToPromoter = await Event.findOne({raw: true, attributes: ['promoterCpf', 'status'], where: {
+            id: id,
+            promoterCpf: promoterCpf
+        }});
+        return belongsToPromoter;
     }
 
     public async updateImage (id: string, promoterCpf: number, imageEvent: any){
@@ -57,6 +87,30 @@ class EventRepository {
             }
         });
     }
+
+    public async updateStatus (id: string, promoterCpf: number, newStatus: boolean){
+        await Event.update({
+            status: newStatus
+        },
+        {
+            where: {
+                id: id,
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
+    public async supendEvent (promoterCpf: number){
+        await Event.update({
+            status: false
+        },
+        {
+            where: {
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
     public async setFeatured (id: string){
         await Event.update({
             destaque: true
@@ -67,10 +121,6 @@ class EventRepository {
             }
         });
     }
-
-
-
-
 
     public async updateData (promoterCpf: number, id: string, nome: string, descricao: string, dataEvento: Date, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
 

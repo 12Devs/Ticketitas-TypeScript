@@ -5,19 +5,28 @@ import { createEnderecoUserController } from '../controllers/create user enderec
 
 class PromoterRepository {
 
-    private createEnderecoController: CreateEnderecoUserController
+    private createEnderecoUserController: CreateEnderecoUserController
 
     public constructor (){
-        this.createEnderecoController = createEnderecoUserController;
+        this.createEnderecoUserController = createEnderecoUserController;
     }
 
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
-        await this.createEnderecoController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco: any)=>{
-            const enderecoId = endereco.id;
-            await Promoter.create({nome, cpf, email, telefone, senha, enderecoId});
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco: any)=>{
+            const enderecoUserId = endereco.id;
+            await Promoter.create({nome, cpf, email, telefone, senha, enderecoUserId});
         });
         
+    }
+
+    public async findOnePromoter(cpf: number) {
+
+        const promoterExists = await Promoter.findOne({raw: true,
+            where: {
+            cpf: cpf
+        }});
+        return promoterExists;
     }
 
     public async findByCpf (cpf: number) {
@@ -27,26 +36,6 @@ class PromoterRepository {
         return cpfExists;
     }
 
-
-
-
-
-    public async RemovePromoterByCpf(cpf: number) {
-        const promoter = await Promoter.findOne({ where: { cpf } });
-      
-        if (!promoter) {
-          throw new Error('Promoter not found'); // Tratar o caso em que o Promoter não é encontrado
-        }
-      
-        await promoter.destroy();
-      
-        return true; // Retorna true para indicar que a remoção foi bem-sucedida
-      }
-
-
-
-
-
     public async findByEmail (email: string) {
         const emailExists = await Promoter.findOne({raw: true, attributes: ['cpf'], where: {
             email: email
@@ -54,8 +43,9 @@ class PromoterRepository {
         return emailExists;
     }
 
-    public async findByEmailAndSenha (email: string, senha: string) {
-        const promoter = await Promoter.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'], where: {
+    public async findInfosByEmail (email: string) {
+        const promoter = await Promoter.findOne({raw: true,
+            where: {
             email: email
         }});
         return promoter;
@@ -78,7 +68,28 @@ class PromoterRepository {
             }
         });
     }
+    public async updateStatusRegistration (cpf: number){
+        await Promoter.update({
+            status: true
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
 
+    public async updateStatus (cpf: number, newStatus: boolean){
+        await Promoter.update({
+            status: newStatus
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+    
     public async updatePassword (cpf: number, newPassword: string){
         await Promoter.update({
             senha: newPassword

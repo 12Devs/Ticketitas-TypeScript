@@ -1,5 +1,4 @@
 import { EventRepository } from "../../db/EventRepository";
-import { TicketRepository } from "../../db/TicketRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
@@ -11,7 +10,7 @@ class CreateEventUseCase {
         this.eventRepository = eventRepository;
     }
 
-    public async execute (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
+    public async execute (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, porcentagemMeia: number, porcentagemGratis: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
 
         //Validations
         if (!promoterCpf) {
@@ -58,7 +57,19 @@ class CreateEventUseCase {
             throw new ApiError("O valor dos ingressos no setor vip é obrigatório!", 422);
         }
 
-        await this.eventRepository.create(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, cidade, estado, bairro, rua, numero);
+        if (porcentagemMeia === undefined || porcentagemMeia === null) {
+            throw new ApiError("A porcentagem de ingressos meia-entrada é obrigatória!", 422);
+        }
+
+        if (porcentagemMeia < 40) {
+            throw new ApiError("A quantidaade de ingressos meia-entrada disponivéis deve ser mais de 40% do total de ingressos!", 422);
+        }
+
+        if (porcentagemGratis === undefined || porcentagemGratis === null){
+            throw new ApiError("A porcentagem de ingressos gratuitos é obrigatória!", 422);
+        }
+
+        await this.eventRepository.create(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
         
     }
 
