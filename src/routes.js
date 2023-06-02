@@ -18,6 +18,7 @@ import Checkout from './pages/Evento/Checkout';
 
 import Perfil from './pages/Perfil';
 import CadastrarEvento from './pages/CadastrarEvento';
+import NotFound404 from './pages/NotFound404';
 
 
 export default function AppRouter() {
@@ -43,6 +44,7 @@ export default function AppRouter() {
                     <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>
                     <Route path='perfil' element={<Perfil/>}/>
+                    <Route path='404' element={<NotFound404/>}/>
                 </Routes>
                 <Footer />
             </Router>
