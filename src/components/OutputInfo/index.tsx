@@ -5,8 +5,8 @@ export default function OutputInfo({label,text}:{label:string, text:String}){
         <>
         <Row>
             <Col>
-            <h1 className='title-1'>Nome</h1>
-            <p className= 'subtitle-1'>Matheus Mota</p>
+            <h1 className='title-1'>{label}</h1>
+            <p className= 'subtitle-1'>{text}</p>
             </Col>
         </Row>
         </>

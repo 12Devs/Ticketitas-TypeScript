@@ -36,7 +36,7 @@ function CarouselPrincipal() {
             var idEvento = dados.id;
 
             const handleNavigate = () => {
-                navigate('/evento', { state: { idEvento } });
+                navigate(`/evento/${idEvento}`);
             }
 
             return (

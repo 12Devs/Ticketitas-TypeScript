@@ -18,8 +18,7 @@ const CardEvento = ({dados}:{dados: any}) => {
 
   const navigate = useNavigate();
   const handleNavigate = () => {
-    // Provisório
-    navigate('/evento', { state: { idEvento } });
+    navigate(`/evento/${idEvento}`);
     refresh();
   }
 

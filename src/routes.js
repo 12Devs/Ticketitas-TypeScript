@@ -18,6 +18,8 @@ import Checkout from './pages/Evento/Checkout';
 
 import Perfil from './pages/Perfil';
 import CadastrarEvento from './pages/CadastrarEvento';
+import NotFound404 from './pages/NotFound404';
+import Forbidden403 from './pages/Forbidden403';
 
 
 export default function AppRouter() {
@@ -27,7 +29,10 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos />} />
-                    <Route path='evento' element={<Evento />} />
+                    <Route 
+                        path='evento/:eventId' element={<Evento />} 
+                        loader={({ params }) => {console.log(params.eventId)}}
+                    />
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
                     <Route path='editarCliente' element={<EditarCliente/>}/>
@@ -37,10 +42,11 @@ export default function AppRouter() {
                     <Route path='editarAdmin' element={<EditarAdmin/>}/>
                     <Route path='recuperarSenha' element={<RecuperarSenha />} />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
-                    <Route path='evento' element={<Evento />} />
                     <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>
                     <Route path='perfil' element={<Perfil/>}/>
+                    <Route path='404' element={<NotFound404/>}/>
+                    <Route path='403' element={<Forbidden403/>}/>
                 </Routes>
                 <Footer />
             </Router>
