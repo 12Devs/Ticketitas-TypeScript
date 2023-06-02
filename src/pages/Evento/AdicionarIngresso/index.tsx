@@ -19,7 +19,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
     const [valorTotal, setValorTotal] = useState(0);
 
-    console.log("Evebto: ", event)
+    console.log("Evento: ", event)
 
     function subtrai(valor: number, setValor: Function) {
         if (valor > 0) {

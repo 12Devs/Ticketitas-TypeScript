@@ -27,7 +27,10 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos />} />
-                    <Route path='evento' element={<Evento />} />
+                    <Route 
+                        path='evento/:eventId' element={<Evento />} 
+                        loader={({ params }) => {console.log(params.eventId)}}
+                    />
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
                     <Route path='editarCliente' element={<EditarCliente/>}/>
@@ -37,7 +40,6 @@ export default function AppRouter() {
                     <Route path='editarAdmin' element={<EditarAdmin/>}/>
                     <Route path='recuperarSenha' element={<RecuperarSenha />} />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
-                    <Route path='evento' element={<Evento />} />
                     <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>
                     <Route path='perfil' element={<Perfil/>}/>

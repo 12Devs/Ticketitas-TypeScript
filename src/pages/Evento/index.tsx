@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import Descricao from './Descricao';
 import CardDestaques from '../../components/CardDestaques';
-import { useLocation } from 'react-router-dom';
+import {useParams } from 'react-router-dom';
 
 import '../pages.css'
 import './styleGeralEvento.css';
@@ -10,15 +10,15 @@ import '../Home/styleHome.css';
 import NavBarGeral from '../../components/NavBarGeral';
 
 export default function Evento() {
-    const location = useLocation();
+    let params = useParams();
     var infoID = '0';
-
+    
     window.scrollTo(0, 0);
 
-    if (location.state) {
-        infoID = location.state.idEvento;
+    if (params.eventId !== undefined) {
+        infoID = params.eventId;
     }
-    
+
     return (
         <>
         <NavBarGeral />
