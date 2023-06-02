@@ -38,7 +38,7 @@ export default function Perfil() {
             setUserType(user)
         }
         console.log(cpf)
-        api.get(`/client/${cpf}`).then((response) => {console.log(response)});
+        api.get(`user/client/${cpf}`).then((response) => {console.log(response)});
         
     },[])
     const typePerfil = 'Perfil ' + userType;
