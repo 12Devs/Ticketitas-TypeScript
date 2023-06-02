@@ -88,19 +88,19 @@ class CreateAdministratorUseCase {
      * @param {number} phone user telephone number
      * @returns {string}
      */
-    public async execute (name: string, newAdminCpf: number, email: string, phone: number, superAdminCpf:number, tipo: string) {
+    public async execute (name: string, newAdminCpf: number, email: string, phone: number) {
         
         //Type of user is "administrator"
-        if (tipo !== "administrator") {
-            throw new ApiError("Esta tarefa só pode ser executada por administradores autorizados!", 422);
-        }
+        // if (tipo !== "administrator") {
+        //     throw new ApiError("Esta tarefa só pode ser executada por administradores autorizados!", 422);
+        // }
 
         //Look for the logged-in administrator CPF in the "super admin" table
-        const superAdministrator = await this.superAdministratorRelationRepository.findByCpf(superAdminCpf);
+        // const superAdministrator = await this.superAdministratorRelationRepository.findByCpf(superAdminCpf);
         
-        if(!superAdministrator) {
-            throw new ApiError("Administradores regulares não estão autorizados a cadastrar novos administradores!", 422);
-        }
+        // if(!superAdministrator) {
+        //     throw new ApiError("Administradores regulares não estão autorizados a cadastrar novos administradores!", 422);
+        // }
 
         //Not-null user name
         if (!name){
