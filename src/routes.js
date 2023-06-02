@@ -19,6 +19,7 @@ import Checkout from './pages/Evento/Checkout';
 import Perfil from './pages/Perfil';
 import CadastrarEvento from './pages/CadastrarEvento';
 import NotFound404 from './pages/NotFound404';
+import Forbidden403 from './pages/Forbidden403';
 
 
 export default function AppRouter() {
@@ -45,6 +46,7 @@ export default function AppRouter() {
                     <Route path='loginAdm' element={<LoginAdm/>}/>
                     <Route path='perfil' element={<Perfil/>}/>
                     <Route path='404' element={<NotFound404/>}/>
+                    <Route path='403' element={<Forbidden403/>}/>
                 </Routes>
                 <Footer />
             </Router>
