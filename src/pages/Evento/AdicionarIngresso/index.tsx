@@ -3,8 +3,13 @@ import '../../../components/Button/Button.css';
 import './AdicionarIngresso.css';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import jwtDecode from 'jwt-decode';
+import ModalLoginCompra from '../ModalLoginCompra';
+
 
 export default function AdicionarIngresso({ event }: { event: any }) {
+
+
 
     const [quantidadePistaInteira, setQuantidadePistaInteira] = useState(0);
     const [quantidadePistaMeia, setQuantidadePistaMeia] = useState(0);
@@ -18,6 +23,10 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     const [quantidadeFree, setQuantidadeFree] = useState(0);
 
     const [valorTotal, setValorTotal] = useState(0);
+
+    const [show, setShow] = useState(false);
+
+    const [userType, setUserType] = useState('');
 
     console.log("Evento: ", event)
 
@@ -40,13 +49,45 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             quantidadeStageInteira,
             quantidadeVipInteira,
             event
+
         }
 
         // colocar o navigate
         console.log(dados)
+        const token = localStorage.getItem('token')
+        const user = localStorage.getItem('userType');
+        if(token != null){
+            dados = jwtDecode(token);
+            if(dados != null){
+                console.log("Dados: ", dados)
+            }
+           
+        }
+        else{
+            
+            setShow(true);
+
+            renderModalLoginCompra();
+            
+        }
+        if(user != null){
+            if(user == "cliente"){
+                console.log("cliente logado")
+            }
+            else{ 
+                console.log("login nao autorizado")
+            }
+        }
     }
 
-
+    function renderModalLoginCompra()
+    {
+        return(
+            <>
+            <ModalLoginCompra data={show} setData={setShow} />
+            </>
+        )
+    }
     function renderPistaInteira() {
 
         if (event == null) {
@@ -478,7 +519,15 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         setValorTotal(total);
     }, [quantidadePistaInteira, quantidadePistaMeia, quantidadeStageInteira, quantidadeStageMeia, quantidadeVipInteira, quantidadeVipMeia]);
 
+    let dados: any;
+    useEffect(()=>{
+        
 
+        
+       
+        
+        
+    },[])
     return (
         <>
             <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Ingressos</h4>
@@ -502,6 +551,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
                         </Row>
                         <Row>
                             <Button className='Botão-Primario' onClick={handleFinalizar}>Finalizar Compras</Button>
+                            {renderModalLoginCompra()}
                         </Row>
                     </Modal.Footer>
                 </Modal.Dialog>
