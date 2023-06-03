@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 import '../NavBarGeral/Navbar.css';
+import React from 'react';
 
 
 export default function Footer() {

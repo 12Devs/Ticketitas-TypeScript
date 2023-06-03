@@ -1,5 +1,6 @@
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import React from 'react';
 
 export default function DetalhesIngresso() {
 return (

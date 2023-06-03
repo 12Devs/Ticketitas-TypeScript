@@ -9,6 +9,7 @@ import { api } from '../../../services/api';
 import InputTexto from '../../../components/InputTexto';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import React from 'react';
 
 //import './styleDescricao.css';
 import './styleResumoCompra.css';

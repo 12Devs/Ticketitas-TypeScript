@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import { useState, useEffect } from 'react';
 import Header from '../Header';
 import { api } from '../../../services/api';
+import React from 'react';
 
 import './styleDescricao.css';
 import '../styleGeralEvento.css';

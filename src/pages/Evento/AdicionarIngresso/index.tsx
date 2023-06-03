@@ -3,6 +3,7 @@ import '../../../components/Button/Button.css';
 import './AdicionarIngresso.css';
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import React from 'react';
 
 export default function AdicionarIngresso({ event }: { event: any }) {
 

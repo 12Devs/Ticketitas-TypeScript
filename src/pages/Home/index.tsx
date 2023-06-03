@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import CardDestaques from '../../components/CardDestaques';
 import { useLocation } from 'react-router-dom';
+import React from 'react';
 
 export default function Home() {
     const location = useLocation();

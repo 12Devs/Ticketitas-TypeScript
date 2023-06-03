@@ -3,6 +3,7 @@ import "../../../src/components/Texto/Texto.css"
 import "../QuemSomos/style.css";
 import NavBarGeral from '../../components/NavBarGeral';
 import BannerPublicidade from '../../components/bannerPublicidade';
+import React from 'react';
 
 export default function QuemSomos(){
     return (

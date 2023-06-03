@@ -10,6 +10,7 @@ import { api } from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
 import './carousel.css';
 import '../styleHome.css';
+import React from 'react';
 
 function CarouselPrincipal() {
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });

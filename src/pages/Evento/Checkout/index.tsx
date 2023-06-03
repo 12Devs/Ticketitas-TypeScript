@@ -8,6 +8,7 @@ import '../../pages.css'
 import '../styleGeralEvento.css';
 import '../../Home/styleHome.css';
 import NavBarGeral from '../../../components/NavBarGeral';
+import React from 'react';
 
 export default function Evento() {
     const location = useLocation();

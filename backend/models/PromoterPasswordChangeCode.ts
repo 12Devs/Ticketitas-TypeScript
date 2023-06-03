@@ -9,7 +9,7 @@ import { conn } from "../db/connection";
 /**
  * Import of the class {@link Promoter}
  */
-import { Promoter } from "./Promoter";
+import { Promoter } from "./promoter";
 
 /**
  * Class containing the "model" for the password change code of promoter type of users and their respective object type

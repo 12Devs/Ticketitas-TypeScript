@@ -1,5 +1,8 @@
 import { Alert, Container, Form, Row, Col,Image } from 'react-bootstrap';
 import "./OutputInfo.css"
+import React from 'react';
+
+
 export default function OutputInfo({label,text}:{label:string, text:String}){
     return(
         <>

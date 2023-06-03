@@ -3,6 +3,7 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import CardEvento from '../CardEvento';
 import { useState, useEffect } from 'react';
 import { api } from '../../services/api';
+import React from 'react';
 
 function CardDestaques() {
   const [arrayEventos, setArrayEventos] = useState({ allHighlights: [] });

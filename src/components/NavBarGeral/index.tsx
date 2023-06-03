@@ -6,6 +6,7 @@ import InputBuscar from '../InputBuscar';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ModalLogin from '../ModalLogin';
+import React from 'react';
 
 import './Navbar.css';
 import { Dropdown } from 'react-bootstrap';

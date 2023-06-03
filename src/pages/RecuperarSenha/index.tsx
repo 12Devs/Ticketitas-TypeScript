@@ -4,6 +4,7 @@ import { Alert, Button, Col, Container, Row } from 'react-bootstrap';
 import { MouseEventHandler, useState } from 'react';
 import InputTexto from '../../components/InputTexto';
 import '../pages.css';
+import React from 'react';
 
 import {useNavigate } from 'react-router-dom';
 

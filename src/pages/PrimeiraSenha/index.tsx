@@ -5,7 +5,7 @@ import {useState } from 'react';
 import InputTexto from '../../components/InputTexto';
 import '../pages.css';
 import NavBarGeral from '../../components/NavBarGeral';
-
+import React from 'react';
 import {useNavigate } from 'react-router-dom';
 
 export default function PrimeiraSenha(){

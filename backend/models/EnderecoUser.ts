@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/connection";
 import { Client } from "./Client";
-import { Promoter } from "./Promoter";
+import { Promoter } from "./promoter";
 
 const EnderecoUser = conn.define('enderecoUser', {
     id: {
