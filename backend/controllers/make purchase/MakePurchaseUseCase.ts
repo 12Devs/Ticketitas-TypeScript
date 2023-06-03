@@ -8,20 +8,23 @@ import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { generateQrCode } from "../../utils/GenerateQrCode";
 import { deleteFile } from "../../utils/file";
 import { StockRepository } from "../../db/StockRepository";
+import { CheckoutRepository } from "../../db/CheckoutRepository";
 
 class MakePurchaseUseCase {
 
     private stockRepository: StockRepository;
     private saleRepository: SaleRepository;
+    private checkoutRepository: CheckoutRepository;
     private ticketRepository: TicketRepository;
     private eventRepository: EventRepository;
     private cardRepository: CardRepository;
     private enderecoEventRepository: EnderecoEventRepository;
     private emailProvider: EmailProvider;
 
-    public constructor (stockRepository: StockRepository, saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, emailProvider: EmailProvider) {
+    public constructor (stockRepository: StockRepository, saleRepository: SaleRepository, checkoutRepository: CheckoutRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, emailProvider: EmailProvider) {
         this.stockRepository = stockRepository;
         this.saleRepository = saleRepository;
+        this.checkoutRepository = checkoutRepository;
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.cardRepository = cardRepository;
@@ -29,7 +32,7 @@ class MakePurchaseUseCase {
         this.emailProvider = emailProvider;
     }
 
-    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, clientName: string, clientCpf: number, email: string, eventId: string){
+    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, clientName: string, clientCpf: number, email: string, eventId: string, checkoutId: string){
 
         //Validations
         if(!pistaAmount && pistaAmount !== 0) {
@@ -122,6 +125,7 @@ class MakePurchaseUseCase {
         const amount = (pistaAmount*event.valorPista) + (stageAmount*event.valorStage) + (vipAmount*event.valorVip) + ((pistaAmountHalf*event.valorPista)/2) + ((stageAmountHalf*event.valorStage)/2) + ((vipAmountHalf*event.valorVip)/2);
 
         await this.saleRepository.create(amount, clientCpf, eventId);
+        await this.checkoutRepository.deleteById(checkoutId)
 
         const quantPista = (stockEvent.quantPista - (pistaAmount + pistaAmountHalf));
         const quantStage = (stockEvent.quantStage - (stageAmount + stageAmountHalf));

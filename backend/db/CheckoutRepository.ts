@@ -18,6 +18,12 @@ class CheckoutRepository {
         }});
         return checkout;
     }
+
+    public async deleteById (id: string) {
+        await Checkout.destroy({
+            where: {id: id}
+        })
+    }
 }
 
 export { CheckoutRepository }
