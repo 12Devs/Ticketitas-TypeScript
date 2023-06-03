@@ -33,6 +33,10 @@ export default function AppRouter() {
                         path='evento/:eventId' element={<Evento />} 
                         loader={({ params }) => {console.log(params.eventId)}}
                     />
+
+                    
+            
+                    
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
                     <Route path='editarCliente' element={<EditarCliente/>}/>
