@@ -1,5 +1,4 @@
 import { CheckoutRepository } from "../../db/CheckoutRepository";
-import { EnderecoUserRepository } from "../../db/EnderecoUserRepository";
 import { ApiError } from "../../errors/ApiError";
 
 class ListOneCheckoutUseCase {
