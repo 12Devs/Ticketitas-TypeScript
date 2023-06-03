@@ -25,11 +25,11 @@ class UpdateCardUseCase {
             throw new ApiError("O nome do titular do cartão é obrigatório!", 422);
         }
 
-        if(!monthExpirationDate) {
+        if(monthExpirationDate === null || monthExpirationDate === undefined) {
             throw new ApiError("A data de validade do cartão é obrigatória!", 422);
         }
 
-        if(!yearExpirationDate) {
+        if(yearExpirationDate === null || yearExpirationDate === undefined) {
             throw new ApiError("A data de validade do cartão é obrigatória!", 422);
         }
 
@@ -41,12 +41,11 @@ class UpdateCardUseCase {
             throw new ApiError("O cvv do cartão deve ter 3 dígitos!", 422);
         }
 
-        const salt = await bcrypt.genSalt(11);
-        const cardNumberHash = await bcrypt.hash("cardNumber", salt);
-        const holderHash = await bcrypt.hash(holder, salt);
-        const expirationDateHash = new Date(yearExpirationDate,monthExpirationDate);
+        const expirationDate = new Date(yearExpirationDate, (monthExpirationDate - 1), 1);
         
-        const cvvHash = await bcrypt.hash("cvv", salt);
+        const salt = await bcrypt.genSalt(11);
+        
+        const cvvHash: any = await bcrypt.hash("cvv", salt);
         
         const cardExists: any = await this.cardRepository.findByCpf(cpf);
 
@@ -54,7 +53,7 @@ class UpdateCardUseCase {
             await this.cardRepository.remove(cardExists.id);
         }
 
-        await this.cardRepository.create(cpf, cardNumberHash, holderHash, expirationDateHash, cvvHash);
+        await this.cardRepository.create(cpf, cardNumber, holder, expirationDate, cvvHash);
     }
 
 }

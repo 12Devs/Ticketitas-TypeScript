@@ -11,6 +11,7 @@ import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistratio
 import { PromoterRepository } from "../db/PromoterRepository";
 import bcrypt from 'bcrypt';
 import { SendEmail } from "../utils/SendEmail";
+import { StockRepository } from "../db/StockRepository";
 
 class FillDataBase {
 
@@ -42,7 +43,7 @@ class FillDataBase {
     }
 
     public static async fillEvents() {
-        const createEventUseCase = new CreateEventUseCase(new EventRepository());
+        const createEventUseCase = new CreateEventUseCase(new EventRepository(), new StockRepository(), new PromoterRepository());
 
         const oktoberFest = "Corridas de cavalo, muita cerveja e festa nas ruas foram e são características culturais dessa tradicional festa na cidade. A cerveja tornou-se um símbolo de Feira de Santana.";
         const tomorrowland = "Maior festival de música eletrônica do mundo!";
