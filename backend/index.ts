@@ -25,6 +25,7 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
   });
 });
 
+<<<<<<< HEAD
 conn.sync().then(async () => {
   // await FillDataBase.fillClients();
   // await FillDataBase.fillPromoters();
@@ -32,6 +33,15 @@ conn.sync().then(async () => {
   // await FillDataBase.fillEvents();
   // await FillDataBase.setHighlights();
   // await FillDataBase.promoterAprove();
+=======
+conn.sync({}).then(async () => {
+  //  await FillDataBase.fillClients();
+  //  await FillDataBase.fillPromoters();
+  //  await FillDataBase.fillSuperAdministrator();
+  //  await FillDataBase.fillEvents();
+  //  await FillDataBase.setHighlights();
+  //  await FillDataBase.promoterAprove();
+>>>>>>> dev
   app.listen(process.env.PORT_BACK, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
 

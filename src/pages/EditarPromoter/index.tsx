@@ -12,6 +12,7 @@ import '../pages.css'
 import NavBarGeral from '../../components/NavBarGeral';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function CadastrarPromoter() {
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobreome] = useState('');
@@ -45,7 +46,7 @@ export default function CadastrarPromoter() {
             senha,
             confirmacaoSenha
         }
-        api.post("/user/promoter", dadosPromoter).then((response)=>{console.log(response)});
+        api.post("/user/promoter", dadosPromoter).then((response) => { console.log(response) });
 
         navigate('/');
     }
@@ -65,84 +66,89 @@ export default function CadastrarPromoter() {
 
     return (
         <>
-        <NavBarGeral />
-        <Form style={{minHeight: '75vh'}} onSubmit={editarCadastro}>
-            <Container>
-                <Row >
-                    <FormLabel label='Editar informações' />
-                </Row>
-                <Row>
-                    <Col sm={6}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
-                    </Col>
-                    <Col sm={6}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
-                    </Col>
-                </Row>
+            <NavBarGeral />
+            <Form style={{ minHeight: '75vh' }} onSubmit={editarCadastro}>
+                <Container>
+                    <Row >
+                        <FormLabel label='Editar informações' />
+                    </Row>
+                    <Row>
+                        <Col sm={6}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
+                        </Col>
+                        <Col sm={6}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col sm={6}>
-                        <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
-                    </Col>
-                    <Col sm={6}>
-                        <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col sm={6}>
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={""} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                        </Col>
+                        <Col sm={6}>
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col sm={6}>
-                        <InputTexto type={'number'} defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col sm={6}>
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CEP"} placeholder={""} controlId={"cep"} data={cep} setData={setCep} />
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col sm={8}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
-                    </Col>
-                    <Col sm={4}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col sm={8}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Cidade"} placeholder={""} controlId={"cidade"} data={cidade} setData={setCidade} />
+                        </Col>
+                        <Col sm={4}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Estado"} placeholder={""} controlId={"estado"} data={estado} setData={setEstado} />
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Bairro"} placeholder={""} controlId={"bairro"} data={bairro} setData={setBairro} />
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col sm={8}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
-                    </Col>
-                    <Col sm={4}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col sm={8}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Rua"} placeholder={""} controlId={"rua"} data={rua} setData={setRua} />
+                        </Col>
+                        <Col sm={4}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Número"} placeholder={""} controlId={"numero"} data={numero} setData={setNumero} />
+                        </Col>
+                    </Row>
 
-                <Row>
-                    <Col>
-                        <InputTexto type={'email'} defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
-                    </Col>
-                </Row>
+                    <Row>
+                        <Col sm={8}>
+                            <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
+                        </Col>
+                        <Col sm={4}>
+                            <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul'>
+                                Alterar senha
+                            </Button>
+                        </Col>
+                    </Row>
 
-                
-                <Row>
-                    <Col>
-                    
-                    </Col>
-                </Row>
 
-                <Row className='d-flex justify-content-center'>
-                    <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
-                        Cancelar
-                    </Button>
-                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
-                        Confirmar alterações
-                    </Button>
-                </Row>
+                    <Row>
+                        <Col>
 
-            </Container>
-        </Form>
+                        </Col>
+                    </Row>
+
+                    <Row className='d-flex justify-content-center'>
+                        <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                            Cancelar
+                        </Button>
+                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
+                            Confirmar alterações
+                        </Button>
+                    </Row>
+
+                </Container>
+            </Form>
         </>
     )
 }

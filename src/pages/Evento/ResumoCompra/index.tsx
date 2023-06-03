@@ -14,6 +14,7 @@ import React from 'react';
 //import './styleDescricao.css';
 import './styleResumoCompra.css';
 import '../../../components/Texto/Texto.css';
+import { container } from 'googleapis/build/src/apis/container';
 
 export default function Descricao({ idEvento }: { idEvento: string }) {
     const [titulo, setTitulo] = useState('Titulo');
@@ -53,7 +54,110 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
         });
     }, []);
 
+    function renderCartao(){
+        if (false){
+            return(
+                <>
+                <Row className="labelPagamento">
+                
+                <h3>Forma de Pagamento</h3>
+                <Row className='opcoesPagamento'>
+                    <Col sm={6}>
+                        <h5>Cartão</h5>
+                        <Form.Check type="radio" aria-label="radio 1" />
+                    </Col>
+                    <Col sm={6}>
+                        <h5>Saldo</h5>
+                        <Form.Check type="radio" aria-label="radio 1" />
+                    </Col>
+                </Row>
+                
+                
+            
+            </Row>
 
+            
+            <Row className='dadosCartao'>
+                <h5>
+                    Dados do cartão
+                </h5>
+                
+            </Row>  
+                <Row>
+                    <Col sm={4}>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número do Cartão *"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
+                    </Col>
+                    <Col sm={2}>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Data de Validade*"} placeholder={"MM/AA"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
+                    </Col>
+                    <Col sm={2}>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={"000"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
+                    </Col>
+                </Row>
+                <Row>
+                        <Col sm={6}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome impresso no cartão *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
+                        </Col>
+                        <Col sm={4}>
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
+                        </Col>
+                        
+                </Row>
+                </>
+            ) 
+        }
+        else{
+            return(
+                <>
+            
+            <Row>
+            <Card style={{ width: '20rem', height:'12rem'}}>
+                <Card.Body>
+                    
+                    
+                    <Card.Subtitle className="mb-2 text-muted">Cartão de Crédito</Card.Subtitle>
+                        <div className='d-flex justify-content-start'>
+                            <img
+                            src="/img/chipCard.png"
+                            width="50"
+                            height="50"
+                            className="d-inline-block"
+                            alt=''
+                        />{''}
+                        </div>
+                        
+                    <Card.Title>XXXX XXXX XXXX {"XXXX"}</Card.Title>
+                    <Row>
+                        <Col>
+                            <Card.Text>
+                                Nome da Pessoa
+                            </Card.Text>
+                        </Col>
+                        <Col>
+                        <Card.Text>
+                            12/2023
+                        </Card.Text>
+                        </Col>
+                        
+                    </Row>
+                    
+                </Card.Body>
+
+            </Card>
+            <Form>
+                <Form.Check className='d-flex justify-content-start'
+                    type="switch"
+                    id="custom-switch"
+                    label ="Usar Saldo Ticketitas"
+                />
+            </Form>
+            </Row>
+            </>
+        )
+        }
+    }
+
+    
     return (
         <Container>
             <Row >
@@ -105,51 +209,10 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
                     
                 </Row >
                 
-                <Row className="labelPagamento">
                 
-                    <h3>Forma de Pagamento</h3>
-                    <Row className='opcoesPagamento'>
-                        <Col sm={6}>
-                            <h5>Cartão</h5>
-                            <Form.Check type="radio" aria-label="radio 1" />
-                        </Col>
-                        <Col sm={6}>
-                            <h5>Saldo</h5>
-                            <Form.Check type="radio" aria-label="radio 1" />
-                        </Col>
-                    </Row>
-                    
-                    
                 
-                </Row>
-
+                {renderCartao()}
                 
-                <Row className='dadosCartao'>
-                    <h5>
-                        Dados do cartão
-                    </h5>
-                    
-                </Row>  
-                <Row>
-                    <Col sm={4}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número do Cartão *"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
-                    </Col>
-                    <Col sm={2}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Data de Validade*"} placeholder={"MM/AA"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
-                    </Col>
-                    <Col sm={2}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={"000"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
-                    </Col>
-                </Row>
-                <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome impresso no cartão *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
-                        </Col>
-                        <Col sm={4}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
-                        </Col>
-                        
-                </Row>
 
                <Row className='divParcelamento'>
                     <Form.Select size="sm">

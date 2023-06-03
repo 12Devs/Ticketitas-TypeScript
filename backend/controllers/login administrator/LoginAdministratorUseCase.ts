@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
+import 'dotenv/config'
 
 class LoginAdministratorUseCase {
 
@@ -41,19 +42,19 @@ class LoginAdministratorUseCase {
         }
 
         const token = sign({tipo: "administrator", nome: infoAdministrator.name},
-            
-        process.env.JWT_SECRET,
+        
+        process.env.JWT_SECRET as string,
 
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: process.env.EXPIRES_TOKEN});
+            expiresIn: process.env.EXPIRES_TOKEN as string});
     
     
     const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
         
-        process.env.JWT_REFRESH_SECRET,
+        process.env.JWT_REFRESH_SECRET as string,
         
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
+            expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
     
     var expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + 30);

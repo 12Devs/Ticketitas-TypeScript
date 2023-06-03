@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import { api } from '../../services/api';
@@ -12,34 +12,44 @@ import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
 import '../pages.css';
+import jwtDecode from 'jwt-decode';
 
 export default function EditarAdmin() {
-    const [primeiroNome, setprimeiroNome] = useState('');
-    const [sobrenome, setSobrenome] = useState('');
-    const [telefone, setTelefone] = useState('');
+    const [userType, setUserType] = useState('');
     const [cpf, setCpf] = useState('');
+    const [primeiroNome, setprimeiroNome] = useState('');
+    const [sobrenome, setSobreome] = useState('');
+    const [telefone, setTelefone] = useState('');
     const [email, setEmail] = useState('');
-    const navigate = useNavigate();
+    let dados: any;
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        const user = localStorage.getItem('userType');
+        if(token != null){
+            dados = jwtDecode(token);
+            if(dados != null){
+                setCpf(dados.sub);
+            }
+        }
+        if(user != null){
+            setUserType(user)
+        }
     
 
-    const editarCadastro = (event: any) => {
-        event.preventDefault();
-        var dadosAdmin: any = {
-            name: `${primeiroNome} ${sobrenome}`,
-            phone: telefone,
-            cpf,
-            email
-        }
-
-        api.post("/user/administrator", dadosAdmin).then((response)=>{console.log(response)});
-
-        navigate('/');
-    }
+        api.get(`user/administrator/${dados.sub}`).then((response) => {
+            console.log(response)
+            setprimeiroNome(response.data.ClientInfos.client.nome)
+            setEmail(response.data.ClientInfos.client.email)
+            setTelefone(response.data.ClientInfos.client.telefone)
+        });
+        
+        
+    },[])
 
     return (
         <>
         <NavBarGeral />
-        <Form style={{minHeight: '75vh'}} onSubmit={editarCadastro}>
+        <Form style={{minHeight: '75vh'}} onSubmit={EditarAdmin}>
             <Container>
 
                 <Row>
@@ -51,7 +61,7 @@ export default function EditarAdmin() {
                         <InputTexto type="text" defaultValue={''} required={true} label={"Primeiro nome"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
                     </Col>
                     <Col sm={6}>
-                        <InputTexto type="text" defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome} />
+                        <InputTexto type="text" defaultValue={''} required={true} label={"Sobrenome"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
                     </Col>
                 </Row>
 
@@ -65,10 +75,15 @@ export default function EditarAdmin() {
                 </Row>
 
                 <Row>
-                    <Col>
-                        <InputTexto type="email" defaultValue={''} required={true} label={"Email"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
-                    </Col>
-                </Row>
+                        <Col sm={8}>
+                            <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
+                        </Col>
+                        <Col sm={4}>
+                            <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul'>
+                                Alterar senha
+                            </Button>
+                        </Col>
+                    </Row>
 
 
                 <Row className='d-flex justify-content-center'>
@@ -84,4 +99,4 @@ export default function EditarAdmin() {
         </Form>
         </>
     )
-}
+    }

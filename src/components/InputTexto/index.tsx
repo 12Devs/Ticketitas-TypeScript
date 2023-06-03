@@ -13,6 +13,7 @@ function InputTexto({ type, label, placeholder, controlId, defaultValue, data, s
                 </Row>
                 <Row className='me-1 ms-1'>
                     <Form.Control 
+                        
                         required={required} 
                         type={type} 
                         placeholder={placeholder} 
