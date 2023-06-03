@@ -1,12 +1,12 @@
 import { ClientRepository } from "../../db/ClientRepository";
 import { CreateClientController } from "./CreateClientController";
 import { CreateClientUseCase } from "./CreateClientUseCase";
-import { SendEmail } from "../../utils/SendEmail";
+import { EmailProvider } from "../../utils/EmailProvider";
 
 const clientRepository = new ClientRepository();
-const sendEmail = new SendEmail();
+const emailProvider = new EmailProvider();
 
-const createClienteUseCase = new CreateClientUseCase(clientRepository, sendEmail);
+const createClienteUseCase = new CreateClientUseCase(clientRepository, emailProvider);
 const createClientController = new CreateClientController(createClienteUseCase);
 
 export { createClientController };

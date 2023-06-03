@@ -7,27 +7,26 @@ import { resolve } from "path";
 
 //configurando login e senha do send email
   //gerando a classe
-  class EmailProvider{
-    
-    private transporter: Transporter;
-    //construindo a mensagem utilizando o email fornecido
-    public constructor(){
-        
-      const transporter = nodemailer.createTransport({
-        service: 'gmail', 
-        auth: { 
-            user: 'ticketitas12devs@gmail.com', 
-            pass: 'gohhzwrwjmihscld' 
-          }
-      });
-
-      this.transporter = transporter;
+class EmailProvider{
+  
+  private transporter: Transporter;
+  //construindo a mensagem utilizando o email fornecido
+  public constructor(){
       
-    }
+    const transporter = nodemailer.createTransport({
+      service: 'gmail', 
+      auth: { 
+          user: 'ticketitas12devs@gmail.com', 
+          pass: 'gohhzwrwjmihscld' 
+        }
+    });
 
-    public async sendEmailTicketAttached(to: string, ticketInfo) {
+    this.transporter = transporter;
     
-      
+  }
+
+  public async sendEmailTicketAttached (to: string, ticketInfo) {
+  
     //Envio do email
     const templatePath = resolve(__dirname, '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
 
@@ -133,6 +132,25 @@ import { resolve } from "path";
     
   }
 
+  }
+
+  public async sendEmail (to: string, emailInfo) {
+
+    //Envio do email
+    const templatePath = resolve(__dirname, '..', 'utils', 'templates', `${emailInfo.template}.hbs`);
+
+    const templateFileContent = fs.readFileSync(templatePath).toString("utf-8");
+    const templateParse = handlebars.compile(templateFileContent);
+    const templateHTML = templateParse(templateParse);
+    
+    const mail: any = {
+      to: to,
+      from: 'ticketitas12devs@gmail.com',
+      subject: emailInfo.subject,
+      html: templateHTML
+    };
+
+    await this.transporter.sendMail(mail);
   }
 }
 export { EmailProvider };
