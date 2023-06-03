@@ -10,13 +10,13 @@ import { EventRepository } from "../db/EventRepository";
 import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistrationRequestRepository";
 import { PromoterRepository } from "../db/PromoterRepository";
 import bcrypt from 'bcrypt';
-import { SendEmail } from "../utils/SendEmail";
 import { StockRepository } from "../db/StockRepository";
+import { EmailProvider } from "../utils/EmailProvider";
 
 class FillDataBase {
 
     public static async fillClients() {
-        const createClientUseCase = new CreateClientUseCase(new ClientRepository(), new SendEmail());
+        const createClientUseCase = new CreateClientUseCase(new ClientRepository(), new EmailProvider());
 
         await createClientUseCase.execute("Gabriel", 45850724974, "gabriel@email.com", 75988532244, "abc123", "abc123", 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua de Cima", 13);
 
@@ -26,7 +26,7 @@ class FillDataBase {
     }
 
     public static async fillPromoters() {
-        const createPromoterUseCase = new CreatePromoterUseCase(new PromoterRepository(), new PromoterRegistrationRequestRepository(), new SendEmail());
+        const createPromoterUseCase = new CreatePromoterUseCase(new PromoterRepository(), new PromoterRegistrationRequestRepository(), new EmailProvider());
 
         await createPromoterUseCase.execute("Itamar Promoter", 45850724974, "itamarpromoter@email.com", 75988532244, "abc123", "abc123", 44230000, "Feira de Santana", "BA", "Feira 6", "Caminho I", 13);
 

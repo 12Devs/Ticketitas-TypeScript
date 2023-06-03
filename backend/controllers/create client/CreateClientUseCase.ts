@@ -63,12 +63,12 @@ class CreateClientUseCase {
             subject: `Bem-vindo à Ticketitas!`
         }
 
-        await this.emailProvider.sendEmail(email, emailInfo);
-
         const newClient = {
             name: nome,
             email: email
         }
+        
+        await this.emailProvider.sendEmail(email, emailInfo);
 
         return { newClient };
     }

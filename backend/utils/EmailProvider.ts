@@ -149,7 +149,7 @@ class EmailProvider{
       subject: emailInfo.subject,
       html: templateHTML
     };
-
+    
     await this.transporter.sendMail(mail);
   }
 }

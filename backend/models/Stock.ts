@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/connection";
-import { Event } from "./Event";
 
 const Stock = conn.define('stock',{
     id: {
