@@ -12,10 +12,7 @@ import { ApiError } from "../../errors/ApiError";
  * Import of the {@link https://www.npmjs.com/package/randomstring randomstring} module
  */
 import randomstring from 'randomstring';
-/**
- * Import of the class {@link SendEmail}
- */
-import { SendEmail } from "../../utils/SendEmail";
+
 /**
  * Import of the {@link https://www.npmjs.com/package/bcrypt bcrypt} module
  */
@@ -24,6 +21,7 @@ import bcrypt from 'bcrypt';
  * Import of the class {@link SuperAdministratorRelationRepository}
  */
 import { SuperAdministratorRelationRepository } from "../../db/SuperAdministratorRelationRepository";
+import { EmailProvider } from "../../utils/EmailProvider";
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
@@ -50,7 +48,7 @@ class CreateAdministratorUseCase {
      * @private Marks this instance as having "private" visibility
      * @type {SendEmail}
      */
-    private sendEmail: SendEmail;
+    private emailProvider: EmailProvider;
 
     /**
      * Creates an instance of {@link SuperAdministratorRelationRepository}
@@ -70,9 +68,9 @@ class CreateAdministratorUseCase {
      * @param {SendEmail} sendEmail Private instance of the SendEmail class
      * @param {SuperAdministratorRelationRepository} superAdministratorRelationRepository Private instance of the SuperAdministratorRelationRepository class
      */
-    constructor (administratorRepository: AdministratorRepository, sendEmail: SendEmail, superAdministratorRelationRepository: SuperAdministratorRelationRepository) {
+    constructor (administratorRepository: AdministratorRepository, emailProvider: EmailProvider, superAdministratorRelationRepository: SuperAdministratorRelationRepository) {
         this.administratorRepository =  administratorRepository;
-        this.sendEmail = sendEmail;
+        this.emailProvider = emailProvider;
         this.superAdministratorRelationRepository = superAdministratorRelationRepository;
     }
     
@@ -146,6 +144,13 @@ class CreateAdministratorUseCase {
         // Sends the information for the administrator repository class to work out the proccess of registering new info in the database
         await this.administratorRepository.create(name, newAdminCpf, email, phone, passwordHash);
 
+        const emailInfo = {
+            template: 'RegistrationConfirmationAdministrator',
+            subject: `ADMINISTRATOR: Bem-vindo à Ticketitas!`
+        }
+
+        await this.emailProvider.sendEmail(email, emailInfo);
+
         const newAdministrator = {
             name: name,
             email: email,
@@ -153,16 +158,8 @@ class CreateAdministratorUseCase {
         }
 
         return { newAdministrator };
-
-        //Message subject text
-        //const subject = "BEM-VINDO, ADMINISTRADOR";
-        //Message description text
-        //const message = (`  Caro ${name}:\n\nComo é procedimento padrão aos novos administradores regulares, sua conta foi associado a uma senha temporária aleatória. Por favor, utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n      Atenciosamente, Equipe Ticketitas.`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 
 //Class export declarator
-export { CreateAdministratorUseCase as CreateAdministratorUseCase };
+export { CreateAdministratorUseCase };
