@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import { conn } from "../db/connection";
 import { Sale } from "./Sale";
 import { Stock } from "./Stock";
+import { Checkout } from "./Checkout";
 
 const Event = conn.define('event', {
     id: {
@@ -70,6 +71,8 @@ const Event = conn.define('event', {
     }
 });
 
+Event.hasMany(Checkout);
 Event.hasMany(Sale);
 Event.hasOne(Stock);
+
 export { Event };
