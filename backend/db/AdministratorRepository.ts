@@ -14,14 +14,6 @@ import { Administrator } from "../models/Administrator";
  */
 class AdministratorRepository {
     
-    /**
-     * Declaration of the instance of this class (AdministratorRepository)
-     * @date 5/8/2023 - 8:57:34 PM
-     *
-     * @private Marks this object as private
-     * @type {AdministratorRepository}
-     */
-    private administratorRepository: AdministratorRepository
 
     /**
      * Method for requesting the insertion of (a) new row(s) in the server database in order to store the information of a new administrator registry
