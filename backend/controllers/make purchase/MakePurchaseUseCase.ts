@@ -7,9 +7,11 @@ import { EmailProvider } from "../../utils/EmailProvider";
 import { EnderecoEventRepository } from "../../db/EnderecoEventRepository";
 import { generateQrCode } from "../../utils/GenerateQrCode";
 import { deleteFile } from "../../utils/file";
+import { StockRepository } from "../../db/StockRepository";
 
 class MakePurchaseUseCase {
 
+    private stockRepository: StockRepository;
     private saleRepository: SaleRepository;
     private ticketRepository: TicketRepository;
     private eventRepository: EventRepository;
@@ -17,7 +19,8 @@ class MakePurchaseUseCase {
     private enderecoEventRepository: EnderecoEventRepository;
     private emailProvider: EmailProvider;
 
-    public constructor (saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, emailProvider: EmailProvider) {
+    public constructor (stockRepository: StockRepository, saleRepository: SaleRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, emailProvider: EmailProvider) {
+        this.stockRepository = stockRepository;
         this.saleRepository = saleRepository;
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
@@ -93,24 +96,26 @@ class MakePurchaseUseCase {
             throw new ApiError("Evento suspenso! não é possível vender ingressos!", 422);
         }
         
+        const stockEvent: any = await this.stockRepository.findStock(event.id);
+
         const amountHalfTicketsPista = ((event.porcentagemMeia/100) * event.quantPista);
         const amountHalfTicketsStage = ((event.porcentagemMeia/100) * event.quantStage);
         const amountHalfTicketsVip = ((event.porcentagemMeia/100) * event.quantVip);
         const amountFreeTickets = ((event.porcentagemGratis/100) * event.quantStage);
 
-        if ((event.quantPista < pistaAmount || event.quantPista < pistaAmountHalf || event.quantPista <= amountHalfTicketsPista) && event.quantPista > 0) {
+        if ((stockEvent.quantPista < pistaAmount || stockEvent.quantPista < pistaAmountHalf || stockEvent.quantPista <= amountHalfTicketsPista) && stockEvent.quantPista > 0) {
             throw new ApiError("Ingressos no setor pista esgotados!", 422);
         }
 
-        if ((event.quantStage < stageAmount || event.quantStage < stageAmountHalf || event.quantStage <= amountHalfTicketsStage) && event.quantStage > 0) {
+        if ((stockEvent.quantStage < stageAmount || stockEvent.quantStage < stageAmountHalf || stockEvent.quantStage <= amountHalfTicketsStage) && stockEvent.quantStage > 0) {
             throw new ApiError("Ingressos no setor stage esgotados!", 422);
         }
 
-        if ((event.quantVip <= vipAmount || event.quantVip <= vipAmountHalf || event.quantVip <= amountHalfTicketsVip) && event.quantVip > 0) {
+        if ((stockEvent.quantVip <= vipAmount || stockEvent.quantVip <= vipAmountHalf || stockEvent.quantVip <= amountHalfTicketsVip) && stockEvent.quantVip > 0) {
             throw new ApiError("Ingressos no setor vip esgotados!", 422);
         }
 
-        if ((event.quantPista <= amountFreeTickets) && event.quantPista > 0) {
+        if ((stockEvent.quantPista <= amountFreeTickets) && stockEvent.quantPista > 0) {
             throw new ApiError("Ingressos grátis esgotados!", 422);
         }
 
@@ -118,10 +123,11 @@ class MakePurchaseUseCase {
 
         await this.saleRepository.create(amount, clientCpf, eventId);
 
-        const quantPista = (event.quantPista - (pistaAmount + pistaAmountHalf));
-        const quantStage = (event.quantStage - (stageAmount + stageAmountHalf));
-        const quantVip = (event.quantVip - (vipAmount + vipAmountHalf));
-        await this.eventRepository.makeSale(event.id, event.promoterCpf, quantPista, quantStage, quantVip);
+        const quantPista = (stockEvent.quantPista - (pistaAmount + pistaAmountHalf));
+        const quantStage = (stockEvent.quantStage - (stageAmount + stageAmountHalf));
+        const quantVip = (stockEvent.quantVip - (vipAmount + vipAmountHalf));
+
+        await this.stockRepository.makeSale(event.id, quantPista, quantStage, quantVip);
 
         const idSale: any = await this.saleRepository.findIdByCpf(clientCpf);
 
