@@ -13,7 +13,7 @@ class CreateCheckoutUseCase {
         this.eventRepository = eventRepository;
     }
 
-    public async execute (eventId: string, pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, amountSale: number) {
+    public async execute (eventId: string, pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number,  walletValue: number, amountSale: number) {
 
         if (!eventId) {
             throw new ApiError("O id do evento é obrigatório!", 422);
@@ -47,6 +47,10 @@ class CreateCheckoutUseCase {
             throw new ApiError("A quantidade de ingressos grátis é obrigatória!", 422);
         }
 
+        if (!walletValue === null || walletValue === undefined) {
+            throw new ApiError("O saldo da carteira que será utilizado na compra é obrigatótio!", 422);
+        }
+
         if (!amountSale === null || amountSale === undefined) {
             throw new ApiError("O valor total da compra é obrigatório!", 422);
         }
@@ -57,7 +61,7 @@ class CreateCheckoutUseCase {
             throw new ApiError("Evento não encontrado!", 422);
         }
 
-        const checkout = await this.checkoutRepository.create(eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, amountSale);
+        const checkout = await this.checkoutRepository.create(eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, walletValue, amountSale);
 
         return checkout;
     }

@@ -3,9 +3,9 @@ import { Checkout } from "../models/Checkout";
 
 class CheckoutRepository {
 
-    public async create (eventId: string, pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, amountSale: number) {
+    public async create (eventId: string, pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, walletValue: number, amountSale: number) {
         
-        const checkout = await Checkout.create({pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, amountSale, eventId});
+        const checkout = await Checkout.create({pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, walletValue, amountSale, eventId});
 
         return checkout;
     }
