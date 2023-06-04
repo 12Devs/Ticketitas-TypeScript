@@ -20,11 +20,11 @@ import { listOneCardController } from '../controllers/list one card';
 
 const clientRoutes = Router();
 
-clientRoutes.get("/client", (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.get("/client", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return listOneClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
-clientRoutes.get("/client/ticket", (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.get("/client/ticket", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return listTicketsForClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
