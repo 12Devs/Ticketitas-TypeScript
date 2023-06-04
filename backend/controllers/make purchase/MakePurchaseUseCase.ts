@@ -93,6 +93,12 @@ class MakePurchaseUseCase {
             throw new ApiError("Cartão de crédito expirado! Não foi possível prosseguir com a compra!", 422);
         }
 
+        const checkoutExists: any = await this.checkoutRepository.findOneCheckout(checkoutId);
+
+        if (!checkoutExists) {
+            throw new ApiError("Checkout inválido!", 422);
+        }
+
         const event: any = await this.eventRepository.findOneEvent(eventId);
         
 

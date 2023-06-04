@@ -10,7 +10,7 @@ class ListOnePromoterController {
     }
 
     public async handle (request: Request, response: Response){
-        const { cpf }: any = request.params;
+        const { cpf }: any = request.user;
         const PromoterInfos = await this.listOnePromoterUseCase.execute(cpf);
         return response.status(200).json({PromoterInfos});
     }

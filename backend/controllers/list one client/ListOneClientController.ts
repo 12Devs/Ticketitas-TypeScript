@@ -10,7 +10,7 @@ class ListOneClientController {
     }
 
     public async handle (request: Request, response: Response){
-        const { cpf }: any = request.params;
+        const { cpf }: any = request.user;
         const ClientInfos = await this.listOneClientUseCase.execute(cpf);
         return response.status(200).json({ClientInfos});
     }

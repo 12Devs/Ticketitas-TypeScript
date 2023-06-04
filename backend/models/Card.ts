@@ -8,7 +8,7 @@ const Card = conn.define('card', {
         primaryKey: true
     },
     cardNumber:{
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     holder:{

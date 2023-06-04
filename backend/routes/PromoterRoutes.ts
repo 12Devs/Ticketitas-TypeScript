@@ -17,7 +17,7 @@ import { listOnePromoterController } from '../controllers/list one promoter';
 
 const promoterRoutes = Router();
 
-promoterRoutes.get("/promoter/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+promoterRoutes.get("/promoter", (request: Request, response: Response, next: NextFunction)=>{
     return listOnePromoterController.handle(request, response).catch((error)=>{next(error)});
 });
 

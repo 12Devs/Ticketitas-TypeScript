@@ -1,13 +1,16 @@
 import { CheckoutRepository } from "../../db/CheckoutRepository";
+import { EventRepository } from "../../db/EventRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
 class CreateCheckoutUseCase {
 
     private checkoutRepository: CheckoutRepository;
+    private eventRepository: EventRepository;
 
-    public constructor (checkoutRepository: CheckoutRepository) {
+    public constructor (checkoutRepository: CheckoutRepository, eventRepository: EventRepository) {
         this.checkoutRepository = checkoutRepository;
+        this.eventRepository = eventRepository;
     }
 
     public async execute (eventId: string, pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, amountSale: number) {
@@ -46,6 +49,12 @@ class CreateCheckoutUseCase {
 
         if (!amountSale === null || amountSale === undefined) {
             throw new ApiError("O valor total da compra é obrigatório!", 422);
+        }
+
+        const eventExists = await this.eventRepository.findOneEvent(eventId);
+
+        if (!eventExists) {
+            throw new ApiError("Evento não encontrado!", 422);
         }
 
         const checkout = await this.checkoutRepository.create(eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, amountSale);
