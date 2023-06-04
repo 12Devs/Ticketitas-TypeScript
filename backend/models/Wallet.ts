@@ -12,7 +12,7 @@ const Wallet = conn.define('wallet',{
             key: 'cpf'
         }
     },
-    amout:{
+    amount:{
         type: DataTypes.FLOAT,
         allowNull: false,
     }

@@ -50,8 +50,8 @@ class UpdateStatusEventUseCase {
                 if (!walletExists && ticket.status == true){
                     await this.walletRepository.create(ticket.clientCpf, ticket.value);
                 } else if(ticket.status == true) {
-                    const newAmout = (walletExists.amout + ticket.value)
-                    await this.walletRepository.updateWallet(ticket.clientCpf, newAmout)
+                    const newAmount = (walletExists.amount + ticket.value)
+                    await this.walletRepository.updateWallet(ticket.clientCpf, newAmount)
                 }
 
                 await this.ticketRepository.updateStatus(ticket.id);
