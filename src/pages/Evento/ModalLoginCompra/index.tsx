@@ -19,7 +19,7 @@ export default function ModalLoginCompra({data,setData}:{data:boolean, setData:F
     const [emailRecuperacao, setEmailRecuperacao] = useState('');
     const [senha, setSenha] = useState('');
 
-    console.log("Chamada")
+    
 
     //const [show, setShow] = useState(false);
     const [showRecuperar, setShowRecuperar] = useState(false);
@@ -67,7 +67,7 @@ export default function ModalLoginCompra({data,setData}:{data:boolean, setData:F
     };
 
     const handleNavigateCadastroClienteCompra = () => {
-        navigate('/cadastrarCliente');
+        navigate('/cadastrarClienteCompra');
     };
 
     // Handlers modal de login

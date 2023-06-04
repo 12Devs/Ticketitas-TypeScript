@@ -11,12 +11,18 @@ import NavBarGeral from '../../../components/NavBarGeral';
 import {api} from '../../../services/api'
 import { useNavigate } from 'react-router-dom';
 
-import '../pages.css';
-import '../../components/Texto/Texto.css';
-import '../../components/Button/Button.css';
+//import '../pages.css';
+import '../../pages.css';
+
+// import '../../components/Texto/Texto.css';
+import '../../../components/Texto/Texto.css';
+
+//import '../../components/Button/Button.css';
+import '../../../components/Button/Button.css';
 
 export default function CadastrarClienteCompra() {
     const [primeiroNome, setprimeiroNome] = useState('');
+    const [userType, setUserType] = useState('cliente');
     const [sobrenome, setSobreome] = useState('');
     const [telefone, setTelefone] = useState('');
     const [cpf, setCpf] = useState('');
@@ -31,6 +37,8 @@ export default function CadastrarClienteCompra() {
     const [confirmacaoSenha, setConfirmacaoSenha] = useState('');
     const navigate = useNavigate();
 
+
+    
     const realizarCadastro = (event: any) => {
         event.preventDefault();
         var dadosCliente: any = {
@@ -50,9 +58,37 @@ export default function CadastrarClienteCompra() {
         
         api.post("/user/client", dadosCliente).then((response)=>{console.log(response)});
 
-        navigate('/');
+        var data: any = {
+            email,
+            senha,
+        }
+
         
+        if (userType == 'cliente') {
+            api.post('user/client/login', data)
+                .then((response) => { (response.status == 200) ? loginClienteAccepted(response) : console.log(response) })
+                .catch();
+        }
+        // Pós login actions
+        const loginClienteAccepted = (response: any) => 
+        {
+        localStorage.setItem("CPF", response.data.authenticateInfo.client.cpf);
+        localStorage.setItem("email", response.data.authenticateInfo.client.email);
+        localStorage.setItem("nome", response.data.authenticateInfo.client.nome);
+        localStorage.setItem("userType", "cliente");
+        localStorage.setItem("token", response.data.authenticateInfo.token);
+        localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);
         
+        }
+
+        navigate(-1);
+    }
+
+    
+
+    const handleBack =() =>
+    {
+        navigate(-1);
     }
 
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
@@ -142,10 +178,10 @@ export default function CadastrarClienteCompra() {
                     </Row>
 
                     <Row className='d-flex justify-content-center'>
-                            <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                            <Button onClick={handleBack} style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
                                 Voltar
                             </Button>
-                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">
+                            <Button style={{margin: '5vh 5vw 5vh 5vw'}}  className='Botão-Primario Texto-Branco' type="submit">
                                 Confirmar
                             </Button>
                     </Row>
