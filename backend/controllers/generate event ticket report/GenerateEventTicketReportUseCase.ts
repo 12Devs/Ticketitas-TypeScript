@@ -61,10 +61,6 @@ class GenerateEventTicketReportUseCase {
         }
 
         //The promoter reponsible for the event needs to be the one requesting access to its ticket sales information
-        
-        console.log(`\n\n${event.promoterCpf}\n\n`);
-        console.log(`\n\n${cpf}\n\n`);
-        
         if(event.promoterCpf != cpf) {
             throw new ApiError("Este evento não pertence ao promotor logado!", 422);
         }
