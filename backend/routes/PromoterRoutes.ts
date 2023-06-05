@@ -70,7 +70,7 @@ promoterRoutes.post("/promoter/update-phone", ensureAuthenticatedPromoter, (requ
     return updateUserPhoneController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-promoterRoutes.post("/promoter/generate-event-report/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+promoterRoutes.get("/promoter/generate-event-report/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return generateEventTicketReportController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
