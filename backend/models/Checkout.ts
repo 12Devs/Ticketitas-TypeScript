@@ -35,10 +35,6 @@ const Checkout = conn.define('checkout', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    walletValue:{
-        type: DataTypes.FLOAT,
-        allowNull: false
-    },
     amountSale:{
         type: DataTypes.FLOAT,
         allowNull: false
