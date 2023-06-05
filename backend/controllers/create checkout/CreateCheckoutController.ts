@@ -11,9 +11,9 @@ class CreateCheckoutController {
 
     public async handle (request: Request, response: Response) {
 
-        const { eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, amountSale } = request.body;
+        const { eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, walletValue, amountSale } = request.body;
 
-        const checkout: any = await this.createCheckoutUseCase.execute(eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, amountSale);
+        const checkout: any = await this.createCheckoutUseCase.execute(eventId, pistaAmount, stageAmount, vipAmount, pistaAmountHalf, stageAmountHalf, vipAmountHalf, freeAmount, walletValue, amountSale);
 
         return response.status(201).json({checkout});
     }

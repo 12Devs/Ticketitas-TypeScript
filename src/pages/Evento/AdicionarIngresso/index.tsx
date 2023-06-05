@@ -5,11 +5,14 @@ import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import ModalLoginCompra from '../ModalLoginCompra';
-
+import { api } from '../../../services/api';
 
 export default function AdicionarIngresso({ event }: { event: any }) {
 
     
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    };
 
     const [quantidadePistaInteira, setQuantidadePistaInteira] = useState(0);
     const [quantidadePistaMeia, setQuantidadePistaMeia] = useState(0);
@@ -30,8 +33,19 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
     
 
+    const [status, setStatus] = useState(false);
+
+    // if(!status)
+    // {
+            
+           
+    //         // let novoTotal = dadosCarrinhoObj.valorTotal;
+    //         setValorTotal(10);
+    //         setStatus(true);
+    // }
     
     
+
     function subtrai(valor: number, setValor: Function) {
         if (valor > 0) {
             setValor((valor - 1));
@@ -46,20 +60,24 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
     const handleFinalizar = () => {
         
+        
+        
         var dados = {
-        valorTotal,
-        quantidadePistaInteira,
-        quantidadePistaMeia,
-        quantidadeStageInteira,
-        quantidadeStageMeia,
-        quantidadeVipInteira,
-        quantidadeVipMeia,
-        event
-
-
+        "eventId":"384896ce-5021-475e-989f-f57c5b2e0a32",
+        "amountSale":valorTotal,
+        "pistaAmount":quantidadePistaInteira,
+        "pistaAmountHalf":quantidadePistaMeia,
+        "stageAmount":quantidadeStageInteira,
+        "stageAmountHalf":quantidadeStageMeia,
+        "vipAmount":quantidadeVipInteira,
+        "vipAmountHalf":quantidadeVipMeia,
+        "freeAmount":quantidadeFree,
+        "walletValue":2.00
+        
+    
         }
 
-        
+        console.log("Dados gerais:", dados);
 
         // colocar o navigate
         
@@ -68,7 +86,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         if(token != null){
             dados = jwtDecode(token);
             if(dados != null){
-                console.log("Dados: ", dados)
+                console.log("Dados123: ", dados)
             }
            
         }
@@ -80,6 +98,9 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         }
         if(user != null){
             if(user == "cliente"){
+                
+                api.post("sale/checkout", dados, config).then((response)=>{console.log("retorno:", response)});
+                
                 console.log("cliente logado")
             }
             else{ 
@@ -523,14 +544,18 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         }
     }
 
+
     useEffect(() => {
         var total = somaTotal();
         setValorTotal(total);
         
     }, [quantidadePistaInteira, quantidadePistaMeia, quantidadeStageInteira, quantidadeStageMeia, quantidadeVipInteira, quantidadeVipMeia]);
 
-    let dados: any;
 
+
+    
+
+    
     useEffect(()=>{
         
         const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
@@ -539,18 +564,22 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         if(dadosCarrinhoStr != null){
             const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
             console.log("Dados do carrinho:", dadosCarrinhoObj);
-            setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
-            console.log("qpi:", quantidadePistaInteira);
-
             
+            console.log("Total no LS: ",dadosCarrinhoObj.valorTotal);
+            setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
             setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
             setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
             setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
             setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
             setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
+
+
+            // setValorTotal()
             
             let novoTotal = dadosCarrinhoObj.valorTotal;
-            setValorTotal(1000);
+            
+            setValorTotal(novoTotal);
+            // console.log("Total", novoTotal);
             
 
         }
@@ -560,6 +589,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         
         
     },[])
+
     
     return (
         <>
