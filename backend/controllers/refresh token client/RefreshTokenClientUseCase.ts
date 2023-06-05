@@ -1,6 +1,5 @@
 import { verify } from "jsonwebtoken";
 import { TokenClientRepository } from "../../db/TokenClientRepository";
-import auth from "../../config/auth";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 
@@ -14,7 +13,7 @@ class RefreshTokenClientUseCase {
     
     public async execute (token: string){
 
-        const decode: any = await verify(token, auth.secretRefreshToken);
+        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
         const clientCpf = decode.sub;
 
         const clientToken: any = await this.tokenClientRepository.findByCpfAndRefreshToken(clientCpf, token);
@@ -27,10 +26,10 @@ class RefreshTokenClientUseCase {
 
         const refreshToken = await sign({tipo: "client", nome: decode.nome},
             
-            auth.secretRefreshToken,
+            process.env.JWT_REFRESH_SECRET,
             
             {subject: `${clientCpf}`,
-                expiresIn: auth.expiresInRefreshToken});
+                expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
         
         var expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 30);
@@ -39,10 +38,10 @@ class RefreshTokenClientUseCase {
 
         const newToken = sign({tipo: "client", nome: decode.nome},
             
-            auth.secretToken,
+            process.env.JWT_SECRET,
 
             {subject: `${clientCpf}`,
-                expiresIn: auth.expiresInToken});
+                expiresIn: process.env.EXPIRES_TOKEN});
         
         return {token: newToken, refreshToken};
     }

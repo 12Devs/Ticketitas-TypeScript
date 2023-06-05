@@ -18,8 +18,7 @@ const CardEvento = ({dados}:{dados: any}) => {
 
   const navigate = useNavigate();
   const handleNavigate = () => {
-    // Provisório
-    navigate('/evento', { state: { idEvento } });
+    navigate(`/evento/${idEvento}`);
     refresh();
   }
 
@@ -38,6 +37,9 @@ const CardEvento = ({dados}:{dados: any}) => {
       setNome(dados.nome);
       setDataEvento(dados.dataEvento);
       setIdEvento(dados.id);
+      setRua(dados.enderecoEvent.rua);
+      setCidade(dados.enderecoEvent.cidade);
+      setEstado(dados.enderecoEvent.estado);
     }
   }, [dados]);
 

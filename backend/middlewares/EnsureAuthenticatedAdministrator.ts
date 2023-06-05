@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
 import { ApiError } from "../errors/ApiError";
-import auth from "../config/auth";
-
 
 async function ensureAuthenticatedAdministrator(request: Request, response: Response, next: NextFunction) {
     
@@ -15,7 +13,7 @@ async function ensureAuthenticatedAdministrator(request: Request, response: Resp
 
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub } = await verify(token, auth.secretToken);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
 
         request.user = {
             tipo: "administrator",

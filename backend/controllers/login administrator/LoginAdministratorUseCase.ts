@@ -2,8 +2,8 @@ import { AdministratorRepository } from "../../db/AdministratorRepository";
 import bcrypt from "bcrypt";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
-import auth from "../../config/auth";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
+import 'dotenv/config'
 
 class LoginAdministratorUseCase {
 
@@ -25,7 +25,7 @@ class LoginAdministratorUseCase {
             throw new ApiError("A senha é obrigatória", 422);
         }
 
-        const infoAdministrator: any = await this.administratorRepository.findByEmailAndSenha(email, senha);
+        const infoAdministrator: any = await this.administratorRepository.findByEmailAndSenha(email);
         
         if (infoAdministrator === null || infoAdministrator === undefined) {
             throw new ApiError("Email ou senha incorretos", 422);
@@ -35,26 +35,26 @@ class LoginAdministratorUseCase {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.senha);
+        const checkSenha = bcrypt.compareSync(senha, infoAdministrator.password);
 
         if (!checkSenha) {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
-        const token = sign({tipo: "administrator", nome: infoAdministrator.nome},
-            
-        auth.secretToken,
+        const token = sign({tipo: "administrator", nome: infoAdministrator.name},
+        
+        process.env.JWT_SECRET as string,
 
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: auth.expiresInToken});
+            expiresIn: process.env.EXPIRES_TOKEN as string});
     
     
-    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.nome},
+    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
         
-        auth.secretRefreshToken,
+        process.env.JWT_REFRESH_SECRET as string,
         
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: auth.expiresInRefreshToken});
+            expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
     
     var expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + 30);
@@ -62,7 +62,7 @@ class LoginAdministratorUseCase {
     await this.tokenAdministratorRepository.create(infoAdministrator.cpf, expiresDate, refreshToken);
 
     const administrator = {
-        nome: infoAdministrator.nome,
+        nome: infoAdministrator.name,
         cpf: infoAdministrator.cpf,
         email: infoAdministrator.email
     }

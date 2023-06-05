@@ -1,9 +1,10 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 import { Card } from "./Card";
 import { TokenClient } from "./TokenClient";
 import { Sale } from "./Sale";
 import { Ticket } from "./Ticket";
+import { Wallet } from "./Wallet";
 
 const Client = conn.define('client',{
     nome:{

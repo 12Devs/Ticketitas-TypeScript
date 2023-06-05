@@ -9,6 +9,14 @@ class EnderecoUserRepository {
         
     }
 
+    public async findOneEnderecoUser (id: string) {
+        const enderecoUser = await EnderecoUser.findOne({raw: true, where: {
+            id: id
+        }});
+
+        return enderecoUser;
+    }
+
     public async findByEndereco (cep: number, bairro: string, rua: string, numero: number) {
         const enderecoExists = await EnderecoUser.findOne({raw: true, attributes: ['id'], where: {
             cep: cep,

@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize"
-import { conn } from "../db/Connection"
-
+import { conn } from "../db/connection"
 
 const Card = conn.define('card', {
     id: {
@@ -9,7 +8,7 @@ const Card = conn.define('card', {
         primaryKey: true
     },
     cardNumber:{
-        type: DataTypes.STRING,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     holder:{

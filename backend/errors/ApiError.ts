@@ -9,8 +9,8 @@ class ApiError {
     }
 }
 
-const resolver = (handlerFn) => {
-    return (req, res, next) => {
+const resolver = (handlerFn: any) => {
+    return (req: any, res: any, next: any) => {
       return Promise.resolve(handlerFn(req, res, next))
         .catch(e => next(e));
     }

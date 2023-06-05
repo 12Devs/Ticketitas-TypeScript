@@ -1,11 +1,15 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 
 const Ticket = conn.define('ticket', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
+    },
+    nameEvent: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     sector: {
         type: DataTypes.STRING,
@@ -22,6 +26,11 @@ const Ticket = conn.define('ticket', {
     dateEvent:{
         type: DataTypes.DATE,
         allowNull: false
+    },
+    status:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     }
 });
 

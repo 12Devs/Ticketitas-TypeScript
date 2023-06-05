@@ -7,27 +7,26 @@ import { resolve } from "path";
 
 //configurando login e senha do send email
   //gerando a classe
-  class EmailProvider{
-    
-    private transporter: Transporter;
-    //construindo a mensagem utilizando o email fornecido
-    public constructor(){
-        
-      const transporter = nodemailer.createTransport({
-        service: 'gmail', 
-        auth: { 
-            user: 'ticketitas@gmail.com', 
-            pass: 'snlxjijwsxqeegiw' 
-          }
-      });
-
-      this.transporter = transporter;
+class EmailProvider{
+  
+  private transporter: Transporter;
+  //construindo a mensagem utilizando o email fornecido
+  public constructor(){
       
-    }
+    const transporter = nodemailer.createTransport({
+      service: 'gmail', 
+      auth: { 
+          user: 'ticketitas12devs@gmail.com', 
+          pass: 'gohhzwrwjmihscld' 
+        }
+    });
 
-    public async sendEmailTicketAttached(to: string, ticketInfo) {
+    this.transporter = transporter;
     
-      
+  }
+
+  public async sendEmailTicketAttached (to: string, ticketInfo) {
+  
     //Envio do email
     const templatePath = resolve(__dirname, '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
 
@@ -62,10 +61,16 @@ import { resolve } from "path";
         const docDefinitions: TDocumentDefinitions = {
             defaultStyle: {font: 'Helvetica',
             margin: [0, 5, 0, 5]},
+            footer: {
+              columns: [
+                { text: 'Ticketitas™', alignment: 'center' }
+              ]
+            },
             content: [
               {
-                image: 'backend/utils/templates/logo.png',
-                alignment: 'center'
+                image: 'backend/utils/templates/logoTicket.png',
+                alignment: 'center',
+                width: 300
               },
               {
                   style: 'tableExample',
@@ -86,12 +91,12 @@ import { resolve } from "path";
                       style: 'tableExemple',
                       table: {
                         body: [
+                          [{text: 'Dados do Cliente: ', fontSize: 14, bold: true}],
+                          [{text: `${ticketInfo.clientName} - ${ticketInfo.clientCpf}`, fontSize: 12,  margin: [ 0, 0, 0, 20 ]}],
                           [{text: 'Dados do Ticket: ', fontSize: 14, bold: true}],
                           [{text: `Setor: ${ticketInfo.sector} - ${ticketInfo.profile}`, fontSize: 12}],
-                          [{text: `Valor: ${ticketInfo.value}`, fontSize: 12}],
-                          [{text: `Data de emissão: ${ticketInfo.dateSale}`, fontSize: 12}],
-                          [{text: 'Dados do Cliente: ', fontSize: 14, bold: true}],
-                          [{text: `${ticketInfo.clientName} - ${ticketInfo.clientCpf}`, fontSize: 12}]
+                          [{text: `Valor: R$ ${ticketInfo.value}`, fontSize: 12}],
+                          [{text: `Data de emissão: ${ticketInfo.dateNow}`, fontSize: 12}]
                         ]
                       }, layout: 'noBorders'
                     },
@@ -127,6 +132,25 @@ import { resolve } from "path";
     
   }
 
+  }
+
+  public async sendEmail (to: string, emailInfo) {
+
+    //Envio do email
+    const templatePath = resolve(__dirname, '..', 'utils', 'templates', `${emailInfo.template}.hbs`);
+
+    const templateFileContent = fs.readFileSync(templatePath).toString("utf-8");
+    const templateParse = handlebars.compile(templateFileContent);
+    const templateHTML = templateParse(templateParse);
+    
+    const mail: any = {
+      to: to,
+      from: 'ticketitas12devs@gmail.com',
+      subject: emailInfo.subject,
+      html: templateHTML
+    };
+    
+    await this.transporter.sendMail(mail);
   }
 }
 export { EmailProvider };

@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import { router } from "./routes/IndexRoutes";
-import { conn } from "./db/Connection";
+import { conn } from "./db/connection";
 import { ApiError } from "./errors/ApiError";
 import cors from "cors";
 import { FillDataBase } from "./config/fillDb";
@@ -26,8 +26,13 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
 });
 
 conn.sync().then(async () => {
-  // await FillDataBase.fillClients();
-  // await FillDataBase.fillPromoters();
-  // await FillDataBase.fillEvents();
-  app.listen(process.env.PORT_DEV, () => console.log("Server on! Porta => 3333"));
+  //  await FillDataBase.fillClients();
+  //  await FillDataBase.fillPromoters();
+  //  await FillDataBase.fillSuperAdministrator();
+  //  await FillDataBase.fillEvents();
+  //  await FillDataBase.setHighlights();
+  //  await FillDataBase.promoterAprove();
+  app.listen(process.env.PORT_BACK, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
+
+

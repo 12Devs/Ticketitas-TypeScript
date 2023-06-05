@@ -11,6 +11,7 @@ class LoginAdministratorController {
     public async handle(request: Request, response: Response){
 
         const { email, senha } = request.body;
+        
         const authenticateInfo = await this.loginAdministratorUseCase.execute(email, senha);
         
         return response.json({authenticateInfo});

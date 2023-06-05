@@ -1,7 +1,5 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
-import { Ticket } from "./Ticket";
-import { Sale } from "./Sale";
+import { conn } from "../db/connection";
 
 const Order = conn.define('order',{
     id: {

@@ -1,4 +1,3 @@
-import auth from "../../config/auth";
 import { ClientRepository } from "../../db/ClientRepository";
 import { TokenClientRepository } from "../../db/TokenClientRepository";
 import { ApiError } from "../../errors/ApiError";
@@ -43,18 +42,18 @@ class LoginClientUseCase {
 
         const token = sign({tipo: "client", nome: infoClient.nome},
             
-            auth.secretToken,
+            process.env.JWT_SECRET,
 
             {subject: `${infoClient.cpf}`,
-                expiresIn: auth.expiresInToken});
+                expiresIn: process.env.EXPIRES_TOKEN});
         
         
         const refreshToken = await sign({tipo: "client", nome: infoClient.nome},
             
-            auth.secretRefreshToken,
+            process.env.JWT_REFRESH_SECRET,
             
             {subject: `${infoClient.cpf}`,
-                expiresIn: auth.expiresInRefreshToken});
+                expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
         
         var expiresDate = new Date();
         expiresDate.setDate(expiresDate.getDate() + 30);
