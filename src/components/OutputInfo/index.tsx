@@ -3,10 +3,10 @@ import "./OutputInfo.css"
 export default function OutputInfo({label,text}:{label:string, text:String}){
     return(
         <>
-        <Row>
-            <Col>
-            <h1 className='title-1'>{label}</h1>
-            <p className= 'subtitle-1'>{text}</p>
+        <Row  >
+            <Col >
+            <h1 className='d-flex flex-column-start'>{label}</h1>
+            <p className= 'subtitulo'>{text}</p>
             </Col>
         </Row>
         </>
