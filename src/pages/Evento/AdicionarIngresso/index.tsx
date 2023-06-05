@@ -9,7 +9,7 @@ import ModalLoginCompra from '../ModalLoginCompra';
 
 export default function AdicionarIngresso({ event }: { event: any }) {
 
-
+    
 
     const [quantidadePistaInteira, setQuantidadePistaInteira] = useState(0);
     const [quantidadePistaMeia, setQuantidadePistaMeia] = useState(0);
@@ -28,8 +28,10 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
     const [userType, setUserType] = useState('');
 
-    console.log("Evento: ", event)
+    
 
+    
+    
     function subtrai(valor: number, setValor: Function) {
         if (valor > 0) {
             setValor((valor - 1));
@@ -43,17 +45,24 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     }
 
     const handleFinalizar = () => {
+        
         var dados = {
-            valorTotal,
-            quantidadePistaInteira,
-            quantidadeStageInteira,
-            quantidadeVipInteira,
-            event
+        valorTotal,
+        quantidadePistaInteira,
+        quantidadePistaMeia,
+        quantidadeStageInteira,
+        quantidadeStageMeia,
+        quantidadeVipInteira,
+        quantidadeVipMeia,
+        event
+
 
         }
 
+        
+
         // colocar o navigate
-        console.log(dados)
+        
         const token = localStorage.getItem('token')
         const user = localStorage.getItem('userType');
         if(token != null){
@@ -64,10 +73,9 @@ export default function AdicionarIngresso({ event }: { event: any }) {
            
         }
         else{
-            
+            localStorage.setItem('dadosCarrinho', JSON.stringify(dados));
             setShow(true);
 
-            renderModalLoginCompra();
             
         }
         if(user != null){
@@ -76,6 +84,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             }
             else{ 
                 console.log("login nao autorizado")
+
             }
         }
     }
@@ -517,17 +526,41 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     useEffect(() => {
         var total = somaTotal();
         setValorTotal(total);
+        
     }, [quantidadePistaInteira, quantidadePistaMeia, quantidadeStageInteira, quantidadeStageMeia, quantidadeVipInteira, quantidadeVipMeia]);
 
     let dados: any;
+
     useEffect(()=>{
         
+        const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
+        
+        
+        if(dadosCarrinhoStr != null){
+            const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
+            console.log("Dados do carrinho:", dadosCarrinhoObj);
+            setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
+            console.log("qpi:", quantidadePistaInteira);
 
+            
+            setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
+            setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
+            setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
+            setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
+            setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
+            
+            let novoTotal = dadosCarrinhoObj.valorTotal;
+            setValorTotal(1000);
+            
+
+        }
+        localStorage.removeItem('dadosCarrinho');
         
        
         
         
     },[])
+    
     return (
         <>
             <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Ingressos</h4>

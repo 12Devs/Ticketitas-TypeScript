@@ -11,7 +11,6 @@ class ListOneCheckoutController {
 
     public async handle (request: Request, response: Response){
         const { id }: any = request.params;
-        console.log("AQUIII: ", id)
         const CheckoutInfos = await this.listOneCheckoutUseCase.execute(id);
         return response.status(200).json({CheckoutInfos});
     }

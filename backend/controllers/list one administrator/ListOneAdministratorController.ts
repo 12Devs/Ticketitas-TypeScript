@@ -10,7 +10,7 @@ class ListOneAdministratorController {
     }
 
     public async handle (request: Request, response: Response){
-        const { cpf }: any = request.params;
+        const { cpf }: any = request.user;
         const AdministratorInfos = await this.listOneAdministratorUseCase.execute(cpf);
         return response.status(200).json({AdministratorInfos});
     }

@@ -20,7 +20,7 @@ import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config
 
 const administratorRoutes = Router();
 
-administratorRoutes.get("/administrator/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+administratorRoutes.get("/administrator", (request: Request, response: Response, next: NextFunction)=>{
     return listOneAdministratorController.handle(request, response).catch((error)=>{next(error)});
 });
 

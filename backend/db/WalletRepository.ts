@@ -3,8 +3,8 @@ import { Wallet } from "../models/Wallet"
 
 class WalletRepository {
 
-    public async create (cpf: number, amout: number){
-        await Wallet.create({cpf, amout});
+    public async create (cpf: number, amount: number){
+        await Wallet.create({cpf, amount});
     }
 
     public async findWallet (clientCpf: number) {
@@ -15,9 +15,9 @@ class WalletRepository {
         return wallet;
     }
 
-    public async updateWallet (clientCpf: number, newAmout: number) {
+    public async updateWallet (clientCpf: number, newAmount: number) {
         await Wallet.update({
-            amout: newAmout
+            amount: newAmount
         },
         {
             where: {

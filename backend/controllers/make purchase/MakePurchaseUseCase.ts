@@ -9,6 +9,7 @@ import { generateQrCode } from "../../utils/GenerateQrCode";
 import { deleteFile } from "../../utils/file";
 import { StockRepository } from "../../db/StockRepository";
 import { CheckoutRepository } from "../../db/CheckoutRepository";
+import { WalletRepository } from "../../db/WalletRepository";
 
 class MakePurchaseUseCase {
 
@@ -19,9 +20,11 @@ class MakePurchaseUseCase {
     private eventRepository: EventRepository;
     private cardRepository: CardRepository;
     private enderecoEventRepository: EnderecoEventRepository;
+    private walletRepository: WalletRepository;
     private emailProvider: EmailProvider;
+    
 
-    public constructor (stockRepository: StockRepository, saleRepository: SaleRepository, checkoutRepository: CheckoutRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, emailProvider: EmailProvider) {
+    public constructor (stockRepository: StockRepository, saleRepository: SaleRepository, checkoutRepository: CheckoutRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, walletRepository: WalletRepository, emailProvider: EmailProvider) {
         this.stockRepository = stockRepository;
         this.saleRepository = saleRepository;
         this.checkoutRepository = checkoutRepository;
@@ -29,10 +32,11 @@ class MakePurchaseUseCase {
         this.ticketRepository = ticketRepository;
         this.cardRepository = cardRepository;
         this.enderecoEventRepository = enderecoEventRepository;
+        this.walletRepository = walletRepository;
         this.emailProvider = emailProvider;
     }
 
-    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, clientName: string, clientCpf: number, email: string, eventId: string, checkoutId: string){
+    public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, walletValue: number, clientName: string, clientCpf: number, email: string, eventId: string, checkoutId: string){
 
         //Validations
         if(!pistaAmount && pistaAmount !== 0) {
@@ -93,6 +97,12 @@ class MakePurchaseUseCase {
             throw new ApiError("Cartão de crédito expirado! Não foi possível prosseguir com a compra!", 422);
         }
 
+        const checkoutExists: any = await this.checkoutRepository.findOneCheckout(checkoutId);
+
+        if (!checkoutExists) {
+            throw new ApiError("Checkout inválido!", 422);
+        }
+
         const event: any = await this.eventRepository.findOneEvent(eventId);
         
 
@@ -130,6 +140,15 @@ class MakePurchaseUseCase {
         const amount = (pistaAmount*event.valorPista) + (stageAmount*event.valorStage) + (vipAmount*event.valorVip) + ((pistaAmountHalf*event.valorPista)/2) + ((stageAmountHalf*event.valorStage)/2) + ((vipAmountHalf*event.valorVip)/2);
 
         await this.saleRepository.create(amount, clientCpf, eventId);
+
+        const wallet: any = await this.walletRepository.findWallet(clientCpf);
+
+        if (!wallet || wallet.amount < walletValue) {
+            throw new ApiError("Carteira com saldo insuficiente!", 422);
+        }
+        
+        const newAmout = (wallet.amount - walletValue);
+        await this.walletRepository.updateWallet(clientCpf, newAmout);
         
         await this.checkoutRepository.deleteById(checkoutId)
         

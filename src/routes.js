@@ -15,7 +15,7 @@ import Footer from './components/Footer';
 import Evento from './pages/Evento';
 import LoginAdm from './pages/LoginAdm';
 import Checkout from './pages/Evento/Checkout';
-
+import CadastrarClienteCompra from './pages/Evento/CadastrarClienteCompra';
 import Perfil from './pages/Perfil';
 import CadastrarEvento from './pages/CadastrarEvento';
 import NotFound404 from './pages/NotFound404';
@@ -38,6 +38,7 @@ export default function AppRouter() {
             
                     
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
+                    <Route path='cadastrarClienteCompra' element={<CadastrarClienteCompra/>}/>
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
                     <Route path='editarCliente' element={<EditarCliente/>}/>
                     <Route path='cadastrarPromoter' element={<CadastrarPromoter />} />
@@ -51,6 +52,7 @@ export default function AppRouter() {
                     <Route path='perfil' element={<Perfil/>}/>
                     <Route path='404' element={<NotFound404/>}/>
                     <Route path='403' element={<Forbidden403/>}/>
+                    
                 </Routes>
                 <Footer />
             </Router>

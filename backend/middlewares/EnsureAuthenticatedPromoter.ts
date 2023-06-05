@@ -15,18 +15,17 @@ async function ensureAuthenticatedPromoter(request: Request, response: Response,
     
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub } = await verify(token, process.env.JWT_SECRET);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
         
         const promoterStatus: any = await new PromoterRepository().findStatusByCpf(parseInt(sub));
-
-        
+ 
         if (promoterStatus.status == false) {
             next(new ApiError("Promoter suspenso", 401));
         }
         
         request.user = {
             tipo: "promoter",
-            cpf: sub,
+            cpf: sub
         }
         next();
     } catch {

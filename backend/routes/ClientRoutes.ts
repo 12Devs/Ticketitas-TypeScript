@@ -16,14 +16,15 @@ import { updateUserAddressController } from '../controllers/update user address'
 import { updateUserPhoneController } from '../controllers/update user phone';
 import { listOneClientController } from '../controllers/list one client';
 import { listTicketsForClientController } from '../controllers/list tickets for a client';
+import { listOneCardController } from '../controllers/list one card';
 
 const clientRoutes = Router();
 
-clientRoutes.get("/client/:cpf", (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.get("/client", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return listOneClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
-clientRoutes.get("/client/ticket/:clientCpf", (request: Request, response: Response, next: NextFunction)=>{
+clientRoutes.get("/client/ticket", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return listTicketsForClientController.handle(request, response).catch((error)=>{next(error)});
 });
 
@@ -53,6 +54,10 @@ clientRoutes.post("/client/refresh-token", (request: Request, response: Response
 
 clientRoutes.post("/client/card", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return updateCardController.handle(request, response).catch((error)=>{next(error)});
+});
+
+clientRoutes.get("/client/card/", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
+    return listOneCardController.handle(request, response).catch((error)=>{next(error)});
 });
 
 //clientRoutes.post("/client/update-cpf", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{

@@ -10,8 +10,8 @@ class ListTicketsForClientController {
     }
 
     public async handle (request: Request, response: Response){
-        const { clientCpf }: any = request.params;
-        const PromoterInfos = await this.listTicketsForClientUseCase.execute(clientCpf);
+        const { cpf }: any = request.user;
+        const PromoterInfos = await this.listTicketsForClientUseCase.execute(cpf);
         return response.status(200).json({PromoterInfos});
     }
 
