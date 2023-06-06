@@ -1,8 +1,9 @@
 declare namespace Express {
     export interface Request {
-        user: {
+        user?: {
             tipo: string,
             cpf: number;
         }
     }
 }
+

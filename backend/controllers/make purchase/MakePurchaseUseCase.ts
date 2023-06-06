@@ -142,12 +142,19 @@ class MakePurchaseUseCase {
         await this.saleRepository.create(amount, clientCpf, eventId);
 
         const wallet: any = await this.walletRepository.findWallet(clientCpf);
-
-        if (!wallet || wallet.amount < walletValue) {
+        var walletAmout = 0;
+        if (!wallet && walletValue > 0) {
             throw new ApiError("Carteira com saldo insuficiente!", 422);
         }
+
+        if (wallet) {
+            if (wallet.amount < walletValue) {
+                throw new ApiError("Carteira com saldo insuficiente!", 422);
+            }
+            walletAmout = wallet.amount
+        }
         
-        const newAmout = (wallet.amount - walletValue);
+        const newAmout = (walletAmout - walletValue);
         await this.walletRepository.updateWallet(clientCpf, newAmout);
         
         await this.checkoutRepository.deleteById(checkoutId)

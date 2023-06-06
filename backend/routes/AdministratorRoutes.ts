@@ -15,6 +15,7 @@ import { updateUserEmailController } from '../controllers/update user email';
 import { updateUserPasswordController } from '../controllers/update user password';
 import { updateUserPhoneController } from '../controllers/update user phone';
 import { createSuperAdministratorController } from '../controllers/create super administrator/index';
+import { generateAllEventsReportController } from '../controllers/generate all events report';
 
 import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config/env"
 
@@ -81,6 +82,10 @@ administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", (re
 
 administratorRoutes.patch("/administrator/update-status-promoter/:cpf", (request: Request, response: Response, next: NextFunction)=>{
     return updateStatusPromoterController.handle(request, response).catch((error)=>{next(error)});   
+});
+
+administratorRoutes.get("/administrator/generate-event-report", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return generateAllEventsReportController.handle(request, response).catch((error)=>{next(error)});
 });
 
 export { administratorRoutes };
