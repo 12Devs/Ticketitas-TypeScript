@@ -17,6 +17,7 @@ import { updateUserPhoneController } from '../controllers/update user phone';
 import { listOneClientController } from '../controllers/list one client';
 import { listTicketsForClientController } from '../controllers/list tickets for a client';
 import { listOneCardController } from '../controllers/list one card';
+import { generateClientTicketReportController } from '../controllers/generate client ticket report';
 
 const clientRoutes = Router();
 
@@ -82,6 +83,10 @@ clientRoutes.post("/client/update-address", ensureAuthenticatedClient, (request:
 
 clientRoutes.post("/client/update-phone", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserPhoneController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+clientRoutes.get("/client/generate-ticket-report", ensureAuthenticatedClient, (request: Request, response: Response, next: NextFunction)=>{
+    return generateClientTicketReportController.handle(request, response).catch((error)=>{next(error)});
 });
 
 export { clientRoutes };

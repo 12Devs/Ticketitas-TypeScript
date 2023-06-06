@@ -140,6 +140,11 @@ class EventRepository {
         });
     }
 
+    public async findAllEventsRaw () {
+        const allEvents = await Event.findAll({raw: true});
+        return allEvents;
+    }
+
 
 
 }
