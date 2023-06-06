@@ -5,8 +5,8 @@ export default function OutputInfo({label,text}:{label:string, text:String}){
         <>
         <Row  >
             <Col >
-            <h1 className='d-flex flex-column-start'>{label}</h1>
-            <p className= 'subtitulo'>{text}</p>
+            <h1  style={{fontSize: 12}}>{label}</h1>
+            <p className= 'subtitulo' style={{fontSize: 16, fontWeight: 'bold'}}>{text}</p>
             </Col>
         </Row>
         </>

@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import NavBarGeral from '../../components/NavBarGeral';
 import FormLabel from '../../components/FormLabel';
 import OutputInfo from '../../components/OutputInfo';
-import jwtDecode from 'jwt-decode';
 import Nav from 'react-bootstrap/Nav'
 import Card from 'react-bootstrap/Card';
 import "./Perfil.css";
+import ModalCadastrarCartao from '../../components/ModalCadastarCartao';
 
 
 export default function Perfil() {
@@ -26,30 +26,58 @@ export default function Perfil() {
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const [email, setEmail] = useState('');
+    const [card, setCard] = useState('');
 
     const [eventSelect, setEventSelect] = useState('Meus Dados');
-
+    const navigate = useNavigate();
     const handleSelect = (eventKey: any) => setEventSelect(eventKey);
 
     useEffect(()=>{
-        const token = localStorage.getItem('token')
         const user = localStorage.getItem('userType');
+        if(user != null){
+            setUserType(user)
+        }
+        
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        api.get("user/client/",config).then((response) => {
+        api.get("user/client/card",config).then((response) => {
             console.log(response)
-            setprimeiroNome(response.data.ClientInfos.client.nome)
-            setEmail(response.data.ClientInfos.client.email)
-            setTelefone(response.data.ClientInfos.client.telefone)
-            setCep(response.data.ClientInfos.enderecoClient.cep)
-            setEstado(response.data.ClientInfos.enderecoClient.estado)
-            setBairro(response.data.ClientInfos.enderecoClient.bairro)
-            setRua(response.data.ClientInfos.enderecoClient.rua)
-            setBairro(response.data.ClientInfos.enderecoClient.bairro)
-            setNumero(response.data.ClientInfos.enderecoClient.numero)
-            setCidade(response.data.ClientInfos.enderecoClient.cidade)
         });
+        if(user == "cliente"){
+            api.get("user/client/",config).then((response) => {
+                setprimeiroNome(response.data.ClientInfos.client.nome)
+                setEmail(response.data.ClientInfos.client.email)
+                setTelefone(response.data.ClientInfos.client.telefone)
+                setCep(response.data.ClientInfos.enderecoClient.cep)
+                setEstado(response.data.ClientInfos.enderecoClient.estado)
+                setBairro(response.data.ClientInfos.enderecoClient.bairro)
+                setRua(response.data.ClientInfos.enderecoClient.rua)
+                setBairro(response.data.ClientInfos.enderecoClient.bairro)
+                setNumero(response.data.ClientInfos.enderecoClient.numero)
+                setCidade(response.data.ClientInfos.enderecoClient.cidade)
+            });
+        }
+        else if(user == "promoter"){
+            api.get("user/promoter/",config).then((response) => {
+                console.log(response)
+                setprimeiroNome(response.data.PromoterInfos.promoter.nome)
+                setEmail(response.data.PromoterInfos.promoter.email)
+                setTelefone(response.data.PromoterInfos.promoter.telefone)
+                setCep(response.data.PromoterInfos.enderecoPromoter.cep)
+                setEstado(response.data.PromoterInfos.enderecoPromoter.estado)
+                setBairro(response.data.ClientInfos.enderecoPromoter.bairro)
+                setRua(response.data.ClientInfos.enderecoPromoter.rua)
+                setBairro(response.data.ClientInfos.enderecoPromoter.bairro)
+                setNumero(response.data.ClientInfos.enderecoPromoter.numero)
+                setCidade(response.data.ClientInfos.enderecoPromoter.cidade)
+            });
+        }
+        else if(user == "admin"){
+            api.get("user/administartor/",config).then((response) => {
+                console.log(response)
+            });
+        }
         
         
     },[])
@@ -69,7 +97,7 @@ export default function Perfil() {
                     </Nav.Item>
                     <Nav.Item>
                         <Nav.Link eventKey="Saldo" >
-                            Saldo
+                            Carteira
                         </Nav.Link>
                     </Nav.Item>
                 </Nav>
@@ -128,33 +156,66 @@ export default function Perfil() {
                                     </Col>
     
                                 </Row><Row className='d-flex justify-content-center'>
-    
-                                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit">
-                                        Editar Informações
-                                    </Button>
+                                    {
+                                        userType === "admn" ?  
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
+                                                className='Botão-Primario Texto-Branco'    
+                                                type="submit"
+                                                onClick={()=>{navigate("/editarAdmin")}}
+                                                >
+                                                
+                                            Editar Informações 
+                                        </Button>
+                                        : <div></div>
+                                    }
+                                    {
+                                        userType === "promoter" ?  
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
+                                                className='Botão-Primario Texto-Branco'    
+                                                type="submit"
+                                                onClick={()=>{navigate("/editarPromoter")}}
+                                                >
+                                                
+                                            Editar Informações 
+                                        </Button>
+                                        : <div></div>
+                                    }
+                                    {
+                                        userType === "cliente" ?  
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
+                                                className='Botão-Primario Texto-Branco'    
+                                                type="submit"
+                                                onClick={()=>{navigate("/editarCliente")}}
+                                                >
+                                                
+                                            Editar Informações 
+                                        </Button>
+                                        : <div></div>
+                                    }
+                                   
                                 </Row>
                             </>
                             : <div></div>
                }
                {
                 eventSelect == "Cartões" ?  
-                <Row>
+                <Row style={{marginBottom: '20%'}} className = "align-items-center">
                     <Col md={{ span: 2, offset: 3 }}>
-                        <Card style={{ width: '10rem', height:'6rem',marginTop: 20}}>
+                        <Card style={{ width: '15rem', height:'9rem',marginTop: 40, backgroundColor: 'purple'}}>
                             <Card.Body>
                                 
-                                <Card.Subtitle className="mb-2 text-muted" style={{fontSize: 12}}>Cartão de Crédito</Card.Subtitle>
+                                <Card.Subtitle className="mb-2 text-muted" >Cartão de Crédito</Card.Subtitle>
                                     <div className='d-flex justify-content-start'>
                                         <img
                                         src="/img/chipCard.png"
-                                        width="20"
-                                        height="20"
+                                        width="40"
+                                        height="40"
                                         className="d-inline-block"
                                         alt=''
                                     />{''}
                                     </div>
                                     
-                                <Card.Title style={{fontSize: 12}}>XXXX XXXX XXXX {"XXXX"}</Card.Title>
+                                <Card.Title style={{fontSize: 14, color : 'white', fontWeight: 'bold'}}>XXXX XXXX XXXX {"XXXX"}</Card.Title>
                             </Card.Body>
                         </Card> 
                     </Col>
@@ -164,6 +225,7 @@ export default function Perfil() {
                     <p style={{fontSize: 12}}>XXXX XXXX XXXX {"XXXX"}</p>
                     </div>
                     </Col>
+                    <ModalCadastrarCartao/>
                 </Row>
                 : <div></div>
                 
