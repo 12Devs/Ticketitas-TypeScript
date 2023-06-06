@@ -1,5 +1,6 @@
 import { Sale } from "../models/Sale";
 
+
 class SaleRepository {
 
     public async create (amount: number, clientCpf: number, eventId: string) {
@@ -13,6 +14,12 @@ class SaleRepository {
         return saleExists;
     }
 
+    public async findSaleByEventId(eventId: string){
+        const sale = await Sale.findOne({raw: true, attributes: ['id'], where: {
+            eventId: eventId
+        }});
+        return sale;
+    }
 }
 
 export { SaleRepository };

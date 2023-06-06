@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 import { Client } from "./Client";
+import { Promoter } from "./Promoter";
 
 const EnderecoUser = conn.define('enderecoUser', {
     id: {
@@ -35,5 +36,6 @@ const EnderecoUser = conn.define('enderecoUser', {
 });
 
 EnderecoUser.hasMany(Client);
+EnderecoUser.hasMany(Promoter);
 
 export { EnderecoUser };

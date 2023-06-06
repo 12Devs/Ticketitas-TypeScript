@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
 import { ApiError } from "../errors/ApiError";
-import auth from "../config/auth";
+import { PromoterRepository } from "../db/PromoterRepository";
 
 
 async function ensureAuthenticatedPromoter(request: Request, response: Response, next: NextFunction) {
@@ -12,11 +12,17 @@ async function ensureAuthenticatedPromoter(request: Request, response: Response,
         response.status(401).json({message: "Token inválido"});
         return
     }
-
+    
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub } = await verify(token, auth.secretToken);
-
+        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
+        
+        const promoterStatus: any = await new PromoterRepository().findStatusByCpf(parseInt(sub));
+ 
+        if (promoterStatus.status == false) {
+            next(new ApiError("Promoter suspenso", 401));
+        }
+        
         request.user = {
             tipo: "promoter",
             cpf: sub

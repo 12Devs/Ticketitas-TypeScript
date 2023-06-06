@@ -5,7 +5,7 @@ import { DataTypes } from "sequelize";
 /**
  * Import of the class {@link Connection}
  */
-import { conn } from "../db/Connection";
+import { conn } from "../db/connection";
 /**
  * Import of the class {@link TokenAdministrator}
  */
@@ -25,7 +25,7 @@ const Administrator = conn.define('administrator',{
     },
     //User CPF number
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     },
@@ -36,7 +36,7 @@ const Administrator = conn.define('administrator',{
     },
     //User telephone number
     phone: { 
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false
     },
     //User once-encrypted password hash

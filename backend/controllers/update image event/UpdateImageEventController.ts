@@ -13,7 +13,7 @@ class UpdateImageEventController {
 
         const { id } = request.body;
         const { cpf } = request.user;
-        const imageEvent = request.file.filename;
+        const imageEvent = request.file;
         await this.updateImageEventUseCase.execute(id, cpf, imageEvent);
         return response.status(204).send();
     }

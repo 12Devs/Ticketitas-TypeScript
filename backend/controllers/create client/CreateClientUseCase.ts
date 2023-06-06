@@ -1,13 +1,16 @@
 import { ClientRepository } from "../../db/ClientRepository";
 import { ApiError } from "../../errors/ApiError";
 import bcrypt from 'bcrypt';
+import { EmailProvider } from "../../utils/EmailProvider";
 
 class CreateClientUseCase {
 
     private clientRepository: ClientRepository
+    private emailProvider: EmailProvider;
 
-    constructor (clientRepository: ClientRepository) {
+    constructor (clientRepository: ClientRepository, emailProvider: EmailProvider) {
         this.clientRepository =  clientRepository;
+        this.emailProvider = emailProvider;
     }
     
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
@@ -54,6 +57,21 @@ class CreateClientUseCase {
         const salt = await bcrypt.genSalt(12);
         const senhaHash = await bcrypt.hash(senha, salt);
         await this.clientRepository.create(nome, cpf, email, telefone, senhaHash, cep, cidade, estado, bairro, rua, numero);
+
+        const emailInfo = {
+            template: 'RegistrationConfirmationClient',
+            subject: `Bem-vindo à Ticketitas!`
+        }
+        
+        await this.emailProvider.sendEmail(email, emailInfo);
+        
+        const newClient = {
+            name: nome,
+            email: email
+        }
+        
+
+        return { newClient };
     }
 }
 
