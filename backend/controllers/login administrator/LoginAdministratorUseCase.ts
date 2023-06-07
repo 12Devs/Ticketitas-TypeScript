@@ -5,16 +5,48 @@ import { sign } from "jsonwebtoken";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
 import 'dotenv/config'
 
+/**
+ * Login administrator use case class
+ * @date 6/6/2023 - 10:32:40 PM
+ *
+ * @class LoginAdministratorUseCase
+ * @typedef {LoginAdministratorUseCase}
+ */
 class LoginAdministratorUseCase {
-
+    
+    /**
+     * Creates an instance of {@link LoginAdministratorUseCase}.
+     * @date 6/6/2023 - 10:32:47 PM
+     *
+     * @private
+     * @type {AdministratorRepository}
+     */
     private administratorRepository: AdministratorRepository;
     private tokenAdministratorRepository: TokenAdministratorRepository;
-
+    
+    /**
+     * Creates an instance of LoginAdministratorUseCase.
+     * @date 6/6/2023 - 10:32:52 PM
+     *
+     * @constructor
+     * @param {AdministratorRepository} administratorRepository
+     * @param {TokenAdministratorRepository} tokenAdministratorRepository
+     */
     constructor (administratorRepository: AdministratorRepository, tokenAdministratorRepository: TokenAdministratorRepository) {
         this.administratorRepository = administratorRepository;
         this.tokenAdministratorRepository = tokenAdministratorRepository;
     }
-
+    
+    /**
+     * Method for make a login of a administrator
+     * @date 6/6/2023 - 10:32:57 PM
+     *
+     * @public
+     * @async
+     * @param {string} email
+     * @param {string} senha
+     * @returns {unknown}
+     */
     public async execute (email: string, senha: string) {
         
         if (!email){

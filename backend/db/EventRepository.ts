@@ -44,12 +44,10 @@ class EventRepository {
         return allEventsByPromoter;
     }
 
-    public async findOneEvent (id: string) {
-        const event = await Event.findOne({raw: true, where: {
-            id: id
-        }});
+    public async findOneEvent(id: string): Promise<Event | null> {
+        const event = await Event.findOne({ raw: true, where: { id } }) as (Event | null);
         return event;
-    }
+      }
 
     public async findByIdAndAvatar (id: string, promoterCpf: number) {
         const idAndAvatar = await Event.findOne({raw: true, attributes: ['id', 'imageEvent'], where: {

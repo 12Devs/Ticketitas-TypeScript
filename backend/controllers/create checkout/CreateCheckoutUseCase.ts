@@ -3,16 +3,58 @@ import { EventRepository } from "../../db/EventRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
+/**
+ * Create checkout use case class
+ * @date 6/6/2023 - 5:42:07 PM
+ *
+ * @class CreateCheckoutUseCase
+ * @typedef {CreateCheckoutUseCase}
+ */
 class CreateCheckoutUseCase {
-
+    
+    /**
+     * Creat an instance of {@link CreateCheckoutUseCase}
+     * @date 6/6/2023 - 5:42:34 PM
+     *
+     * @private Marks this instance as having "private" visibility
+     * @type {CheckoutRepository}
+     */
     private checkoutRepository: CheckoutRepository;
     private eventRepository: EventRepository;
 
+    
+    /**
+     * Creates an instance of CreateCheckoutUseCase.
+     * @date 6/6/2023 - 5:44:41 PM
+     *
+     * @constructor Marks this part of the code as a constructor
+     * @public Marks this method as having "public" visibility
+     * @param {CheckoutRepository} checkoutRepository
+     * @param {EventRepository} eventRepository
+     */
     public constructor (checkoutRepository: CheckoutRepository, eventRepository: EventRepository) {
         this.checkoutRepository = checkoutRepository;
         this.eventRepository = eventRepository;
     }
 
+    
+    /**
+     * Method for makes a checkout
+     * @date 6/6/2023 - 5:45:00 PM
+     *
+     * @public Marks this method as having "public" visibility
+     * @async Marks this method as being asynchronous
+     * @param {string} eventId
+     * @param {number} pistaAmount
+     * @param {number} stageAmount
+     * @param {number} vipAmount
+     * @param {number} pistaAmountHalf
+     * @param {number} stageAmountHalf
+     * @param {number} vipAmountHalf
+     * @param {number} freeAmount
+     * @param {number} amountSale
+     * @returns {checkout}
+     */
     public async execute (eventId: string, pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, amountSale: number) {
 
         if (!eventId) {
