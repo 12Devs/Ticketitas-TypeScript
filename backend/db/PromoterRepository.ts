@@ -20,6 +20,21 @@ class PromoterRepository {
         
     }
 
+
+
+    public async RemovePromoterByCpf(cpf: number) {
+        const promoter = await Promoter.findOne({ where: { cpf } });
+      
+        if (!promoter) {
+          throw new Error('Promoter not found'); // Tratar o caso em que o Promoter não é encontrado
+        }
+      
+        await promoter.destroy();
+      
+        return true; // Retorna true para indicar que a remoção foi bem-sucedida
+      }
+
+
     public async findOnePromoter(cpf: number) {
 
         const promoterExists = await Promoter.findOne({raw: true,
