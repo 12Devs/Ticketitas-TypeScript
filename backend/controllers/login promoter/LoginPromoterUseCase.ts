@@ -5,18 +5,51 @@ import { sign } from "jsonwebtoken";
 import { TokenPromoterRepository } from "../../db/TokenPromoterRepository";
 import { PromoterRegistrationRequestRepository } from "../../db/PromoterRegistrationRequestRepository";
 
+/**
+ * Login promoter use case class
+ * @date 6/6/2023 - 10:34:07 PM
+ *
+ * @class LoginPromoterUseCase
+ * @typedef {LoginPromoterUseCase}
+ */
 class LoginPromoterUseCase {
-
+    
+    /**
+     * Creates an instance of {@link LoginPromoterUseCase}.
+     * @date 6/6/2023 - 10:34:16 PM
+     *
+     * @private
+     * @type {PromoterRepository}
+     */
     private promoterRepository: PromoterRepository;
     private tokenPromoterRepository: TokenPromoterRepository;
     private promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository;
-
+    
+    /**
+     * Creates an instance of LoginPromoterUseCase.
+     * @date 6/6/2023 - 10:34:20 PM
+     *
+     * @constructor
+     * @param {PromoterRepository} promoterRepository
+     * @param {TokenPromoterRepository} tokenPromoterRepository
+     * @param {PromoterRegistrationRequestRepository} promoterRegistrationRequestRepository
+     */
     constructor (promoterRepository: PromoterRepository, tokenPromoterRepository: TokenPromoterRepository, promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository) {
         this.promoterRepository = promoterRepository;
         this.tokenPromoterRepository = tokenPromoterRepository;
         this.promoterRegistrationRequestRepository = promoterRegistrationRequestRepository;
     }
-
+    
+    /**
+     * Method for make a login of a promoter
+     * @date 6/6/2023 - 10:34:24 PM
+     *
+     * @public
+     * @async
+     * @param {string} email
+     * @param {string} senha
+     * @returns {unknown}
+     */
     public async execute (email: string, senha: string) {
         
         if (!email){
