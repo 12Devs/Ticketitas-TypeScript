@@ -13,6 +13,13 @@ class SaleRepository {
         }});
         return saleExists;
     }
+
+    public async findSaleByEventId(eventId: string){
+        const sale = await Sale.findOne({raw: true, attributes: ['id'], where: {
+            eventId: eventId
+        }});
+        return sale;
+    }
 }
 
 export { SaleRepository };
