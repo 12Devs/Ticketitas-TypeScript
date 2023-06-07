@@ -13,24 +13,13 @@ class EventRepository {
 
     public async create (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number,  porcentagemMeia: number, porcentagemGratis: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
 
-        await this.createEnderecoEventController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoEvent: any)=>{
-            const enderecoEventId = enderecoEvent.id;
-            await Event.create({nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, promoterCpf, enderecoEventId});
-        });
-    }
+        const enderecoEvent: any = await this.createEnderecoEventController.handle(cep, estado, cidade, bairro, rua, numero);
+        
+        const enderecoEventId = enderecoEvent.id;
 
-    public async makeSale (id: string, promoterCpf: number, pistaAmount: number, stageAmount: number, vipAmount: number){
-        await Event.update({
-            quantPista: pistaAmount,
-            quantStage: stageAmount,
-            quantVip: vipAmount
-        },
-        {
-            where: {
-                id: id,
-                promoterCpf: promoterCpf
-            }
-        });
+        const event = await Event.create({nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, promoterCpf, enderecoEventId});
+        
+        return event;
     }
 
     public async findAllEvents () {
@@ -147,6 +136,11 @@ class EventRepository {
                 promoterCpf: promoterCpf
             }
         });
+    }
+
+    public async findAllEventsRaw () {
+        const allEvents = await Event.findAll({raw: true});
+        return allEvents;
     }
 
 

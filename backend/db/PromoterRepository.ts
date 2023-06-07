@@ -1,4 +1,3 @@
-
 import { Promoter } from '../models/Promoter';
 import { CreateEnderecoUserController } from '../controllers/create user endereco/CreateEnderecoUserController';
 import { createEnderecoUserController } from '../controllers/create user endereco/index';
@@ -14,8 +13,8 @@ class PromoterRepository {
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
         await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco: any)=>{
-            const enderecoUserId = endereco.id;
-            await Promoter.create({nome, cpf, email, telefone, senha, enderecoUserId});
+            const enderecoId = endereco.id;
+            await Promoter.create({nome, cpf, email, telefone, senha, enderecoId});
         });
         
     }
@@ -46,8 +45,16 @@ class PromoterRepository {
     public async findInfosByEmail (email: string) {
         const promoter = await Promoter.findOne({raw: true,
             where: {
-            email: email
-        }});
+                email: email
+            }});
+        return promoter;
+    }
+    
+    public async findByEmailAndSenha (email: string) {
+        const promoter = await Promoter.findOne({raw: true, attributes: ['nome', 'cpf', 'email', 'senha'],
+            where: {
+                email: email
+            }});
         return promoter;
     }
 
@@ -56,6 +63,13 @@ class PromoterRepository {
             cpf: cpf
         }});
         return cpfAndAvatar;
+    }
+
+    public async findByCpfAndSenha (cpf: number) {
+        const cpfAndSenha = await Promoter.findOne({raw: true, attributes: ['cpf', 'senha'], where: {
+            cpf: cpf
+        }});
+        return cpfAndSenha;
     }
 
     public async updateAvatar (cpf: number, avatarImage: any){
@@ -93,6 +107,65 @@ class PromoterRepository {
     public async updatePassword (cpf: number, newPassword: string){
         await Promoter.update({
             senha: newPassword
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateCpf (cpf: number, newCpf: number){
+        await Promoter.update({
+            cpf: newCpf
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateName (cpf: number, newName: string){
+        await Promoter.update({
+            nome: newName
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateEmail (email: string, newEmail: string){
+        await Promoter.update({
+            email: newEmail
+        },
+        {
+            where: {
+                email: email
+            }
+        });
+    }
+
+    public async updateAddress (cpf: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number){
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoUser: any)=>{
+            const enderecoUserId = enderecoUser.id;
+            
+            await Promoter.update({
+                enderecoUserId: enderecoUserId
+            },
+            {
+                where: {
+                    cpf: cpf
+                }
+            });
+        });
+    }
+
+    public async updatePhone (cpf: number, newPhone: number){
+        await Promoter.update({
+            telefone: newPhone
         },
         {
             where: {

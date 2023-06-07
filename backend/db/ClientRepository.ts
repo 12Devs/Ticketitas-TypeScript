@@ -58,6 +58,13 @@ class ClientRepository {
         return cpfAndAvatar;
     }
 
+    public async findByCpfAndSenha (cpf: number) {
+        const cpfAndSenha = await Client.findOne({raw: true, attributes: ['cpf', 'senha'], where: {
+            cpf: cpf
+        }});
+        return cpfAndSenha;
+    }
+
     public async updateAvatar (cpf: number, avatarImage: any){
         await Client.update({
             avatarImage: avatarImage
@@ -80,6 +87,64 @@ class ClientRepository {
         });
     }
 
+    public async updateCpf (cpf: number, newCpf: number){
+        await Client.update({
+            cpf: newCpf
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateName (cpf: number, newName: string){
+        await Client.update({
+            nome: newName
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateEmail (email: string, newEmail: string){
+        await Client.update({
+            email: newEmail
+        },
+        {
+            where: {
+                email: email
+            }
+        });
+    }
+
+    public async updateAddress (cpf: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number){
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoUser: any)=>{
+            const enderecoUserId = enderecoUser.id;
+            
+            await Client.update({
+                enderecoUserId: enderecoUserId
+            },
+            {
+                where: {
+                    cpf: cpf
+                }
+            });
+        });
+    }
+
+    public async updatePhone (cpf: number, newPhone: number){
+        await Client.update({
+            telefone: newPhone
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
 }
 
 export { ClientRepository };

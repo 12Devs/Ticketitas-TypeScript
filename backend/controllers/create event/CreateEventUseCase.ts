@@ -1,13 +1,19 @@
 import { EventRepository } from "../../db/EventRepository";
+import { PromoterRepository } from "../../db/PromoterRepository";
+import { StockRepository } from "../../db/StockRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
 class CreateEventUseCase {
 
     private eventRepository: EventRepository;
+    private stockRepository: StockRepository;
+    private promoterRepository: PromoterRepository;
 
-    public constructor (eventRepository: EventRepository) {
+    public constructor (eventRepository: EventRepository, stockRepository: StockRepository, promoterRepository: PromoterRepository) {
         this.eventRepository = eventRepository;
+        this.stockRepository = stockRepository;
+        this.promoterRepository = promoterRepository;
     }
 
     public async execute (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, porcentagemMeia: number, porcentagemGratis: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
@@ -69,7 +75,15 @@ class CreateEventUseCase {
             throw new ApiError("A porcentagem de ingressos gratuitos é obrigatória!", 422);
         }
 
-        await this.eventRepository.create(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
+        const promoterExists = await this.promoterRepository.findOnePromoter(promoterCpf);
+
+        if (!promoterExists) {
+            throw new ApiError("Não existe promoter associado a esse cpf", 422);
+        }
+
+        const event: any = await this.eventRepository.create(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
+
+        await this.stockRepository.create(event.id, event.quantPista, event.quantStage, event.quantVip);
         
     }
 

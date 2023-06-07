@@ -2,15 +2,18 @@ import bcrypt from 'bcrypt';
 import { ApiError } from '../../errors/ApiError';
 import { PromoterRepository } from '../../db/PromoterRepository';
 import { PromoterRegistrationRequestRepository } from '../../db/PromoterRegistrationRequestRepository';
+import { EmailProvider } from '../../utils/EmailProvider';
 
 class CreatePromoterUseCase {
 
     private promoterRepository: PromoterRepository;
     private promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository;
+    private emailProvider: EmailProvider;
 
-    constructor (promoterRepository: PromoterRepository, promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository) {
+    constructor (promoterRepository: PromoterRepository, promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository, emailProvider: EmailProvider) {
         this.promoterRepository =  promoterRepository;
         this.promoterRegistrationRequestRepository = promoterRegistrationRequestRepository;
+        this.emailProvider = emailProvider;
     }
     
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
@@ -59,8 +62,29 @@ class CreatePromoterUseCase {
         const senhaHash = await bcrypt.hash(senha, salt);
 
         await this.promoterRepository.create(nome, cpf, email, telefone, senhaHash, cep, cidade, estado, bairro, rua, numero);
-
         await this.promoterRegistrationRequestRepository.create(nome, email, cpf);
+        
+        const emailInfo = {
+            template: 'RegistrationConfirmationPromoter',
+            subject: `PROMOTER: Bem-vindo à Ticketitas!`
+        }
+
+        await this.emailProvider.sendEmail(email, emailInfo);
+
+        const newPromoter = {
+            name: nome,
+            email: email
+        }
+
+        return { newPromoter };
+
+        //Message subject text
+        //const subject = "BEM-VINDO, PROMOTOR DE VENDAS";
+        //Message description text
+        //const message = (`  Caro ${nome}:\n\nÉ com prazer que damos as boas-vindas a um novo promotor em nossa plataforma! Aguarde a liberação por parte um de nossos colaboradores para poder registrar seus eventos;\n\n      Atenciosamente, Equipe Ticketitas.`);
+
+        //Sends information for the "sendEmail" util method to forward the message
+        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 

@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link PromoterRepository}
- */
+//Import of the repository classes
 import { PromoterRepository } from "../../db/PromoterRepository";
-/**
- * Import of the class {@link PromoterPasswordChangeCodeRepository}
- */
 import { PromoterPasswordChangeCodeRepository } from "../../db/PromoterPasswordChangeCodeRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the class {@link SendEmail}
- */
-import { SendEmail } from "../../utils/SendEmail";
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
 
 /**
  * Class that contains the methods and procedures necessary to send an email with the link with which an user can change their password
@@ -54,14 +44,18 @@ class ChangePasswordPromoterUseCase {
     private sendEmail: SendEmail;
 
     /**
-     * Constructor for instances of {@link PromoterRepository}
+     * Constructor for instances of {@link PromoterRepository}, {@link PromoterPasswordChangeCodeRepository} and {@link SendEmail}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {PromoterRepository} promoterRepository Private instance of the PromoterRepository class
+     * @param {PromoterPasswordChangeCodeRepository} promoterPasswordChangeCodeRepository Private instance of the PromoterPasswordChangeCodeRepository class
+     * @param {SendEmail} sendEmail Private instance of the SendEmail class
      */
-    constructor (promoterRepository: PromoterRepository) {
+    constructor (promoterRepository: PromoterRepository, promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository, sendEmail: SendEmail) {
         this.promoterRepository =  promoterRepository;
+        this.promoterPasswordChangeCodeRepository = promoterPasswordChangeCodeRepository;
+        this.sendEmail = sendEmail;
     }
 
     /**
@@ -89,20 +83,12 @@ class ChangePasswordPromoterUseCase {
         }
         
         //Random code obtained from the password change code repository
-        const randomCode = this.promoterPasswordChangeCodeRepository.generateUniqueCode();
-
-        //Message subject text
-        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR DE EVENTOS RECEBIDO";
-        //Message description text
-        const message = (`O código para alteração da sua senha é: ${randomCode}`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        await this.sendEmail.sendEmail(email, subject, message);
+        const randomCode = await this.promoterPasswordChangeCodeRepository.generateUniqueCode();
 
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
-        const cpfForTheEmailExists = await this.promoterPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
+        const cpfForTheEmailExists:any = await this.promoterPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
 
         //Conditional for existing or non-existing password change code registry
         if(!cpfForTheEmailExists) {
@@ -112,10 +98,25 @@ class ChangePasswordPromoterUseCase {
         }
         else{
             //Updating of an existing one
-            this.promoterPasswordChangeCodeRepository.updateCode(randomCode);
+            this.promoterPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode);
         }
+
+        const resetPromoterPassword = {
+            email: email,
+            resetCode: randomCode
+        }
+
+        return { resetPromoterPassword };
+
+        //Message subject text
+        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR RECEBIDO";
+        //Message description text
+        //const message = (`  Caro Promotor de Vendas:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
+
+        //Sends information for the "sendEmail" util method to forward the message
+        //await this.sendEmail.sendEmail(email, subject, message);
+
     }
 }
 
-//Class export declarator
-export { ChangePasswordPromoterUseCase as ChangePasswordPromoterUseCase };
+export { ChangePasswordPromoterUseCase as ChangePasswordPromoterUseCase }; //Class export declarator

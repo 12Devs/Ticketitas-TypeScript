@@ -50,17 +50,22 @@ export default function ModalLogin() {
         }
     }
 
-    // Recuperar senha
-
     // Pós login actions
     const loginPromoterAccepted = (response: any) => {
+        localStorage.setItem("CPF", response.data.authenticateInfo.promoter.cpf);
+        localStorage.setItem("email", response.data.authenticateInfo.promoter.email);
+        localStorage.setItem("nome", response.data.authenticateInfo.promoter.nome);
         localStorage.setItem("userType", "promoter");
         localStorage.setItem("token", response.data.authenticateInfo.token);
         localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);
         navigate('/');
         refresh();
     }
+
     const loginClienteAccepted = (response: any) => {
+        localStorage.setItem("CPF", response.data.authenticateInfo.client.cpf);
+        localStorage.setItem("email", response.data.authenticateInfo.client.email);
+        localStorage.setItem("nome", response.data.authenticateInfo.client.nome);
         localStorage.setItem("userType", "cliente");
         localStorage.setItem("token", response.data.authenticateInfo.token);
         localStorage.setItem("refreshToken", response.data.authenticateInfo.refreshToken);

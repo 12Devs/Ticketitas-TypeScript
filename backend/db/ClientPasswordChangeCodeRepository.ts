@@ -76,7 +76,7 @@ class ClientPasswordChangeCodeRepository {
      * @returns {Array} Array of clients password change code entries, matching the search (or none if no match is found)
      */
     public async findByCode (code: string) {
-        const codeExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const codeExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             code: code
         }});
         return codeExists;
@@ -92,25 +92,24 @@ class ClientPasswordChangeCodeRepository {
      * @returns {Array} Array of clients password change code entries, matching the search (or none if no match is found)
      */
     public async findByCpf (cpf: number) {
-        const cpfExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code'], where: {
+        const cpfExists = await ClientPasswordChangeCode.findOne({raw: true, attributes: ['code','cpf'], where: {
             cpf: cpf
         }});
         return cpfExists;
     }
 
-    public async updateCode (code: string){
+    public async updateCode (oldCode: string, newCode: string){
         await ClientPasswordChangeCode.update({
-            code: code
+            code: newCode
         },
         {
             where: {
-                code: code
+                code: oldCode
             }
         });
     }
 
     public async generateUniqueCode () {
-
         //Usage of the "generate" method of the "randomstring" module in order to obtain a 32 character-long password change code
         const randomCode = await randomstring.generate(32);
 

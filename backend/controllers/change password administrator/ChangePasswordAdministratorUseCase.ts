@@ -1,21 +1,11 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link AdministratorRepository}
- */
+//Import of the repository classes
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-/**
- * Import of the class {@link AdministratorPasswordChangeCodeRepository}
- */
 import { AdministratorPasswordChangeCodeRepository } from "../../db/AdministratorPasswordChangeCodeRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the class {@link SendEmail}
- */
-import { SendEmail } from "../../utils/SendEmail";
+
+import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
+import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
 
 /**
  * Class that contains the methods and procedures necessary to send an email with the link with which an user can change their password
@@ -54,11 +44,13 @@ class ChangePasswordAdministratorUseCase {
     private sendEmail: SendEmail;
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}
+     * Constructor for instances of {@link AdministratorRepository}, {@link AdministratorPasswordChangeCodeRepository} and {@link SendEmail}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
+     * @param {AdministratorPasswordChangeCodeRepository} administratorPasswordChangeCodeRepository Private instance of the AdministratorPasswordChangeCodeRepository class
+     * @param {SendEmail} sendEmail Private instance of the SendEmail class
      */
     constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository, sendEmail: SendEmail) {
         this.administratorRepository =  administratorRepository;
@@ -73,7 +65,7 @@ class ChangePasswordAdministratorUseCase {
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
      * @param {string} email user e-mail address
-     * @returns {*}
+     * @returns {string}
      */
     public async execute (email: string) {
         
@@ -93,32 +85,34 @@ class ChangePasswordAdministratorUseCase {
         //Random code obtained from the password change code repository
         const randomCode = await this.administratorPasswordChangeCodeRepository.generateUniqueCode();
 
-        console.log("AQUIII: ", randomCode);
-        //Message subject text
-        const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
-        //Message description text
-        const message = (`O código para alteração da sua senha é: ${randomCode}`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        await this.sendEmail.sendEmail(email, subject, message);
-
         const cpfOfTheEmail = emailExists.cpf;
 
         //Method used to check if a code is already registered for the cpf
-        const cpfForTheEmailExists = await this.administratorPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
+        const cpfForTheEmailExists:any = await this.administratorPasswordChangeCodeRepository.findByCpf(cpfOfTheEmail);
 
         //Conditional for existing or non-existing password change code registry
         if(!cpfForTheEmailExists) {
-            
-            //Creation of a new entry
-            this.administratorPasswordChangeCodeRepository.create(randomCode, cpfOfTheEmail);
+            this.administratorPasswordChangeCodeRepository.create(randomCode, cpfOfTheEmail); //Creation of a new entry
         }
         else{
-            //Updating of an existing one
-            this.administratorPasswordChangeCodeRepository.updateCode(randomCode);
+            this.administratorPasswordChangeCodeRepository.updateCode(cpfForTheEmailExists.code, randomCode); //Updating an existing entry
         }
+
+        const resetAdministratorPassword = {
+            email: email,
+            resetCode: randomCode
+        }
+
+        return { resetAdministratorPassword };
+
+        //Message subject text
+        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
+        //Message description text
+        //const message = (`  Caro Administrador:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
+
+        //Sends information for the "sendEmail" util method to forward the message
+        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 
-//Class export declarator
-export { ChangePasswordAdministratorUseCase as ChangePasswordAdministratorUseCase };
+export { ChangePasswordAdministratorUseCase as ChangePasswordAdministratorUseCase }; //Class export declarator

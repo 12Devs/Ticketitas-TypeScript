@@ -1,13 +1,9 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link NewPasswordPromoterUseCase}
- */
+ //Import of the NewPasswordPromoterUseCase class
 import { NewPasswordPromoterUseCase as NewPasswordPromoterUseCase} from "./NewPasswordPromoterUseCase";
-/**
- * Import of the Request and Response submodules of the {@link https://www.npmjs.com/package/express express} module
- */
-import { Request, Response } from "express";
+
+import { Request, Response } from "express"; //Import of the Request and Response submodules of the express module (https://www.npmjs.com/package/express)
 
 /**
  * Class for controlling the proccess of authenticating password new codes and changing the passwords
@@ -57,5 +53,4 @@ class NewPasswordPromoterController {
     }
 }
 
-//Class export declarator
-export { NewPasswordPromoterController };
+export { NewPasswordPromoterController }; //Class export declarator
