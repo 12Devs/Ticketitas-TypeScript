@@ -11,8 +11,22 @@ import { StockRepository } from "../../db/StockRepository";
 import { CheckoutRepository } from "../../db/CheckoutRepository";
 import { WalletRepository } from "../../db/WalletRepository";
 
+/**
+ * Make purchase use case class
+ * @date 6/6/2023 - 10:35:32 PM
+ *
+ * @class MakePurchaseUseCase
+ * @typedef {MakePurchaseUseCase}
+ */
 class MakePurchaseUseCase {
-
+    
+    /**
+     * Create an instance of {@link MakePurchaseUseCase}
+     * @date 6/6/2023 - 10:35:37 PM
+     *
+     * @private
+     * @type {StockRepository}
+     */
     private stockRepository: StockRepository;
     private saleRepository: SaleRepository;
     private checkoutRepository: CheckoutRepository;
@@ -23,7 +37,23 @@ class MakePurchaseUseCase {
     private walletRepository: WalletRepository;
     private emailProvider: EmailProvider;
     
-
+    
+    /**
+     * Creates an instance of MakePurchaseUseCase.
+     * @date 6/6/2023 - 10:35:42 PM
+     *
+     * @constructor
+     * @public
+     * @param {StockRepository} stockRepository
+     * @param {SaleRepository} saleRepository
+     * @param {CheckoutRepository} checkoutRepository
+     * @param {EventRepository} eventRepository
+     * @param {TicketRepository} ticketRepository
+     * @param {CardRepository} cardRepository
+     * @param {EnderecoEventRepository} enderecoEventRepository
+     * @param {WalletRepository} walletRepository
+     * @param {EmailProvider} emailProvider
+     */
     public constructor (stockRepository: StockRepository, saleRepository: SaleRepository, checkoutRepository: CheckoutRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, cardRepository: CardRepository, enderecoEventRepository: EnderecoEventRepository, walletRepository: WalletRepository, emailProvider: EmailProvider) {
         this.stockRepository = stockRepository;
         this.saleRepository = saleRepository;
@@ -35,7 +65,28 @@ class MakePurchaseUseCase {
         this.walletRepository = walletRepository;
         this.emailProvider = emailProvider;
     }
-
+    
+    /**
+     * Method for make a purchase
+     * @date 6/6/2023 - 10:35:46 PM
+     *
+     * @public
+     * @async
+     * @param {number} pistaAmount
+     * @param {number} stageAmount
+     * @param {number} vipAmount
+     * @param {number} pistaAmountHalf
+     * @param {number} stageAmountHalf
+     * @param {number} vipAmountHalf
+     * @param {number} freeAmount
+     * @param {number} walletValue
+     * @param {string} clientName
+     * @param {number} clientCpf
+     * @param {string} email
+     * @param {string} eventId
+     * @param {string} checkoutId
+     * @returns {*}
+     */
     public async execute (pistaAmount: number, stageAmount: number, vipAmount: number, pistaAmountHalf: number, stageAmountHalf: number, vipAmountHalf: number, freeAmount: number, walletValue: number, clientName: string, clientCpf: number, email: string, eventId: string, checkoutId: string){
 
         //Validations
@@ -142,12 +193,19 @@ class MakePurchaseUseCase {
         await this.saleRepository.create(amount, clientCpf, eventId);
 
         const wallet: any = await this.walletRepository.findWallet(clientCpf);
-
-        if (!wallet || wallet.amount < walletValue) {
+        var walletAmout = 0;
+        if (!wallet && walletValue > 0) {
             throw new ApiError("Carteira com saldo insuficiente!", 422);
         }
+
+        if (wallet) {
+            if (wallet.amount < walletValue) {
+                throw new ApiError("Carteira com saldo insuficiente!", 422);
+            }
+            walletAmout = wallet.amount
+        }
         
-        const newAmout = (wallet.amount - walletValue);
+        const newAmout = (walletAmout - walletValue);
         await this.walletRepository.updateWallet(clientCpf, newAmout);
         
         await this.checkoutRepository.deleteById(checkoutId)
