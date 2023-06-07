@@ -6,10 +6,11 @@ import { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import ModalLoginCompra from '../ModalLoginCompra';
 import { api } from '../../../services/api';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function AdicionarIngresso({ event }: { event: any }) {
 
-    
+    const navigate = useNavigate();
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
@@ -63,7 +64,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         
         
         var dados = {
-        "eventId":"384896ce-5021-475e-989f-f57c5b2e0a32",
+        "eventId":event.id,
         "amountSale":valorTotal,
         "pistaAmount":quantidadePistaInteira,
         "pistaAmountHalf":quantidadePistaMeia,
@@ -77,16 +78,16 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     
         }
 
-        console.log("Dados gerais:", dados);
+        
 
         // colocar o navigate
         
         const token = localStorage.getItem('token')
         const user = localStorage.getItem('userType');
         if(token != null){
-            dados = jwtDecode(token);
-            if(dados != null){
-                console.log("Dados123: ", dados)
+            var dadosToken = jwtDecode(token);
+            if(dadosToken != null){
+                console.log("Dados123: ", dadosToken)
             }
            
         }
@@ -99,7 +100,10 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         if(user != null){
             if(user == "cliente"){
                 
-                api.post("sale/checkout", dados, config).then((response)=>{console.log("retorno:", response)});
+                api.post("sale/checkout", dados, config).then((response)=>{
+                    let idCart = response.data.checkout.id;
+                    navigate(`/checkout/${idCart}`);        
+                });
                 
                 console.log("cliente logado")
             }
@@ -118,6 +122,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             </>
         )
     }
+
     function renderPistaInteira() {
 
         if (event == null) {
@@ -139,14 +144,32 @@ export default function AdicionarIngresso({ event }: { event: any }) {
                             </Col>
 
                             <Col sm={4} className='d-flex justify-content-between align-items-center'>
-                            <img
+                            {/* <img
                                     src='img/delete_circle.svg'
                                     width="25"
                                     height="25"
                                     className="d-inline-block"
                                     alt='Remover'
                                     onClick={() => subtrai(quantidadePistaInteira, setQuantidadePistaInteira)}
-                                />
+                                /> */}
+
+                                <Button variant="secondary" className='botao'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+                                </Button>{' '}
+
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                width="25" height="25" fill="currentColor" className="bi bi-plus border" 
+                                viewBox="0 0 16 16"
+                                onClick={() => soma(quantidadePistaInteira, setQuantidadePistaInteira, parseInt(event.quantPista) )}>
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+                                
+
+                                {/* <Button className='botao'>
+                                    <i className="bi bi-plus"></i>
+                                </Button> */}
 
                                 {quantidadePistaInteira}
 

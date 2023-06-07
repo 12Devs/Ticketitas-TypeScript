@@ -34,6 +34,11 @@ export default function AppRouter() {
                         loader={({ params }) => {console.log(params.eventId)}}
                     />
 
+                    < Route 
+                        path='checkout/:IdCart' element={<Checkout />} 
+                        loader={({ params }) => {console.log(params.IdCart)}}
+                    />
+
                     
             
                     
