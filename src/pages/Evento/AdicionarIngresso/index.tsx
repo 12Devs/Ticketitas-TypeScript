@@ -579,39 +579,39 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     
 
     
-    useEffect(()=>{
+    // useEffect(()=>{
         
-        const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
+    //     const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
         
         
-        if(dadosCarrinhoStr != null){
-            const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
-            console.log("Dados do carrinho:", dadosCarrinhoObj);
+    //     if(dadosCarrinhoStr != null){
+    //         const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
+    //         console.log("Dados do carrinho:", dadosCarrinhoObj);
             
-            console.log("Total no LS: ",dadosCarrinhoObj.valorTotal);
-            setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
-            setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
-            setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
-            setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
-            setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
-            setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
+    //         console.log("Total no LS: ",dadosCarrinhoObj.valorTotal);
+    //         setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
+    //         setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
+    //         setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
+    //         setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
+    //         setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
+    //         setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
 
 
-            // setValorTotal()
+    //         // setValorTotal()
             
-            let novoTotal = dadosCarrinhoObj.valorTotal;
+    //         let novoTotal = dadosCarrinhoObj.valorTotal;
             
-            setValorTotal(novoTotal);
-            // console.log("Total", novoTotal);
+    //         setValorTotal(novoTotal);
+    //         // console.log("Total", novoTotal);
             
 
-        }
-        localStorage.removeItem('dadosCarrinho');
+    //     }
+    //     localStorage.removeItem('dadosCarrinho');
         
        
         
         
-    },[])
+    // },[])
 
     
     return (

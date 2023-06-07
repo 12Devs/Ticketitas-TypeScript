@@ -11,7 +11,7 @@ import NavBarGeral from '../../../components/NavBarGeral';
 import {useParams } from 'react-router-dom';
 
 
-export default function Evento() {
+export default function Checkout() {
     
     let params = useParams();
     var infoID = '0';
@@ -20,31 +20,29 @@ export default function Evento() {
         infoID = params.IdCart;
     } 
     
-    console.log("InfoID:",infoID);
+ 
 
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
     useEffect(() => {
         
         
-        api.get(`/checkout/{}`).then((response) => {
+        api.get(`sale/checkout/${infoID}`).then((response) => {
             setArrayEventos(response.data);
         });
+        console.log("array eventos:",arrayEventos);
    
     }, []);
 
     const location = useLocation();
-    var infoID = '0';
-
-    window.scrollTo(0, 0);
-
-    if (location.state) {
-        infoID = location.state.idCheckout;
-    }
-
+    
    
     
-    
+    function renderResumocompra() {
+        console.log("InfoID no codigo:",infoID)
+        return (<ResumoCompra idCheckout={infoID} />)
+
+    }
 
     return (
         <>
@@ -53,7 +51,7 @@ export default function Evento() {
 
             <Row>
                 
-                <ResumoCompra idCheckout={infoID} />
+                {renderResumocompra()}
                 
             </Row>
 

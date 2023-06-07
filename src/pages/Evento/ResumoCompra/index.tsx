@@ -16,8 +16,8 @@ import './styleResumoCompra.css';
 import '../../../components/Texto/Texto.css';
 import { container } from 'googleapis/build/src/apis/container';
 
-export default function Descricao({ idCheckout }: { idCheckout: string }) {
-    
+export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
+    console.log("Id evento inside: ",idCheckout);
     const location = useLocation();
     var infoID1 = '0';
     
@@ -27,12 +27,11 @@ export default function Descricao({ idCheckout }: { idCheckout: string }) {
     if (location.state) {
         infoID1 = location.state.idCheckout;
     }
-
-    console.log("infoID1:", infoID1)
-    console.log("Id evento inside 2: ",idCheckout);
+    
+    
 
     const [infoID, setInfoID] = useState('');
-    console.log("Id evento inside 1: ",infoID);
+    console.log("Id evento inside 2: ",infoID);
     
     const [titulo, setTitulo] = useState('Titulo');
     const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
