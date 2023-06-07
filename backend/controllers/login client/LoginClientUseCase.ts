@@ -4,16 +4,48 @@ import { ApiError } from "../../errors/ApiError";
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 
+/**
+ * Login client use case class
+ * @date 6/6/2023 - 10:33:24 PM
+ *
+ * @class LoginClientUseCase
+ * @typedef {LoginClientUseCase}
+ */
 class LoginClientUseCase {
-
+    
+    /**
+     * Creates an instance of {@link LoginClientUseCase}.
+     * @date 6/6/2023 - 10:33:28 PM
+     *
+     * @private
+     * @type {ClientRepository}
+     */
     private clientRepository: ClientRepository;
     private tokenClientRepository: TokenClientRepository;
-
+    
+    /**
+     * Creates an instance of LoginClientUseCase.
+     * @date 6/6/2023 - 10:33:33 PM
+     *
+     * @constructor
+     * @param {ClientRepository} clientRepository
+     * @param {TokenClientRepository} tokenClientRepository
+     */
     constructor (clientRepository: ClientRepository, tokenClientRepository: TokenClientRepository) {
         this.clientRepository = clientRepository;
         this.tokenClientRepository = tokenClientRepository;
     }
-
+    
+    /**
+     * Method for make a login of a client
+     * @date 6/6/2023 - 10:33:37 PM
+     *
+     * @public
+     * @async
+     * @param {string} email
+     * @param {string} senha
+     * @returns {unknown}
+     */
     public async execute (email: string, senha: string) {
         
         if (!email){
