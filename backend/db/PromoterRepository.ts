@@ -92,6 +92,22 @@ class PromoterRepository {
         }});
         return cpfExists;
     }
+
+    /**
+     * find status a promoter by cpf
+     * @date 7/6/2023 - 17:42:13 PM
+     *
+     * @public
+     * @async
+     * @param {number} cpf
+     * @returns {unknown}
+     */
+    public async findStatusByCpf (cpf: number) {
+        const statusPromoter = await Promoter.findOne({raw: true, attributes: ['status'], where: {
+            cpf: cpf
+        }});
+        return statusPromoter;
+    }
     
     /**
      * find a promoter by email

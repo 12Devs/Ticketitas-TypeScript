@@ -109,7 +109,7 @@ class EventRepository {
      * @returns {unknown}
      */
     public async findIdStatuByCpfPromoter (cpf: number) {
-        const allEventsByPromoter = await Event.findAll({raw: true,  attributes: ['promoterCpf'],
+        const allEventsByPromoter = await Event.findAll({raw: true,  attributes: ['id', 'status', 'promoterCpf'],
         where: {
             Promotercpf: cpf
         }});

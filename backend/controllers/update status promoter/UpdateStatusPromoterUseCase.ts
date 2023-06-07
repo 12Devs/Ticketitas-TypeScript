@@ -1,5 +1,7 @@
 import { EventRepository } from "../../db/EventRepository";
 import { PromoterRepository } from "../../db/PromoterRepository";
+import { TicketRepository } from "../../db/TicketRepository";
+import { WalletRepository } from "../../db/WalletRepository";
 import { ApiError } from "../../errors/ApiError";
 
 /**
@@ -20,6 +22,8 @@ class UpdateStatusPromoterUseCase {
      */
     private promoterRepository: PromoterRepository;
     private eventRepository: EventRepository;
+    private ticketRepository: TicketRepository;
+    private walletRepository: WalletRepository;
     
     /**
      * Creates an instance of UpdateStatusPromoterUseCase.
@@ -29,11 +33,14 @@ class UpdateStatusPromoterUseCase {
      * @public
      * @param {PromoterRepository} promoterRepository
      * @param {EventRepository} eventRepository
+     * @param {TicketRepository} ticketRepository
+     * @param {WalletRepository} walletRepository
      */
-    public constructor (promoterRepository: PromoterRepository, eventRepository: EventRepository) {
+    public constructor (promoterRepository: PromoterRepository, eventRepository: EventRepository, ticketRepository: TicketRepository, walletRepository: WalletRepository) {
         this.promoterRepository = promoterRepository;
         this.eventRepository = eventRepository;
-
+        this.ticketRepository = ticketRepository;
+        this.walletRepository = walletRepository;
     }
     
     /**
@@ -51,7 +58,7 @@ class UpdateStatusPromoterUseCase {
             throw new ApiError("O cpf do promoter é obrigatório!", 422);
         }
 
-        const promoterExists: any = await this.promoterRepository.findStatusByCpf(cpf);
+        const promoterExists: any = await this.promoterRepository.findByCpf(cpf);
 
         if (!promoterExists) {
             throw new ApiError("Promoter não encontrado!", 422);
@@ -72,7 +79,28 @@ class UpdateStatusPromoterUseCase {
         }
         
         for (let event of allEventsByPromoter) {
-            await this.eventRepository.supendEvent(event.promoterCpf);
+            if (event.status == true) {
+                await this.eventRepository.supendEvent(event.promoterCpf);
+
+                const allTicketsEvent: any = await this.ticketRepository.findAllTicketsByEvent(event.id);
+
+                if (allTicketsEvent) {
+                    for (let ticket of allTicketsEvent) {
+                
+                        const walletExists: any = await this.walletRepository.findWallet(ticket.clientCpf);
+        
+                        if (!walletExists && ticket.status == true){
+                            await this.walletRepository.create(ticket.clientCpf, ticket.value);
+                        } else if(ticket.status == true) {
+                            const newAmount = (walletExists.amount + ticket.value)
+                            await this.walletRepository.updateWallet(ticket.clientCpf, newAmount)
+                        }
+        
+                        await this.ticketRepository.updateStatus(ticket.id);
+                    }
+                }
+
+            }
         }
         
     }
