@@ -5,11 +5,15 @@ import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import jwtDecode from 'jwt-decode';
 import ModalLoginCompra from '../ModalLoginCompra';
-
+import { api } from '../../../services/api';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function AdicionarIngresso({ event }: { event: any }) {
 
-    
+    const navigate = useNavigate();
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    };
 
     const [quantidadePistaInteira, setQuantidadePistaInteira] = useState(0);
     const [quantidadePistaMeia, setQuantidadePistaMeia] = useState(0);
@@ -30,8 +34,19 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
     
 
+    const [status, setStatus] = useState(false);
+
+    // if(!status)
+    // {
+            
+           
+    //         // let novoTotal = dadosCarrinhoObj.valorTotal;
+    //         setValorTotal(10);
+    //         setStatus(true);
+    // }
     
     
+
     function subtrai(valor: number, setValor: Function) {
         if (valor > 0) {
             setValor((valor - 1));
@@ -46,17 +61,21 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
     const handleFinalizar = () => {
         
+        
+        
         var dados = {
-        valorTotal,
-        quantidadePistaInteira,
-        quantidadePistaMeia,
-        quantidadeStageInteira,
-        quantidadeStageMeia,
-        quantidadeVipInteira,
-        quantidadeVipMeia,
-        event
-
-
+        "eventId":event.id,
+        "amountSale":valorTotal,
+        "pistaAmount":quantidadePistaInteira,
+        "pistaAmountHalf":quantidadePistaMeia,
+        "stageAmount":quantidadeStageInteira,
+        "stageAmountHalf":quantidadeStageMeia,
+        "vipAmount":quantidadeVipInteira,
+        "vipAmountHalf":quantidadeVipMeia,
+        "freeAmount":quantidadeFree,
+        "walletValue":2.00
+        
+    
         }
 
         
@@ -66,9 +85,9 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         const token = localStorage.getItem('token')
         const user = localStorage.getItem('userType');
         if(token != null){
-            dados = jwtDecode(token);
-            if(dados != null){
-                console.log("Dados: ", dados)
+            var dadosToken = jwtDecode(token);
+            if(dadosToken != null){
+                console.log("Dados123: ", dadosToken)
             }
            
         }
@@ -80,6 +99,12 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         }
         if(user != null){
             if(user == "cliente"){
+                
+                api.post("sale/checkout", dados, config).then((response)=>{
+                    let idCart = response.data.checkout.id;
+                    navigate(`/checkout/${idCart}`);        
+                });
+                
                 console.log("cliente logado")
             }
             else{ 
@@ -97,6 +122,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             </>
         )
     }
+
     function renderPistaInteira() {
 
         if (event == null) {
@@ -118,14 +144,32 @@ export default function AdicionarIngresso({ event }: { event: any }) {
                             </Col>
 
                             <Col sm={4} className='d-flex justify-content-between align-items-center'>
-                            <img
+                            {/* <img
                                     src='img/delete_circle.svg'
                                     width="25"
                                     height="25"
                                     className="d-inline-block"
                                     alt='Remover'
                                     onClick={() => subtrai(quantidadePistaInteira, setQuantidadePistaInteira)}
-                                />
+                                /> */}
+
+                                <Button variant="secondary" className='botao'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+                                </Button>{' '}
+
+                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                width="25" height="25" fill="currentColor" className="bi bi-plus border" 
+                                viewBox="0 0 16 16"
+                                onClick={() => soma(quantidadePistaInteira, setQuantidadePistaInteira, parseInt(event.quantPista) )}>
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+                                
+
+                                {/* <Button className='botao'>
+                                    <i className="bi bi-plus"></i>
+                                </Button> */}
 
                                 {quantidadePistaInteira}
 
@@ -523,43 +567,52 @@ export default function AdicionarIngresso({ event }: { event: any }) {
         }
     }
 
+
     useEffect(() => {
         var total = somaTotal();
         setValorTotal(total);
         
     }, [quantidadePistaInteira, quantidadePistaMeia, quantidadeStageInteira, quantidadeStageMeia, quantidadeVipInteira, quantidadeVipMeia]);
 
-    let dados: any;
 
-    useEffect(()=>{
-        
-        const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
-        
-        
-        if(dadosCarrinhoStr != null){
-            const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
-            console.log("Dados do carrinho:", dadosCarrinhoObj);
-            setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
-            console.log("qpi:", quantidadePistaInteira);
 
+    
+
+    
+    // useEffect(()=>{
+        
+    //     const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
+        
+        
+    //     if(dadosCarrinhoStr != null){
+    //         const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
+    //         console.log("Dados do carrinho:", dadosCarrinhoObj);
             
-            setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
-            setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
-            setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
-            setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
-            setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
+    //         console.log("Total no LS: ",dadosCarrinhoObj.valorTotal);
+    //         setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
+    //         setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
+    //         setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
+    //         setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
+    //         setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
+    //         setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
+
+
+    //         // setValorTotal()
             
-            let novoTotal = dadosCarrinhoObj.valorTotal;
-            setValorTotal(1000);
+    //         let novoTotal = dadosCarrinhoObj.valorTotal;
+            
+    //         setValorTotal(novoTotal);
+    //         // console.log("Total", novoTotal);
             
 
-        }
-        localStorage.removeItem('dadosCarrinho');
+    //     }
+    //     localStorage.removeItem('dadosCarrinho');
         
        
         
         
-    },[])
+    // },[])
+
     
     return (
         <>

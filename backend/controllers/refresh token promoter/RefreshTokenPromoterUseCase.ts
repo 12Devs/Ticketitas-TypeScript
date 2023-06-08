@@ -4,16 +4,48 @@ import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 import { PromoterRepository } from "../../db/PromoterRepository";
 
+/**
+ * Refresh token promoter use case class
+ * @date 6/6/2023 - 10:38:24 PM
+ *
+ * @class RefreshTokenPromoterUseCase
+ * @typedef {RefreshTokenPromoterUseCase}
+ */
 class RefreshTokenPromoterUseCase {
-
+    
+    /**
+     * Creates an instance of {@link RefreshTokenPromoterUseCase}.
+     * @date 6/6/2023 - 10:38:28 PM
+     *
+     * @private
+     * @type {TokenPromoterRepository}
+     */
     private tokenPromoterRepository: TokenPromoterRepository;
     private promoterRepository: PromoterRepository;
-
+    
+    /**
+     * Creates an instance of RefreshTokenPromoterUseCase.
+     * @date 6/6/2023 - 10:38:33 PM
+     *
+     * @constructor
+     * @public
+     * @param {TokenPromoterRepository} tokenPromoterRepository
+     * @param {PromoterRepository} promoterRepository
+     */
     public constructor (tokenPromoterRepository: TokenPromoterRepository, promoterRepository: PromoterRepository) {
         this.tokenPromoterRepository = tokenPromoterRepository;
         this.promoterRepository = promoterRepository;
     }
     
+    /**
+     * Method for refresh token of a promoter
+     * @date 6/6/2023 - 10:38:36 PM
+     *
+     * @public
+     * @async
+     * @param {string} token
+     * @returns {unknown}
+     */
     public async execute (token: string){
 
         const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);

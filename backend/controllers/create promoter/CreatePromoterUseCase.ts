@@ -4,18 +4,61 @@ import { PromoterRepository } from '../../db/PromoterRepository';
 import { PromoterRegistrationRequestRepository } from '../../db/PromoterRegistrationRequestRepository';
 import { EmailProvider } from '../../utils/EmailProvider';
 
+/**
+ * Create promoter use case class
+ * @date 6/6/2023 - 10:15:45 PM
+ *
+ * @class CreatePromoterUseCase
+ * @typedef {CreatePromoterUseCase}
+ */
 class CreatePromoterUseCase {
-
+    
+    /**
+     * Create an instance of {@link CreatePromoterUseCase}
+     * @date 6/6/2023 - 10:15:52 PM
+     *
+     * @private
+     * @type {PromoterRepository}
+     */
     private promoterRepository: PromoterRepository;
     private promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository;
     private emailProvider: EmailProvider;
-
+    
+    /**
+     * Creates an instance of CreatePromoterUseCase.
+     * @date 6/6/2023 - 10:15:59 PM
+     *
+     * @constructor
+     * @param {PromoterRepository} promoterRepository
+     * @param {PromoterRegistrationRequestRepository} promoterRegistrationRequestRepository
+     * @param {EmailProvider} emailProvider
+     */
     constructor (promoterRepository: PromoterRepository, promoterRegistrationRequestRepository: PromoterRegistrationRequestRepository, emailProvider: EmailProvider) {
         this.promoterRepository =  promoterRepository;
         this.promoterRegistrationRequestRepository = promoterRegistrationRequestRepository;
         this.emailProvider = emailProvider;
     }
     
+    /**
+     * Method for make a creation of a promoter
+     * @date 6/6/2023 - 10:16:03 PM
+     *
+     * @public
+     * @async
+     * @param {string} nome
+     * @param {number} cpf
+     * @param {string} email
+     * @param {number} telefone
+     * @param {string} senha
+     * @param {string} confirmacaoSenha
+     * @param {number} cep
+     * @param {string} cidade
+     * @param {string} estado
+     * @param {string} bairro
+     * @param {string} rua
+     * @param {number} numero
+     * @returns {unknown}
+     */
     public async execute (nome: string, cpf: number, email: string, telefone: number, senha: string, confirmacaoSenha: string, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
         //Validations
         if (!nome){

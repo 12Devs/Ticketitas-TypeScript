@@ -9,14 +9,29 @@ import { api } from '../../../services/api';
 import InputTexto from '../../../components/InputTexto';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { useLocation } from 'react-router-dom';
 
 //import './styleDescricao.css';
 import './styleResumoCompra.css';
 import '../../../components/Texto/Texto.css';
 import { container } from 'googleapis/build/src/apis/container';
 
-export default function Descricao({ idEvento }: { idEvento: string }) {
+export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
+    console.log("Id evento inside: ",idCheckout);
+    const location = useLocation();
+    var infoID1 = '0';
     
+
+    window.scrollTo(0, 0);
+
+    if (location.state) {
+        infoID1 = location.state.idCheckout;
+    }
+    
+    
+
+    const [infoID, setInfoID] = useState('');
+    console.log("Id evento inside 2: ",infoID);
     
     const [titulo, setTitulo] = useState('Titulo');
     const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
@@ -34,14 +49,14 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
     const dataHoraOBJ = new Date(dataHora);
     const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
 
-
+   
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobreome] = useState('');
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [email, setEmail] = useState('');
 
     useEffect(() => {
-        api.get(`/event/${idEvento}`).then((response) => {
+        api.get(`/event/${idCheckout}`).then((response) => {
             console.log(response);
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
@@ -54,6 +69,12 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             setEvent(response.data.eventInfos.event)
         });
     }, []);
+    useEffect(() => {
+
+        setInfoID(idCheckout);
+
+    }, [idCheckout]);
+
 
     function renderCartao(){
         if (false){

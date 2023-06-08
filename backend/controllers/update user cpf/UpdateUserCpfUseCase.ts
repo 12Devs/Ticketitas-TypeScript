@@ -6,18 +6,53 @@ import { AdministratorRepository } from "../../db/AdministratorRepository";
  */
 import { ApiError } from "../../errors/ApiError";
 
+/**
+ * Update user cpf use case class
+ * @date 6/6/2023 - 10:44:02 PM
+ *
+ * @class UpdateUserCpfUseCase
+ * @typedef {UpdateUserCpfUseCase}
+ */
 class UpdateUserCpfUseCase {
-
+    
+    /**
+     * Create an instance of {@link UpdateUserCpfUseCase}
+     * @date 6/6/2023 - 10:44:06 PM
+     *
+     * @private
+     * @type {ClientRepository}
+     */
     private clientRepository: ClientRepository;
     private promoterRepository: PromoterRepository;
     private administratorRepository: AdministratorRepository;
-
+    
+    /**
+     * Creates an instance of UpdateUserCpfUseCase.
+     * @date 6/6/2023 - 10:44:10 PM
+     *
+     * @constructor
+     * @public
+     * @param {ClientRepository} clientRepository
+     * @param {PromoterRepository} promoterRepository
+     * @param {AdministratorRepository} administratorRepository
+     */
     public constructor (clientRepository: ClientRepository, promoterRepository: PromoterRepository, administratorRepository: AdministratorRepository){
         this.clientRepository = clientRepository;
         this.promoterRepository = promoterRepository;
         this.administratorRepository = administratorRepository;
     }
-
+    
+    /**
+     * Method for make a update of a user cpf
+     * @date 6/6/2023 - 10:44:14 PM
+     *
+     * @public
+     * @async
+     * @param {string} tipo
+     * @param {number} cpf
+     * @param {number} newCpf
+     * @returns {*}
+     */
     public async execute (tipo: string, cpf: number, newCpf: number){
 
         if (tipo === "client"){
