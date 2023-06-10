@@ -18,6 +18,8 @@ export default function ModalCadastrarCartao(){
     const handleShow = () => {
         setShow(true)
     };
+    
+    
     const cadastrarCartao = (event: any) => {
         event.preventDefault();
         var data: any = {
@@ -26,7 +28,12 @@ export default function ModalCadastrarCartao(){
             monthExpirationDate,
             yearExpirationDate,
         }
-        api.post("user/client/card",data);
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        api.post("user/client/card",data,config).then((response) => {
+            console.log(response)
+        });
     }
     return(
         <>
@@ -37,8 +44,8 @@ export default function ModalCadastrarCartao(){
         </Col>
         <Modal show={show} onHide={handleClose}>
                 <Modal.Body className=" modal-content">
-                    <Row className='d-flex justify-content-center' >
-                       <h1  style={{fontSize:20}}>Cadastrar Cartão</h1>
+                    <Row className='justify-content-center' >
+                       <h1  style={{fontSize:20,width:"auto",marginBottom:10}}>Cadastrar Cartão</h1>
                     </Row>
 
                     <Form onSubmit={cadastrarCartao}>
