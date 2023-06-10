@@ -1,14 +1,7 @@
-/**
- * Import of the {@link https://www.npmjs.com/package/sequelize sequelize} module
- */
-import { DataTypes } from "sequelize";
-/**
- * Import of the class {@link Connection}
- */
+import { DataTypes } from "sequelize"; //Import of the "DataTypes" submodule of the sequelize module
+
+//Import of the connection and respective token objects
 import { conn } from "../db/connection";
-/**
- * Import of the class {@link TokenAdministrator}
- */
 import { TokenAdministrator } from "./TokenAdministrator";
 
 /**
@@ -18,39 +11,54 @@ import { TokenAdministrator } from "./TokenAdministrator";
  * @type {*}
  */
 const Administrator = conn.define('administrator',{
-    //User name
+    /**
+     * User name
+     */
     name:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    //User CPF number
+    /**
+     * User CPF number
+     */
     cpf:{
         type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true
     },
-    //User e-mail address
+    /**
+     * User e-mail address
+     */
     email: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    //User telephone number
+    /**
+     * User phone number
+     */
     phone: { 
         type: DataTypes.BIGINT,
         allowNull: false
     },
-    //User once-encrypted password hash
+    /**
+     * User password hash
+     */
     password: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    //User avatar image
+    /**
+     * User avatar image link
+     */
     avatarImage: {
         type: DataTypes.STRING,
         allowNull: true
     }
 });
 
+/** 
+ * Establishes the relation link between {@link Administrator} and {@link TokenAdministrator}
+ */
 Administrator.hasMany(TokenAdministrator);
 
-export { Administrator };
+export { Administrator }; //Class export declarator
