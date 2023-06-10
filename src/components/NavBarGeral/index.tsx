@@ -6,8 +6,11 @@ import InputBuscar from '../InputBuscar';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ModalLogin from '../ModalLogin';
+import Form from 'react-bootstrap/Form';
+
 
 import './Navbar.css';
+import { api } from '../../services/api'
 import { Dropdown } from 'react-bootstrap';
 
 const NavBarGeral = () => {
@@ -44,6 +47,11 @@ const NavBarGeral = () => {
   const [busca, setBusca] = useState('');
   const navigate = useNavigate();
 
+  const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
+
+  console.log("Arayyyyyyyy na navbar: ", arrayEventos)
+
+
   // Recarrega a tela
   const refresh = () => window.location.reload();
 
@@ -53,12 +61,38 @@ const NavBarGeral = () => {
     navigate('/');
     refresh();
   }
+
+  function renderBuscarOpcoes(){
+    return(
+      <Form>
+        <Form.Group controlId="exampleForm.ControlInput1">
+          <Form.Label>Selecione uma opção:</Form.Label>
+          <Form.Control
+            type="text"
+            list="opcoes"
+            placeholder="Digite uma opção"
+          />
+          <datalist id="opcoes">
+            <option value="Opção 1" />
+            <option value="Opção 2" />
+            <option value="Opção 3" />
+            <option value="Opção 4" />
+          </datalist>
+        </Form.Group>
+      </Form>
+    )
+  }
   
   useEffect(() => {
     setTypeUser(localStorage.getItem("userType")? '' + localStorage.getItem("userType") : 'default');
-  }, []); 
-  return (
+  }, []);
 
+  useEffect(() => {
+    api.get(`/event`).then((response) => {
+        setArrayEventos(response.data);
+    });
+}, []);
+  return (
     <Navbar collapseOnSelect expand="lg" className='NavBar'>
 
       <Container fluid className={typeUser == 'admLogin' ? 'justify-content-center' : ''}>
@@ -82,7 +116,8 @@ const NavBarGeral = () => {
             <Nav className="me-auto" />
 
             <Nav className="me-auto" >
-              <InputBuscar placeholder='Busque eventos, shows, teatros...' controlId='buscarNavBar' data={busca} setData={setBusca} />
+              {/*renderBuscarOpcoes()*/}
+              
             </Nav>
 
             <Nav>
