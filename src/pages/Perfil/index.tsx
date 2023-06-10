@@ -7,13 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import NavBarGeral from '../../components/NavBarGeral';
 import FormLabel from '../../components/FormLabel';
 import OutputInfo from '../../components/OutputInfo';
-import jwtDecode from 'jwt-decode';
+import Nav from 'react-bootstrap/Nav'
+import Card from 'react-bootstrap/Card';
 import "./Perfil.css";
+import ModalCadastrarCartao from '../../components/ModalCadastarCartao';
 
 
 export default function Perfil() {
     const [userType, setUserType] = useState('');
     const [cpf, setCpf] = useState('');
+    const [nomeCompleto, SetnomeCompleto] = useState('');
     const [primeiroNome, setprimeiroNome] = useState('');
     const [sobrenome, setSobreome] = useState('');
     const [telefone, setTelefone] = useState('');
@@ -24,31 +27,91 @@ export default function Perfil() {
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const [email, setEmail] = useState('');
-    let dados: any;
-    useEffect(()=>{
-        const token = localStorage.getItem('token')
-        const user = localStorage.getItem('userType');
-        if(token != null){
-            dados = jwtDecode(token);
-            if(dados != null){
-                setCpf(dados.sub);
-            }
+    const [cardName, setCardName] = useState('Matheus Mota Santos');
+    const [cardNumber, setcardNumber] = useState('1234567832324545');
+    const [cardNumberFour, setcardNumberFour] = useState('');
+    const [saldo, setSaldo] = useState('0');
+
+    const [eventSelect, setEventSelect] = useState('Meus Dados');
+    const navigate = useNavigate();
+    const handleSelect = (eventKey: any) => setEventSelect(eventKey);
+
+    function pegarSobrenome(nomeCompleto: string) {
+        var partesNome = nomeCompleto.split(' ');
+
+        if (partesNome.length < 2) {
+            setSobreome("")
         }
+        else{
+            let sobrenome = partesNome[partesNome.length - 2];
+            setSobreome(sobrenome)
+        }
+      }
+    function pegarNome(nomeCompleto: string) {
+        var partesNome = nomeCompleto.split(' ');
+
+        let sobrenome = partesNome[0];
+        setprimeiroNome(sobrenome)
+      }
+    
+      function pegarUltimosQuatroDigitos(numero: string) {
+        let ultimosQuatroDigitos = numero.slice(-4);
+        setcardNumberFour(ultimosQuatroDigitos);
+      }
+
+    useEffect(()=>{
+        const user = localStorage.getItem('userType');
         if(user != null){
             setUserType(user)
         }
-
-        api.get(`user/client/${dados.sub}`).then((response) => {
+        
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        api.get("user/client/card",config).then((response) => {
             console.log(response)
-            setprimeiroNome(response.data.ClientInfos.client.nome)
-            setEmail(response.data.ClientInfos.client.email)
-            setTelefone(response.data.ClientInfos.client.telefone)
-            setCep(response.data.enderecoClient.enderecoClient.cep)
-            setEstado(response.data.ClientInfos.enderecoClient.estado)
-            setBairro(response.data.ClientInfos.enderecoClient.bairro)
-            setRua(response.data.ClientInfos.enderecoClient.rua)
-            setBairro(response.data.ClientInfos.enderecoClient.bairro)
         });
+        if(user == "cliente"){
+            api.get("user/client/",config).then((response) => {
+                console.log(response);
+                SetnomeCompleto(response.data.ClientInfos.client.nome);
+                setEmail(response.data.ClientInfos.client.email);
+                setSaldo(response.data.ClientInfos.client.saldo);
+                setCpf(response.data.ClientInfos.client.cpf);
+                setTelefone(response.data.ClientInfos.client.telefone);
+                setCep(response.data.ClientInfos.enderecoClient.cep);
+                setEstado(response.data.ClientInfos.enderecoClient.estado)
+                setBairro(response.data.ClientInfos.enderecoClient.bairro)
+                setRua(response.data.ClientInfos.enderecoClient.rua)
+                setBairro(response.data.ClientInfos.enderecoClient.bairro)
+                setNumero(response.data.ClientInfos.enderecoClient.numero)
+                setCidade(response.data.ClientInfos.enderecoClient.cidade)
+                pegarUltimosQuatroDigitos(cardNumber)
+                pegarSobrenome(nomeCompleto);
+                pegarNome(nomeCompleto)
+                
+            });
+        }
+        else if(user == "promoter"){
+            api.get("user/promoter/",config).then((response) => {
+                console.log(response)
+                setprimeiroNome(response.data.PromoterInfos.promoter.nome)
+                setEmail(response.data.PromoterInfos.promoter.email)
+                setTelefone(response.data.PromoterInfos.promoter.telefone)
+                setCep(response.data.PromoterInfos.enderecoPromoter.cep)
+                setEstado(response.data.PromoterInfos.enderecoPromoter.estado)
+                setBairro(response.data.ClientInfos.enderecoPromoter.bairro)
+                setRua(response.data.ClientInfos.enderecoPromoter.rua)
+                setBairro(response.data.ClientInfos.enderecoPromoter.bairro)
+                setNumero(response.data.ClientInfos.enderecoPromoter.numero)
+                setCidade(response.data.ClientInfos.enderecoPromoter.cidade)
+            });
+        }
+        else if(user == "admin"){
+            api.get("user/administartor/",config).then((response) => {
+                console.log(response)
+            });
+        }
         
         
     },[])
@@ -56,75 +119,182 @@ export default function Perfil() {
     return(
         <>
         <NavBarGeral/>
-        <Container className='justify-content-center'>
-            <Row className='d-flex justify-content-center container-perfil'>
+        <Container className='justify-content-center' fluid>
+            <Row className='d-flex justify-content-center container-perfil' >
                 <Col md={8}>
-                <FormLabel label={"Meu perfil"}/>
+                <Nav variant="tabs" onSelect={handleSelect} defaultActiveKey="Meus Dados" style={{marginTop:20}}>
+                    <Nav.Item >
+                        <Nav.Link eventKey="Meus Dados">Meus Dados</Nav.Link>
+                    </Nav.Item>
+                    {   
+                        userType === "cliente" || userType === "promoter" ?
+                        <>
+                        <Nav.Item>
+                            <Nav.Link eventKey="cartao">Meu cartão</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                         <Nav.Link eventKey="carteira" >
+                             Minha carteira
+                         </Nav.Link>
+                        </Nav.Item>
+                        </>
+                     : <></>
+                    }
+                   
+                </Nav>
                 </Col>
             </Row> 
-           
-            <Row className='d-flex justify-content-center'>
-                <Col md={4}>
-                <OutputInfo label='Nome' text={primeiroNome}/>
-                </Col>
-                <Col md={4}>
-                <OutputInfo label='Sobrenome' text='default'/>
-                </Col>
-
-            </Row>
-            <Row className='d-flex justify-content-center'>
-                <Col md={8}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-
-            </Row>
-            <Row className='d-flex justify-content-center'>
-                <Col md={1}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-
-            </Row>
-            <Row className='d-flex justify-content-center'>
-                <Col md={1}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-
-            </Row>
-            <Row className='d-flex justify-content-center'>
-                <Col md={2}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-                <Col md={2}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-
-            </Row>
-            <Row className='d-flex justify-content-center'>
-                <Col md={1}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-                <Col md={1}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-
-            </Row>
-
-            <Row className='d-flex justify-content-center'>
-                <Col md={2}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-                <Col md={2}>
-                <OutputInfo label='defalt' text='defalt'/>
-                </Col>
-
-            </Row>
-           
-            <Row className='d-flex justify-content-center'>
-
-                <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">
-                    Editar Informações
-                </Button>
+            {
+                eventSelect == "Meus Dados" ?
+                    <>
+                        <Row style={{marginTop: 20}}>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='Nome' text={primeiroNome} />
+                                </Col>
+                                <Col md={2}>
+                                    <OutputInfo label='Sobrenome' text='default' />
+                                </Col>
+    
+                            </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='E-mail' text={email} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='Telefone' text={telefone} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='CPF' text={cpf} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='Cidade' text={cidade} />
+                                    </Col>
+                                    <Col md={4}>
+                                        <OutputInfo label='Estado' text={estado} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='Bairro' text={bairro} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='CEP' text={cep} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='Rua' text={rua} />
+                                    </Col>
+                                    <Col md={4}>
+                                        <OutputInfo label='Numero' text={numero} />
+                                    </Col>
+    
+                                </Row><Row className='d-flex justify-content-center'>
+                                    {
+                                        userType === "admin" ?  
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
+                                                className='Botão-Primario Texto-Branco'    
+                                                type="submit"
+                                                onClick={()=>{navigate("/editarAdmin")}}
+                                                >
+                                                
+                                            Editar Informações 
+                                        </Button>
+                                        : <div></div>
+                                    }
+                                    {
+                                        userType === "promoter" ?  
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
+                                                className='Botão-Primario Texto-Branco'    
+                                                type="submit"
+                                                onClick={()=>{navigate("/editarPromoter")}}
+                                                >
+                                                
+                                            Editar Informações 
+                                        </Button>
+                                        : <div></div>
+                                    }
+                                    {
+                                        userType === "cliente" ?  
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
+                                                className='Botão-Primario Texto-Branco'    
+                                                type="submit"
+                                                onClick={()=>{navigate("/editarCliente")}}
+                                                >
+                                                
+                                            Editar Informações 
+                                        </Button>
+                                        : <div></div>
+                                    }
+                                   
+                                </Row>
+                            </>
+                            : <div></div>
+               }
+               {
+                eventSelect == "cartao" ?  
+                <Row style={{marginBottom: '20%'}} className = "align-items-center">
+                    <Col md={{ span: 2, offset: 3 }}>
+                        <Card style={{ width: '15rem', height:'9rem',marginTop: 40, backgroundColor: 'purple'}}>
+                            <Card.Body>
+                                
+                                <Card.Subtitle className="mb-2 text-muted" >Cartão de Crédito</Card.Subtitle>
+                                    <div className='d-flex justify-content-start'>
+                                        <img
+                                        src="/img/chipCard.png"
+                                        width="40"
+                                        height="40"
+                                        className="d-inline-block"
+                                        alt=''
+                                    />{''}
+                                    </div>
+                                    
+                                <Card.Title style={{fontSize: 14, color : 'white', fontWeight: 'bold'}}>XXXX XXXX XXXX {cardNumberFour}</Card.Title>
+                            </Card.Body>
+                        </Card> 
+                    </Col>
+                    <Col md={2}>
+                    <div style={{marginTop: 40}} >
+                    <p style={{fontWeight: 'bold', fontSize: 12}}>{cardName}</p>
+                    <p style={{fontSize: 12}}>XXXX XXXX XXXX {cardNumberFour}</p>
+                    </div>
+                    </Col>
+                    <ModalCadastrarCartao/>
                 </Row>
+                : <div></div>
+                
+               }
+               {
+                eventSelect == "carteira" ? 
+                <Row className="justify-content-center">
+                
+                <div className="boxSaldo">
+                    <div className="logoTicketitasSaldo">
+                    <img
+                                src="/img/logo.svg"
+                                width="40"
+                                height="40"
+                                alt=''
+                            />
+                    </div>
+                    <div className="saldoConteudo">
+                    <h1 style={{fontSize: 25}}>Saldo</h1>
+                    <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {saldo}</p>
+                    </div>
+                    
+                </div>
+                </Row>
+               
+                 : <div></div>
+               }
+            
         </Container>
         </>
     );
