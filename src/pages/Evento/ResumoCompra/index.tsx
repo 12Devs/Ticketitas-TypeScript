@@ -17,7 +17,12 @@ import '../../../components/Texto/Texto.css';
 import { container } from 'googleapis/build/src/apis/container';
 
 export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
-    console.log("Id evento inside: ",idCheckout);
+    
+
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    };
+
     const location = useLocation();
     var infoID1 = '0';
     
@@ -31,8 +36,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     
 
     const [infoID, setInfoID] = useState('');
-    console.log("Id evento inside 2: ",infoID);
-    
+    const [idEvento, setIdvento] = useState(''); 
     const [titulo, setTitulo] = useState('Titulo');
     const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
     const [descricao, setDescricao] = useState('Descrição');
@@ -56,8 +60,28 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [email, setEmail] = useState('');
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
+    
     useEffect(() => {
-        api.get(`/event/${idCheckout}`).then((response) => {
+        
+        if(idCheckout!="0"){
+
+            
+            
+            api.get(`sale/checkout/${idCheckout}`, config).then((response) => {
+            console.log("retorno: ",response);
+
+            console.log("eventID: ",response.config.data.eventId);
+            console.log("response id do evento: ",response.data.CheckoutInfos.checkout.eventId );
+            setIdvento(response.data.CheckoutInfos.checkout.eventId);
+            
+            console.log("eventID: ",idEvento);
+            
+            });
+            console.log("array dados:", arrayEventos);
+        }
+
+
+        api.get(`/event/${idEvento}`).then((response) => {
             console.log(response);
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
@@ -66,12 +90,14 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);
-
+            
             setEvent(response.data.eventInfos.event)
         });
-
-
+    
     }, []);
+    
+   
+    
     useEffect(() => {
 
         setInfoID(idCheckout);
@@ -182,22 +208,8 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
         }
     }
 
-     useEffect(() => {
-        
-        if(idCheckout!="0"){
 
-            console.log("id Checkout:", idCheckout);
-            
-            api.get(`sale/checkout/${idCheckout}`).then((response) => {
-            console.log("retorno: ",response);
-            
-            });
-            console.log("array dados:", arrayEventos);
-        }
 
-        
-   
-    }, []);
     return (
         <Container>
             <Row >

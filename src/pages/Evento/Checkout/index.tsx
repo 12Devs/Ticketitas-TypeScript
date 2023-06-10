@@ -25,7 +25,7 @@ export default function Checkout() {
    
     
     function renderResumocompra() {
-        console.log("InfoID no codigo:",infoID)
+        
         return (<ResumoCompra idCheckout={infoID} />)
 
     }

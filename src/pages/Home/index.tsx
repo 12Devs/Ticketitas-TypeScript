@@ -5,7 +5,10 @@ import NavBarGeral from '../../components/NavBarGeral';
 import Container from 'react-bootstrap/Container';
 import Row from "react-bootstrap/Row";
 import CardDestaques from '../../components/CardDestaques';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { api } from '../../services/api';
+
 
 export default function Home() {
     const location = useLocation();
