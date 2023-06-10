@@ -54,6 +54,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [sobrenome, setSobreome] = useState('');
     const [cpfCnpj, setCpfCnpj] = useState('');
     const [email, setEmail] = useState('');
+    const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
     useEffect(() => {
         api.get(`/event/${idCheckout}`).then((response) => {
@@ -68,6 +69,8 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
             setEvent(response.data.eventInfos.event)
         });
+
+
     }, []);
     useEffect(() => {
 
@@ -179,7 +182,22 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
         }
     }
 
-    
+     useEffect(() => {
+        
+        if(idCheckout!="0"){
+
+            console.log("id Checkout:", idCheckout);
+            
+            api.get(`sale/checkout/${idCheckout}`).then((response) => {
+            console.log("retorno: ",response);
+            
+            });
+            console.log("array dados:", arrayEventos);
+        }
+
+        
+   
+    }, []);
     return (
         <Container>
             <Row >

@@ -20,21 +20,7 @@ export default function Checkout() {
         infoID = params.IdCart;
     } 
     
- 
-
-    const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
-
-    useEffect(() => {
-        
-        
-        api.get(`sale/checkout/${infoID}`).then((response) => {
-            setArrayEventos(response.data);
-        });
-        console.log("array eventos:",arrayEventos);
-   
-    }, []);
-
-    const location = useLocation();
+    
     
    
     
