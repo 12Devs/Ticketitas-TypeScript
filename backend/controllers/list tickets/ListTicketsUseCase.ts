@@ -3,12 +3,33 @@ import { Request, Response}  from "express";
 import { SaleRepository } from "../../db/SaleRepository";
 import { EventRepository } from "../../db/EventRepository";
 
+/**
+ * List tickets use case class
+ * @date 6/6/2023 - 10:29:25 PM
+ *
+ * @class ListTicketsUseCase
+ * @typedef {ListTicketsUseCase}
+ */
 class ListTicketsUseCase {
-
+    
+    /**
+     * Creates an instance of {@link ListTicketsUseCase}.
+     * @date 6/6/2023 - 10:29:31 PM
+     *
+     * @private
+     * @type {TicketRepository}
+     */
     private ticketRepository: TicketRepository;
     private saleRespository: SaleRepository;
     private eventRepository: EventRepository;
-
+    
+    /**
+     * Creates an instance of ListTicketsUseCase.
+     * @date 6/6/2023 - 10:29:39 PM
+     *
+     * @constructor
+     * @param {TicketRepository} ticketrepository
+     */
     constructor ( ticketrepository: TicketRepository) {
         this.ticketRepository = ticketrepository;
     }
@@ -23,7 +44,17 @@ class ListTicketsUseCase {
     //     }
     //     return allHighlights;
     // }
-
+    
+    /**
+     * Method for make a creation of a event
+     * @date 6/6/2023 - 10:29:44 PM
+     *
+     * @public
+     * @async
+     * @param {Request} request
+     * @param {Response} response
+     * @returns {unknown}
+     */
     public async handle(request: Request, response: Response){
         const allTickets = await this.ticketRepository.findAllTickets(); // lista todos os tickets do bd
         

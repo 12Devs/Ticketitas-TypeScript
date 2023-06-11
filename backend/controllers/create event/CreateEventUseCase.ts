@@ -4,18 +4,75 @@ import { StockRepository } from "../../db/StockRepository";
 import { ApiError } from "../../errors/ApiError";
 
 
+/**
+ * Create event use case class
+ * @date 6/6/2023 - 10:06:22 PM
+ *
+ * @class CreateEventUseCase
+ * @typedef {CreateEventUseCase}
+ */
 class CreateEventUseCase {
 
+    
+
+    /**
+     * Create an instance of {@link CreateEventUseCase}
+     * @date 6/6/2023 - 10:06:34 PM
+     *
+     * @private
+     * @type {EventRepository}
+     */
     private eventRepository: EventRepository;
     private stockRepository: StockRepository;
     private promoterRepository: PromoterRepository;
 
+    
+
+    /**
+     * Creates an instance of CreateEventUseCase.
+     * @date 6/6/2023 - 10:06:51 PM
+     *
+     * @constructor
+     * @public
+     * @param {EventRepository} eventRepository
+     * @param {StockRepository} stockRepository
+     * @param {PromoterRepository} promoterRepository
+     */
     public constructor (eventRepository: EventRepository, stockRepository: StockRepository, promoterRepository: PromoterRepository) {
         this.eventRepository = eventRepository;
         this.stockRepository = stockRepository;
         this.promoterRepository = promoterRepository;
     }
 
+    
+
+    /**
+     * Method for make a creation of a event
+     * @date 6/6/2023 - 10:07:09 PM
+     *
+     * @public
+     * @async
+     * @param {number} promoterCpf
+     * @param {string} nome
+     * @param {string} descricao
+     * @param {Date} dataEvento
+     * @param {boolean} status
+     * @param {number} quantPista
+     * @param {number} quantStage
+     * @param {number} quantVip
+     * @param {number} valorPista
+     * @param {number} valorStage
+     * @param {number} valorVip
+     * @param {number} porcentagemMeia
+     * @param {number} porcentagemGratis
+     * @param {number} cep
+     * @param {string} cidade
+     * @param {string} estado
+     * @param {string} bairro
+     * @param {string} rua
+     * @param {number} numero
+     * @returns
+     */
     public async execute (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, porcentagemMeia: number, porcentagemGratis: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
 
         //Validations

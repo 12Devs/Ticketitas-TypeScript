@@ -3,14 +3,45 @@ import { TokenClientRepository } from "../../db/TokenClientRepository";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 
+/**
+ * Refresh token client use case class
+ * @date 6/6/2023 - 10:37:33 PM
+ *
+ * @class RefreshTokenClientUseCase
+ * @typedef {RefreshTokenClientUseCase}
+ */
 class RefreshTokenClientUseCase {
-
+    
+    /**
+     * Creates an instance of {@link RefreshTokenClientUseCase}.
+     * @date 6/6/2023 - 10:37:41 PM
+     *
+     * @private
+     * @type {TokenClientRepository}
+     */
     private tokenClientRepository: TokenClientRepository;
-
+    
+    /**
+     * Creates an instance of RefreshTokenClientUseCase.
+     * @date 6/6/2023 - 10:37:46 PM
+     *
+     * @constructor
+     * @public
+     * @param {TokenClientRepository} tokenClientRepository
+     */
     public constructor (tokenClientRepository: TokenClientRepository) {
         this.tokenClientRepository = tokenClientRepository;
     }
     
+    /**
+     * Method for refresh token of a client
+     * @date 6/6/2023 - 10:37:50 PM
+     *
+     * @public
+     * @async
+     * @param {string} token
+     * @returns {unknown}
+     */
     public async execute (token: string){
 
         const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);

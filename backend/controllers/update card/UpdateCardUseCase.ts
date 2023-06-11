@@ -2,14 +2,50 @@ import { CardRepository } from "../../db/CardRepository";
 import { ApiError } from "../../errors/ApiError";
 import bcrypt from 'bcrypt';
 
+/**
+ * Update card use case class
+ * @date 6/6/2023 - 10:40:25 PM
+ *
+ * @class UpdateCardUseCase
+ * @typedef {UpdateCardUseCase}
+ */
 class UpdateCardUseCase {
-
+    
+    /**
+     * Creates an instance of {@link UpdateCardUseCase}.
+     * @date 6/6/2023 - 10:40:29 PM
+     *
+     * @private
+     * @type {CardRepository}
+     */
     private cardRepository: CardRepository;
-
+    
+    /**
+     * Creates an instance of UpdateCardUseCase.
+     * @date 6/6/2023 - 10:40:32 PM
+     *
+     * @constructor
+     * @public
+     * @param {CardRepository} cardRepository
+     */
     public constructor (cardRepository: CardRepository) {
         this.cardRepository = cardRepository;
     }
-
+    
+    /**
+     * Method for update a card
+     * @date 6/6/2023 - 10:40:36 PM
+     *
+     * @public
+     * @async
+     * @param {number} cpf
+     * @param {number} cardNumber
+     * @param {string} holder
+     * @param {number} monthExpirationDate
+     * @param {number} yearExpirationDate
+     * @param {number} cvv
+     * @returns {*}
+     */
     public async execute (cpf: number, cardNumber: number, holder: string, monthExpirationDate: number, yearExpirationDate: number, cvv: number){
 
         //Validations
