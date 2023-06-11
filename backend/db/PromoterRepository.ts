@@ -52,9 +52,9 @@ class PromoterRepository {
      */
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
-        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco: any)=>{
-            const enderecoId = endereco.id;
-            await Promoter.create({nome, cpf, email, telefone, senha, enderecoId});
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoUser: any)=>{
+            const enderecoUserId = enderecoUser.id;
+            await Promoter.create({nome, cpf, email, telefone, senha, enderecoUserId});
         });
         
     }
