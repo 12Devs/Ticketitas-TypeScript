@@ -3,7 +3,7 @@ import InputTexto from "../../components/InputTexto";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import FormLabel from "../../components/FormLabel";
 
-export default function EditarEvento(){
+export default function EditarEvento({idEvento}:{idEvento: string}){
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
@@ -29,7 +29,7 @@ export default function EditarEvento(){
         <Container>
 
                         <Row >
-                            <FormLabel label='Cadastrar Evento' />
+                            <FormLabel label='Editar Evento' />
                         </Row>
 
                         <Row>

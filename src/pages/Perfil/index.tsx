@@ -62,7 +62,11 @@ export default function Perfil() {
     useEffect(()=>{
         const user = localStorage.getItem('userType');
         if(user != null){
-            setUserType(user)
+            setUserType(user);
+        }
+        const cpfLocalStorage = localStorage.getItem('CPF');
+        if(cpfLocalStorage != null){
+            setCpf(cpfLocalStorage);
         }
         
         const config = {
@@ -100,11 +104,11 @@ export default function Perfil() {
                 setTelefone(response.data.PromoterInfos.promoter.telefone)
                 setCep(response.data.PromoterInfos.enderecoPromoter.cep)
                 setEstado(response.data.PromoterInfos.enderecoPromoter.estado)
-                setBairro(response.data.ClientInfos.enderecoPromoter.bairro)
-                setRua(response.data.ClientInfos.enderecoPromoter.rua)
-                setBairro(response.data.ClientInfos.enderecoPromoter.bairro)
-                setNumero(response.data.ClientInfos.enderecoPromoter.numero)
-                setCidade(response.data.ClientInfos.enderecoPromoter.cidade)
+                setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
+                setRua(response.data.PromoterInfos.enderecoPromoter.rua)
+                setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
+                setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
+                setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
             });
         }
         else if(user == "admin"){
