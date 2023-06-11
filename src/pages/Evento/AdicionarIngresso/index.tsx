@@ -585,7 +585,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
               </Row>
               <Row>
                 <Button className="Botão-Primario" onClick={handleFinalizar}>
-                  Finalizar Compras
+                  COMPRAR INGRESSOS
                 </Button>
                 {renderModalLoginCompra()}
               </Row>

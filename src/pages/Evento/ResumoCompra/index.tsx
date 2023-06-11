@@ -10,6 +10,8 @@ import InputTexto from '../../../components/InputTexto';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useLocation } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
+
 
 //import './styleDescricao.css';
 import './styleResumoCompra.css';
@@ -36,7 +38,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     
 
     const [infoID, setInfoID] = useState('');
-    const [idEvento, setIdvento] = useState(''); 
+    const [idEvento, setIdvento] = useState('0'); 
     const [titulo, setTitulo] = useState('Titulo');
     const [dataHora, setDataHora] = useState('2001-01-01T00:00:00.000Z');
     const [descricao, setDescricao] = useState('Descrição');
@@ -46,7 +48,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [imageEvent, setImageEvent] = useState('./img/exemploHeaderEvento.png');
 
     const [event, setEvent] = useState();
-
+    let dados: any;
 
     const endereco = `${rua} - ${cidade} - ${estado}`;
 
@@ -54,13 +56,33 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
 
    
-    const [primeiroNome, setprimeiroNome] = useState('');
-    const [sobrenome, setSobreome] = useState('');
-    const [cpfCnpj, setCpfCnpj] = useState('');
+    const [primeiroNome, setPrimeiroNome] = useState('');
+    const [sobrenome, setSobrenome] = useState('');
+    const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
+
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
     
+    useEffect(()=>{
+        const token = localStorage.getItem('token')
+        const user = localStorage.getItem('userType');
+        if(token != null){
+            dados = jwtDecode(token);
+            if(dados != null){
+                setCpf(dados.sub);
+            }
+        }
+        api.get(`user/client/${cpf}`, config).then((response) => {
+            console.log(response);
+            setPrimeiroNome(response.data.ClientInfos.client.nome);
+            setEmail(response.data.ClientInfos.client.email);
+           
+           
+        });
+        
+        
+    },[])
     useEffect(() => {
         
         if(idCheckout!="0"){
@@ -68,10 +90,10 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             
             
             api.get(`sale/checkout/${idCheckout}`, config).then((response) => {
-            console.log("retorno: ",response);
+            console.log("retorno checkout: ",response);
 
-            console.log("eventID: ",response.config.data.eventId);
-            console.log("response id do evento: ",response.data.CheckoutInfos.checkout.eventId );
+            console.log("eventID: ",response.data.CheckoutInfos.checkout.eventId);
+            console.log("response id do evento: ",response.data.CheckoutInfos.checkout.eventId);
             setIdvento(response.data.CheckoutInfos.checkout.eventId);
             
             console.log("eventID: ",idEvento);
@@ -80,9 +102,15 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             console.log("array dados:", arrayEventos);
         }
 
+        
 
+    }, []);
+    
+    useEffect(() => {
+        if(idEvento!="0")
+        {
         api.get(`/event/${idEvento}`).then((response) => {
-            console.log(response);
+            console.log("retorno evento: ",response);
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
@@ -92,15 +120,18 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             setEstado(response.data.eventInfos.enderecoEvent.estado);
             
             setEvent(response.data.eventInfos.event)
+
         });
-    
-    }, []);
+        }
+    }, [idEvento]);
     
     useEffect(() => {
 
         setInfoID(idCheckout);
 
     }, [idCheckout]);
+
+    
 
 
     function renderCartao(){
@@ -134,21 +165,21 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             </Row>  
                 <Row>
                     <Col sm={4}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número do Cartão *"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número do Cartão *"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
                     </Col>
                     <Col sm={2}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Data de Validade*"} placeholder={"MM/AA"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Data de Validade*"} placeholder={"MM/AA"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome}  />
                     </Col>
                     <Col sm={2}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={"000"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={"000"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome}  />
                     </Col>
                 </Row>
                 <Row>
                         <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome impresso no cartão *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome impresso no cartão *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
                         </Col>
                         <Col sm={4}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
                         </Col>
                         
                 </Row>
@@ -159,7 +190,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             return(
                 <>
             
-            <Row>
+            <Row className='p-3'>
             <Card style={{ width: '20rem', height:'12rem'}}>
                 <Card.Body>
                     
@@ -224,38 +255,34 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
             <section className='larguraMainContentEventos mt-5'>
                 <Row className='noMarginPadding'>
-                    <Col sm={7}>
-                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Descrição do evento da compra</h4>
+                    <Col lg={8} className=''>
+                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Descrição do evento</h4>
                         <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
                             {descricao}
                         </p>
-                    </Col>
 
-                    <Col sm={5} className='pe-5 ps-5'>
-                        <DetalhesIngresso/>
-                    </Col>
-                </Row>
-                <Row className='divDadosCliente'>
-                    <Form style={{minHeight: '40vh'}}>
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome}/>
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome *"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome}  />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <InputTexto type={'email'} defaultValue={''} required={true} label={"Email *"} placeholder={"email@gmail.com"} controlId={"email"} data={email} setData={setEmail} />
-                        </Col>
-                    </Row>
-                    </Form>
+                        <Row className=''>
+                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold py-5'>Dados do Participante</h4>
+                        <Form style={{minHeight: '30vh'}}>
+                        <Row>
+                            <Col lg={5}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro Nome *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                            </Col>
+                            <Col lg={5}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome *"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome}  />
+                            </Col>
+                        </Row>
+                        <Row>
+                                <Col sm={5}>
+                                    <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
+                                </Col>
+                        </Row>'
+                        <Row>
+                            <Col sm={5}>
+                                <InputTexto type={'email'} defaultValue={''} required={true} label={"E-mail *"} placeholder={""} controlId={"email"} data={email} setData={setEmail} />
+                            </Col>
+                        </Row>
+                        </Form>
                     
                 </Row >
                 
@@ -283,9 +310,20 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 
 
                 
-                <Row>
-                 <Button variant="success">Finalizar Compra</Button>{''}
+                
+
+
+                    </Col>
+
+                <Col sm={4} className='pe-5 ps-5'>
+                    <DetalhesIngresso idCheckout={idCheckout}/>
+                </Col>
+                </Row >
+                
+                <Row className='justify-content-center p-3' >
+                <button type="button" className="btn btn-success w-80">FINALIZAR COMPRA</button>
                 </Row>
+               
             </section>
 
         </Container>
