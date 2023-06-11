@@ -1,5 +1,5 @@
-import { AprovePromoterRegistrationController } from "./AprovePromoterRegistrationController";
-import { AprovePromoterRegistrationUseCase } from "./AprovePromoterRegistrationUseCase";
+import { AprovePromoterRegistrationController } from "../approve promoter registration/AprovePromoterRegistrationController";
+import { AprovePromoterRegistrationUseCase } from "../approve promoter registration/AprovePromoterRegistrationUseCase";
 import { Request, Response } from "express";
 
 describe('AprovePromoterRegistrationController', () => {
