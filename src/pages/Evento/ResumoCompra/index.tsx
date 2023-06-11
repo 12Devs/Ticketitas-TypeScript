@@ -96,8 +96,6 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     
     }, []);
     
-   
-    
     useEffect(() => {
 
         setInfoID(idCheckout);
