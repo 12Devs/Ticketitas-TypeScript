@@ -1,12 +1,9 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link CreateAdministratorUseCase}
- */
+// Import of the class CreateAdministratorUseCase
 import { CreateAdministratorUseCase as CreateAdministratorUseCase } from "./CreateAdministratorUseCase";
-/**
- * Import of the Request and Response submodules of the {@link https://www.npmjs.com/package/express express} module
- */
+
+// Import of the Request and Response submodules of the express module
 import { Request, Response } from "express";
 
 /**
