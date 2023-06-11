@@ -24,6 +24,37 @@ export default function EditarEvento({idEvento}:{idEvento: string}){
     const [bairro, setBairro] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
+    const realizarCadastro = (event: any) => {
+        event.preventDefault();
+
+        var promoterCpf = 0;
+        if (localStorage.getItem("CPF") !== null) {
+            var promoterCpfString = localStorage.getItem("CPF");
+            promoterCpf = parseInt(promoterCpfString !== null ? promoterCpfString : "0");
+        }
+
+        var dadosEvento: any = {
+            promoterCpf,
+            nome,
+            descricao,
+            dataEvento,
+            status,
+            quantPista,
+            quantStage,
+            quantVip,
+            valorPista,
+            valorStage,
+            valorVip,
+            porcentagemMeia,
+            porcentagemGratis,
+            cep,
+            cidade,
+            estado,
+            bairro,
+            rua,
+            numero
+        }
+    }
 
     return(
         <Container>

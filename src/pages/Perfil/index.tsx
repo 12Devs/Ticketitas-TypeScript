@@ -15,18 +15,18 @@ import ModalCadastrarCartao from '../../components/ModalCadastarCartao';
 
 export default function Perfil() {
     const [userType, setUserType] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [nomeCompleto, SetnomeCompleto] = useState('');
-    const [primeiroNome, setprimeiroNome] = useState('');
-    const [sobrenome, setSobreome] = useState('');
-    const [telefone, setTelefone] = useState('');
-    const [cep, setCep] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [rua, setRua] = useState('');
-    const [numero, setNumero] = useState('');
-    const [email, setEmail] = useState('');
+    const [cpf, setCpf] = useState('undefined');
+    const [nomeCompleto, SetnomeCompleto] = useState('undefined');
+    const [primeiroNome, setprimeiroNome] = useState('undefined');
+    const [sobrenome, setSobreome] = useState('undefined');
+    const [telefone, setTelefone] = useState('undefined');
+    const [cep, setCep] = useState('undefined');
+    const [cidade, setCidade] = useState('undefined');
+    const [estado, setEstado] = useState('undefined');
+    const [bairro, setBairro] = useState('undefined');
+    const [rua, setRua] = useState('undefined');
+    const [numero, setNumero] = useState('undefined');
+    const [email, setEmail] = useState('undefined');
     const [cardName, setCardName] = useState('Matheus Mota Santos');
     const [cardNumber, setcardNumber] = useState('1234567832324545');
     const [cardNumberFour, setcardNumberFour] = useState('');
@@ -99,7 +99,7 @@ export default function Perfil() {
         else if(user == "promoter"){
             api.get("user/promoter/",config).then((response) => {
                 console.log(response)
-                setprimeiroNome(response.data.PromoterInfos.promoter.nome)
+                SetnomeCompleto(response.data.PromoterInfos.promoter.nome)
                 setEmail(response.data.PromoterInfos.promoter.email)
                 setTelefone(response.data.PromoterInfos.promoter.telefone)
                 setCep(response.data.PromoterInfos.enderecoPromoter.cep)
@@ -109,11 +109,18 @@ export default function Perfil() {
                 setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
                 setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
                 setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
+                pegarSobrenome(nomeCompleto);
+                pegarNome(nomeCompleto)
             });
         }
         else if(user == "admin"){
             api.get("user/administartor/",config).then((response) => {
                 console.log(response)
+                SetnomeCompleto(response.data.AdministratorInfos.administrator.name)
+                setEmail(response.data.AdministratorInfos.administrator.email)
+                setTelefone(response.data.AdministratorInfos.administrator.phone)
+                pegarSobrenome(nomeCompleto);
+                pegarNome(nomeCompleto)
             });
         }
         
@@ -131,7 +138,7 @@ export default function Perfil() {
                         <Nav.Link eventKey="Meus Dados">Meus Dados</Nav.Link>
                     </Nav.Item>
                     {   
-                        userType === "cliente" || userType === "promoter" ?
+                        userType === "cliente" ?
                         <>
                         <Nav.Item>
                             <Nav.Link eventKey="cartao">Meu cartão</Nav.Link>
@@ -149,14 +156,14 @@ export default function Perfil() {
                 </Col>
             </Row> 
             {
-                eventSelect == "Meus Dados" ?
+                eventSelect == "Meus Dados" && userType != "admin"?
                     <>
                         <Row style={{marginTop: 20}}>
                                 <Col md={{ span: 3, offset: 3 }}>
                                     <OutputInfo label='Nome' text={primeiroNome} />
                                 </Col>
                                 <Col md={2}>
-                                    <OutputInfo label='Sobrenome' text='default' />
+                                    <OutputInfo label='Sobrenome' text='' />
                                 </Col>
     
                             </Row><Row>
@@ -240,7 +247,27 @@ export default function Perfil() {
                                    
                                 </Row>
                             </>
-                            : <div></div>
+                            : <div>
+                                <Row style={{marginTop: 20}}>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='Nome' text={primeiroNome} />
+                                </Col>
+                                <Col md={2}>
+                                    <OutputInfo label='Sobrenome' text='' />
+                                </Col>
+    
+                            </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='E-mail' text={email} />
+                                    </Col>
+    
+                                </Row><Row>
+                                    <Col md={{ span: 3, offset: 3 }}>
+                                        <OutputInfo label='Telefone' text={telefone} />
+                                    </Col>
+                                </Row>
+    
+                            </div>
                }
                {
                 eventSelect == "cartao" ?  
