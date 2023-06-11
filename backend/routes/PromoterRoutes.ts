@@ -18,7 +18,7 @@ import { generateEventTicketReportController } from '../controllers/generate eve
 
 const promoterRoutes = Router();
 
-promoterRoutes.get("/promoter", (request: Request, response: Response, next: NextFunction)=>{
+promoterRoutes.get("/promoter", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return listOnePromoterController.handle(request, response).catch((error)=>{next(error)});
 });
 
