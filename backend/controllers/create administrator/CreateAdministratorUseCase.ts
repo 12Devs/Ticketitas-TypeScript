@@ -91,7 +91,7 @@ class CreateAdministratorUseCase {
 
         //Not-null user name
         if (!name){
-            throw new ApiError("O name é obrigatório!", 422);
+            throw new ApiError("O nome é obrigatório!", 422);
         }
 
         //Not-null user CPF number
