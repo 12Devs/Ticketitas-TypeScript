@@ -1,27 +1,16 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
-/**
- * Import of the class {@link AdministratorRepository}
- */
+//Import of the repository classes
 import { AdministratorRepository } from "../../db/AdministratorRepository";
-/**
- * Import of the class {@link ApiError}
- */
-import { ApiError } from "../../errors/ApiError";
-/**
- * Import of the {@link https://www.npmjs.com/package/randomstring randomstring} module
- */
-import randomstring from 'randomstring';
-
-/**
- * Import of the {@link https://www.npmjs.com/package/bcrypt bcrypt} module
- */
-import bcrypt from 'bcrypt';
-/**
- * Import of the class {@link SuperAdministratorRelationRepository}
- */
 import { SuperAdministratorRelationRepository } from "../../db/SuperAdministratorRelationRepository";
+
+//Import of the EmailProvider and ApiError APIs
 import { EmailProvider } from "../../utils/EmailProvider";
+import { ApiError } from "../../errors/ApiError";
+
+//Import of the randomstring and bcrypt modules
+import randomstring from 'randomstring';
+import bcrypt from 'bcrypt';
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
@@ -102,7 +91,7 @@ class CreateAdministratorUseCase {
 
         //Not-null user name
         if (!name){
-            throw new ApiError("O name é obrigatório!", 422);
+            throw new ApiError("O nome é obrigatório!", 422);
         }
 
         //Not-null user CPF number

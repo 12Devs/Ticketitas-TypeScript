@@ -15,11 +15,16 @@ import { updateUserAddressController } from '../controllers/update user address'
 import { updateUserPhoneController } from '../controllers/update user phone';
 import { listOnePromoterController } from '../controllers/list one promoter';
 import { generateEventTicketReportController } from '../controllers/generate event ticket report';
+import { listEventsForPromoterController } from '../controllers/list events for a promoter';
 
 const promoterRoutes = Router();
 
-promoterRoutes.get("/promoter", (request: Request, response: Response, next: NextFunction)=>{
+promoterRoutes.get("/promoter", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return listOnePromoterController.handle(request, response).catch((error)=>{next(error)});
+});
+
+promoterRoutes.get("/promoter/events", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return listEventsForPromoterController.handle(request, response).catch((error)=>{next(error)});
 });
 
 promoterRoutes.post("/promoter", (request: Request, response: Response, next: NextFunction)=>{

@@ -50,7 +50,7 @@ class UpdateUserNameController {
 
         //Executes the user name update request
         await this.updateUserNameUseCase.execute(tipo, cpf, newName);
-        return response.status(204).send();
+        return response.status(202).json({message: "O nome do usuário foi modificado com sucesso."});
     }
 
 }
