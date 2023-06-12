@@ -50,7 +50,7 @@ class UpdateUserPhoneController {
 
         //Executes the user phone number update request
         await this.updateUserPhoneUseCase.execute(tipo, cpf, newPhone);
-        return response.status(204).send();
+        return response.status(202).json({message: "O número de telefone do usuário foi modificado com sucesso."});
     }
 
 }
