@@ -121,7 +121,7 @@ describe('CreateAdministratorController', () => {
   });
 
   // Teste para observar se a verificação de cpf (não pode estar vazio) é feita corretamente
-  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as the name is empty', async () => {
+  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as the cpf number is empty', async () => {
     
     // Criação de objetos simulado para a requisição
     const mockName = "Nome Aleatorio";
@@ -163,7 +163,7 @@ describe('CreateAdministratorController', () => {
   });
 
   // Teste para observar se a verificação de email (não pode estar vazio) é feita corretamente
-  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as the name is empty', async () => {
+  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as the e-mail address is empty', async () => {
     
     // Criação de objetos simulado para a requisição
     const mockName = "Nome Aleatorio";
@@ -205,7 +205,7 @@ describe('CreateAdministratorController', () => {
   });
 
   // Teste para observar se a verificação de telefone (não pode estar vazio) é feita corretamente
-  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as the name is empty', async () => {
+  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as the phone number is empty', async () => {
     
     // Criação de objetos simulado para a requisição
     const mockName = "Nome Aleatorio";
