@@ -50,7 +50,7 @@ class UpdateUserEmailController {
 
         //Executes the user address update request
         await this.updateUserEmailUseCase.execute(tipo, cpf, passwordAuth, newEmail, newEmailConfirmation);
-        return response.status(204).send();
+        return response.status(200).json({message: "O email do usuário foi modificado com sucesso."});
     }
 
 }

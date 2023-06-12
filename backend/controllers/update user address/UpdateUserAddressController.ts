@@ -50,7 +50,7 @@ class UpdateUserAddressController {
 
         //Executes the user address update request
         await this.updateUserAddressUseCase.execute(tipo, cpf, cep, cidade, estado, bairro, rua, numero);
-        return response.status(202).json({message: "O endereço do usuário foi modificado com sucesso."});
+        return response.status(200).json({message: "O endereço do usuário foi modificado com sucesso."});
     }
 
 }
