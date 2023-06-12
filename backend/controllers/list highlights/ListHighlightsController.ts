@@ -41,7 +41,6 @@ class ListHighlightsController {
      * @returns {unknown}
      */
     public async handle (request: Request, response: Response){
-        console.log(">AQUII<");
         const allHighlights = await this.listHighlightsUseCase.execute();
         return response.status(200).json({allHighlights});
     }
