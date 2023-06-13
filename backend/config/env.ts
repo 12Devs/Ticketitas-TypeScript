@@ -6,7 +6,7 @@ const PORT= 3333;
 const DB_HOST= 'localhost';
 const DB_USER= 'root';
 const DB_NAME= 'ticketitasdb';
-const DB_PASSWORD= '';
+const DB_PASSWORD= 'password';
 const DB_DIALECT= 'mysql';
 
 //SUPER ADMIN DATA

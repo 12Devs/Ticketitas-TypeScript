@@ -9,6 +9,7 @@ import { ClientRepository } from "../db/ClientRepository";
 import { EventRepository } from "../db/EventRepository";
 import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistrationRequestRepository";
 import { PromoterRepository } from "../db/PromoterRepository";
+import { SuperAdministratorRelationRepository } from "../db/SuperAdministratorRelationRepository";
 import bcrypt from 'bcrypt';
 import { StockRepository } from "../db/StockRepository";
 import { EmailProvider } from "../utils/EmailProvider";
@@ -41,6 +42,22 @@ class FillDataBase {
         const senhaHash = await bcrypt.hash("12devsticketitas", salt);
         administratorRepository.create("12Devs", 0, "ticketitas@gmail.com", 0, senhaHash);
     }
+
+
+    public static async fillAdministrador() {
+
+        const createAdministratorUseCase = new CreateAdministratorUseCase(new AdministratorRepository(), new EmailProvider(), new SuperAdministratorRelationRepository());
+        await createAdministratorUseCase.execute("Gabriel", 45850724972, "gabriel@email.com", 75988532244);
+
+        await createAdministratorUseCase.execute("João Gabriel", 75316609543, "joaogabriel@email.com", 75981272922);
+
+        await createAdministratorUseCase.execute("Lucca Princeso", 82231237709, "luccaprinceso@email.com", 75991151505);
+    }
+
+
+
+
+
 
     public static async fillEvents() {
         const createEventUseCase = new CreateEventUseCase(new EventRepository(), new StockRepository(), new PromoterRepository());
