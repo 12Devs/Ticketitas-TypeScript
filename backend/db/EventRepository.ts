@@ -116,6 +116,24 @@ class EventRepository {
 
         return allEventsByPromoter;
     }
+
+        /**
+     * Find id and status of event by cpf promoter
+     * @date 6/6/2023 - 10:55:26 PM
+     *
+     * @public
+     * @async
+     * @param {number} cpf
+     * @returns {unknown}
+     */
+        public async findByCpfPromoter (cpf: number) {
+            const allEventsByPromoter = await Event.findAll({raw: true,
+            where: {
+                Promotercpf: cpf
+            }});
+    
+            return allEventsByPromoter;
+        }
     
     /**
      * Find one event

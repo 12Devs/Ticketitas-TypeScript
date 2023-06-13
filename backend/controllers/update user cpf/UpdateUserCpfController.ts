@@ -47,7 +47,7 @@ class UpdateUserCpfController {
         const { newCpf } = request.body;
 
         await this.updateUserCpfUseCase.execute(tipo, cpf, newCpf);
-        return response.status(204).send();
+        return response.status(200).json({message: "O número de cpf do usuário foi modificado com sucesso."});
     }
 
 }
