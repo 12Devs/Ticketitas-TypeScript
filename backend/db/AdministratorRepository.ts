@@ -1,12 +1,6 @@
 //Most of the variables and some of the text used to document this file were auto-generated using {@link https://marketplace.visualstudio.com/items?itemName=crystal-spider.jsdoc-generator JSDoc Generator by Crystal Spider}
 
 /**
- * Import of the class {@link CreateEnderecoController}
- */
-import { CreateEnderecoUserController } from "../controllers/create user endereco/CreateEnderecoUserController";
-/**
- 
-/**
  * Import of the class {@link Administrator}
  */
 import { Administrator } from "../models/Administrator";
@@ -19,28 +13,7 @@ import { Administrator } from "../models/Administrator";
  * @typedef {AdministratorRepository}
  */
 class AdministratorRepository {
-
-    /**
-     * Declaration of the {@link createEnderecoController} instance
-     * @date 5/8/2023 - 8:57:34 PM
-     *
     
-    /**
-     * Declaration of the instance of this class (AdministratorRepository)
-     * @date 5/8/2023 - 8:57:34 PM
-     *
-     * @private Marks this object as private
-     * @type {AdministratorRepository}
-     */
-    private administratorRepository: AdministratorRepository
-
-    /**
-     * Creates an instance of AdministratorRepository
-     * @date 5/8/2023 - 8:57:34 PM
-     *
-     * @constructor Marks this part of the code as a constructor
-     * @public Marks this constructor as having "public" visibility
-     */
 
     /**
      * Method for requesting the insertion of (a) new row(s) in the server database in order to store the information of a new administrator registry
@@ -113,7 +86,7 @@ class AdministratorRepository {
      * @param {string} password user once-encrypted password hash
      * @returns {Array} Array of administrators found, matching the search (or none if no match is found)
      */
-    public async findByEmailAndSenha (email: string, password: string) {
+    public async findByEmailAndSenha (email: string) {
         const administrator = await Administrator.findOne({raw: true, attributes: ['name', 'cpf', 'email', 'password'], where: {
             email: email
         }});
@@ -125,6 +98,13 @@ class AdministratorRepository {
             cpf: cpf
         }});
         return cpfAndAvatar;
+    }
+
+    public async findByCpfAndSenha (cpf: number) {
+        const cpfAndSenha = await Administrator.findOne({raw: true, attributes: ['cpf', 'password'], where: {
+            cpf: cpf
+        }});
+        return cpfAndSenha;
     }
 
     public async updateAvatar (cpf: number, avatarImage: any){
@@ -141,6 +121,50 @@ class AdministratorRepository {
     public async updatePassword (cpf: number, newPassword: string){
         await Administrator.update({
             password: newPassword
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateCpf (cpf: number, newCpf: number){
+        await Administrator.update({
+            cpf: newCpf
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateName (cpf: number, newName: string){
+        await Administrator.update({
+            name: newName
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updateEmail (cpf: number, newEmail: string){
+        await Administrator.update({
+            email: newEmail
+        },
+        {
+            where: {
+                cpf: cpf
+            }
+        });
+    }
+
+    public async updatePhone (cpf: number, newPhone: number){
+        await Administrator.update({
+            phone: newPhone
         },
         {
             where: {

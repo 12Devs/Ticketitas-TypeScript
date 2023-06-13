@@ -3,14 +3,45 @@ import { TokenAdministratorRepository } from "../../db/TokenAdministratorReposit
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 
+/**
+ * Refresh token administrator use case class
+ * @date 6/6/2023 - 10:36:51 PM
+ *
+ * @class RefreshTokenAdministratorUseCase
+ * @typedef {RefreshTokenAdministratorUseCase}
+ */
 class RefreshTokenAdministratorUseCase {
-
+    
+    /**
+     * Creates an instance of {@link RefreshTokenAdministratorUseCase}.
+     * @date 6/6/2023 - 10:36:57 PM
+     *
+     * @private
+     * @type {TokenAdministratorRepository}
+     */
     private tokenAdministratorRepository: TokenAdministratorRepository;
-
+    
+    /**
+     * Creates an instance of RefreshTokenAdministratorUseCase.
+     * @date 6/6/2023 - 10:37:01 PM
+     *
+     * @constructor
+     * @public
+     * @param {TokenAdministratorRepository} tokenAdministratorRepository
+     */
     public constructor (tokenAdministratorRepository: TokenAdministratorRepository) {
         this.tokenAdministratorRepository = tokenAdministratorRepository;
     }
     
+    /**
+     * Method for refresh token of a administrator
+     * @date 6/6/2023 - 10:37:04 PM
+     *
+     * @public
+     * @async
+     * @param {string} token
+     * @returns {unknown}
+     */
     public async execute (token: string){
 
         const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);

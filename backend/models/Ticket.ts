@@ -26,6 +26,11 @@ const Ticket = conn.define('ticket', {
     dateEvent:{
         type: DataTypes.DATE,
         allowNull: false
+    },
+    status:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     }
 });
 

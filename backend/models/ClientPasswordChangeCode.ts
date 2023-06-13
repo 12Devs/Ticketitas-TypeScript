@@ -6,6 +6,10 @@ import { DataTypes } from "sequelize";
  * Import of the class {@link Connection}
  */
 import { conn } from "../db/connection";
+/**
+ * Import of the class {@link Client}
+ */
+import { Client } from "./Client";
 
 /**
  * Class containing the "model" for the password change code of client type of users and their respective object type
@@ -13,12 +17,7 @@ import { conn } from "../db/connection";
  *
  * @type {*}
  */
-const ClientPasswordChangeCode = conn.define('clientpasswordchangeCode',{
-    id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
-    },
+const ClientPasswordChangeCode = conn.define('clientpasswordchangecode',{
     //User password change code
     code:{
         type: DataTypes.STRING,
@@ -26,9 +25,13 @@ const ClientPasswordChangeCode = conn.define('clientpasswordchangeCode',{
     },
     //User CPF number
     cpf:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        references: {
+            model: Client,
+            key: 'cpf'
+        }
     }
 });
 

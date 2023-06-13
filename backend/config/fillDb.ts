@@ -1,18 +1,22 @@
+import { AprovePromoterRegistrationUseCase } from "../controllers/approve promoter registration/AprovePromoterRegistrationUseCase";
 import { CreateAdministratorUseCase } from "../controllers/create administrator/CreateAdministratorUseCase";
 import { CreateClientUseCase } from "../controllers/create client/CreateClientUseCase";
 import { CreateEventUseCase } from "../controllers/create event/CreateEventUseCase";
 import { CreatePromoterUseCase } from "../controllers/create promoter/CreatePromoterUseCase";
+import { SetFeaturedEventUseCase } from "../controllers/set featured event/SetFeaturedEventUseCase";
 import { AdministratorRepository } from "../db/AdministratorRepository";
 import { ClientRepository } from "../db/ClientRepository";
 import { EventRepository } from "../db/EventRepository";
 import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistrationRequestRepository";
 import { PromoterRepository } from "../db/PromoterRepository";
 import bcrypt from 'bcrypt';
+import { StockRepository } from "../db/StockRepository";
+import { EmailProvider } from "../utils/EmailProvider";
 
 class FillDataBase {
 
     public static async fillClients() {
-        const createClientUseCase = new CreateClientUseCase(new ClientRepository());
+        const createClientUseCase = new CreateClientUseCase(new ClientRepository(), new EmailProvider());
 
         await createClientUseCase.execute("Gabriel", 45850724974, "gabriel@email.com", 75988532244, "abc123", "abc123", 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua de Cima", 13);
 
@@ -22,7 +26,7 @@ class FillDataBase {
     }
 
     public static async fillPromoters() {
-        const createPromoterUseCase = new CreatePromoterUseCase(new PromoterRepository(), new PromoterRegistrationRequestRepository());
+        const createPromoterUseCase = new CreatePromoterUseCase(new PromoterRepository(), new PromoterRegistrationRequestRepository(), new EmailProvider());
 
         await createPromoterUseCase.execute("Itamar Promoter", 45850724974, "itamarpromoter@email.com", 75988532244, "abc123", "abc123", 44230000, "Feira de Santana", "BA", "Feira 6", "Caminho I", 13);
 
@@ -39,7 +43,7 @@ class FillDataBase {
     }
 
     public static async fillEvents() {
-        const createEventUseCase = new CreateEventUseCase(new EventRepository());
+        const createEventUseCase = new CreateEventUseCase(new EventRepository(), new StockRepository(), new PromoterRepository());
 
         const oktoberFest = "Corridas de cavalo, muita cerveja e festa nas ruas foram e são características culturais dessa tradicional festa na cidade. A cerveja tornou-se um símbolo de Feira de Santana.";
         const tomorrowland = "Maior festival de música eletrônica do mundo!";
@@ -69,6 +73,21 @@ class FillDataBase {
         await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, sjSerrinhaDate, true, 40000, 3000, 0, 0, 0, 0,  50.00, 0.00, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
     }
 
+    public static async setHighlights() {
+        const repository = new EventRepository();
+        const events : any = await repository.findAllEvents();
+        const setHighlights = new SetFeaturedEventUseCase(repository);
+
+        for (let event of events) {
+            await setHighlights.execute(event.id);
+        }
+    }
+
+    public static async promoterAprove() {
+        const promoterRepository = new PromoterRepository();
+        const promoterAprove = new AprovePromoterRegistrationUseCase(new PromoterRegistrationRequestRepository(), promoterRepository);
+        await promoterAprove.execute(75316609549);
+    }
 }
 
 export { FillDataBase };

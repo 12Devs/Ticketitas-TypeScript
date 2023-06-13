@@ -1,6 +1,9 @@
 import { DataTypes } from "sequelize";
 import { conn } from "../db/connection";
 import { Sale } from "./Sale";
+import { Stock } from "./Stock";
+import { Checkout } from "./Checkout";
+import { Ticket } from "./Ticket";
 
 const Event = conn.define('event', {
     id: {
@@ -26,15 +29,15 @@ const Event = conn.define('event', {
     },
     quantPista: {
         type: DataTypes.INTEGER,
-        allowNull: false 
+        allowNull: true 
     },
     quantStage: {
         type: DataTypes.INTEGER,
-        allowNull: false 
+        allowNull: true 
     },
     quantVip: {
         type: DataTypes.INTEGER,
-        allowNull: false 
+        allowNull: true 
     },
     valorPista: {
         type: DataTypes.FLOAT,
@@ -69,5 +72,9 @@ const Event = conn.define('event', {
     }
 });
 
+Event.hasMany(Checkout);
 Event.hasMany(Sale);
+Event.hasMany(Ticket);
+Event.hasOne(Stock);
+
 export { Event };
