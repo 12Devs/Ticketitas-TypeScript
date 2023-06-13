@@ -7,12 +7,13 @@ import '../../../components/Texto/Texto.css';
 
 export default function ItemEvento(data: any) {
     const navigate = useNavigate();
+    const refresh = () => window.location.reload();
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
 
-    const suspenderEvento = () => {
+    const atualizarStatusEvento = () => {
         const id = data.evento.id;
         const promoterCpf = data.evento.promoterCpf;
 
@@ -22,6 +23,8 @@ export default function ItemEvento(data: any) {
         }
 
         api.patch(`/event/administrator/update-status`, dadosEvento, config).then((response)=>{console.log(response)});
+
+        refresh();
     }
 
     const verDetalhes = () => {
@@ -39,8 +42,12 @@ export default function ItemEvento(data: any) {
                     </div>
                 </Col>
                 <Col sm={6} className='row align-items-center justify-content-evenly'>
-                    <Button className='Botão-Secundario Texto-Azul Texto-MuitoPequeno' onClick={suspenderEvento}>Suspender evento</Button>
-                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' onClick={verDetalhes}>Detalhes</Button>
+                    {data.evento.status == true && <Button className='Botão-Secundario Texto-Azul Texto-MuitoPequeno' onClick={atualizarStatusEvento}>Suspender evento</Button>}
+                    {data.evento.status == false && <Button className='Botão-Secundario Texto-Azul Texto-MuitoPequeno' onClick={atualizarStatusEvento}>Ativar evento</Button>}
+
+                    {data.evento.status == true && <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' onClick={verDetalhes}>Detalhes</Button>}
+                    {data.evento.status == false && <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' disabled onClick={verDetalhes}>Detalhes</Button>}
+
                 </Col>
             </Row>
         </ListGroup.Item>
