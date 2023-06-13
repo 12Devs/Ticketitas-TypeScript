@@ -9,6 +9,9 @@ export default function ItemEvento(data: any) {
     const navigate = useNavigate();
     const refresh = () => window.location.reload();
 
+    const dataHoraOBJ = new Date(data.evento.dataEvento);
+    const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
+
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
@@ -37,7 +40,7 @@ export default function ItemEvento(data: any) {
                 <Col sm={6}>
                     <div className='row align-items-start'>
                         <h5 className=' text-start'>{data.evento.nome}</h5>
-                        <p className='text-start'>{data.evento.dataEvento}</p>
+                        <p className='text-start'>{dataHoraFormatada}</p>
                         <p className='text-start'>{data.evento.status}</p>
                     </div>
                 </Col>
