@@ -16,11 +16,12 @@ import { Modal } from 'react-bootstrap';
 
 export default function EditarAdmin() {
     const [userType, setUserType] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [primeiroNome, setprimeiroNome] = useState('');
-    const [sobrenome, setSobreome] = useState('');
-    const [telefone, setTelefone] = useState('');
-    const [email, setEmail] = useState('');
+    const [cpf, setCpf] = useState('undefined');
+    const [nomeCompleto, SetnomeCompleto] = useState('undefined');
+    const [primeiroNome, setprimeiroNome] = useState('undefined');
+    const [sobrenome, setSobreome] = useState('undefined');
+    const [telefone, setTelefone] = useState('undefined');
+    const [email, setEmail] = useState('undefined');
     const [show, setShow] = useState(false);
     const [senhaAtual, setsenhaAtual] = useState('');
     const [novaSenha, setnovaSenha] = useState('');
@@ -32,45 +33,86 @@ export default function EditarAdmin() {
     };
     const handleShow = () => {
         setShow(true)
-    };
-    
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    };
-
+    }; 
     const alterarSenha = (event: any) => {
         event.preventDefault();
     }
 
-    let dados: any;
-    useEffect(() => {
-        const token = localStorage.getItem('token')
-        const user = localStorage.getItem('userType');
-        if (token != null) {
-            dados = jwtDecode(token);
-            if (dados != null) {
-                setCpf(dados.sub);
-            }
-        }
-        if (user != null) {
-            setUserType(user)
-        }
+    const navigate = useNavigate();
 
-        api.get("user/adiministrator", config).then((response) => {
+    function pegarSobrenome(nomeCompleto: string) {
+        var partesNome = nomeCompleto.split(' ');
+
+        if (partesNome.length < 2) {
+            setSobreome("")
+        }
+        else{
+            let sobrenome = partesNome[partesNome.length - 2];
+            setSobreome(sobrenome)
+        }
+      }
+    function pegarNome(nomeCompleto: string) {
+        
+        var partesNome = nomeCompleto.split(' ');
+
+        let sobrenome = partesNome[0];
+        setprimeiroNome(sobrenome)
+      }
+
+    useEffect(()=>{
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        const user = localStorage.getItem('userType');
+        if(user != null){
+            setUserType(user);
+        }
+        const cpfLocalStorage = localStorage.getItem('CPF');
+        if(cpfLocalStorage != null){
+            setCpf(cpfLocalStorage);
+        }
+        
+        // A alterar as variáveis pra Admin
+        api.get("user/adiministrator/",config).then((response)  => {
             console.log(response)
-            setprimeiroNome(response.data.ClientInfos.client.nome)
-            setCpf(response.data.ClientInfos.client.cpf)
-            setEmail(response.data.ClientInfos.client.email)
-            setTelefone(response.data.ClientInfos.client.telefone)
+            SetnomeCompleto(response.data.ClientInfos.client.nome);
+            setEmail(response.data.ClientInfos.client.email);
+            setCpf(response.data.ClientInfos.client.cpf);
+            setTelefone(response.data.ClientInfos.client.telefone);
+            pegarSobrenome(nomeCompleto);
+            pegarNome(nomeCompleto)
         });
 
+        
+    },[])
 
-    }, [])
+    const editarAdmin = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let nomeAdmin: any = {
+            newName: `${primeiroNome} ${sobrenome}`, 
+            tipo: userType,
+            cpf
+        }
+        let telefoneAdmin: any = {
+            newPhone: telefone,
+            tipo: userType,
+            cpf
+        }
+
+        api.post("user/administrator/update-name", nomeAdmin,config).then((response)=>{console.log(response)});
+        api.post("user/adiministrator/update-phone", telefoneAdmin,config).then((response)=>{console.log(response)});
+
+        navigate('/perfil');
+    }
 
     return (
         <>
             <NavBarGeral />
-            <Form style={{ minHeight: '75vh' }} onSubmit={EditarAdmin}>
+            <Form style={{ minHeight: '75vh' }} onSubmit={editarAdmin}>
                 <Container>
 
                     <Row>
@@ -100,7 +142,7 @@ export default function EditarAdmin() {
                             <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
                         </Col>
                         <Col sm={4}>
-                            <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
+                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
                                 Alterar senha
                             </Button>
                             <Modal show={show} onHide={handleClose}>
