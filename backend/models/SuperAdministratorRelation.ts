@@ -18,7 +18,9 @@ import { Administrator } from "./Administrator";
  * @type {*}
  */
 const SuperAdministratorRelation = conn.define('superadminrelation',{
-    //User CPF number
+    /**
+     * User CPF number
+     */
     cpf:{
         type: DataTypes.BIGINT,
         allowNull: false,
