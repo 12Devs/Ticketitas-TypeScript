@@ -20,6 +20,9 @@ import Perfil from './pages/Perfil';
 import CadastrarEvento from './pages/CadastrarEvento';
 import NotFound404 from './pages/NotFound404';
 import Forbidden403 from './pages/Forbidden403';
+import MeusEventos from './pages/MeusEventos';
+import SolicitacoesCadastro from './pages/SolicitacoesCadastro';
+import EventosCadastrados from './pages/EventosCadastrados';
 
 
 export default function AppRouter() {
@@ -57,7 +60,9 @@ export default function AppRouter() {
                     <Route path='perfil' element={<Perfil/>}/>
                     <Route path='404' element={<NotFound404/>}/>
                     <Route path='403' element={<Forbidden403/>}/>
-                    
+                    <Route path='meusEventos' element={<MeusEventos/>}/>
+                    <Route path='solicitacoesCadastro' element={<SolicitacoesCadastro/>}/>
+                    <Route path='relatorioEventos' element={<EventosCadastrados/>}/>                    
                 </Routes>
                 <Footer />
             </Router>

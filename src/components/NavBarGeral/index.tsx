@@ -26,8 +26,8 @@ const NavBarGeral = () => {
   }];
 
   const rotasCliente = [{
-    label: 'Meu carrinho',
-    to: '/carrinho'
+    label: 'Meus ingressos',
+    to: '/meusIngressos'
   }]
 
   const rotasPromoter = [{
@@ -175,8 +175,6 @@ const NavBarGeral = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => navigate('/perfil')}>Perfil</Dropdown.Item>
-                <Dropdown.Item onClick={() => navigate('/meusIngressos')}>Meus ingressos</Dropdown.Item>
-                <Dropdown.Item onClick={() => navigate('/cartoes')}>Gerenciar cartão</Dropdown.Item>
                 <Dropdown.Divider></Dropdown.Divider>
                 <Dropdown.Item onClick={logout}>Sair</Dropdown.Item>
               </Dropdown.Menu>

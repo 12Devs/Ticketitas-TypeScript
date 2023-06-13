@@ -23,12 +23,16 @@ const AdministratorPasswordChangeCode = conn.define('administratorpasswordchange
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    //User password change code
+    /**
+     * User password change code
+     */
     code:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    //User CPF number
+    /**
+     * User CPF number
+     */
     cpf:{
         type: DataTypes.BIGINT,
         allowNull: false,
