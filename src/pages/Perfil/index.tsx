@@ -116,7 +116,7 @@ export default function Perfil() {
             });
         }
         else if(user == "admin"){
-            api.get("user/administartor/",config).then((response) => {
+            api.get("user/administrator/",config).then((response) => {
                 console.log(response)
                 SetnomeCompleto(response.data.AdministratorInfos.administrator.name)
                 setEmail(response.data.AdministratorInfos.administrator.email)
