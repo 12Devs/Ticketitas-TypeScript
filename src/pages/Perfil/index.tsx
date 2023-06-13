@@ -28,7 +28,7 @@ export default function Perfil() {
     const [numero, setNumero] = useState('undefined');
     const [email, setEmail] = useState('undefined');
     const [cardName, setCardName] = useState('Matheus Mota Santos');
-    const [cardNumber, setcardNumber] = useState('1234567832324545');
+    const [cardNumber, setCardNumber] = useState('1234567832324545');
     const [cardNumberFour, setcardNumberFour] = useState('');
     const [saldo, setSaldo] = useState('0');
 
@@ -74,6 +74,8 @@ export default function Perfil() {
         };
         api.get("user/client/card",config).then((response) => {
             console.log(response)
+            setCardNumber(response.data.cardInfos.card.cardNumber);
+            setCardName(response.data.cardInfos.card.holder);
         });
         if(user == "cliente"){
             api.get("user/client/",config).then((response) => {
@@ -248,25 +250,7 @@ export default function Perfil() {
                                 </Row>
                             </>
                             : <div>
-                                <Row style={{marginTop: 20}}>
-                                <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='Nome' text={primeiroNome} />
-                                </Col>
-                                <Col md={2}>
-                                    <OutputInfo label='Sobrenome' text='' />
-                                </Col>
-    
-                            </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='E-mail' text={email} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='Telefone' text={telefone} />
-                                    </Col>
-                                </Row>
-    
+                              
                             </div>
                }
                {

@@ -141,7 +141,6 @@ export default function EditarCliente() {
         api.post("user/client/update-address", enderecoCliente,config).then((response)=>{console.log(response)});
         api.post("user/client/update-name", nomeCliente,config).then((response)=>{console.log(response)});
         api.post("user/client/update-phone", telefoneCliente,config).then((response)=>{console.log(response)});
-
         navigate('/perfil');
     }
 
