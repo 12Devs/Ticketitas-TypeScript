@@ -8,8 +8,9 @@ import React, { useEffect } from 'react';
 import InputTexto from '../../components/InputTexto';
 import FormLabel from '../../components/FormLabel';
 import NavBarGeral from '../../components/NavBarGeral';
-import {api} from '../../services/api';
+import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 
 import '../pages.css';
 import '../../components/Texto/Texto.css';
@@ -36,7 +37,22 @@ export default function EditarCliente() {
     const [cardNumber, setcardNumber] = useState('1234567832324545');
     const [cardNumberFour, setcardNumberFour] = useState('');
     const [saldo, setSaldo] = useState('0');
+    const [show, setShow] = useState(false);
+    const [senhaAtual, setsenhaAtual] = useState('');
+    const [novaSenha, setnovaSenha] = useState('');
+    const [confirmarSenha, setconfirmarSenha] = useState('');
 
+    const handleClose = () => {
+        setShow(false)
+    };
+    const handleShow = () => {
+        setShow(true)
+    };
+
+    const alterarSenha = (event: any) => {
+        event.preventDefault();
+    }
+    
     const navigate = useNavigate();
 
     function pegarSobrenome(nomeCompleto: string) {
@@ -150,66 +166,86 @@ export default function EditarCliente() {
             <Form style={{minHeight: '75vh'}} onSubmit={editarCliente}>
                 <Container>
 
-                    <Row >
-                        <FormLabel label='Editar informações'/>
-                    </Row> 
+                <Row >
+                    <FormLabel label='Editar informações' />
+                </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col sm={6}>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
+                    </Col>
+                    <Col sm={6}>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone}  />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type='number' defaultValue={''} required={true} label={"CPF"} placeholder={cpf} controlId={"cpf"} data={cpf} setData={setCpf} />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col sm={6}>
+                        <InputTexto type='number' defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                    </Col>
+                    <Col sm={6}>
+                        <InputTexto type='number' defaultValue={''} required={true} label={"CPF"} placeholder={cpf} controlId={"cpf"} data={cpf} setData={setCpf} />
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type='number' defaultValue={''} required={true} label={"CEP"} placeholder={cep} controlId={"cep"} data={cep} setData={setCep} />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col sm={6}>
+                        <InputTexto type='number' defaultValue={''} required={true} label={"CEP"} placeholder={cep} controlId={"cep"} data={cep} setData={setCep} />
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col sm={8}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Cidade"} placeholder={cidade} controlId={"cidade"} data={cidade} setData={setCidade} />
-                        </Col>
-                        <Col sm={4}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Estado"} placeholder={estado} controlId={"estado"} data={estado} setData={setEstado} />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col sm={8}>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Cidade"} placeholder={cidade} controlId={"cidade"} data={cidade} setData={setCidade} />
+                    </Col>
+                    <Col sm={4}>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Estado"} placeholder={estado} controlId={"estado"} data={estado} setData={setEstado} />
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Bairro"} placeholder={bairro} controlId={"bairro"} data={bairro} setData={setBairro} />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Bairro"} placeholder={bairro} controlId={"bairro"} data={bairro} setData={setBairro} />
+                    </Col>
+                </Row>
 
-                    <Row>
-                        <Col sm={8}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Rua"} placeholder={rua} controlId={"rua"} data={rua} setData={setRua} />
-                        </Col>
-                        <Col sm={4}>
-                            <InputTexto type='text' defaultValue={''} required={true} label={"Número"} placeholder={numero} controlId={"numero"} data={numero} setData={setNumero} />
-                        </Col>
-                    </Row>
+                <Row>
+                    <Col sm={8}>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Rua"} placeholder={rua} controlId={"rua"} data={rua} setData={setRua} />
+                    </Col>
+                    <Col sm={4}>
+                        <InputTexto type='text' defaultValue={''} required={true} label={"Número"} placeholder={numero} controlId={"numero"} data={numero} setData={setNumero} />
+                    </Col>
+                </Row>
 
-                    <Row>
+                <Row>
                         <Col sm={8}>
                             <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
                         </Col>
                         <Col sm={4}>
-                        <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Terciário Texto-Azul'>
+                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
                                 Alterar senha
                             </Button>
+                            <Modal show={show} onHide={handleClose}>
+                                <Modal.Body className=" modal-content">
+                                    <Row className='d-flex justify-content-center' >
+                                        <h1 style={{ fontSize: 20 }}>Alterar senha</h1>
+                                    </Row>
+
+                                    <Form onSubmit={alterarSenha}>
+                                        <Row className='justify-content-center'>
+                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='text' />
+                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="text" />
+                                        </Row>
+                                        <Row className='justify-content-center'>
+                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                Confirmar alteração
+                                            </Button>
+                                        </Row>
+                                    </Form>
+                                </Modal.Body>
+                            </Modal>
                         </Col>
                     </Row>
 
