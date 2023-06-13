@@ -14,10 +14,11 @@ import { updateUserPasswordController } from '../controllers/update user passwor
 import { updateUserAddressController } from '../controllers/update user address';
 import { updateUserPhoneController } from '../controllers/update user phone';
 import { listOnePromoterController } from '../controllers/list one promoter';
+import { generateEventTicketReportController } from '../controllers/generate event ticket report';
 
 const promoterRoutes = Router();
 
-promoterRoutes.get("/promoter", (request: Request, response: Response, next: NextFunction)=>{
+promoterRoutes.get("/promoter", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return listOnePromoterController.handle(request, response).catch((error)=>{next(error)});
 });
 
@@ -67,6 +68,10 @@ promoterRoutes.post("/promoter/update-address", ensureAuthenticatedPromoter, (re
 
 promoterRoutes.post("/promoter/update-phone", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserPhoneController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+promoterRoutes.get("/promoter/generate-event-report/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+    return generateEventTicketReportController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
 

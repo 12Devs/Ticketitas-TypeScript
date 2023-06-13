@@ -3,18 +3,52 @@ import { TicketRepository } from "../../db/TicketRepository";
 import { WalletRepository } from "../../db/WalletRepository";
 import { ApiError } from "../../errors/ApiError";
 
+/**
+ * Update status event use case class
+ * @date 6/6/2023 - 10:41:49 PM
+ *
+ * @class UpdateStatusEventUseCase
+ * @typedef {UpdateStatusEventUseCase}
+ */
 class UpdateStatusEventUseCase {
-
+    
+    /**
+     * Create an instance of {@link UpdateStatusEventUseCase}
+     * @date 6/6/2023 - 10:41:53 PM
+     *
+     * @private
+     * @type {EventRepository}
+     */
     private eventRepository: EventRepository;
     private ticketRepository: TicketRepository;
     private walletRepository: WalletRepository;
-
+    
+    /**
+     * Creates an instance of UpdateStatusEventUseCase.
+     * @date 6/6/2023 - 10:41:57 PM
+     *
+     * @constructor
+     * @public
+     * @param {EventRepository} eventRepository
+     * @param {TicketRepository} ticketRepository
+     * @param {WalletRepository} walletRepository
+     */
     public constructor (eventRepository: EventRepository, ticketRepository: TicketRepository, walletRepository: WalletRepository) {
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
         this.walletRepository = walletRepository;
     }
-
+    
+    /**
+     * Method for make a update of a event
+     * @date 6/6/2023 - 10:42:05 PM
+     *
+     * @public
+     * @async
+     * @param {string} id
+     * @param {number} promoterCpf
+     * @returns {*}
+     */
     public async execute (id: string, promoterCpf: number) {
 
         if (!id) {

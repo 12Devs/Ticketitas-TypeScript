@@ -20,88 +20,136 @@ import jwtDecode from 'jwt-decode';
 
 export default function EditarCliente() {
     const [userType, setUserType] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [primeiroNome, setprimeiroNome] = useState('');
-    const [sobrenome, setSobreome] = useState('');
-    const [telefone, setTelefone] = useState('');
-    const [cep, setCep] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [estado, setEstado] = useState('');
-    const [bairro, setBairro] = useState('');
-    const [rua, setRua] = useState('');
-    const [numero, setNumero] = useState('');
-    const [email, setEmail] = useState('');
+    const [cpf, setCpf] = useState('undefined');
+    const [nomeCompleto, SetnomeCompleto] = useState('undefined');
+    const [primeiroNome, setprimeiroNome] = useState('undefined');
+    const [sobrenome, setSobreome] = useState('undefined');
+    const [telefone, setTelefone] = useState('undefined');
+    const [cep, setCep] = useState('undefined');
+    const [cidade, setCidade] = useState('undefined');
+    const [estado, setEstado] = useState('undefined');
+    const [bairro, setBairro] = useState('undefined');
+    const [rua, setRua] = useState('undefined');
+    const [numero, setNumero] = useState('undefined');
+    const [email, setEmail] = useState('undefined');
+    const [cardName, setCardName] = useState('Matheus Mota Santos');
+    const [cardNumber, setcardNumber] = useState('1234567832324545');
+    const [cardNumberFour, setcardNumberFour] = useState('');
+    const [saldo, setSaldo] = useState('0');
 
-    const [show, setShow] = useState(false);
-    const [showRecuperar, setShowRecuperar] = useState(false);
-    const handleShowRecuperar = () => {
-        setShowRecuperar(true);
-        setShow(false)
-    };
+    const navigate = useNavigate();
 
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    };
+    function pegarSobrenome(nomeCompleto: string) {
+        var partesNome = nomeCompleto.split(' ');
 
-    let dados: any;
-    useEffect(() => {
-        const token = localStorage.getItem('token')
+        if (partesNome.length < 2) {
+            setSobreome("")
+        }
+        else{
+            let sobrenome = partesNome[partesNome.length - 2];
+            setSobreome(sobrenome)
+        }
+      }
+    function pegarNome(nomeCompleto: string) {
+        
+        var partesNome = nomeCompleto.split(' ');
+
+        let sobrenome = partesNome[0];
+        setprimeiroNome(sobrenome)
+      }
+    
+      function pegarUltimosQuatroDigitos(numero: string) {
+        let ultimosQuatroDigitos = numero.slice(-4);
+        setcardNumberFour(ultimosQuatroDigitos);
+      }
+
+    useEffect(()=>{
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
         const user = localStorage.getItem('userType');
-        if (token != null) {
-            dados = jwtDecode(token);
-            if (dados != null) {
-                setCpf(dados.sub);
-            }
+        if(user != null){
+            setUserType(user);
         }
-        if (user != null) {
-            setUserType(user)
+        const cpfLocalStorage = localStorage.getItem('CPF');
+        if(cpfLocalStorage != null){
+            setCpf(cpfLocalStorage);
         }
-
-        api.get("user/client", config).then((response) => {
+        
+        
+        api.get("user/client/",config).then((response)  => {
             console.log(response)
-            setprimeiroNome(response.data.ClientInfos.client.nome)
-            setEmail(response.data.ClientInfos.client.email)
-            setTelefone(response.data.ClientInfos.client.telefone)
-            setCep(response.data.enderecoClient.enderecoClient.cep)
+            SetnomeCompleto(response.data.ClientInfos.client.nome);
+            setEmail(response.data.ClientInfos.client.email);
+            setSaldo(response.data.ClientInfos.client.saldo);
+            setCpf(response.data.ClientInfos.client.cpf);
+            setTelefone(response.data.ClientInfos.client.telefone);
+            setCep(response.data.ClientInfos.enderecoClient.cep);
             setEstado(response.data.ClientInfos.enderecoClient.estado)
             setBairro(response.data.ClientInfos.enderecoClient.bairro)
             setRua(response.data.ClientInfos.enderecoClient.rua)
             setBairro(response.data.ClientInfos.enderecoClient.bairro)
+            setNumero(response.data.ClientInfos.enderecoClient.numero)
+            setCidade(response.data.ClientInfos.enderecoClient.cidade)
+            pegarUltimosQuatroDigitos(cardNumber)
+            pegarSobrenome(nomeCompleto);
+            pegarNome(nomeCompleto)
         });
 
+        
+    },[])
 
-    }, [])
+    useEffect(() => {
+        
+        if(cep.length == 8 && !isNaN(parseInt(cep))){
+            
+            api.get(`/endereco/${cep}`).then((endereco) => {
+                setCidade(endereco.data.localidade);
+                setEstado(endereco.data.uf);
+                setBairro(endereco.data.bairro);
+                setRua(endereco.data.logradouro);
+            });
+        }
+    }, [cep]);
 
-    const editarCadastro = (event: any) => {
+    const editarCliente = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
         event.preventDefault();
-        var nome: any = {
-            userType,
-            cpf,
-            primeiroNome
+        let nomeCliente: any = {
+            newName: `${primeiroNome} ${sobrenome}`, 
+            tipo: userType,
+            cpf
         }
-        var email: any = {
-            userType,
-            cpf,
-            primeiroNome
+        let telefoneCliente: any = {
+            newPhone: telefone,
+            tipo: userType,
+            cpf
         }
-        var email: any = {
-            userType,
-            cpf,
-            primeiroNome
+        let enderecoCliente: any = {
+            cep,
+            cidade,
+            estado,
+            bairro,
+            rua,
+            numero,
+            tipo: userType,
         }
-        api.post(`user/client/`, config).then(response) => {
-        console.log
+        
+        api.post("user/client/update-address", enderecoCliente,config).then((response)=>{console.log(response)});
+        api.post("user/client/update-name", nomeCliente,config).then((response)=>{console.log(response)});
+        api.post("user/client/update-phone", telefoneCliente,config).then((response)=>{console.log(response)});
 
+        navigate('/perfil');
     }
-}
 
-
-
-return (
-    <>
-        <NavBarGeral />
-        <Form style={{ minHeight: '75vh' }} onSubmit={editarCadastro}>
-            <Container>
+    return (
+        <>
+            <NavBarGeral />
+            <Form style={{minHeight: '75vh'}} onSubmit={editarCliente}>
+                <Container>
 
                 <Row >
                     <FormLabel label='Editar informações' />
@@ -166,17 +214,16 @@ return (
                     </Col>
                 </Row>
 
-                <Row className='d-flex justify-content-center'>
-                    <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
-                        Cancelar
-                    </Button>
-                    <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit">
-                        Confirmar alterações
-                    </Button>
-                </Row>
-
-            </Container>
-        </Form>
-    </>
-)
+                    <Row className='d-flex justify-content-center'>
+                            <Button href='/' style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Secundario Texto-Azul'>
+                                Cancelar
+                            </Button>
+                            <Button style={{margin: '5vh 5vw 5vh 5vw'}} className='Botão-Primario Texto-Branco' type="submit">
+                                Confirmar alterações
+                            </Button>
+                    </Row>
+                </Container>
+            </Form>
+        </>
+    )
 }
