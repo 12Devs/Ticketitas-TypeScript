@@ -1,0 +1,7 @@
+
+
+class Cartao {
+
+}
+
+export { Cartao }
