@@ -206,15 +206,14 @@ administratorRoutes.get("/administrator/super/:id", (request: Request, response:
 });
 
 /**
- * Registers the route for requesting the update of the status of a promoter type of user as "/user/administrator/update-status-promoter/:cpf", using the {@link updateStatusPromoterController.handle} method
- * Uses the "cpf" passed via url parameter to determine which promoter will have their status updated
+ * Registers the route for requesting the update of the status of a promoter type of user as "/user/administrator//administrator/aprove-registration/:promoterCpf", using the {@link aprovePromoterRegistrationController.handle}
  * @param request Request object
  * @param response Response object
  * @param next Tells the express API that there may be a function to execute before or after the request
  * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
  * @param error Possible error thrown by either the express API or the Error API created for this project
  */
-administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", ensureAuthenticatedAdministrator,(request: Request, response: Response, next: NextFunction)=>{
     return aprovePromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
 });
 
