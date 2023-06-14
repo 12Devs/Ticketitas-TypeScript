@@ -34,11 +34,10 @@ export default function EditarAdmin() {
     const handleShow = () => {
         setShow(true)
     }; 
-    const alterarSenha = (event: any) => {
-        event.preventDefault();
-    }
 
     const navigate = useNavigate();
+
+    const refresh = () => window.location.reload();
 
     function pegarSobrenome(nomeCompleto: string) {
         var partesNome = nomeCompleto.split(' ');
@@ -106,6 +105,23 @@ export default function EditarAdmin() {
         api.post("user/adiministrator/update-phone", telefoneAdmin,config).then((response)=>{console.log(response)});
 
         navigate('/perfil');
+    }
+
+    const alterarSenha = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let senha: any = {
+            tipo: userType,
+            cpf,
+            passwordAuth: senhaAtual,
+            newPassword: novaSenha,
+            newPasswordConfirmation: confirmarSenha
+        }
+        api.post("user/administrator/update-password", senha,config).then((response)=>{console.log(response)});
+        refresh()
     }
 
     return (
