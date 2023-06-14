@@ -34,11 +34,10 @@ export default function EditarAdmin() {
     const handleShow = () => {
         setShow(true)
     }; 
-    const alterarSenha = (event: any) => {
-        event.preventDefault();
-    }
 
     const navigate = useNavigate();
+
+    const refresh = () => window.location.reload();
 
     function pegarSobrenome(nomeCompleto: string) {
         var partesNome = nomeCompleto.split(' ');
@@ -72,13 +71,12 @@ export default function EditarAdmin() {
             setCpf(cpfLocalStorage);
         }
         
-        // A alterar as variáveis pra Admin
-        api.get("user/adiministrator/",config).then((response)  => {
+        api.get("user/administrator/",config).then((response)  => {
             console.log(response)
-            SetnomeCompleto(response.data.ClientInfos.client.nome);
-            setEmail(response.data.ClientInfos.client.email);
-            setCpf(response.data.ClientInfos.client.cpf);
-            setTelefone(response.data.ClientInfos.client.telefone);
+            SetnomeCompleto(response.data.AdministratorInfos.administrator.name);
+            setEmail(response.data.AdministratorInfos.administrator.email)
+            setTelefone(response.data.AdministratorInfos.administrator.phone)
+            setCpf(response.data.AdministratorInfos.administrator.cpf);
             pegarSobrenome(nomeCompleto);
             pegarNome(nomeCompleto)
         });
@@ -107,6 +105,23 @@ export default function EditarAdmin() {
         api.post("user/adiministrator/update-phone", telefoneAdmin,config).then((response)=>{console.log(response)});
 
         navigate('/perfil');
+    }
+
+    const alterarSenha = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let senha: any = {
+            tipo: userType,
+            cpf,
+            passwordAuth: senhaAtual,
+            newPassword: novaSenha,
+            newPasswordConfirmation: confirmarSenha
+        }
+        api.post("user/administrator/update-password", senha,config).then((response)=>{console.log(response)});
+        refresh()
     }
 
     return (

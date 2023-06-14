@@ -23,6 +23,9 @@ import Forbidden403 from './pages/Forbidden403';
 import MeusEventos from './pages/MeusEventos';
 import SolicitacoesCadastro from './pages/SolicitacoesCadastro';
 import EventosCadastrados from './pages/EventosCadastrados';
+import EditarEvento from './pages/EditarEvento';
+import MeusIngressos from './pages/MeusIngressos';
+import GerenciarPromoters from './pages/GerenciarPromoters';
 
 
 export default function AppRouter() {
@@ -63,6 +66,9 @@ export default function AppRouter() {
                     <Route path='meusEventos' element={<MeusEventos/>}/>
                     <Route path='solicitacoesCadastro' element={<SolicitacoesCadastro/>}/>
                     <Route path='relatorioEventos' element={<EventosCadastrados/>}/>                    
+                    <Route path='editarEvento' element={<EditarEvento/>}/>                    
+                    <Route path='meusIngressos' element={<MeusIngressos/>}/> 
+                    <Route path='gerenciarPromoters' element={<GerenciarPromoters/>}/>                                
                 </Routes>
                 <Footer />
             </Router>

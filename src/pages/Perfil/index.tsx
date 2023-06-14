@@ -28,7 +28,7 @@ export default function Perfil() {
     const [numero, setNumero] = useState('undefined');
     const [email, setEmail] = useState('undefined');
     const [cardName, setCardName] = useState('Matheus Mota Santos');
-    const [cardNumber, setcardNumber] = useState('1234567832324545');
+    const [cardNumber, setCardNumber] = useState('1234567832324545');
     const [cardNumberFour, setcardNumberFour] = useState('');
     const [saldo, setSaldo] = useState('0');
 
@@ -36,22 +36,17 @@ export default function Perfil() {
     const navigate = useNavigate();
     const handleSelect = (eventKey: any) => setEventSelect(eventKey);
 
-    function pegarSobrenome(nomeCompleto: string) {
-        var partesNome = nomeCompleto.split(' ');
-
-        if (partesNome.length < 2) {
-            setSobreome("")
-        }
-        else{
-            let sobrenome = partesNome[partesNome.length - 2];
-            setSobreome(sobrenome)
-        }
-      }
-    function pegarNome(nomeCompleto: string) {
-        var partesNome = nomeCompleto.split(' ');
-
-        let sobrenome = partesNome[0];
-        setprimeiroNome(sobrenome)
+    function separarNomeSobrenome(nomeCompleto: string) {
+        // Dividir o nome completo em palavras
+        var palavras = nomeCompleto.split(" ");
+      
+        // O primeiro nome é a primeira palavra
+        setprimeiroNome(palavras[0])
+      
+        // O sobrenome é o restante das palavras
+        setSobreome(palavras[-1])
+      
+        // Retornar o nome e o sobrenome como um objeto
       }
     
       function pegarUltimosQuatroDigitos(numero: string) {
@@ -74,6 +69,8 @@ export default function Perfil() {
         };
         api.get("user/client/card",config).then((response) => {
             console.log(response)
+            setCardNumber(response.data.cardInfos.card.cardNumber);
+            setCardName(response.data.cardInfos.card.holder);
         });
         if(user == "cliente"){
             api.get("user/client/",config).then((response) => {
@@ -91,8 +88,7 @@ export default function Perfil() {
                 setNumero(response.data.ClientInfos.enderecoClient.numero)
                 setCidade(response.data.ClientInfos.enderecoClient.cidade)
                 pegarUltimosQuatroDigitos(cardNumber)
-                pegarSobrenome(nomeCompleto);
-                pegarNome(nomeCompleto)
+                separarNomeSobrenome(nomeCompleto)
                 
             });
         }
@@ -109,18 +105,16 @@ export default function Perfil() {
                 setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
                 setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
                 setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
-                pegarSobrenome(nomeCompleto);
-                pegarNome(nomeCompleto)
+                separarNomeSobrenome(nomeCompleto)
             });
         }
         else if(user == "admin"){
-            api.get("user/administartor/",config).then((response) => {
+            api.get("user/administrator/",config).then((response) => {
                 console.log(response)
                 SetnomeCompleto(response.data.AdministratorInfos.administrator.name)
                 setEmail(response.data.AdministratorInfos.administrator.email)
                 setTelefone(response.data.AdministratorInfos.administrator.phone)
-                pegarSobrenome(nomeCompleto);
-                pegarNome(nomeCompleto)
+                separarNomeSobrenome(nomeCompleto)
             });
         }
         
@@ -248,25 +242,7 @@ export default function Perfil() {
                                 </Row>
                             </>
                             : <div>
-                                <Row style={{marginTop: 20}}>
-                                <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='Nome' text={primeiroNome} />
-                                </Col>
-                                <Col md={2}>
-                                    <OutputInfo label='Sobrenome' text='' />
-                                </Col>
-    
-                            </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='E-mail' text={email} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='Telefone' text={telefone} />
-                                    </Col>
-                                </Row>
-    
+                              
                             </div>
                }
                {
