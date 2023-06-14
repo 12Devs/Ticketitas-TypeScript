@@ -25,9 +25,7 @@ export default function ItemEvento(data: any) {
             promoterCpf
         }
 
-        api.patch(`/event/administrator/update-status`, dadosEvento, config).then((response)=>{console.log(response)});
-
-        refresh();
+        api.patch(`/event/administrator/update-status`, dadosEvento, config).then(refresh);
     }
 
     const verDetalhes = () => {
