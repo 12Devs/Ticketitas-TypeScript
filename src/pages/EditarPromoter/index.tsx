@@ -16,7 +16,7 @@ import { Modal } from 'react-bootstrap';
 
 export default function EditarPromoter() {
     const [userType, setUserType] = useState('');
-    const [cpfCnpj, setCpfCnpj] = useState('undefined');
+    const [cpf, setCpf] = useState('undefined');
     const [nomeCompleto, SetnomeCompleto] = useState('undefined');
     const [primeiroNome, setprimeiroNome] = useState('undefined');
     const [sobrenome, setSobreome] = useState('undefined');
@@ -40,11 +40,9 @@ export default function EditarPromoter() {
         setShow(true)
     };
 
-    const alterarSenha = (event: any) => {
-        event.preventDefault();
-    }
-
     const navigate = useNavigate();
+
+    const refresh = () => window.location.reload();
 
     function pegarSobrenome(nomeCompleto: string) {
         var partesNome = nomeCompleto.split(' ');
@@ -76,7 +74,7 @@ export default function EditarPromoter() {
         }
         const cpfLocalStorage = localStorage.getItem('CPF');
         if (cpfLocalStorage != null) {
-            setCpfCnpj(cpfLocalStorage);
+            setCpf(cpfLocalStorage);
         }
 
 
@@ -121,12 +119,12 @@ export default function EditarPromoter() {
         let nomePromoter: any = {
             newName: `${primeiroNome} ${sobrenome}`,
             tipo: userType,
-            cpfCnpj
+            cpf
         }
         let telefonePromoter: any = {
             newPhone: telefone,
             tipo: userType,
-            cpfCnpj
+            cpf
         }
         let enderecoPromoter: any = {
             cep,
@@ -143,6 +141,23 @@ export default function EditarPromoter() {
         api.post("user/promoter/update-phone", telefonePromoter, config).then((response) => { console.log(response) });
 
         navigate('/perfil');
+    }
+
+    const alterarSenha = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let senha: any = {
+            tipo: userType,
+            cpf,
+            passwordAuth: senhaAtual,
+            newPassword: novaSenha,
+            newPasswordConfirmation: confirmarSenha
+        }
+        api.post("user/promoter/update-password", senha,config).then((response)=>{console.log(response)});
+        refresh()
     }
 
 
@@ -168,7 +183,7 @@ export default function EditarPromoter() {
                             <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
                         </Col>
                         <Col sm={6}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={cpfCnpj} controlId={"cpfCnpj"} data={cpfCnpj} setData={setCpfCnpj} />
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={cpf} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
                         </Col>
                     </Row>
 
@@ -217,9 +232,9 @@ export default function EditarPromoter() {
 
                                     <Form onSubmit={alterarSenha}>
                                         <Row className='justify-content-center'>
-                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='text' />
-                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="password" />
+                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="password" />
                                         </Row>
                                         <Row className='justify-content-center'>
                                             <Button className='Botão-Primario Texto-Branco' type='submit'>
