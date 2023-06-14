@@ -3,8 +3,14 @@
 import { Request, Response } from "express"; //Import of the Request and Response submodules of the express module (https://www.npmjs.com/package/express)
 import { UpdateUserNameUseCase } from "./UpdateUserNameUseCase"; //Import of the UpdateUserAddressUseCase class
 
+export interface UserRequest extends Request {
+    user: any
+}
+
 /**
- * Class for controlling the update of user names
+ * Class for controlling the update of user names;
+ * This is a test class created to use an extended version of express' 'Request' object, needed to run jest unit tests, as jest doesn't recognize custom typings in ".d.ts" files.
+ * It is otherwise IDENTICAL to its Controller class
  * @date 5/28/2023 - 3:28:41 AM
  *
  * @class UpdateUserNameController
@@ -39,11 +45,11 @@ class UpdateUserNameController {
      *
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
-     * @param {Request} request Request object
+     * @param {UserRequest} request UserRequest object
      * @param {Response} response Response object
      * @returns {string} Real meaning of the response received from the update methods
      */
-    public async handle (request: Request, response: Response) {
+    public async handle (request: UserRequest, response: Response) {
 
         const { cpf, tipo } = request.user; //Obtaining token info
         const { newName } = request.body; //Obtaining json form info
