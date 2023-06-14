@@ -6,11 +6,11 @@ import { Button, ListGroup } from "react-bootstrap";
 export default function ItemSolicitacao(data: any) {
     const refresh = () => window.location.reload();
 
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    };
-
     const aprovarPromoter = () => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
         api.patch(`/user/administrator/aprove-registration/${data.promoter.promoterCpf}`, config).then(refresh);
     }
 
