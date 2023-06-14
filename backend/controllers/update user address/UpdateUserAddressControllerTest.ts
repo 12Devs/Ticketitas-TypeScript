@@ -9,6 +9,8 @@ export interface UserRequest extends Request {
 
 /**
  * Class for controlling the update of user addresses
+ * This is a test class created to use an extended version of express' 'Request' object, needed to run jest unit tests, as jest doesn't recognize custom typings in ".d.ts" files.
+ * It is otherwise IDENTICAL to its Controller class
  * @date 5/27/2023 - 9:10:44 PM
  *
  * @class UpdateUserAddressController
