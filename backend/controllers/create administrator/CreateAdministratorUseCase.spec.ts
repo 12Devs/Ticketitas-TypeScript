@@ -8,7 +8,7 @@ import { ApiError } from "../../errors/ApiError";
 
 import { CreateAdministratorUseCase } from "./CreateAdministratorUseCase";
 
-describe('CreateAdministratorController', () => {
+describe('CreateAdministratorController, no data found regarding conflicts', () => {
   let createAdministratorUseCase: CreateAdministratorUseCase;
   let administratorRepository:  AdministratorRepository;
   let emailProvider: EmailProvider;
@@ -238,6 +238,152 @@ describe('CreateAdministratorController', () => {
 
     // Verificar se o método findByEmail não foi chamado
     expect(findByEmailSpy).not.toHaveBeenCalled();
+
+    // Verificar se o método create não foi chamado
+    expect(createSpy).not.toHaveBeenCalled();
+
+    // Verificar se o método sendEmail não foi chamado
+    expect(sendEmailSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('CreateAdministratorController, conflicting cpf number is found', () => {
+  let createAdministratorUseCase: CreateAdministratorUseCase;
+  let administratorRepository:  AdministratorRepository;
+  let emailProvider: EmailProvider;
+  let superAdministratorRelationRepository: SuperAdministratorRelationRepository;
+
+  beforeEach(() => {
+    // Criação de um objeto simulado para o caso de uso (AprovePromoterRegistrationUseCase)
+    administratorRepository = {
+      findByCpf: jest.fn().mockReturnValue({cpf: 86419315459}), // Utilizamos o jest.fn() para criar uma função simulada e o mockReturnValue para estabecer um retorno padrão para cada chamada da função simulada
+      findByEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+      create: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as AdministratorRepository;
+
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
+    superAdministratorRelationRepository = {
+      findByCpf: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as SuperAdministratorRelationRepository;
+
+    // Criação do serviço (CreateAdministratorUseCase) injetando o caso de uso simulado
+    createAdministratorUseCase = new CreateAdministratorUseCase(
+      administratorRepository,
+      emailProvider,
+      superAdministratorRelationRepository
+    );
+  });
+
+  // Teste para observar se a verificação de conflito de cpf é feita corretamente
+  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as there is a conflict regarding cpf numbers', async () => {
+    
+    // Criação de objetos simulado para a requisição
+    const mockName = "Nome Aleatorio";
+    const mockCpf = 86419315459;
+    const mockEmail = "youknownothing123@email.com";
+    const mockPhone = 75991234567;
+    
+    // Espionar os métodos utilizados pela instância de serviço simulada para verificar se (não) foram chamados
+    const findByCpfSpy = jest.spyOn(administratorRepository, 'findByCpf');
+    const findByEmailSpy = jest.spyOn(administratorRepository, 'findByEmail');
+    const createSpy = jest.spyOn(administratorRepository, 'create');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
+
+    // Chamar o método execute do serviço com os argumentos desejados e verificar que um erro específico ocorreu
+    try {
+      await createAdministratorUseCase.execute(mockName, mockCpf, mockEmail, mockPhone);
+    }
+    catch(error) {
+      const thrownError = error;
+      
+      //Formular o objeto de erro para comparação
+      const expectedError = new ApiError("Utilize outro cpf", 422);
+
+      //Comparação dos erros
+      expect(thrownError).toEqual(expectedError);
+    }
+
+    // Verificar se o método findByCpf foi chamado com o parâmetro correto
+    expect(findByCpfSpy).toHaveBeenCalledWith(mockCpf);
+
+    // Verificar se o método findByEmail foi chamado com o parâmetro correto
+    expect(findByEmailSpy).toHaveBeenCalledWith(mockEmail);
+
+    // Verificar se o método create não foi chamado
+    expect(createSpy).not.toHaveBeenCalled();
+
+    // Verificar se o método sendEmail não foi chamado
+    expect(sendEmailSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('CreateAdministratorController, conflicting e-mail address is found', () => {
+  let createAdministratorUseCase: CreateAdministratorUseCase;
+  let administratorRepository:  AdministratorRepository;
+  let emailProvider: EmailProvider;
+  let superAdministratorRelationRepository: SuperAdministratorRelationRepository;
+
+  beforeEach(() => {
+    // Criação de um objeto simulado para o caso de uso (AprovePromoterRegistrationUseCase)
+    administratorRepository = {
+      findByCpf: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+      findByEmail: jest.fn().mockReturnValue({cpf: 86419315459}), // Utilizamos o jest.fn() para criar uma função simulada e o mockReturnValue para estabecer um retorno padrão para cada chamada da função simulada
+      create: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as AdministratorRepository;
+
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
+    superAdministratorRelationRepository = {
+      findByCpf: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as SuperAdministratorRelationRepository;
+
+    // Criação do serviço (CreateAdministratorUseCase) injetando o caso de uso simulado
+    createAdministratorUseCase = new CreateAdministratorUseCase(
+      administratorRepository,
+      emailProvider,
+      superAdministratorRelationRepository
+    );
+  });
+
+  // Teste para observar se a verificação de conflito de email é feita corretamente
+  it('should call execute method of CreateAdministratorUseCase, throw a custom error and not return any administrator creation info, as there is a conflict regarding cpf numbers', async () => {
+    
+    // Criação de objetos simulado para a requisição
+    const mockName = "Nome Aleatorio";
+    const mockCpf = 86419315459;
+    const mockEmail = "youknownothing123@email.com";
+    const mockPhone = 75991234567;
+    
+    // Espionar os métodos utilizados pela instância de serviço simulada para verificar se (não) foram chamados
+    const findByCpfSpy = jest.spyOn(administratorRepository, 'findByCpf');
+    const findByEmailSpy = jest.spyOn(administratorRepository, 'findByEmail');
+    const createSpy = jest.spyOn(administratorRepository, 'create');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
+
+    // Chamar o método execute do serviço com os argumentos desejados e verificar que um erro específico ocorreu
+    try {
+      await createAdministratorUseCase.execute(mockName, mockCpf, mockEmail, mockPhone);
+    }
+    catch(error) {
+      const thrownError = error;
+      
+      //Formular o objeto de erro para comparação
+      const expectedError = new ApiError("Utilize outro email", 422);
+
+      //Comparação dos erros
+      expect(thrownError).toEqual(expectedError);
+    }
+
+    // Verificar se o método findByCpf foi chamado com o parâmetro correto
+    expect(findByCpfSpy).toHaveBeenCalledWith(mockCpf);
+
+    // Verificar se o método findByEmail foi chamado com o parâmetro correto
+    expect(findByEmailSpy).toHaveBeenCalledWith(mockEmail);
 
     // Verificar se o método create não foi chamado
     expect(createSpy).not.toHaveBeenCalled();

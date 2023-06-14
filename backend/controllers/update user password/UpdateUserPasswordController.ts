@@ -50,7 +50,7 @@ class UpdateUserPasswordController {
 
         //Executes the user address update request
         await this.updateUserPasswordUseCase.execute(tipo, cpf, passwordAuth, newPassword, newPasswordConfirmation);
-        return response.status(202).json({message: "O senha do usuário foi modificada com sucesso."});
+        return response.status(200).json({message: "O senha do usuário foi modificada com sucesso."});
     }
 
 }

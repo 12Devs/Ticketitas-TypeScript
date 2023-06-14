@@ -3,6 +3,10 @@
 import { Request, Response } from "express"; //Import of the Request and Response submodules of the express module (https://www.npmjs.com/package/express)
 import { UpdateUserAddressUseCase } from "./UpdateUserAddressUseCase"; //Import of the UpdateUserAddressUseCase class
 
+export interface UserRequest extends Request {
+    user: any
+}
+
 /**
  * Class for controlling the update of user addresses
  * @date 5/27/2023 - 9:10:44 PM
@@ -39,18 +43,18 @@ class UpdateUserAddressController {
      *
      * @public Marks this method as having "public" visibility
      * @async Marks this method as being asynchronous
-     * @param {Request} request Request object
+     * @param {UserRequest} request UserRequest object
      * @param {Response} response Response object
      * @returns {string} Real meaning of the response received from the update methods
      */
-    public async handle (request: Request, response: Response) {
+    public async handle (request: UserRequest, response: Response) {
 
         const { cpf, tipo } = request.user; //Obtaining token info
         const { cep, cidade, estado, bairro, rua, numero } = request.body; //Obtaining json form info
 
         //Executes the user address update request
         await this.updateUserAddressUseCase.execute(tipo, cpf, cep, cidade, estado, bairro, rua, numero);
-        return response.status(202).json({message: "O endereço do usuário foi modificado com sucesso."});
+        return response.status(200).json({message: "O endereço do usuário foi modificado com sucesso."});
     }
 
 }
