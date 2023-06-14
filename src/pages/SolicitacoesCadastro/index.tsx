@@ -31,6 +31,8 @@ export default function SolicitacoesCadastro() {
                     <FormLabel label={"Solicitações de Cadastro"} />
 
                     <ListGroup as="ol" numbered>
+                        {arrayPromoters.allPromoterRegistration.length == 0 &&
+                        <h3>Não há solicitações de cadastro</h3>}
                         {arrayPromoters.allPromoterRegistration.map((promoter: any, index) => (
                             <ItemSolicitacao promoter={promoter}/>
                         ))}
