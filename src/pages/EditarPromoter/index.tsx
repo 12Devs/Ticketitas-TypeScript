@@ -43,7 +43,7 @@ export default function EditarPromoter() {
     const alterarSenha = (event: any) => {
         event.preventDefault();
     }
-    
+
     const navigate = useNavigate();
 
     function pegarSobrenome(nomeCompleto: string) {
@@ -52,59 +52,57 @@ export default function EditarPromoter() {
         if (partesNome.length < 2) {
             setSobreome("")
         }
-        else{
+        else {
             let sobrenome = partesNome[partesNome.length - 2];
             setSobreome(sobrenome)
         }
-      }
+    }
     function pegarNome(nomeCompleto: string) {
-        
+
         var partesNome = nomeCompleto.split(' ');
 
         let sobrenome = partesNome[0];
         setprimeiroNome(sobrenome)
-      }
+    }
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
         const user = localStorage.getItem('userType');
-        if(user != null){
+        if (user != null) {
             setUserType(user);
         }
         const cpfLocalStorage = localStorage.getItem('CPF');
-        if(cpfLocalStorage != null){
+        if (cpfLocalStorage != null) {
             setCpfCnpj(cpfLocalStorage);
         }
-        
 
-        // A alterar as variáveis pra Promoter
-        api.get("user/promoter/",config).then((response)  => {
+
+        api.get("user/promoter/", config).then((response) => {
             console.log(response)
-            SetnomeCompleto(response.data.ClientInfos.client.nome);
-            setEmail(response.data.ClientInfos.client.email);
-            setCpfCnpj(response.data.ClientInfos.client.cpf);
-            setTelefone(response.data.ClientInfos.client.telefone);
-            setCep(response.data.ClientInfos.enderecoClient.cep);
-            setEstado(response.data.ClientInfos.enderecoClient.estado)
-            setBairro(response.data.ClientInfos.enderecoClient.bairro)
-            setRua(response.data.ClientInfos.enderecoClient.rua)
-            setBairro(response.data.ClientInfos.enderecoClient.bairro)
-            setNumero(response.data.ClientInfos.enderecoClient.numero)
-            setCidade(response.data.ClientInfos.enderecoClient.cidade)
+            SetnomeCompleto(response.data.PromoterInfos.promoter.nome)
+            setEmail(response.data.PromoterInfos.promoter.email)
+            setTelefone(response.data.PromoterInfos.promoter.telefone)
+            setCep(response.data.PromoterInfos.enderecoPromoter.cep)
+            setEstado(response.data.PromoterInfos.enderecoPromoter.estado)
+            setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
+            setRua(response.data.PromoterInfos.enderecoPromoter.rua)
+            setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
+            setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
+            setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
             pegarSobrenome(nomeCompleto);
             pegarNome(nomeCompleto)
         });
 
-        
-    },[])
+
+    }, [])
 
     useEffect(() => {
-        
-        if(cep.length == 8 && !isNaN(parseInt(cep))){
-            
+
+        if (cep.length == 8 && !isNaN(parseInt(cep))) {
+
             api.get(`/endereco/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
@@ -118,10 +116,10 @@ export default function EditarPromoter() {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        
+
         event.preventDefault();
         let nomePromoter: any = {
-            newName: `${primeiroNome} ${sobrenome}`, 
+            newName: `${primeiroNome} ${sobrenome}`,
             tipo: userType,
             cpfCnpj
         }
@@ -139,10 +137,10 @@ export default function EditarPromoter() {
             numero,
             tipo: userType,
         }
-        
-        api.post("user/promoter/update-address", enderecoPromoter,config).then((response)=>{console.log(response)});
-        api.post("user/promoter/update-name", nomePromoter,config).then((response)=>{console.log(response)});
-        api.post("user/promoter/update-phone", telefonePromoter,config).then((response)=>{console.log(response)});
+
+        api.post("user/promoter/update-address", enderecoPromoter, config).then((response) => { console.log(response) });
+        api.post("user/promoter/update-name", nomePromoter, config).then((response) => { console.log(response) });
+        api.post("user/promoter/update-phone", telefonePromoter, config).then((response) => { console.log(response) });
 
         navigate('/perfil');
     }
