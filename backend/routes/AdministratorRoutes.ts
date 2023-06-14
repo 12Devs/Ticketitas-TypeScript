@@ -22,6 +22,7 @@ import { generateAllEventsReportController } from '../controllers/generate all e
 
 //Import of the generation code from the config file
 import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config/env"
+import { listAllPromotersController } from '../controllers/list all promoters';
 
 /**
  * Instance of the Router class/submodule for registering routes using the Router submodule of the express API/module
@@ -109,6 +110,18 @@ administratorRoutes.post("/administrator/refresh-token", (request: Request, resp
  */
 administratorRoutes.post("/administrator/update-name", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+/**
+ * Registers the route for updating an administrator's name as "/user/administrator/update-name", using the {@link listAllPromotersController.handle} method
+ * @param request Request object
+ * @param response Response object
+ * @param next Tells the express API that there may be a function to execute before or after the request
+ * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
+ * @param error Possible error thrown by either the express API or the Error API created for this project
+ */
+administratorRoutes.get("/administrator/list-promoters", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return listAllPromotersController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
 /**

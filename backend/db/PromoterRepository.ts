@@ -108,6 +108,20 @@ class PromoterRepository {
         }});
         return statusPromoter;
     }
+
+        /**
+     * find status a promoter by cpf
+     * @date 7/6/2023 - 17:42:13 PM
+     *
+     * @public
+     * @async
+     * @param {number} cpf
+     * @returns {unknown}
+     */
+        public async findAllPromoters () {
+            const allPromoters = await Promoter.findAll({raw: true});
+            return allPromoters;
+        }
     
     /**
      * find a promoter by email
