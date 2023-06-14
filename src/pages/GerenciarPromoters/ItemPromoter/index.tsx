@@ -12,7 +12,7 @@ export default function ItemPromoter(data: any) {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
 
-        api.patch(`/user/administrator/update-status-promoter/${data.promoter.cpf}`, config).then((response)=>console.log(response));
+        api.patch(`/user/administrator/update-status-promoter/${data.promoter.cpf}`, config).then(refresh);
     }
 
     console.log("Nome:", data.promoter.nome, "Status: ", data.promoter.status )
