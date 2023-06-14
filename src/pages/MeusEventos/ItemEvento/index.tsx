@@ -25,11 +25,16 @@ export default function ItemEvento(data: any) {
             promoterCpf
         }
 
-        api.patch(`/event/administrator/update-status`, dadosEvento, config).then(refresh);
+        api.patch(`/event/administrator/update-status`, dadosEvento, config).then((response)=>{console.log(response)});
+
+        refresh();
     }
 
     const verDetalhes = () => {
         navigate(`/evento/${data.evento.id}`);
+    }
+    const editar = () => {
+        navigate(`/editarEvento`,{state:{idEvento: data.evento.id}});
     }
     
     return (
@@ -43,11 +48,8 @@ export default function ItemEvento(data: any) {
                     </div>
                 </Col>
                 <Col sm={6} className='row align-items-center justify-content-evenly'>
-                    {data.evento.status == true && <Button className='Botão-Secundario Texto-Azul Texto-MuitoPequeno' onClick={atualizarStatusEvento}>Suspender evento</Button>}
-                    {data.evento.status == false && <Button className='Botão-Secundario Texto-Azul Texto-MuitoPequeno' onClick={atualizarStatusEvento}>Ativar evento</Button>}
-
-                    {data.evento.status == true && <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' onClick={verDetalhes}>Detalhes</Button>}
-                    {data.evento.status == false && <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' disabled onClick={verDetalhes}>Detalhes</Button>}
+                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno'  onClick={editar}>Editar</Button>
+                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno'  onClick={verDetalhes}>Detalhes</Button>
 
                 </Col>
             </Row>

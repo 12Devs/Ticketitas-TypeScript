@@ -10,7 +10,7 @@ export default function ModalCadastrarCartao(){
     const [monthExpirationDate, setMonthExpirationDate] = useState('');
     const [yearExpirationDate, setYearExpirationDate] = useState('');
     const [holder, setHolder] = useState('');
-
+    const refresh = () => window.location.reload();
 
     const handleClose = () => {
         setShow(false)
@@ -50,11 +50,11 @@ export default function ModalCadastrarCartao(){
 
                     <Form onSubmit={cadastrarCartao}>
                         <Row className='justify-content-center'>
-                            <InputTexto defaultValue={''} required={true} label={"Número do cartão"} placeholder={"XXXX XXXX XXXX XXXX"} controlId={"Número do cartão"} data={cardNumber} setData={setCardNumber} type='text' />
+                            <InputTexto defaultValue={''} required={true} label={"Número do cartão"} placeholder={"XXXXXXXXXXXXXXXX"} controlId={"Número do cartão"} data={cardNumber} setData={setCardNumber} type='number' />
                             <InputTexto defaultValue={''} required={true} label={"Nome"} placeholder={""} controlId={"Nome"} data={holder} setData={setHolder} type="text" />
-                            <InputTexto defaultValue={''} required={true} label={"CVV"} placeholder={""} controlId={"cvv"} data={cvv} setData={setCvv} type="text" />
-                            <InputTexto defaultValue={''} required={true} label={"Mês de vencimento"} placeholder={""} controlId={"mes"} data={monthExpirationDate} setData={setMonthExpirationDate} type="text" />
-                            <InputTexto defaultValue={''} required={true} label={"Ano de vencimento"} placeholder={""} controlId={"ano"} data={yearExpirationDate} setData={setYearExpirationDate} type="text" />
+                            <InputTexto defaultValue={''} required={true} label={"CVV"} placeholder={"Ex: 000 "} controlId={"cvv"} data={cvv} setData={setCvv} type="number" />
+                            <InputTexto defaultValue={''} required={true} label={"Mês de vencimento"} placeholder={"Ex: 08"} controlId={"mes"} data={monthExpirationDate} setData={setMonthExpirationDate} type="number" />
+                            <InputTexto defaultValue={''} required={true} label={"Ano de vencimento"} placeholder={"Ex: 2030"} controlId={"ano"} data={yearExpirationDate} setData={setYearExpirationDate} type="number" />
                         </Row>
                         <Row className='justify-content-center'>
                         <Button className='Botão-Primario Texto-Branco' type='submit'>

@@ -8,17 +8,17 @@ import { useState, useEffect } from 'react';
 
 import '../../components/Button/Button.css';
 import '../../components/Texto/Texto.css';
-import ItemSolicitacao from './ItemSolicitacao';
+import ItemPromoter from './ItemPromoter';
 
-export default function SolicitacoesCadastro() {
-    const [arrayPromoters, setArrayPromoters] = useState({ allPromoterRegistration: [] });
-
-    const config = {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    };
+export default function GerenciarPromoters() {
+    const [arrayPromoters, setArrayPromoters] = useState({ allPromoters: [] });
 
     useEffect(() => {
-        api.get(`/user/administrator/list-promoter-resgitration`, config).then((response) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        api.get(`/user/administrator/list-promoters`, config).then((response) => {
             setArrayPromoters(response.data);
         });
     }, []);
@@ -28,13 +28,13 @@ export default function SolicitacoesCadastro() {
             <>
                 <NavBarGeral />
                 <Container style={{ minHeight: '75vh' }} className='ms-5 me-5'>
-                    <FormLabel label={"Solicitações de Cadastro"} />
+                    <FormLabel label={"Gerenciar promoters"} />
 
-                    <ListGroup as="ol" numbered>
-                        {arrayPromoters.allPromoterRegistration.length == 0 &&
-                        <h3>Não há solicitações de cadastro</h3>}
-                        {arrayPromoters.allPromoterRegistration.map((promoter: any, index) => (
-                            <ItemSolicitacao promoter={promoter}/>
+                    <ListGroup as="ol">
+                        {arrayPromoters.allPromoters.length == 0 &&
+                        <h3>Não há promoters cadastrados</h3>}
+                        {arrayPromoters.allPromoters.map((promoter: any, index) => (
+                            <ItemPromoter promoter={promoter}/>
                         ))}
                     </ListGroup>
 
