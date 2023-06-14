@@ -58,7 +58,7 @@ class UpdateStatusPromoterUseCase {
             throw new ApiError("O cpf do promoter é obrigatório!", 422);
         }
 
-        const promoterExists: any = await this.promoterRepository.findByCpf(cpf);
+        const promoterExists: any = await this.promoterRepository.findStatusByCpf(cpf);
 
         if (!promoterExists) {
             throw new ApiError("Promoter não encontrado!", 422);
