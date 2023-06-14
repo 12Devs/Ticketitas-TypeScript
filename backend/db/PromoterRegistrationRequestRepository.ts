@@ -42,6 +42,19 @@ class PromoterRegistrationRequestRepository {
 
         return registrationRequest;
     }
+
+    /**
+     * Find all events raw
+     * @date 6/6/2023 - 10:58:40 PM
+     *
+     * @public
+     * @async
+     * @returns {unknown}
+    */
+    public async findAllPromoterRegistration () {
+        const allPromoterRegistration = await PromoterRegistrationRequest.findAll({raw: true});
+        return allPromoterRegistration;
+    }
     
     /**
      * Check if registration request exists
@@ -51,7 +64,7 @@ class PromoterRegistrationRequestRepository {
      * @async
      * @param {number} promoterCpf
      * @returns {unknown}
-     */
+    */
     public async registrationRequestExists (promoterCpf: number) {
         const registrationRequestExists = await PromoterRegistrationRequest.findOne({raw: true, attributes: ['id'],
             where: {

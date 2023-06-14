@@ -24,6 +24,7 @@ import { generateAllEventsReportController } from '../controllers/generate all e
 import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config/env"
 import { listAllPromotersController } from '../controllers/list all promoters';
 import { listAllAdministratorsController } from '../controllers/list all administrators';
+import { listAllPromoterRegistrationController } from '../controllers/list all promoter registration';
 
 /**
  * Instance of the Router class/submodule for registering routes using the Router submodule of the express API/module
@@ -135,6 +136,18 @@ administratorRoutes.get("/administrator/list-promoters", ensureAuthenticatedAdmi
  */
 administratorRoutes.get("/administrator/list-administrator", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return listAllAdministratorsController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+/**
+ * List all promoter registration "/user/administrator/update-status-promoter", using the {@link listAllPromoterRegistrationController.handle}
+ * @param request Request object
+ * @param response Response object
+ * @param next Tells the express API that there may be a function to execute before or after the request
+ * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
+ * @param error Possible error thrown by either the express API or the Error API created for this project
+ */
+administratorRoutes.get("/administrator/list-promoter-resgitration", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return listAllPromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
 });
 
 /**

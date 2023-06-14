@@ -3,8 +3,8 @@ import { RemovePromoterController } from "./RemovePromoterController";
 import { RemovePromoterUseCase } from "./RemovePromoterUseCase";
 
 
-const eventRepository = new PromoterRepository();
-const editEventUseCase = new RemovePromoterUseCase(eventRepository);
-const editEventController = new RemovePromoterController(editEventUseCase);
+const promoterRepository = new PromoterRepository();
+const removePromoterUseCase = new RemovePromoterUseCase(promoterRepository);
+const removePromoterController = new RemovePromoterController(removePromoterUseCase);
 
-export { editEventController };
+export { removePromoterController };

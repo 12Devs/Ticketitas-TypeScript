@@ -115,7 +115,7 @@ class CreateAdministratorUseCase {
         
         //Conflicting user CPF number 
         if(cpfExists) {
-            throw new ApiError("Utilize outro cpf", 422);
+          throw new ApiError("Utilize outro cpf", 422);
         }
         
         //Conflicting user e-mail address
