@@ -25,6 +25,7 @@ import SolicitacoesCadastro from './pages/SolicitacoesCadastro';
 import EventosCadastrados from './pages/EventosCadastrados';
 import EditarEvento from './pages/EditarEvento';
 import MeusIngressos from './pages/MeusIngressos';
+import GerenciarPromoters from './pages/GerenciarPromoters';
 
 
 export default function AppRouter() {
@@ -66,7 +67,8 @@ export default function AppRouter() {
                     <Route path='solicitacoesCadastro' element={<SolicitacoesCadastro/>}/>
                     <Route path='relatorioEventos' element={<EventosCadastrados/>}/>                    
                     <Route path='editarEvento' element={<EditarEvento/>}/>                    
-                    <Route path='meusIngressos' element={<MeusIngressos/>}/>                    
+                    <Route path='meusIngressos' element={<MeusIngressos/>}/> 
+                    <Route path='gerenciarPromoters' element={<GerenciarPromoters/>}/>                                
                 </Routes>
                 <Footer />
             </Router>
