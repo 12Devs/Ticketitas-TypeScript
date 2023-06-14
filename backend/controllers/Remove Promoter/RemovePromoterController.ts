@@ -42,11 +42,11 @@ class RemovePromoterController {
      */
     public async handle (request: Request, response: Response, ){
         const { promoterCpf, id, nome, descricao, dataEvento, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, cep, estado, cidade, bairro, rua, numero } = request.body;
-        const oneEvent = await this.removePromoterUseCase.execute(promoterCpf);
+        const removePromoterr = await this.removePromoterUseCase.execute(promoterCpf);
 
         
         
-        return response.status(200).json({oneEvent});
+        return response.status(200).json({removePromoterr});
     }
 
 

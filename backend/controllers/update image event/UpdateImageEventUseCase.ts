@@ -64,6 +64,17 @@ class UpdateImageEventUseCase {
         await this.eventRepository.updateImage(idAndImageEvent.id, cpf, imageUpload.id); 
     }
 
+
+    public async executePopularDB (cpf: number, imageEvent: any){
+
+        
+
+        await this.eventRepository.updateImagePopularDB(cpf, "imageUpload"); 
+    }
+
+
+
+
 }
 
 export { UpdateImageEventUseCase };
