@@ -1,26 +1,26 @@
-import { UpdateUserAddressController } from "./UpdateUserAddressController";
-import { UpdateUserAddressUseCase } from "./UpdateUserAddressUseCase";
+import { UpdateUserNameController } from "./UpdateUserNameControllerTest";
+import { UpdateUserNameUseCase } from "./UpdateUserNameUseCase";
 import { Request, Response } from "express";
 
 export interface UserRequest extends Request {
   user: any
 }
 
-describe('UpdateUserAddressController', () => {
-  let updateUserAddressController: UpdateUserAddressController;
-  let updateUserAddressUseCase: UpdateUserAddressUseCase;
+describe('UpdateUserNameController', () => {
+  let updateUserNameController: UpdateUserNameController;
+  let updateUserNameUseCase: UpdateUserNameUseCase;
   let mockRequest: Partial<UserRequest>;
   let mockResponse: Partial<Response>;
 
   beforeEach(() => {
-    // Criação de um objeto simulado para o caso de uso (UpdateUserAddressUseCase)
-    updateUserAddressUseCase = {
+    // Criação de um objeto simulado para o caso de uso (UpdateUserNameUseCase)
+    updateUserNameUseCase = {
       execute: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
-    } as unknown as UpdateUserAddressUseCase;
+    } as unknown as UpdateUserNameUseCase;
 
-    // Criação do controlador (UpdateUserAddressController) injetando o caso de uso simulado
-    updateUserAddressController = new UpdateUserAddressController(
-        updateUserAddressUseCase
+    // Criação do controlador (UpdateUserNameController) injetando o caso de uso simulado
+    updateUserNameController = new UpdateUserNameController(
+        updateUserNameUseCase
     );
 
     // Criação de um objeto simulado para a resposta (Response)
@@ -31,17 +31,12 @@ describe('UpdateUserAddressController', () => {
   });
 
   // Teste para verificar se o método handle é chamado corretamente
-  it('should call execute method of UpdateUserAddressUseCase and return status 200', async () => {
+  it('should call execute method of UpdateUserNameUseCase and return status 200', async () => {
     
     // Criação de um objeto simulado para a requisição (Request)
     mockRequest = {
       body: {
-        cep: 12345678,
-        cidade: "Feira de Santana",
-        estado: "Bahia",
-        bairro: "Campo Limpo",
-        rua: "Z",
-        numero: 59
+        newName: "Fulaninho de Sá"
       },
       user: {
         cpf: 98765432145,
@@ -50,13 +45,13 @@ describe('UpdateUserAddressController', () => {
     };
     
     // Espionar o método execute do caso de uso simulado para verificar se foi chamado corretamente
-    const executeSpy = jest.spyOn(updateUserAddressUseCase, 'execute');
+    const executeSpy = jest.spyOn(updateUserNameUseCase, 'execute');
 
     // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
-    await updateUserAddressController.handle(mockRequest as UserRequest, mockResponse as Response);
+    await updateUserNameController.handle(mockRequest as UserRequest, mockResponse as Response);
 
     // Verificar se o método execute foi chamado com o parâmetro correto
-    expect(executeSpy).toHaveBeenCalledWith("client", 98765432145, 12345678, "Feira de Santana", "Bahia", "Campo Limpo", "Z", 59);
+    expect(executeSpy).toHaveBeenCalledWith("client", 98765432145, "Fulaninho de Sá");
 
     // Verificar se o método send foi chamado
     expect(mockResponse.json).toHaveBeenCalled();
