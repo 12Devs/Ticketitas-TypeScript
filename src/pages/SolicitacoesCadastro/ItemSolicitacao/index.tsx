@@ -4,7 +4,6 @@ import { Button, ListGroup } from "react-bootstrap";
 
 
 export default function ItemSolicitacao(data: any) {
-    const navigate = useNavigate();
     const refresh = () => window.location.reload();
 
     const config = {
