@@ -13,8 +13,8 @@ class PromoterRepository {
 
     public async create (nome: string, cpf: number, email: string, telefone: number, senha: string, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number){
         
-        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (endereco: any)=>{
-            const enderecoUserId = endereco.id;
+        await this.createEnderecoUserController.handle(cep, estado, cidade, bairro, rua, numero).then(async (enderecoUser: any)=>{
+            const enderecoUserId = enderecoUser.id;
             await Promoter.create({nome, cpf, email, telefone, senha, enderecoUserId});
         });
         
@@ -50,6 +50,55 @@ class PromoterRepository {
         }});
         return cpfExists;
     }
+
+    
+
+
+
+    /**
+     * find status a promoter by cpf
+     * @date 7/6/2023 - 17:42:13 PM
+     *
+     * @public
+     * @async
+     * @param {number} cpf
+     * @returns {unknown}
+     */
+    public async findStatusByCpf (cpf: number) {
+        const statusPromoter = await Promoter.findOne({raw: true, attributes: ['status'], where: {
+            cpf: cpf
+        }});
+        return statusPromoter;
+    }
+
+    /**
+     * find all promoters
+     * @date 7/6/2023 - 17:42:13 PM
+     *
+     * @public
+     * @async
+     * @param {number} cpf
+     * @returns {unknown}
+     */
+        public async findAllPromoters () {
+            const allPromoters = await Promoter.findAll({raw: true});
+            return allPromoters;
+        }
+    
+    /**
+     * find a promoter by email
+     * @date 6/6/2023 - 11:02:40 PM
+     *
+     * @public
+     * @async
+     * @param {string} email
+     * @returns {unknown}
+     */
+
+
+
+
+
 
     public async findByEmail (email: string) {
         const emailExists = await Promoter.findOne({raw: true, attributes: ['cpf'], where: {
