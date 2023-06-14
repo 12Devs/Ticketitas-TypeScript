@@ -8,9 +8,10 @@ import { useState, useEffect } from 'react';
 
 import '../../components/Button/Button.css';
 import '../../components/Texto/Texto.css';
+import ItemSolicitacao from './ItemSolicitacao';
 
 export default function SolicitacoesCadastro() {
-    const [arrayPromoters, setArrayPromoters] = useState({ allPromoters: [] });
+    const [arrayPromoters, setArrayPromoters] = useState({ allPromoterRegistration: [] });
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -30,20 +31,8 @@ export default function SolicitacoesCadastro() {
                     <FormLabel label={"Solicitações de Cadastro"} />
 
                     <ListGroup as="ol" numbered>
-                        {arrayPromoters.allPromoters.map((promoter: any, index) => (
-                            <ListGroup.Item as="li"
-                                className="d-flex justify-content-between">
-                                <div className="ms-2 me-auto">
-                                    <h5>{promoter.nome}</h5>
-                                    <p>{promoter.cpf}</p>
-                                    <p>{promoter.email}</p>
-                                    <p>{promoter.telefone}</p>
-                                </div>
-                                <div className='row align-items-center'>
-                                    <Button className='ms-5 me-5 Botão-Secundario Texto-Azul Texto-MuitoPequeno'>Negar cadastro</Button>
-                                    <Button className='ms-5 me-5 Botão-Primario Texto-Branco Texto-MuitoPequeno'>Aceitar cadastro</Button>
-                                </div>
-                            </ListGroup.Item>
+                        {arrayPromoters.allPromoterRegistration.map((promoter: any, index) => (
+                            <ItemSolicitacao promoter={promoter}/>
                         ))}
                     </ListGroup>
 
