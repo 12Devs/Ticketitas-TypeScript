@@ -143,25 +143,6 @@ class CreateEventUseCase {
         await this.stockRepository.create(event.id, event.quantPista, event.quantStage, event.quantVip);
         
     }
-
-
-
-
-
-
-    public async executePopularDB (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, imageEvent: any , porcentagemMeia: number, porcentagemGratis: number, cep: number, cidade: string, estado: string, bairro: string, rua: string, numero: number) {
-
-        const event: any = await this.eventRepository.createPopularDB(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, imageEvent , porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
-
-        await this.stockRepository.create(event.id, event.quantPista, event.quantStage, event.quantVip);
-        
-    }
-
-
-
-
-
-
 }
 
 export { CreateEventUseCase };
