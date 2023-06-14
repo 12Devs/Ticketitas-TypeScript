@@ -9,20 +9,20 @@ import '../../components/Button/Button.css';
 import '../../components/Texto/Texto.css';
 import ItemEvento from './ItemEvento';
 
-export default function MeusEventos() {
-    const [arrayEventos, setArrayEventos] = useState({ PromoterInfos: [] });
+export default function MeusIngressos() {
+    const [arrayTickets, setArrayTickets] = useState({ PromoterInfos: [] });
 
     useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        api.get(`user/promoter/events`,config).then((response) => {
-            setArrayEventos(response.data);
+        api.get(`user/client/ticket`,config).then((response) => {
+            setArrayTickets(response.data.PromoterInfos);
             console.log(response)
         });
     }, []);
 
-    if (localStorage.getItem("userType") == "promoter") {
+    if (localStorage.getItem("userType") == "cliente") {
 
         return (
             <>
@@ -31,7 +31,7 @@ export default function MeusEventos() {
                     <FormLabel label={"Meus Eventos"} />
                     <ListGroup>
 
-                        {arrayEventos.PromoterInfos.map((evento: any, index) => (
+                        {arrayTickets.PromoterInfos.map((evento: any, index) => (
                             <ItemEvento evento={evento}/>
                         ))}
 

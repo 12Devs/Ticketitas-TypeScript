@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState} from "react";
 import InputTexto from "../../components/InputTexto";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import FormLabel from "../../components/FormLabel";
+import { api } from "../../services/api";
+import { useLocation } from "react-router-dom";
+import NavBarGeral from "../../components/NavBarGeral";
 
-export default function EditarEvento({idEvento}:{idEvento: string}){
+export default function EditarEvento(){
+
+    const location = useLocation();
+    const props = location.state;
+    
+
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
@@ -24,6 +32,27 @@ export default function EditarEvento({idEvento}:{idEvento: string}){
     const [bairro, setBairro] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
+
+    useEffect(() => {
+
+        api.get(`/event/${props.idEvento}`).then((response) => {
+            console.log(response);
+            setNome(response.data.eventInfos.event.nome);
+            setDescricao(response.data.eventInfos.event.descricao);
+            //setDataHora(response.data.eventInfos.event.dataEvento);
+            setRua(response.data.eventInfos.event.rua);
+            setCidade(response.data.eventInfos.event.cidade);
+            setEstado(response.data.eventInfos.event.estado);
+            setQuantPista(response.data.eventInfos.event.quantPista);
+            setQuantStage(response.data.eventInfos.event.quantStage);
+            setQuantVip(response.data.eventInfos.event.quantVip);
+            setValorPista(response.data.eventInfos.event.valorPista);
+            setValorStage(response.data.eventInfos.event.valorStage);
+            setPorcentagemGratis(response.data.eventInfos.event.porcentagemMeia);
+            setPorcentagemGratis(response.data.eventInfos.event.porcentagemGratis);
+            
+        });
+    }, []);
     const realizarCadastro = (event: any) => {
         event.preventDefault();
 
@@ -57,7 +86,10 @@ export default function EditarEvento({idEvento}:{idEvento: string}){
     }
 
     return(
+        <>
+        <NavBarGeral/>
         <Container>
+            
 
                         <Row >
                             <FormLabel label='Editar Evento' />
@@ -164,5 +196,6 @@ export default function EditarEvento({idEvento}:{idEvento: string}){
                         </Row>
 
                     </Container>
+            </>
     );
 }
