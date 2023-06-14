@@ -1,5 +1,5 @@
-import { CreateClientController } from "./CreateClientController";
-import { CreateClientUseCase } from "./CreateClientUseCase";
+import { CreateClientController } from "../create client/CreateClientController";
+import { CreateClientUseCase } from "../create client/CreateClientUseCase";
 import { Request, Response } from "express";
 import { ApiError } from "../../errors/ApiError";
 
