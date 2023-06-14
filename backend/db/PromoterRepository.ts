@@ -109,8 +109,8 @@ class PromoterRepository {
         return statusPromoter;
     }
 
-        /**
-     * find status a promoter by cpf
+    /**
+     * find all promoters
      * @date 7/6/2023 - 17:42:13 PM
      *
      * @public
