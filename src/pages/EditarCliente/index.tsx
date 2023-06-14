@@ -49,10 +49,8 @@ export default function EditarCliente() {
         setShow(true)
     };
 
-    const alterarSenha = (event: any) => {
-        event.preventDefault();
-    }
-    
+    const refresh = () => window.location.reload();
+
     const navigate = useNavigate();
 
     function pegarSobrenome(nomeCompleto: string) {
@@ -159,6 +157,22 @@ export default function EditarCliente() {
         api.post("user/client/update-phone", telefoneCliente,config).then((response)=>{console.log(response)});
         navigate('/perfil');
     }
+    const alterarSenha = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let senha: any = {
+            tipo: userType,
+            cpf,
+            passwordAuth: senhaAtual,
+            newPassword: novaSenha,
+            newPasswordConfirmation: confirmarSenha
+        }
+        api.post("user/client/update-password", senha,config).then((response)=>{console.log(response)});
+        refresh()
+    }
 
     return (
         <>
@@ -234,9 +248,9 @@ export default function EditarCliente() {
 
                                     <Form onSubmit={alterarSenha}>
                                         <Row className='justify-content-center'>
-                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='text' />
-                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="password" />
+                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="password" />
                                         </Row>
                                         <Row className='justify-content-center'>
                                             <Button className='Botão-Primario Texto-Branco' type='submit'>
