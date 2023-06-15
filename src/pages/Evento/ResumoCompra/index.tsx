@@ -65,6 +65,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [cardHolder, setCardHolder] = useState('Mailson A S Santos');
     const [cardExp, setCardExp] = useState('12/25');
 
+    const [saldo, setSaldo] = useState(false);
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
     
@@ -140,50 +141,40 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     }, [idCheckout]);
 
     
+    function alterarSaldoOption()
+    {
+
+    }
 
 
     function renderCartao(){
-        if (false){
+        if (true){
             return(
                 <>
-                <Row className="labelPagamento">
-                
-                <h3>Forma de Pagamento</h3>
-                <Row className='opcoesPagamento'>
-                    <Col sm={6}>
-                        <h5>Cartão</h5>
-                        <Form.Check type="radio" aria-label="radio 1" />
-                    </Col>
-                    <Col sm={6}>
-                        <h5>Saldo</h5>
-                        <Form.Check type="radio" aria-label="radio 1" />
-                    </Col>
-                </Row>
-                
-                
+              
             
-            </Row>
-
-            
-            <Row className='dadosCartao'>
+            <Row className=''>
                 <h5>
                     Dados do cartão
                 </h5>
                 
             </Row>  
                 <Row>
+                    <Col sm={7}>
+                        <InputTexto type={'text'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                    </Col>
                     <Col sm={4}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número do Cartão *"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
                     </Col>
                     
                     
                 </Row>
                 <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome impresso no cartão *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                        <Col sm={7}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"TITULAR DO CARTÃO*"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
                         </Col>
                         <Col sm={4}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF DO TITULAR*"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
                         </Col>
                         
                 </Row>
@@ -230,24 +221,33 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
             </Card>
             </Col>
-            asas
-            <Col>
+
             
-            <div className="boxSaldo1">
-                    <div className="logoTicketitasSaldo1">
-                    <img
-                                src="/img/logo.svg"
-                                width="40"
-                                height="40"
-                                alt=''
-                            />
+            
+            <Col>
+                
+                <div className="boxSaldo1">
+                        <div className="logoTicketitasSaldo1">
+                        <img
+                                    src="/img/logo.svg"
+                                    width="40"
+                                    height="40"
+                                    alt=''
+                                />
+                        </div>
+                        <div className="saldoConteudo1">
+                        <h1 style={{fontSize: 25}}>Saldo</h1>
+                        <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {}</p>
+                        </div>
+                        <Form>
+                <Form.Check  onChange={e => { setSaldo(!saldo)}} className='d-flex justify-content-center'
+                    type="switch"
+                    id="custom-switch"
+                    label ="Usar Saldo para pagar"
+                />
+                </Form>
+                    <p> saldo: {total}</p>
                     </div>
-                    <div className="saldoConteudo1">
-                    <h1 style={{fontSize: 25}}>Saldo</h1>
-                    <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {}</p>
-                    </div>
-                    
-                </div>
                 </Col>
             </Row>
             </>
@@ -255,7 +255,21 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
         }
     }
 
+   
+    useEffect(() => {
+        var valorTotalCartao = 0;
+        if(saldo)
+        {
+            let totalTeste = total - 100;
+            setTotal(totalTeste);
+        }
+        else
+        {
+            let totalTeste = total + 100;
+            setTotal(totalTeste);
+        }
 
+    }, [saldo]);
 
     return (
         <Container>
@@ -280,7 +294,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         </p>
 
                         <Row className=''>
-                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold py-5'>Dados do Participante</h4>
+                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold py-5'>Dados do Ingresso</h4>
                         <Form style={{minHeight: '30vh'}}>
                         <Row>
                             <Col lg={7}>
@@ -306,28 +320,21 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 
                 {renderCartao()}
                 
-                <Form>
-                <Form.Check className='d-flex justify-content-start'
-                    type="switch"
-                    id="custom-switch"
-                    label ="Usar Saldo Ticketitas"
-                />
-                </Form>
-
+                
                <Row className='divParcelamento'>
                     <Form.Select size="sm">
-                    <option>1X de {total}</option>
-                    <option>2X de {total/2}</option>
-                    <option>3X de {total/3}</option>
-                    <option>4X de {total/4}</option>
-                    <option>5X de {total/5}</option>
-                    <option>6X de {total/6}</option>
-                    <option>7X de {total/7}</option>
-                    <option>8X de {total/8}</option>
-                    <option>9X de {total/9}</option>
-                    <option>10X de {total/10}</option>
-                    <option>11X de {total/11}</option>
-                    <option>12X de {total/12}</option>
+                    <option>1X de {total.toFixed(2)}</option>
+                    <option>2X de {(total/2).toFixed(2)}</option>
+                    <option>3X de {(total/3).toFixed(2)}</option>
+                    <option>4X de {(total/4).toFixed(2)}</option>
+                    <option>5X de {(total/5).toFixed(2)}</option>
+                    <option>6X de {(total/6).toFixed(2)}</option>
+                    <option>7X de {(total/7).toFixed(2)}</option>
+                    <option>8X de {(total/8).toFixed(2)}</option>
+                    <option>9X de {(total/9).toFixed(2)}</option>
+                    <option>10X de {(total/10).toFixed(2)}</option>
+                    <option>11X de {(total/11).toFixed(2)}</option>
+                    <option>12X de {(total/12).toFixed(2)}</option>
                     </Form.Select>
                </Row>
                 
