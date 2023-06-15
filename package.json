@@ -6,12 +6,9 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
     "@types/axios": "^0.14.0",
     "@types/jest": "^27.5.2",
-=======
     "@types/cors": "^2.8.13",
->>>>>>> dev
     "@types/node": "^16.18.25",
     "@types/pdfmake": "^0.2.2",
     "@types/react": "^18.2.0",
