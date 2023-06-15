@@ -13,10 +13,10 @@ async function ensureAuthenticatedSuperAdministrator(request: Request, response:
 
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET_SUPER_ADMINISTRATOR as string);
 
         request.user = {
-            tipo: "super",
+            tipo: "superAdministrator",
             cpf: sub
         }
         next();
