@@ -21,7 +21,8 @@ function CarouselPrincipal() {
     }, []);
 
     const navigate = useNavigate();
-    console.log(arrayEventos);
+
+    console.log("Todos os evenetos", arrayEventos);
 
     function renderCarouselItem(dados: any) {
 
