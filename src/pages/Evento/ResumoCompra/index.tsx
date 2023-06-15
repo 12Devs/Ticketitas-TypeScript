@@ -63,12 +63,13 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
 
-    const [cardNumber, setCardNumber] = useState('xxxx xxxx xxxx 0000');
-    const [cardHolder, setCardHolder] = useState('Mailson A S Santos');
-    const [cardExp, setCardExp] = useState('12/25');
+    const [cardNumber, setCardNumber] = useState('');
+    const [cardHolder, setCardHolder] = useState('');
+    const [cardExp, setCardExp] = useState('');
     const [cardCVV, setCardCVV] = useState("");
 
     const [saldo, setSaldo] = useState(0.0);
+    const [dadosCartao, setDadosCartao] = useState({});
     const [TemCartao, setTemCartao] = useState(false);
     const [TemSaldo, setTemSaldo] = useState(false);
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
@@ -126,9 +127,11 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     
     useEffect(() => {
         api.get(`/user/client/card`, config).then((response) => {
-            console.log("Retorno Cartão: ",response);
-
-        });
+            console.log("Retorno Cartão: ",response.data.cardInfos);
+            setDadosCartao(response.data.cardInfos);
+            
+            setTemCartao(true);
+        }) .catch((e)=>{});
 
     }, []);
 
@@ -166,23 +169,17 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
 
     function renderCartao(){
-        console.log("Tem cartao:", TemCartao)
+       
         if (!TemCartao){
             return(
                 <>
             <Row className=''>
 
-            
-            
-            <Row>
-              
-                
-            </Row>  
                 <Row>
-                    <Col sm={5}>
+                    <Col sm={8}>
                         <InputTexto type={'number'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputCardNumber"} data={cardNumber} setData={setCardNumber}/>
                     </Col>
-                    <Col sm={3}>
+                    <Col sm={4}>
                         <InputTexto type={'date'} defaultValue={''} required={true} label={"VALIDADE*"} placeholder={""} controlId={"inputExp"} data={cardExp} setData={setCardExp}/>
                     </Col>
                     
@@ -190,10 +187,10 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                     
                 </Row>
                 <Row>
-                        <Col sm={5}>
+                        <Col sm={8}>
                             <InputTexto type={'text'} defaultValue={''} required={true} label={"TITULAR DO CARTÃO*"} placeholder={""} controlId={"inputCardHolder"} data={cardHolder} setData={setCardHolder}/>
                         </Col>
-                        <Col sm={2}>
+                        <Col sm={4}>
                             <InputTexto type={'number'} defaultValue={''} required={true} label={"CVV*"} placeholder={""} controlId={"inputCVV"} data={cardCVV} setData={setCardCVV}/>
                     </Col>
                         
@@ -226,7 +223,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         />{''}
                         </div>
                         
-                    <Card.Title>{cardNumber}</Card.Title>
+                    <Card.Title>aaa</Card.Title>
                     <Row>
                         <Col>
                             <Card.Text>
