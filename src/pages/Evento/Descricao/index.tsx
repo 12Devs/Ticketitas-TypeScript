@@ -34,6 +34,7 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
             setImageEvent(response.data.eventInfos.event.imageEvent);
+            console.log("ID da imagem: ",response.data.eventInfos.event.imageEvent)
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);

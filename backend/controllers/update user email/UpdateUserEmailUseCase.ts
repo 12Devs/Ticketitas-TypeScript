@@ -97,7 +97,7 @@ class UpdateUserEmailUseCase {
                 throw new ApiError("Utilize outro email", 422);
             }
 
-            const cpfClient: any = await this.clientRepository.findByCpfAndSenha(cpf); //Recovers the administrator object with the provided cpf
+            const cpfClient: any = await this.clientRepository.findByCpfAndSenha(cpf); //Recovers the client object with the provided cpf
             const passwordCheck = bcrypt.compareSync(passwordAuth, cpfClient.senha); //Checks if the encrypted password matches
 
             //The password used to authorize the action must be valid
@@ -115,7 +115,7 @@ class UpdateUserEmailUseCase {
                 throw new ApiError("Utilize outro email", 422);
             }
 
-            const cpfPromoter: any = await this.promoterRepository.findByCpfAndSenha(cpf); //Recovers the administrator object with the provided cpf
+            const cpfPromoter: any = await this.promoterRepository.findByCpfAndSenha(cpf); //Recovers the promoter object with the provided cpf
             const passwordCheck = bcrypt.compareSync(passwordAuth, cpfPromoter.senha); //Checks if the encrypted password matches
 
             //The password used to authorize the action must be valid
@@ -126,7 +126,7 @@ class UpdateUserEmailUseCase {
             await this.promoterRepository.updateEmail(cpfPromoter.cpf, newEmail);
         } 
         else if (tipo === "administrator"){
-            const emailAdministrator: any = await this.administratorRepository.findByEmailAndSenha(newEmail);
+            const emailAdministrator: any = await this.administratorRepository.findByEmail(newEmail);
 
             //The new email address should not be registered already
             if(emailAdministrator !== null && emailAdministrator !== undefined) {

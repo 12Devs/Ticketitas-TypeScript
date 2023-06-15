@@ -9,9 +9,38 @@ import { ClientRepository } from "../db/ClientRepository";
 import { EventRepository } from "../db/EventRepository";
 import { PromoterRegistrationRequestRepository } from "../db/PromoterRegistrationRequestRepository";
 import { PromoterRepository } from "../db/PromoterRepository";
+import { SuperAdministratorRelationRepository } from "../db/SuperAdministratorRelationRepository";
 import bcrypt from 'bcrypt';
 import { StockRepository } from "../db/StockRepository";
 import { EmailProvider } from "../utils/EmailProvider";
+import { UpdateImageEventUseCase } from "../controllers/update image event/UpdateImageEventUseCase";
+import { google } from "googleapis";
+import fs from 'fs';
+import path from 'path';
+import { file } from "googleapis/build/src/apis/file";
+
+const uploadFileStorage = async (filePath, name) => {
+    const KEYFILEPATH = path.join('backend/config/googleStorage.json');
+    const SCOPES = ['https://www.googleapis.com/auth/drive'];
+
+    const auth = new google.auth.GoogleAuth({
+        keyFile: KEYFILEPATH,
+        scopes: SCOPES,
+    });
+
+    const { data } = await google.drive({ version: 'v3', auth }).files.create({
+      media: {
+        mimeType: 'image/jpg',
+        body:  fs.createReadStream(filePath),
+      },
+      requestBody: {
+        name: name,
+        parents: ['1SAW9W8vOjaSfKNrDHWvNxkI-qBVwoj8Z'],
+      },
+      fields: 'id,name',
+    });
+    return data;
+};
 
 class FillDataBase {
 
@@ -42,6 +71,18 @@ class FillDataBase {
         administratorRepository.create("12Devs", 0, "ticketitas@gmail.com", 0, senhaHash);
     }
 
+
+    public static async fillAdministrador() {
+
+        const createAdministratorUseCase = new CreateAdministratorUseCase(new AdministratorRepository(), new EmailProvider(), new SuperAdministratorRelationRepository());
+        await createAdministratorUseCase.execute("Gabriel", 45850724972, "gabriel@email.com", 75988532244);
+
+        await createAdministratorUseCase.execute("João Gabriel", 75316609543, "joaogabriel@email.com", 75981272922);
+
+        await createAdministratorUseCase.execute("Lucca Princeso", 82231237709, "luccaprinceso@email.com", 75991151505);
+    }
+
+
     public static async fillEvents() {
         const createEventUseCase = new CreateEventUseCase(new EventRepository(), new StockRepository(), new PromoterRepository());
 
@@ -60,7 +101,7 @@ class FillDataBase {
         const fvsDate = new Date("2023-12-12T22:36:06.000Z");
         const sjSerrinhaDate = new Date("2024-06-24T22:36:06.000Z");
 
-        await createEventUseCase.execute(45850724974, "Oktoberfest Feira City", oktoberFest, oktoberFestDate, true, 30000, 1, 500, 120.98, 1, 300.99, 40.00, 0.00, 44075516, "Feira de Santa", "BA", "Centro", "Av. Presidente Dutra", 1226);
+        await createEventUseCase.execute(45850724974, "Oktoberfest Feira City", oktoberFest, oktoberFestDate, true, 30000, 1, 500, 120.98, 1, 300.99 ,40.00, 0.00, 44075516, "Feira de Santa", "BA", "Centro", "Av. Presidente Dutra", 1226);
 
         await createEventUseCase.execute(82231237709, "Tomorrowland", tomorrowland, tomorrowlandDate, true, 100000, 20000, 10000, 300.00, 420.00, 1230.48, 45.00, 0.00, 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua da Festa", 420);
 
@@ -71,6 +112,21 @@ class FillDataBase {
         await createEventUseCase.execute(45850724974, "Festival de Verão Salvador", fvs, fvsDate, true, 900000, 20000, 50000, 300.00, 390.00, 1032.99, 52.00, 0.00, 41730101, "Salvador", "BA", "Itapuã", "Av. Luís Viana Filho", 0);
 
         await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, sjSerrinhaDate, true, 40000, 3000, 0, 0, 0, 0,  50.00, 0.00, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
+    }
+
+    public static async fillImageEvents() {
+        const repository = new EventRepository();
+        const events : any = await repository.findAllEvents();
+
+        Object.entries(events).forEach(async ([key, value]: any, index) => {
+            
+            var nameImage = value._previousDataValues.nome.replace( / /g, '' );
+
+            var path = `backend/config/imageEventsFill/${nameImage}.jpg`
+
+            const dataImage: any = await uploadFileStorage(path, nameImage);
+            await repository.updateImage(value.id, value.promoterCpf, dataImage.id);
+          });
     }
 
     public static async setHighlights() {

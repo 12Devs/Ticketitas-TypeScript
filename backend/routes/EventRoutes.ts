@@ -35,9 +35,12 @@ eventRoutes.patch("/administrator/update-status", ensureAuthenticatedAdministrat
     return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-eventRoutes.patch("/set-featured/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+eventRoutes.patch("/set-featured/:id", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return setFeaturedEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
+eventRoutes.patch("/administrator/update-status", ensureAuthenticatedAdministrator,(request: Request, response: Response, next: NextFunction)=>{
+    return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
+});
 
 export { eventRoutes };

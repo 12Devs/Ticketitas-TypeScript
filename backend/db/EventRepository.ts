@@ -117,7 +117,25 @@ class EventRepository {
         return allEventsByPromoter;
     }
 
-        /**
+    /**
+     * Find status of event by event id
+     * @date 6/6/2023 - 10:55:26 PM
+     *
+     * @public
+     * @async
+     * @param {string} id
+     * @returns {unknown}
+     */
+    public async findDestaqueById (id: string) {
+        const event = await Event.findOne({raw: true,  attributes: ['status', 'destaque'],
+        where: {
+            id: id
+        }});
+
+        return event;
+    }
+
+    /**
      * Find id and status of event by cpf promoter
      * @date 6/6/2023 - 10:55:26 PM
      *
@@ -126,14 +144,14 @@ class EventRepository {
      * @param {number} cpf
      * @returns {unknown}
      */
-        public async findByCpfPromoter (cpf: number) {
-            const allEventsByPromoter = await Event.findAll({raw: true,
-            where: {
-                Promotercpf: cpf
-            }});
-    
-            return allEventsByPromoter;
-        }
+    public async findByCpfPromoter (cpf: number) {
+        const allEventsByPromoter = await Event.findAll({raw: true,
+        where: {
+            Promotercpf: cpf
+        }});
+
+        return allEventsByPromoter;
+    }
     
     /**
      * Find one event
@@ -143,7 +161,7 @@ class EventRepository {
      * @async
      * @param {string} id
      * @returns {Promise<Event | null>}
-     */
+    */
     public async findOneEvent(id: string): Promise<Event | null> {
         const event = await Event.findOne({ raw: true, where: { id } }) as (Event | null);
         return event;
@@ -207,6 +225,19 @@ class EventRepository {
             }
         });
     }
+
+    public async updateImagePopularDB (promoterCpf: number, imageEvent: any){
+        await Event.update({
+            imageEvent: imageEvent
+        },
+        {
+            where: {
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
+
     
     /**
      * Update status event
@@ -260,9 +291,9 @@ class EventRepository {
      * @param {string} id
      * @returns {*}
      */
-    public async setFeatured (id: string){
+    public async setFeatured (id: string, newStatus: boolean){
         await Event.update({
-            destaque: true
+            destaque: newStatus
         },
         {
             where: {
@@ -335,6 +366,26 @@ class EventRepository {
         const allEvents = await Event.findAll({raw: true});
         return allEvents;
     }
+
+
+
+    
+    public async createPopularDB (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, imageEvent: any , porcentagemMeia: number, porcentagemGratis: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
+
+        const enderecoEvent: any = await this.createEnderecoEventController.handle(cep, estado, cidade, bairro, rua, numero);
+        
+        const enderecoEventId = enderecoEvent.id;
+
+        const event = await Event.create({nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, imageEvent , porcentagemMeia, porcentagemGratis, promoterCpf, enderecoEventId});
+        
+        return event;
+    }
+
+
+
+
+
+
 
 
 

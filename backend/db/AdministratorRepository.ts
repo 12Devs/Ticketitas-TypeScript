@@ -45,6 +45,21 @@ class AdministratorRepository {
     }
 
     /**
+    * find all administrators
+    * @date 7/6/2023 - 17:42:13 PM
+    *
+    * @public
+    * @async
+    * @param {number} cpf
+    * @returns {unknown}
+    */
+    public async findAllAdministrators () {
+           const allAdministrators = await Administrator.findAll({raw: true});
+           return allAdministrators;
+       }
+   
+
+    /**
      * Method for searching an administrator by their CPF number
      * @date 5/8/2023 - 8:57:34 PM
      *
