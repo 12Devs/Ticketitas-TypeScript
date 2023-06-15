@@ -313,10 +313,11 @@ export default function DetalhesIngresso({ idCheckout }: { idCheckout: string })
     }, [idEvent]);         
     
 return (
-    <>
-        <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Resumo da Compra</h4>
+    < Container className='larguraMinima'>
+    
+        <h4 className='Texto-Preto Texto-Medio text-start fw-bold '>Resumo da Compra</h4>
 
-        <div className='Modal-Ingresos p-3'>
+        <div className='Modal-Ingresos p-3 '>
             <Modal.Dialog className='modal-dialog-scrollable'>
                 <Modal.Body>
             {renderPistaInteira()}
@@ -340,6 +341,6 @@ return (
                 </Modal.Footer>
             </Modal.Dialog>
         </div>
-    </>
+    </Container>
 );
 }

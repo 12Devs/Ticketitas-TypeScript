@@ -37,7 +37,7 @@ export default function ModalCadastrarCartao(){
     }
     return(
         <>
-        <Col md = {3}>
+        <Col md = {3} >
                     <Button style={{ margin: '5vh 5vw 5vh 5vw' }} onClick={handleShow}>
                         Cadastrar novo Cartão
                     </Button>
