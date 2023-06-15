@@ -26,16 +26,15 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
   });
 });
 
-conn.sync({force: true}).then(async () => {
-await FillDataBase.fillClients();
-await FillDataBase.fillPromoters();
-await FillDataBase.fillSuperAdministrator();
-await FillDataBase.fillAdministrator();
-await FillDataBase.setHighlights();
-await FillDataBase.promoterAprove();
-await FillDataBase.fillEvents();
-await FillDataBase.fillImageEvents()
+conn.sync().then(async () => {
+// await FillDataBase.fillClients();
+// await FillDataBase.fillPromoters();
+// await FillDataBase.fillSuperAdministrator();
+// await FillDataBase.fillAdministrator();
+// await FillDataBase.setHighlights();
+// await FillDataBase.promoterAprove();
+// await FillDataBase.fillEvents();
+// await FillDataBase.fillImageEvents()
   app.listen(process.env.PORT_BACK, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
-
 
