@@ -24,8 +24,6 @@ export default function GerenciarAdmins() {
         });
     }, []);
 
-    console.log(arrayAdmins);
-
     if (localStorage.getItem("userType") == "admin") {
         return (
             <>
