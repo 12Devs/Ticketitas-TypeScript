@@ -89,7 +89,7 @@ class LoginPromoterUseCase {
 
         const token = sign({tipo: "promoter", nome: infoPromoter.nome},
             
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRET_PROMOTER as string,
 
         {subject: `${infoPromoter.cpf}`,
             expiresIn: process.env.EXPIRES_TOKEN});
@@ -97,7 +97,7 @@ class LoginPromoterUseCase {
     
     const refreshToken = await sign({tipo: "promoter", nome: infoPromoter.nome},
         
-        process.env.JWT_REFRESH_SECRET,
+        process.env.JWT_REFRESH_SECRET as string,
         
         {subject: `${infoPromoter.cpf}`,
             expiresIn: process.env.EXPIRES_REFRESH_TOKEN});

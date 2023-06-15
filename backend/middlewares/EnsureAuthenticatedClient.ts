@@ -14,7 +14,7 @@ async function ensureAuthenticatedClient(request: Request, response: Response, n
 
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET_CLIENT as string as string);
 
         request.user = {
             tipo: "client",

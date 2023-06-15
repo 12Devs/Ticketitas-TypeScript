@@ -15,7 +15,7 @@ async function ensureAuthenticatedPromoter(request: Request, response: Response,
     
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET_PROMOTER as string);
         
         const promoterStatus: any = await new PromoterRepository().findStatusByCpf(parseInt(sub));
  
