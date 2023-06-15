@@ -84,6 +84,21 @@ class EventRepository {
     }
     
     /**
+     * Find all active events
+     * @date 6/6/2023 - 10:55:18 PM
+     *
+     * @public
+     * @async
+     * @returns {unknown}
+     */
+    public async findAllActiveEvents () {
+        const allEvents = await Event.findAll({raw: true, where: {
+            status: true
+        }});
+        return allEvents;
+    }
+
+    /**
      * Find all highlights
      * @date 6/6/2023 - 10:55:22 PM
      *
