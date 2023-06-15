@@ -5,14 +5,14 @@ import { AdministratorRepository } from "../../db/AdministratorRepository";
 import { SuperAdministratorRelationRepository} from "../../db/SuperAdministratorRelationRepository";
 
 import bcrypt from 'bcrypt'; // Import of the bcrypt module (https://www.npmjs.com/package/bcrypt)
-import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
+import { EmailProvider } from "../../utils/EmailProvider"; //Import of the EmailProvider class
 
 /**
  * Class that contains the methods and procedures necessary to create a new administrator object and save its info in the database
  * @date 5/8/2023 - 7:12:30 PM
  *
- * @class CreateAdministratorUseCase
- * @typedef {CreateAdministratorUseCase}
+ * @class CreateSuperAdministratorUseCase
+ * @typedef {CreateSuperAdministratorUseCase}
  */
 class CreateSuperAdministratorUseCase {
 
@@ -35,28 +35,28 @@ class CreateSuperAdministratorUseCase {
     private superAdministratorRelationRepository: SuperAdministratorRelationRepository
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}, {@link sendEmail} and {@link SuperAdministratorRelationRepository}
+     * Constructor for instances of {@link AdministratorRepository}, {@link emailProvider} and {@link SuperAdministratorRelationRepository}
      * @date 5/8/2023 - 7:12:30 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
-     * @param {AdministratorRepository} sendEmail Private instance of the SendEmail class
+     * @param {AdministratorRepository} emailProvider Private instance of the EmailProvider class
      * @param {SuperAdministratorRelationRepository} superAdministratorRelationRepository Private instance of the SuperAdministratorRelationRepository class
      */
-    constructor (administratorRepository: AdministratorRepository, sendEmail: SendEmail, superAdministratorRelationRepository: SuperAdministratorRelationRepository) {
+    constructor (administratorRepository: AdministratorRepository, emailProvider: EmailProvider, superAdministratorRelationRepository: SuperAdministratorRelationRepository) {
         this.administratorRepository =  administratorRepository;
-        this.sendEmail = sendEmail;
+        this.emailProvider = emailProvider;
         this.superAdministratorRelationRepository = superAdministratorRelationRepository;
     }
 
     /**
-     * Creates an instance of {@link SendEmail}
+     * Creates an instance of {@link EmailProvider}
      * @date 5/18/2023 - 22:25:48 PM
      *
      * @private Marks this instance as having "private" visibility
-     * @type {SendEmail}
+     * @type {EmailProvider}
      */
-    private sendEmail: SendEmail;
+    private emailProvider: EmailProvider;
     
     /**
      * Method for executing the creation of an administrator object using the parameters supplied by its controller
@@ -119,13 +119,12 @@ class CreateSuperAdministratorUseCase {
             await this.administratorRepository.create(name, cpf, email, phone, passwordHash);
             await this.superAdministratorRelationRepository.create(cpf);
 
-            //Message subject text
-            const subject = "BEM-VINDO, SUPER ADMINISTRADOR";
-            //Message description text
-            const message = (`  Caro ${name}:\n\nSua conta foi associada a uma senha definida pelo proprietário do sistema. Por favor, entre em contato com o mesmo para obter a senha, ou utilize a função de alteração da senha por email para escolher uma senha pessoal;\n\n     Atenciosamente, Equipe Ticketitas.`);
+            const emailInfo = {
+                template: 'RegistrationConfirmationAdministrator',
+                subject: `ADMINISTRATOR SUPER: Bem-vindo à Ticketitas!`
+            }
 
-            //Sends information for the "sendEmail" util method to forward the message
-            //await this.sendEmail.sendEmail(email, subject, message);
+            await this.emailProvider.sendEmail(email, emailInfo);
         }
     }
 }
