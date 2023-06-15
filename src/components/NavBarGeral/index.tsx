@@ -49,7 +49,7 @@ const NavBarGeral = () => {
 
   const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
-  console.log("Arayyyyyyyy na navbar: ", arrayEventos)
+
 
 
   // Recarrega a tela
