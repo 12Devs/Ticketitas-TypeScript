@@ -41,11 +41,8 @@ class RemoveAdministratorController {
      * @returns {unknown}
      */
     public async handle (request: Request, response: Response, ){
-        const { administratorCpf } = request.body;
-        await this.removeAdministratorUseCase.execute(administratorCpf);
-
-        
-        
+        const { cpf }: any = request.params;
+        await this.removeAdministratorUseCase.execute(cpf);
         return response.status(200).send();
     }
 
