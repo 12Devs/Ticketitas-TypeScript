@@ -23,9 +23,13 @@ export default function EditarAdmin() {
     const [telefone, setTelefone] = useState('undefined');
     const [email, setEmail] = useState('undefined');
     const [show, setShow] = useState(false);
+    const [showEmail, setShowEmail] = useState(false);
     const [senhaAtual, setsenhaAtual] = useState('');
     const [novaSenha, setnovaSenha] = useState('');
     const [confirmarSenha, setconfirmarSenha] = useState('');
+    const [novoEmail, setnovoEmail] = useState('');
+    const [confirmarEmail, setconfirmarEmail] = useState('');
+
 
 
     const handleClose = () => {
@@ -33,7 +37,14 @@ export default function EditarAdmin() {
     };
     const handleShow = () => {
         setShow(true)
-    }; 
+    };
+
+    const handleCloseEmail = () => {
+        setShowEmail(false)
+    };
+    const handleShowEmail = () => {
+        setShowEmail(true)
+    };
 
     const navigate = useNavigate();
 
@@ -45,33 +56,33 @@ export default function EditarAdmin() {
         if (partesNome.length < 2) {
             setSobreome("")
         }
-        else{
+        else {
             let sobrenome = partesNome[partesNome.length - 2];
             setSobreome(sobrenome)
         }
-      }
+    }
     function pegarNome(nomeCompleto: string) {
-        
+
         var partesNome = nomeCompleto.split(' ');
 
         let sobrenome = partesNome[0];
         setprimeiroNome(sobrenome)
-      }
+    }
 
-    useEffect(()=>{
+    useEffect(() => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
         const user = localStorage.getItem('userType');
-        if(user != null){
+        if (user != null) {
             setUserType(user);
         }
         const cpfLocalStorage = localStorage.getItem('CPF');
-        if(cpfLocalStorage != null){
+        if (cpfLocalStorage != null) {
             setCpf(cpfLocalStorage);
         }
-        
-        api.get("user/administrator/",config).then((response)  => {
+
+        api.get("user/administrator/", config).then((response) => {
             console.log(response)
             SetnomeCompleto(response.data.AdministratorInfos.administrator.name);
             setEmail(response.data.AdministratorInfos.administrator.email)
@@ -81,17 +92,17 @@ export default function EditarAdmin() {
             pegarNome(nomeCompleto)
         });
 
-        
-    },[])
+
+    }, [])
 
     const editarAdmin = (event: any) => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        
+
         event.preventDefault();
         let nomeAdmin: any = {
-            newName: `${primeiroNome} ${sobrenome}`, 
+            newName: `${primeiroNome} ${sobrenome}`,
             tipo: userType,
             cpf
         }
@@ -101,8 +112,8 @@ export default function EditarAdmin() {
             cpf
         }
 
-        api.post("user/administrator/update-name", nomeAdmin,config).then((response)=>{console.log(response)});
-        api.post("user/adiministrator/update-phone", telefoneAdmin,config).then((response)=>{console.log(response)});
+        api.post("user/administrator/update-name", nomeAdmin, config).then((response) => { console.log(response) });
+        api.post("user/adiministrator/update-phone", telefoneAdmin, config).then((response) => { console.log(response) });
 
         navigate('/perfil');
     }
@@ -111,7 +122,7 @@ export default function EditarAdmin() {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        
+
         event.preventDefault();
         let senha: any = {
             tipo: userType,
@@ -120,8 +131,25 @@ export default function EditarAdmin() {
             newPassword: novaSenha,
             newPasswordConfirmation: confirmarSenha
         }
-        api.post("user/administrator/update-password", senha,config).then((response)=>{console.log(response)});
+        api.post("user/administrator/update-password", senha, config).then((response) => { console.log(response) });
         refresh()
+    }
+
+    const alterarEmail = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let email: any = {
+            tipo: userType,
+            cpf,
+            newEmail: novoEmail,
+            newEmailConfirmation: confirmarEmail,
+            passwordAuth: senhaAtual
+        }
+        api.post("user/administrator/update-email", email,config).then((response)=>{console.log(response)});
+
     }
 
     return (
@@ -153,10 +181,37 @@ export default function EditarAdmin() {
                     </Row>
 
                     <Row>
-                        <Col sm={8}>
+                        <Col sm={6}>
                             <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
                         </Col>
-                        <Col sm={4}>
+                        <Col sm={3}>
+                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
+                                Alterar email
+                            </Button>
+                            <Modal show={showEmail} onHide={handleCloseEmail}>
+                                <Modal.Body className=" modal-content">
+                                    <Row className='d-flex justify-content-center' >
+                                        <h1 style={{ fontSize: 20 }}>Alterar email</h1>
+                                    </Row>
+
+                                    <Form onSubmit={alterarEmail}>
+                                        <Row className='justify-content-center'>
+                                            <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                        </Row>
+                                        <Row className='justify-content-center'>
+                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                Confirmar alteração
+                                            </Button>
+                                        </Row>
+                                    </Form>
+                                </Modal.Body>
+                            </Modal>
+
+                        </Col>
+
+                        <Col sm={3}>
                             <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
                                 Alterar senha
                             </Button>

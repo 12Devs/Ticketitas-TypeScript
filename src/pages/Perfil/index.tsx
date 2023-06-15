@@ -1,7 +1,7 @@
-import React, { ReactNode, useEffect, useState} from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { Alert, Container, Form, Row, Col,Image } from 'react-bootstrap';
+import { Alert, Container, Form, Row, Col, Image } from 'react-bootstrap';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import NavBarGeral from '../../components/NavBarGeral';
@@ -39,41 +39,45 @@ export default function Perfil() {
     function separarNomeSobrenome(nomeCompleto: string) {
         // Dividir o nome completo em palavras
         var palavras = nomeCompleto.split(" ");
-      
+
+
         // O primeiro nome é a primeira palavra
         setprimeiroNome(palavras[0])
-      
+        console.log(palavras[0])
+
         // O sobrenome é o restante das palavras
         setSobreome(palavras[-1])
-      
+        console.log(palavras[-1])
+
         // Retornar o nome e o sobrenome como um objeto
-      }
-    
-      function pegarUltimosQuatroDigitos(numero: string) {
+    }
+
+    function pegarUltimosQuatroDigitos(numero: string) {
         let ultimosQuatroDigitos = numero.slice(-4);
         setcardNumberFour(ultimosQuatroDigitos);
-      }
+    }
 
-    useEffect(()=>{
+    useEffect(() => {
         const user = localStorage.getItem('userType');
-        if(user != null){
+        if (user != null) {
             setUserType(user);
         }
         const cpfLocalStorage = localStorage.getItem('CPF');
-        if(cpfLocalStorage != null){
+        if (cpfLocalStorage != null) {
             setCpf(cpfLocalStorage);
         }
-        
+
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        api.get("user/client/card",config).then((response) => {
+
+        api.get("user/client/card", config).then((response) => {
             console.log(response)
             setCardNumber(response.data.cardInfos.card.cardNumber);
             setCardName(response.data.cardInfos.card.holder);
         });
-        if(user == "cliente"){
-            api.get("user/client/",config).then((response) => {
+        if (user == "cliente") {
+            api.get("user/client/", config).then((response) => {
                 console.log(response);
                 SetnomeCompleto(response.data.ClientInfos.client.nome);
                 setEmail(response.data.ClientInfos.client.email);
@@ -88,12 +92,12 @@ export default function Perfil() {
                 setNumero(response.data.ClientInfos.enderecoClient.numero)
                 setCidade(response.data.ClientInfos.enderecoClient.cidade)
                 pegarUltimosQuatroDigitos(cardNumber)
-                separarNomeSobrenome(nomeCompleto)
-                
+
             });
+
         }
-        else if(user == "promoter"){
-            api.get("user/promoter/",config).then((response) => {
+        else if (user == "promoter") {
+            api.get("user/promoter/", config).then((response) => {
                 console.log(response)
                 SetnomeCompleto(response.data.PromoterInfos.promoter.nome)
                 setEmail(response.data.PromoterInfos.promoter.email)
@@ -108,8 +112,8 @@ export default function Perfil() {
                 separarNomeSobrenome(nomeCompleto)
             });
         }
-        else if(user == "admin"){
-            api.get("user/administrator/",config).then((response) => {
+        else if (user == "admin") {
+            api.get("user/administrator/", config).then((response) => {
                 console.log(response)
                 SetnomeCompleto(response.data.AdministratorInfos.administrator.name)
                 setEmail(response.data.AdministratorInfos.administrator.email)
@@ -117,192 +121,192 @@ export default function Perfil() {
                 separarNomeSobrenome(nomeCompleto)
             });
         }
-        
-        
-    },[])
-    
-    return(
+        separarNomeSobrenome(nomeCompleto)
+
+    }, [])
+
+    return (
         <>
-        <NavBarGeral/>
-        <Container className='justify-content-center' fluid>
-            <Row className='d-flex justify-content-center container-perfil' >
-                <Col md={8}>
-                <Nav variant="tabs" onSelect={handleSelect} defaultActiveKey="Meus Dados" style={{marginTop:20}}>
-                    <Nav.Item >
-                        <Nav.Link eventKey="Meus Dados">Meus Dados</Nav.Link>
-                    </Nav.Item>
-                    {   
-                        userType === "cliente" ?
+            <NavBarGeral />
+            <Container className='justify-content-center' fluid>
+                <Row className='d-flex justify-content-center container-perfil' >
+                    <Col md={8}>
+                        <Nav variant="tabs" onSelect={handleSelect} defaultActiveKey="Meus Dados" style={{ marginTop: 20 }}>
+                            <Nav.Item >
+                                <Nav.Link eventKey="Meus Dados">Meus Dados</Nav.Link>
+                            </Nav.Item>
+                            {
+                                userType === "cliente" ?
+                                    <>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="cartao">Meu cartão</Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey="carteira" >
+                                                Minha carteira
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                    </>
+                                    : <></>
+                            }
+
+                        </Nav>
+                    </Col>
+                </Row>
+                {
+                    eventSelect == "Meus Dados" && userType != "admin" ?
                         <>
-                        <Nav.Item>
-                            <Nav.Link eventKey="cartao">Meu cartão</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                         <Nav.Link eventKey="carteira" >
-                             Minha carteira
-                         </Nav.Link>
-                        </Nav.Item>
-                        </>
-                     : <></>
-                    }
-                   
-                </Nav>
-                </Col>
-            </Row> 
-            {
-                eventSelect == "Meus Dados" && userType != "admin"?
-                    <>
-                        <Row style={{marginTop: 20}}>
+                            <Row style={{ marginTop: 20 }}>
                                 <Col md={{ span: 3, offset: 3 }}>
                                     <OutputInfo label='Nome' text={primeiroNome} />
                                 </Col>
                                 <Col md={2}>
                                     <OutputInfo label='Sobrenome' text='' />
                                 </Col>
-    
+
                             </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='E-mail' text={email} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='Telefone' text={telefone} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='CPF' text={cpf} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='Cidade' text={cidade} />
-                                    </Col>
-                                    <Col md={4}>
-                                        <OutputInfo label='Estado' text={estado} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='Bairro' text={bairro} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='CEP' text={cep} />
-                                    </Col>
-    
-                                </Row><Row>
-                                    <Col md={{ span: 3, offset: 3 }}>
-                                        <OutputInfo label='Rua' text={rua} />
-                                    </Col>
-                                    <Col md={4}>
-                                        <OutputInfo label='Numero' text={numero} />
-                                    </Col>
-    
-                                </Row><Row className='d-flex justify-content-center'>
-                                    {
-                                        userType === "admin" ?  
-                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
-                                                className='Botão-Primario Texto-Branco'    
-                                                type="submit"
-                                                onClick={()=>{navigate("/editarAdmin")}}
-                                                >
-                                                
-                                            Editar Informações 
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='E-mail' text={email} />
+                                </Col>
+
+                            </Row><Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='Telefone' text={telefone} />
+                                </Col>
+
+                            </Row><Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='CPF' text={cpf} />
+                                </Col>
+
+                            </Row><Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='Cidade' text={cidade} />
+                                </Col>
+                                <Col md={4}>
+                                    <OutputInfo label='Estado' text={estado} />
+                                </Col>
+
+                            </Row><Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='Bairro' text={bairro} />
+                                </Col>
+
+                            </Row><Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='CEP' text={cep} />
+                                </Col>
+
+                            </Row><Row>
+                                <Col md={{ span: 3, offset: 3 }}>
+                                    <OutputInfo label='Rua' text={rua} />
+                                </Col>
+                                <Col md={4}>
+                                    <OutputInfo label='Numero' text={numero} />
+                                </Col>
+
+                            </Row><Row className='d-flex justify-content-center'>
+                                {
+                                    userType === "admin" ?
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }}
+                                            className='Botão-Primario Texto-Branco'
+                                            type="submit"
+                                            onClick={() => { navigate("/editarAdmin") }}
+                                        >
+
+                                            Editar Informações
                                         </Button>
                                         : <div></div>
-                                    }
-                                    {
-                                        userType === "promoter" ?  
-                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
-                                                className='Botão-Primario Texto-Branco'    
-                                                type="submit"
-                                                onClick={()=>{navigate("/editarPromoter")}}
-                                                >
-                                                
-                                            Editar Informações 
+                                }
+                                {
+                                    userType === "promoter" ?
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }}
+                                            className='Botão-Primario Texto-Branco'
+                                            type="submit"
+                                            onClick={() => { navigate("/editarPromoter") }}
+                                        >
+
+                                            Editar Informações
                                         </Button>
                                         : <div></div>
-                                    }
-                                    {
-                                        userType === "cliente" ?  
-                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} 
-                                                className='Botão-Primario Texto-Branco'    
-                                                type="submit"
-                                                onClick={()=>{navigate("/editarCliente")}}
-                                                >
-                                                
-                                            Editar Informações 
+                                }
+                                {
+                                    userType === "cliente" ?
+                                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }}
+                                            className='Botão-Primario Texto-Branco'
+                                            type="submit"
+                                            onClick={() => { navigate("/editarCliente") }}
+                                        >
+
+                                            Editar Informações
                                         </Button>
                                         : <div></div>
-                                    }
-                                   
-                                </Row>
-                            </>
-                            : <div>
-                              
-                            </div>
-               }
-               {
-                eventSelect == "cartao" ?  
-                <Row style={{marginBottom: '20%'}} className = "align-items-center">
-                    <Col md={{ span: 2, offset: 3 }}>
-                        <Card style={{ width: '15rem', height:'9rem',marginTop: 40, backgroundColor: 'purple'}}>
-                            <Card.Body>
-                                
-                                <Card.Subtitle className="mb-2 text-muted" >Cartão de Crédito</Card.Subtitle>
-                                    <div className='d-flex justify-content-start'>
-                                        <img
-                                        src="/img/chipCard.png"
+                                }
+
+                            </Row>
+                        </>
+                        : <div>
+
+                        </div>
+                }
+                {
+                    eventSelect == "cartao" ?
+                        <Row style={{ marginBottom: '20%' }} className="align-items-center">
+                            <Col md={{ span: 2, offset: 3 }}>
+                                <Card style={{ width: '15rem', height: '9rem', marginTop: 40, backgroundColor: 'purple' }}>
+                                    <Card.Body>
+
+                                        <Card.Subtitle className="mb-2 text-muted" >Cartão de Crédito</Card.Subtitle>
+                                        <div className='d-flex justify-content-start'>
+                                            <img
+                                                src="/img/chipCard.png"
+                                                width="40"
+                                                height="40"
+                                                className="d-inline-block"
+                                                alt=''
+                                            />{''}
+                                        </div>
+
+                                        <Card.Title style={{ fontSize: 14, color: 'white', fontWeight: 'bold' }}>XXXX XXXX XXXX {cardNumberFour}</Card.Title>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={2}>
+                                <div style={{ marginTop: 40 }} >
+                                    <p style={{ fontWeight: 'bold', fontSize: 12 }}>{cardName}</p>
+                                    <p style={{ fontSize: 12 }}>XXXX XXXX XXXX {cardNumberFour}</p>
+                                </div>
+                            </Col>
+                            <ModalCadastrarCartao />
+                        </Row>
+                        : <div></div>
+
+                }
+                {
+                    eventSelect == "carteira" ?
+                        <Row className="justify-content-center">
+
+                            <div className="boxSaldo">
+                                <div className="logoTicketitasSaldo">
+                                    <img
+                                        src="/img/logo.svg"
                                         width="40"
                                         height="40"
-                                        className="d-inline-block"
                                         alt=''
-                                    />{''}
-                                    </div>
-                                    
-                                <Card.Title style={{fontSize: 14, color : 'white', fontWeight: 'bold'}}>XXXX XXXX XXXX {cardNumberFour}</Card.Title>
-                            </Card.Body>
-                        </Card> 
-                    </Col>
-                    <Col md={2}>
-                    <div style={{marginTop: 40}} >
-                    <p style={{fontWeight: 'bold', fontSize: 12}}>{cardName}</p>
-                    <p style={{fontSize: 12}}>XXXX XXXX XXXX {cardNumberFour}</p>
-                    </div>
-                    </Col>
-                    <ModalCadastrarCartao/>
-                </Row>
-                : <div></div>
-                
-               }
-               {
-                eventSelect == "carteira" ? 
-                <Row className="justify-content-center">
-                
-                <div className="boxSaldo">
-                    <div className="logoTicketitasSaldo">
-                    <img
-                                src="/img/logo.svg"
-                                width="40"
-                                height="40"
-                                alt=''
-                            />
-                    </div>
-                    <div className="saldoConteudo">
-                    <h1 style={{fontSize: 25}}>Saldo</h1>
-                    <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {saldo}</p>
-                    </div>
-                    
-                </div>
-                </Row>
-               
-                 : <div></div>
-               }
-            
-        </Container>
+                                    />
+                                </div>
+                                <div className="saldoConteudo">
+                                    <h1 style={{ fontSize: 25 }}>Saldo</h1>
+                                    <p style={{ fontWeight: 'bold', fontSize: 20 }}>R$: {saldo}</p>
+                                </div>
+
+                            </div>
+                        </Row>
+
+                        : <div></div>
+                }
+
+            </Container>
         </>
     );
 }
