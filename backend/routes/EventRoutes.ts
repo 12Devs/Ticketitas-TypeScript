@@ -16,7 +16,7 @@ eventRoutes.post("", (request: Request, response: Response, next: NextFunction)=
     return createEventController.handle(request, response).catch((error)=>{next(error)});
 });
 
-eventRoutes.get("", (request: Request, response: Response, next: NextFunction)=>{
+eventRoutes.get("", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return listEventsController.handle(request, response).catch((error)=>{next(error)});
 });
 
