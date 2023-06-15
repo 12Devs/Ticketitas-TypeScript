@@ -12,10 +12,8 @@ export default function ItemAdmin(data: any) {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
 
-        api.patch(``, config).then(refresh);
+        api.delete(`/user/administrator/remove/${data.admin.cpf}`, config).then(refresh);
     }
-
-    console.log("Admin: ", data.admin.name, "Status: ", data.admin.status )
     
     return (
         <ListGroup.Item>
