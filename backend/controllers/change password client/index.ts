@@ -5,13 +5,13 @@ import { ClientRepository } from "../../db/ClientRepository";
 import { ClientPasswordChangeCodeRepository } from "../../db/ClientPasswordChangeCodeRepository";
 import { ChangePasswordClientUseCase } from "./ChangePasswordClientUseCase";
 import { ChangePasswordClientController } from "./ChangePasswordClientController";
-import { SendEmail } from "../../utils/SendEmail";
+import { EmailProvider } from "../../utils/EmailProvider";
 
 //Declaration of the instances of the classes
 const clientRepository = new ClientRepository();
 const clientPasswordChangeCodeRepository = new ClientPasswordChangeCodeRepository();
-const sendEmail = new SendEmail();
-const changePasswordClientUseCase = new ChangePasswordClientUseCase(clientRepository, clientPasswordChangeCodeRepository, sendEmail);
+const emailProvider = new EmailProvider();
+const changePasswordClientUseCase = new ChangePasswordClientUseCase(clientRepository, clientPasswordChangeCodeRepository, emailProvider);
 const changePasswordClientController = new ChangePasswordClientController(changePasswordClientUseCase);
 
 //Exporting the instance of the controlling class of this feature-folder
