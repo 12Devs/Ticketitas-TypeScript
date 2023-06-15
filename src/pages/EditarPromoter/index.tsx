@@ -13,6 +13,7 @@ import NavBarGeral from '../../components/NavBarGeral';
 import { useNavigate } from 'react-router-dom';
 
 import { Modal } from 'react-bootstrap';
+import OutputInfo from '../../components/OutputInfo';
 
 export default function EditarPromoter() {
     const [userType, setUserType] = useState('');
@@ -49,6 +50,10 @@ export default function EditarPromoter() {
     const handleShowEmail = () => {
         setShowEmail(true)
     };
+
+    const voltarPerfil = () => {
+        navigate('/perfil');
+    }
 
     const navigate = useNavigate();
 
@@ -149,8 +154,8 @@ export default function EditarPromoter() {
         api.post("user/promoter/update-address", enderecoPromoter, config).then((response) => { console.log(response) });
         api.post("user/promoter/update-name", nomePromoter, config).then((response) => { console.log(response) });
         api.post("user/promoter/update-phone", telefonePromoter, config).then((response) => { console.log(response) });
-
         navigate('/perfil');
+        refresh()
     }
 
     const alterarSenha = (event: any) => {
@@ -169,12 +174,12 @@ export default function EditarPromoter() {
         api.post("user/promoter/update-password", senha, config).then((response) => { console.log(response) });
         refresh()
     }
-    
+
     const alterarEmail = (event: any) => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        
+
         event.preventDefault();
         let email: any = {
             tipo: userType,
@@ -183,7 +188,7 @@ export default function EditarPromoter() {
             newEmailConfirmation: confirmarEmail,
             passwordAuth: senhaAtual
         }
-        api.post("user/client/update-email", email,config).then((response)=>{console.log(response)});
+        api.post("user/client/update-email", email, config).then((response) => { console.log(response) });
 
     }
 
@@ -207,9 +212,6 @@ export default function EditarPromoter() {
                     <Row>
                         <Col sm={6}>
                             <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF/CNPJ"} placeholder={cpf} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
                         </Col>
                     </Row>
 
@@ -243,11 +245,7 @@ export default function EditarPromoter() {
                         </Col>
                     </Row>
                     <Row>
-                        <Col sm={6}>
-                            <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
-                        </Col>
-
-                        <Col sm={3}>
+                        <Col md={{ span: 3, offset: 3 }}>
                             <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
                                 Alterar email
                             </Button>
@@ -274,7 +272,7 @@ export default function EditarPromoter() {
 
                         </Col>
 
-                        <Col sm={3}>
+                        <Col md={3}>
                             <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
                                 Alterar senha
                             </Button>
@@ -302,7 +300,7 @@ export default function EditarPromoter() {
                     </Row>
 
                     <Row className='d-flex justify-content-center'>
-                        <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                        <Button onClick={voltarPerfil} style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
                             Cancelar
                         </Button>
                         <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
