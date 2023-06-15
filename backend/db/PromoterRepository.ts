@@ -340,13 +340,13 @@ class PromoterRepository {
      * @param {string} newEmail
      * @returns {*}
      */
-    public async updateEmail (email: string, newEmail: string){
+    public async updateEmail (cpf: number, newEmail: string){
         await Promoter.update({
             email: newEmail
         },
         {
             where: {
-                email: email
+                cpf: cpf
             }
         });
     }
