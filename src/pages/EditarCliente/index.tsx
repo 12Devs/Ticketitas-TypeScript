@@ -38,15 +38,25 @@ export default function EditarCliente() {
     const [cardNumberFour, setcardNumberFour] = useState('');
     const [saldo, setSaldo] = useState('0');
     const [show, setShow] = useState(false);
+    const [showEmail, setShowEmail] = useState(false);
     const [senhaAtual, setsenhaAtual] = useState('');
     const [novaSenha, setnovaSenha] = useState('');
     const [confirmarSenha, setconfirmarSenha] = useState('');
+    const [novoEmail, setnovoEmail] = useState('');
+    const [confirmarEmail, setconfirmarEmail] = useState('');
 
     const handleClose = () => {
         setShow(false)
     };
     const handleShow = () => {
         setShow(true)
+    };
+
+    const handleCloseEmail = () => {
+        setShowEmail(false)
+    };
+    const handleShowEmail = () => {
+        setShowEmail(true)
     };
 
     const refresh = () => window.location.reload();
@@ -157,6 +167,8 @@ export default function EditarCliente() {
         api.post("user/client/update-phone", telefoneCliente,config).then((response)=>{console.log(response)});
         navigate('/perfil');
     }
+
+
     const alterarSenha = (event: any) => {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -173,6 +185,25 @@ export default function EditarCliente() {
         api.post("user/client/update-password", senha,config).then((response)=>{console.log(response)});
         refresh()
     }
+
+
+    const alterarEmail = (event: any) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        
+        event.preventDefault();
+        let email: any = {
+            tipo: userType,
+            cpf,
+            newEmail: novoEmail,
+            newEmailConfirmation: confirmarEmail,
+            passwordAuth: senhaAtual
+        }
+        api.post("user/client/update-email", email,config).then((response)=>{console.log(response)});
+
+    }
+
 
     return (
         <>
@@ -233,10 +264,36 @@ export default function EditarCliente() {
                 </Row>
 
                 <Row>
-                        <Col sm={8}>
+                        <Col sm={6}>
                             <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
                         </Col>
-                        <Col sm={4}>
+                        <Col sm={3}>
+                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
+                                Alterar email
+                            </Button>
+                            <Modal show={showEmail} onHide={handleCloseEmail}>
+                                <Modal.Body className=" modal-content">
+                                    <Row className='d-flex justify-content-center' >
+                                        <h1 style={{ fontSize: 20 }}>Alterar email</h1>
+                                    </Row>
+
+                                    <Form onSubmit={alterarEmail}>
+                                        <Row className='justify-content-center'>
+                                            <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
+                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                        </Row>
+                                        <Row className='justify-content-center'>
+                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                Confirmar alteração
+                                            </Button>
+                                        </Row>
+                                    </Form>
+                                </Modal.Body>
+                            </Modal>
+
+                        </Col>
+                        <Col sm={3}>
                             <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
                                 Alterar senha
                             </Button>
