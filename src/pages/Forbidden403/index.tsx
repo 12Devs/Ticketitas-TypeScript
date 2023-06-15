@@ -1,4 +1,5 @@
 import NavBarGeral from "../../components/NavBarGeral";
+import React from "react";
 
 export default function Forbidden403() {
     return (

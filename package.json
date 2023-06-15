@@ -45,8 +45,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn backend/index.ts"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
