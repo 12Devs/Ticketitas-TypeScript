@@ -45,8 +45,5 @@ class RemoveAdministratorUseCase{
     public async execute (administratorCpf: number){
         await this.administratorRepository.removeAdministrator(administratorCpf);
     }
-
-
-
 }
 export { RemoveAdministratorUseCase };
