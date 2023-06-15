@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import '../pages.css';
 import jwtDecode from 'jwt-decode';
 import { Modal } from 'react-bootstrap';
+import OutputInfo from '../../components/OutputInfo';
+import Forbidden403 from '../Forbidden403';
 
 export default function EditarAdmin() {
     const [userType, setUserType] = useState('');
@@ -45,6 +47,10 @@ export default function EditarAdmin() {
     const handleShowEmail = () => {
         setShowEmail(true)
     };
+
+    const voltarPerfil = () => {
+        navigate('/perfil');
+    }
 
     const navigate = useNavigate();
 
@@ -114,8 +120,8 @@ export default function EditarAdmin() {
 
         api.post("user/administrator/update-name", nomeAdmin, config).then((response) => { console.log(response) });
         api.post("user/adiministrator/update-phone", telefoneAdmin, config).then((response) => { console.log(response) });
-
         navigate('/perfil');
+        refresh()
     }
 
     const alterarSenha = (event: any) => {
@@ -139,7 +145,7 @@ export default function EditarAdmin() {
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        
+
         event.preventDefault();
         let email: any = {
             tipo: userType,
@@ -148,110 +154,108 @@ export default function EditarAdmin() {
             newEmailConfirmation: confirmarEmail,
             passwordAuth: senhaAtual
         }
-        api.post("user/administrator/update-email", email,config).then((response)=>{console.log(response)});
+        api.post("user/administrator/update-email", email, config).then((response) => { console.log(response) });
 
     }
 
-    return (
-        <>
-            <NavBarGeral />
-            <Form style={{ minHeight: '75vh' }} onSubmit={editarAdmin}>
-                <Container>
+    if (localStorage.getItem("userType") == "admin") {
+        return (
+            <>
+                <NavBarGeral />
+                <Form style={{ minHeight: '75vh' }} onSubmit={editarAdmin}>
+                    <Container>
 
-                    <Row>
-                        <FormLabel label='Editar informações' />
-                    </Row>
+                        <Row>
+                            <FormLabel label='Editar informações' />
+                        </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type="text" defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type="text" defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
-                        </Col>
-                    </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <InputTexto type="text" defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
+                            </Col>
+                            <Col sm={6}>
+                                <InputTexto type="text" defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
+                            </Col>
+                        </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type="number" defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type="number" defaultValue={''} required={true} label={"CPF"} placeholder={cpf} controlId={"cpf"} data={cpf} setData={setCpf} />
-                        </Col>
-                    </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <InputTexto type="number" defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                            </Col>
+                        </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type='email' defaultValue={''} required={true} label={"Email"} placeholder={email} controlId={"email"} data={email} setData={setEmail} />
-                        </Col>
-                        <Col sm={3}>
-                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
-                                Alterar email
+                        <Row>
+                            <Col md={{ span: 3, offset: 3 }}>
+                                <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
+                                    Alterar email
+                                </Button>
+                                <Modal show={showEmail} onHide={handleCloseEmail}>
+                                    <Modal.Body className=" modal-content">
+                                        <Row className='d-flex justify-content-center' >
+                                            <h1 style={{ fontSize: 20 }}>Alterar email</h1>
+                                        </Row>
+
+                                        <Form onSubmit={alterarEmail}>
+                                            <Row className='justify-content-center'>
+                                                <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
+                                                <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
+                                                <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                            </Row>
+                                            <Row className='justify-content-center'>
+                                                <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                    Confirmar alteração
+                                                </Button>
+                                            </Row>
+                                        </Form>
+                                    </Modal.Body>
+                                </Modal>
+
+                            </Col>
+
+                            <Col md={3}>
+                                <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
+                                    Alterar senha
+                                </Button>
+                                <Modal show={show} onHide={handleClose}>
+                                    <Modal.Body className=" modal-content">
+                                        <Row className='d-flex justify-content-center' >
+                                            <h1 style={{ fontSize: 20 }}>Alterar senha</h1>
+                                        </Row>
+
+                                        <Form onSubmit={alterarSenha}>
+                                            <Row className='justify-content-center'>
+                                                <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='text' />
+                                                <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="text" />
+                                                <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="text" />
+                                            </Row>
+                                            <Row className='justify-content-center'>
+                                                <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                    Confirmar alteração
+                                                </Button>
+                                            </Row>
+                                        </Form>
+                                    </Modal.Body>
+                                </Modal>
+                            </Col>
+                        </Row>
+
+
+
+
+                        <Row className='d-flex justify-content-center'>
+                            <Button onClick={voltarPerfil} style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                                Cancelar
                             </Button>
-                            <Modal show={showEmail} onHide={handleCloseEmail}>
-                                <Modal.Body className=" modal-content">
-                                    <Row className='d-flex justify-content-center' >
-                                        <h1 style={{ fontSize: 20 }}>Alterar email</h1>
-                                    </Row>
-
-                                    <Form onSubmit={alterarEmail}>
-                                        <Row className='justify-content-center'>
-                                            <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
-                                        </Row>
-                                        <Row className='justify-content-center'>
-                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
-                                                Confirmar alteração
-                                            </Button>
-                                        </Row>
-                                    </Form>
-                                </Modal.Body>
-                            </Modal>
-
-                        </Col>
-
-                        <Col sm={3}>
-                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
-                                Alterar senha
+                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
+                                Confirmar alterações
                             </Button>
-                            <Modal show={show} onHide={handleClose}>
-                                <Modal.Body className=" modal-content">
-                                    <Row className='d-flex justify-content-center' >
-                                        <h1 style={{ fontSize: 20 }}>Alterar senha</h1>
-                                    </Row>
+                        </Row>
 
-                                    <Form onSubmit={alterarSenha}>
-                                        <Row className='justify-content-center'>
-                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='text' />
-                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="text" />
-                                        </Row>
-                                        <Row className='justify-content-center'>
-                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
-                                                Confirmar alteração
-                                            </Button>
-                                        </Row>
-                                    </Form>
-                                </Modal.Body>
-                            </Modal>
-                        </Col>
-                    </Row>
-
-
-
-
-                    <Row className='d-flex justify-content-center'>
-                        <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
-                            Cancelar
-                        </Button>
-                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
-                            Confirmar alterações
-                        </Button>
-                    </Row>
-
-                </Container>
-            </Form>
-        </>
-    )
+                    </Container>
+                </Form>
+            </>
+        );
+    } else {
+        return (<Forbidden403 />)
+    }
 }

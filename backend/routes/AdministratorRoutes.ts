@@ -25,6 +25,8 @@ import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config
 import { listAllPromotersController } from '../controllers/list all promoters';
 import { listAllAdministratorsController } from '../controllers/list all administrators';
 import { listAllPromoterRegistrationController } from '../controllers/list all promoter registration';
+import { removeAdministratorController } from '../controllers/remove administrator';
+import { ensureAuthenticatedSuperAdministrator } from '../middlewares/EnsureAuthenticatedSuperAdministrator';
 
 /**
  * Instance of the Router class/submodule for registering routes using the Router submodule of the express API/module
@@ -112,6 +114,18 @@ administratorRoutes.post("/administrator/refresh-token", (request: Request, resp
  */
 administratorRoutes.post("/administrator/update-name", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return updateUserNameController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+/**
+ * Registers the route for updating an administrator's name as "/user/administrator/update-name", using the {@link updateUserNameController.handle} method
+ * @param request Request object
+ * @param response Response object
+ * @param next Tells the express API that there may be a function to execute before or after the request
+ * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
+ * @param error Possible error thrown by either the express API or the Error API created for this project
+ */
+administratorRoutes.delete("/administrator/remove/:cpf", ensureAuthenticatedSuperAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return removeAdministratorController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
 /**
