@@ -11,13 +11,7 @@ const app = express();
 app.use(express.json());
 
 //Cors config
-const allowedOrigins = "http://localhost:3000/";
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-  credentials:true,
-  optionsSuccessStatus: 200
-};
-app.use(cors(options));
+app.use(cors());
 
 //Usando as rotas
 app.use(router);

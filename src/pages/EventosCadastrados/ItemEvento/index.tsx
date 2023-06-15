@@ -4,6 +4,7 @@ import { api } from '../../../services/api';
 
 import '../../../components/Button/Button.css';
 import '../../../components/Texto/Texto.css';
+import { useEffect } from 'react';
 
 export default function ItemEvento(data: any) {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function ItemEvento(data: any) {
     }
 
     const atualizarDestaque = () => {
-        api.patch(`/event/set-featured/${data.evento.id}`, config).then(refresh);
+        api.patch(`/event/set-featured/${data.evento.id}`, config, config).then(refresh);
     }
 
     const verDetalhes = () => {
