@@ -75,18 +75,18 @@ class LoginAdministratorUseCase {
 
         const token = sign({tipo: "administrator", nome: infoAdministrator.name},
         
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET,
 
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: process.env.EXPIRES_TOKEN as string});
+            expiresIn: process.env.EXPIRES_TOKEN});
     
     
     const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
         
-        process.env.JWT_REFRESH_SECRET as string,
+        process.env.JWT_REFRESH_SECRET,
         
         {subject: `${infoAdministrator.cpf}`,
-            expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
+            expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
     
     var expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + 30);

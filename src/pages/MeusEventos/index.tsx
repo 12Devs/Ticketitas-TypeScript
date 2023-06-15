@@ -1,25 +1,46 @@
-import {useEffect,useState} from 'react'
-import {Container} from 'react-bootstrap'
-import { api } from '../../services/api';
-import NavBarGeral from '../../components/NavBarGeral';
+import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import FormLabel from '../../components/FormLabel';
+import NavBarGeral from '../../components/NavBarGeral';
+import Forbidden403 from '../Forbidden403';
+import { api } from '../../services/api';
+import { useState, useEffect } from 'react';
 
-export default function MeusEventos(){
-    const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
-    
+import '../../components/Button/Button.css';
+import '../../components/Texto/Texto.css';
+import ItemEvento from './ItemEvento';
+
+export default function MeusEventos() {
+    const [arrayEventos, setArrayEventos] = useState({ PromoterInfos: [] });
+
     useEffect(() => {
-        api.get(`/event`).then((response) => {
+        const config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
+        api.get(`user/promoter/events`,config).then((response) => {
             setArrayEventos(response.data);
-            console.log(arrayEventos)
+            console.log(response)
         });
     }, []);
-    return(
-        <>
-        <NavBarGeral/>
-        
-        <Container>
-            <FormLabel label={"Meus Eventos"}/>
-        </Container>
-        </>
-    );
+
+    if (localStorage.getItem("userType") == "promoter") {
+
+        return (
+            <>
+                <NavBarGeral />
+                <Container style={{ minHeight: '75vh' }} className='ms-5 me-5'>
+                    <FormLabel label={"Meus Eventos"} />
+                    <ListGroup>
+
+                        {arrayEventos.PromoterInfos.map((evento: any, index) => (
+                            <ItemEvento evento={evento}/>
+                        ))}
+
+                    </ListGroup>
+                </Container>
+            </>
+        );
+    } else {
+        return (<Forbidden403 />)
+    }
+
 }

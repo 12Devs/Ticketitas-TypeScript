@@ -10,7 +10,14 @@ const app = express();
 //Config json response
 app.use(express.json());
 
-app.use(cors());
+//Cors config
+const allowedOrigins = "http://localhost:3000";
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(options));
 
 //Usando as rotas
 app.use(router);
@@ -26,12 +33,14 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
 });
 
 conn.sync().then(async () => {
-  //  await FillDataBase.fillClients();
-  //  await FillDataBase.fillPromoters();
-  //  await FillDataBase.fillSuperAdministrator();
-  //  await FillDataBase.fillEvents();
-  //  await FillDataBase.setHighlights();
-  //  await FillDataBase.promoterAprove();
+// await FillDataBase.fillClients();
+// await FillDataBase.fillPromoters();
+// await FillDataBase.fillSuperAdministrator();
+// await FillDataBase.fillAdministrador();
+// await FillDataBase.setHighlights();
+// await FillDataBase.promoterAprove();
+// await FillDataBase.fillEvents();
+// await FillDataBase.fillImageEvents()
   app.listen(process.env.PORT_BACK, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
 

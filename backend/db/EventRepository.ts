@@ -207,6 +207,19 @@ class EventRepository {
             }
         });
     }
+
+    public async updateImagePopularDB (promoterCpf: number, imageEvent: any){
+        await Event.update({
+            imageEvent: imageEvent
+        },
+        {
+            where: {
+                promoterCpf: promoterCpf
+            }
+        });
+    }
+
+
     
     /**
      * Update status event
@@ -335,6 +348,26 @@ class EventRepository {
         const allEvents = await Event.findAll({raw: true});
         return allEvents;
     }
+
+
+
+    
+    public async createPopularDB (promoterCpf: number, nome: string, descricao: string, dataEvento: Date, status: boolean, quantPista: number, quantStage: number, quantVip: number, valorPista: number, valorStage: number, valorVip: number, imageEvent: any , porcentagemMeia: number, porcentagemGratis: number, cep: number, estado: string, cidade: string, bairro: string, rua: string, numero: number) {
+
+        const enderecoEvent: any = await this.createEnderecoEventController.handle(cep, estado, cidade, bairro, rua, numero);
+        
+        const enderecoEventId = enderecoEvent.id;
+
+        const event = await Event.create({nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, imageEvent , porcentagemMeia, porcentagemGratis, promoterCpf, enderecoEventId});
+        
+        return event;
+    }
+
+
+
+
+
+
 
 
 

@@ -23,6 +23,8 @@ import { generateAllEventsReportController } from '../controllers/generate all e
 //Import of the generation code from the config file
 import {SUPER_ADMIN_GENERATION_CODE as superAdminGenerationCode} from "../config/env"
 import { listAllPromotersController } from '../controllers/list all promoters';
+import { listAllAdministratorsController } from '../controllers/list all administrators';
+import { listAllPromoterRegistrationController } from '../controllers/list all promoter registration';
 
 /**
  * Instance of the Router class/submodule for registering routes using the Router submodule of the express API/module
@@ -125,6 +127,30 @@ administratorRoutes.get("/administrator/list-promoters", ensureAuthenticatedAdmi
 });
 
 /**
+ * Registers the route for updating an administrator's name as "/user/administrator/update-name", using the {@link listAllAdministratorsController.handle} method
+ * @param request Request object
+ * @param response Response object
+ * @param next Tells the express API that there may be a function to execute before or after the request
+ * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
+ * @param error Possible error thrown by either the express API or the Error API created for this project
+ */
+administratorRoutes.get("/administrator/list-administrator", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return listAllAdministratorsController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+/**
+ * List all promoter registration "/user/administrator/update-status-promoter", using the {@link listAllPromoterRegistrationController.handle}
+ * @param request Request object
+ * @param response Response object
+ * @param next Tells the express API that there may be a function to execute before or after the request
+ * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
+ * @param error Possible error thrown by either the express API or the Error API created for this project
+ */
+administratorRoutes.get("/administrator/list-promoter-resgitration", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+    return listAllPromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
+});
+
+/**
  * Registers the route for updating an administrator's e-mail address as "/user/administrator/update-email", using the {@link updateUserEmailController.handle} method
  * @param request Request object
  * @param response Response object
@@ -180,15 +206,14 @@ administratorRoutes.get("/administrator/super/:id", (request: Request, response:
 });
 
 /**
- * Registers the route for requesting the update of the status of a promoter type of user as "/user/administrator/update-status-promoter/:cpf", using the {@link updateStatusPromoterController.handle} method
- * Uses the "cpf" passed via url parameter to determine which promoter will have their status updated
+ * Registers the route for requesting the update of the status of a promoter type of user as "/user/administrator//administrator/aprove-registration/:promoterCpf", using the {@link aprovePromoterRegistrationController.handle}
  * @param request Request object
  * @param response Response object
  * @param next Tells the express API that there may be a function to execute before or after the request
  * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
  * @param error Possible error thrown by either the express API or the Error API created for this project
  */
-administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
+administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf",(request: Request, response: Response, next: NextFunction)=>{
     return aprovePromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
 });
 

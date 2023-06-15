@@ -143,7 +143,6 @@ class CreateEventUseCase {
         await this.stockRepository.create(event.id, event.quantPista, event.quantStage, event.quantVip);
         
     }
-
 }
 
 export { CreateEventUseCase };

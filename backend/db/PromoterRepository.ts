@@ -109,8 +109,8 @@ class PromoterRepository {
         return statusPromoter;
     }
 
-        /**
-     * find status a promoter by cpf
+    /**
+     * find all promoters
      * @date 7/6/2023 - 17:42:13 PM
      *
      * @public
@@ -340,13 +340,13 @@ class PromoterRepository {
      * @param {string} newEmail
      * @returns {*}
      */
-    public async updateEmail (email: string, newEmail: string){
+    public async updateEmail (cpf: number, newEmail: string){
         await Promoter.update({
             email: newEmail
         },
         {
             where: {
-                email: email
+                cpf: cpf
             }
         });
     }

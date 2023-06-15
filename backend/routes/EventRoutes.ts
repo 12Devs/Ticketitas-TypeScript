@@ -31,13 +31,12 @@ eventRoutes.patch("/update-status", ensureAuthenticatedPromoter, (request: Reque
     return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-eventRoutes.patch("/administrator/update-status", ensureAuthenticatedAdministrator,(request: Request, response: Response, next: NextFunction)=>{
-    return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
-});
-
 eventRoutes.patch("/set-featured/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
     return setFeaturedEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
+eventRoutes.patch("/administrator/update-status", ensureAuthenticatedAdministrator,(request: Request, response: Response, next: NextFunction)=>{
+    return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
+});
 
 export { eventRoutes };

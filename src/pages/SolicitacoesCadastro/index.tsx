@@ -8,17 +8,18 @@ import { useState, useEffect } from 'react';
 
 import '../../components/Button/Button.css';
 import '../../components/Texto/Texto.css';
+import ItemSolicitacao from './ItemSolicitacao';
 
 export default function SolicitacoesCadastro() {
-    const [arrayPromoters, setArrayPromoters] = useState({ allPromoters: [] });
+    const [arrayPromoters, setArrayPromoters] = useState({ allPromoterRegistration: [] });
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
 
     useEffect(() => {
-        api.get(``, config).then((response) => {
-            console.log("Todos os promoters: " + response);
+        api.get(`/user/administrator/list-promoter-resgitration`, config).then((response) => {
+            setArrayPromoters(response.data);
         });
     }, []);
 
@@ -28,23 +29,15 @@ export default function SolicitacoesCadastro() {
                 <NavBarGeral />
                 <Container style={{ minHeight: '75vh' }} className='ms-5 me-5'>
                     <FormLabel label={"Solicitações de Cadastro"} />
+
                     <ListGroup as="ol" numbered>
-
-                        <ListGroup.Item as="li"
-                            className="d-flex justify-content-between">
-                            <div className="ms-2 me-auto">
-                                <h5>Nome do Promoter</h5>
-                                <p>CPF</p>
-                                <p>email</p>
-                                <p>telefone</p>
-                            </div>
-                            <div className='row align-items-center'>
-                                <Button className='ms-5 me-5 Botão-Secundario Texto-Azul Texto-MuitoPequeno'>Negar cadastro</Button>
-                                <Button className='ms-5 me-5 Botão-Primario Texto-Branco Texto-MuitoPequeno'>Aceitar cadastro</Button>
-                            </div>
-                        </ListGroup.Item>
-
+                        {arrayPromoters.allPromoterRegistration.length == 0 &&
+                        <h3>Não há solicitações de cadastro</h3>}
+                        {arrayPromoters.allPromoterRegistration.map((promoter: any, index) => (
+                            <ItemSolicitacao promoter={promoter}/>
+                        ))}
                     </ListGroup>
+
                 </Container>
             </>
         );
