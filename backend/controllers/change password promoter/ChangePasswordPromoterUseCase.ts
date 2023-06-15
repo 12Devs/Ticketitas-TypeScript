@@ -5,7 +5,7 @@ import { PromoterRepository } from "../../db/PromoterRepository";
 import { PromoterPasswordChangeCodeRepository } from "../../db/PromoterPasswordChangeCodeRepository";
 
 import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
-import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
+import { EmailProvider } from "../../utils/EmailProvider"; //Import of the EmailProvider class
 
 /**
  * Class that contains the methods and procedures necessary to send an email with the link with which an user can change their password
@@ -35,27 +35,27 @@ class ChangePasswordPromoterUseCase {
      private promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository;
     
     /**
-     * Creates an instance of {@link SendEmail}
+     * Creates an instance of {@link EmailProvider}
      * @date 5/12/2023 - 4:52:03 PM
      *
      * @private Marks this instance as having "private" visibility
-     * @type {SendEmail}
+     * @type {EmailProvider}
      */
-    private sendEmail: SendEmail;
+    private emailProvider: EmailProvider;
 
     /**
-     * Constructor for instances of {@link PromoterRepository}, {@link PromoterPasswordChangeCodeRepository} and {@link SendEmail}
+     * Constructor for instances of {@link PromoterRepository}, {@link PromoterPasswordChangeCodeRepository} and {@link EmailProvider}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {PromoterRepository} promoterRepository Private instance of the PromoterRepository class
      * @param {PromoterPasswordChangeCodeRepository} promoterPasswordChangeCodeRepository Private instance of the PromoterPasswordChangeCodeRepository class
-     * @param {SendEmail} sendEmail Private instance of the SendEmail class
+     * @param {EmailProvider} emailProvider Private instance of the EmailProvider class
      */
-    constructor (promoterRepository: PromoterRepository, promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository, sendEmail: SendEmail) {
+    constructor (promoterRepository: PromoterRepository, promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository, emailProvider: EmailProvider) {
         this.promoterRepository =  promoterRepository;
         this.promoterPasswordChangeCodeRepository = promoterPasswordChangeCodeRepository;
-        this.sendEmail = sendEmail;
+        this.emailProvider = emailProvider;
     }
 
     /**
@@ -106,15 +106,14 @@ class ChangePasswordPromoterUseCase {
             resetCode: randomCode
         }
 
+        const emailInfo = {
+            template: 'ChangePassword',
+            subject: `PEDIDO DE ALTERAÇÃO DE SENHA! CODE: ${randomCode}`
+        }
+
+        await this.emailProvider.sendEmail(email, emailInfo);
+        
         return { resetPromoterPassword };
-
-        //Message subject text
-        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO PROMOTOR RECEBIDO";
-        //Message description text
-        //const message = (`  Caro Promotor de Vendas:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        //await this.sendEmail.sendEmail(email, subject, message);
 
     }
 }
