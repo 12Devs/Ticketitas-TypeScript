@@ -88,7 +88,7 @@ const NavBarGeral = () => {
   }, []);
 
   useEffect(() => {
-    api.get(`/event`).then((response) => {
+    api.get(`/event/active`, ).then((response) => {
         setArrayEventos(response.data);
     });
 }, []);

@@ -8,6 +8,7 @@ import { listOneEventController } from '../controllers/list one event/index';
 import { setFeaturedEventController } from '../controllers/set featured event/index';
 import { updateStatusEventController } from '../controllers/update status event';
 import { ensureAuthenticatedAdministrator } from '../middlewares/EnsureAuthenticatedAdministrator';
+import { listActiveEventsController } from '../controllers/list active events';
 
 const eventRoutes = Router();
 
@@ -15,8 +16,12 @@ eventRoutes.post("", (request: Request, response: Response, next: NextFunction)=
     return createEventController.handle(request, response).catch((error)=>{next(error)});
 });
 
-eventRoutes.get("", (request: Request, response: Response, next: NextFunction)=>{
+eventRoutes.get("", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return listEventsController.handle(request, response).catch((error)=>{next(error)});
+});
+
+eventRoutes.get("/active", (request: Request, response: Response, next: NextFunction)=>{
+    return listActiveEventsController.handle(request, response).catch((error)=>{next(error)});
 });
 
 eventRoutes.get("/:id", (request: Request, response: Response, next: NextFunction)=>{
@@ -31,7 +36,11 @@ eventRoutes.patch("/update-status", ensureAuthenticatedPromoter, (request: Reque
     return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 
-eventRoutes.patch("/set-featured/:id", ensureAuthenticatedPromoter, (request: Request, response: Response, next: NextFunction)=>{
+eventRoutes.patch("/administrator/update-status", ensureAuthenticatedAdministrator,(request: Request, response: Response, next: NextFunction)=>{
+    return updateStatusEventController.handle(request, response).catch((error)=>{next(error)}); 
+});
+
+eventRoutes.patch("/set-featured/:id", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return setFeaturedEventController.handle(request, response).catch((error)=>{next(error)}); 
 });
 

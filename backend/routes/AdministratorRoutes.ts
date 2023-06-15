@@ -213,7 +213,7 @@ administratorRoutes.get("/administrator/super/:id", (request: Request, response:
  * @param ensureAuthenticatedAdministrator instance of the authentication middleware class used to verify that there is indeed an administrator logged in
  * @param error Possible error thrown by either the express API or the Error API created for this project
  */
-administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf",(request: Request, response: Response, next: NextFunction)=>{
+administratorRoutes.patch("/administrator/aprove-registration/:promoterCpf", ensureAuthenticatedAdministrator, (request: Request, response: Response, next: NextFunction)=>{
     return aprovePromoterRegistrationController.handle(request, response).catch((error)=>{next(error)});   
 });
 

@@ -12,8 +12,12 @@ import ItemEvento from './ItemEvento';
 export default function EventosCadastrados() {
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    };
+
     useEffect(() => {
-        api.get(`/event`).then((response) => {
+        api.get(`/event`, config).then((response) => {
             setArrayEventos(response.data);
         });
     }, []);
