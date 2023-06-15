@@ -64,24 +64,28 @@ class FillDataBase {
         await createPromoterUseCase.execute("Caldinho Promoter", 82231237709, "caldinhopromoter@email.com", 75991151505, "123abc", "123abc", 45400000, "Valença", "BA", "Centro", "Rua da Festa", 22);
     }
 
-    public static async fillSuperAdministrator() {
+    public static async fillAdministrator() {
         const administratorRepository = new AdministratorRepository();
         const salt = await bcrypt.genSalt(12);
-        const senhaHash = await bcrypt.hash("12devsticketitas", salt);
-        administratorRepository.create("12Devs", 0, "ticketitas@gmail.com", 0, senhaHash);
+        const senhaHash = await bcrypt.hash("abc123", salt);
+
+        await administratorRepository.create("Gabriel", 45850724972, "gabriel@email.com", 75981272922, senhaHash);
+
+        await administratorRepository.create("João Gabriel", 75316609543, "joaogabriel@email.com", 75981272922, senhaHash);
+
+        await administratorRepository.create("Lucca Princeso", 82231237709, "luccaprinceso@email.com", 75991151505, senhaHash);
     }
 
+    public static async fillSuperAdministrator() {
+        const administratorRepository = new AdministratorRepository();
+        const superAdministratorRelationRepository = new SuperAdministratorRelationRepository();
 
-    public static async fillAdministrador() {
+        const salt = await bcrypt.genSalt(12);
+        const senhaHash = await bcrypt.hash("12devssuper", salt);
 
-        const createAdministratorUseCase = new CreateAdministratorUseCase(new AdministratorRepository(), new EmailProvider(), new SuperAdministratorRelationRepository());
-        await createAdministratorUseCase.execute("Gabriel", 45850724972, "gabriel@email.com", 75988532244);
-
-        await createAdministratorUseCase.execute("João Gabriel", 75316609543, "joaogabriel@email.com", 75981272922);
-
-        await createAdministratorUseCase.execute("Lucca Princeso", 82231237709, "luccaprinceso@email.com", 75991151505);
+        await administratorRepository.create("12Devs", 0, "ticketitas@gmail.com", 0, senhaHash);
+        await superAdministratorRelationRepository.create(0);
     }
-
 
     public static async fillEvents() {
         const createEventUseCase = new CreateEventUseCase(new EventRepository(), new StockRepository(), new PromoterRepository());

@@ -34,6 +34,9 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
   const [status, setStatus] = useState(false);
 
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("userType");
+
   function subtrai(valor: number, setValor: Function) {
     if (valor > 0) {
       setValor(valor - 1);
@@ -50,7 +53,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     var quantidadeTotalEscolhida = quantidadePistaInteira + quantidadePistaMeia + quantidadeStageInteira + quantidadeStageMeia + quantidadeVipInteira + quantidadeVipMeia + quantidadeFree;
 
     if (quantidadeTotalEscolhida == 0){
-      console.log("Escolha ao menos um ingresso para proseguir")
+      console.log("Escolha ao menos um ingresso para prosseguir")
     } else {
       var dados = {
         eventId: event.id,
@@ -536,10 +539,11 @@ export default function AdicionarIngresso({ event }: { event: any }) {
   }
 
   function renderOpcoesGerais(){
+    
     if (event == null) {
       return null;
     } else {
-
+     
       var totalIngresso = parseFloat(event.porcentagemGratis) + parseInt(event.quantStage) + parseInt(event.quantPista) + parseInt(event.quantVip);
 
       if (totalIngresso == 0){
@@ -596,7 +600,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
       }
     }
   }
-
+  
   useEffect(() => {
     var total = somaTotal();
     setValorTotal(total);
@@ -609,41 +613,25 @@ export default function AdicionarIngresso({ event }: { event: any }) {
     quantidadeVipMeia,
   ]);
 
-  // useEffect(()=>{
+  function renderAll()
+  {
+    if(user=="cliente")
+    {
+      return(
+        <Container className="larguraMinima">
 
-  //     const dadosCarrinhoStr = localStorage.getItem('dadosCarrinho');
-
-  //     if(dadosCarrinhoStr != null){
-  //         const dadosCarrinhoObj = JSON.parse(dadosCarrinhoStr);
-  //         console.log("Dados do carrinho:", dadosCarrinhoObj);
-
-  //         console.log("Total no LS: ",dadosCarrinhoObj.valorTotal);
-  //         setQuantidadePistaInteira(dadosCarrinhoObj.quantidadePistaInteira);
-  //         setQuantidadePistaMeia(dadosCarrinhoObj.quantidadePistaMeia);
-  //         setQuantidadeStageInteira(dadosCarrinhoObj.quantidadeStageInteira);
-  //         setQuantidadeStageMeia(dadosCarrinhoObj.quantidadeStageMeia);
-  //         setQuantidadeVipInteira(dadosCarrinhoObj.quantidadeVipInteira);
-  //         setQuantidadeVipMeia(dadosCarrinhoObj.quantidadeVipMeia);
-
-  //         // setValorTotal()
-
-  //         let novoTotal = dadosCarrinhoObj.valorTotal;
-
-  //         setValorTotal(novoTotal);
-  //         // console.log("Total", novoTotal);
-
-  //     }
-  //     localStorage.removeItem('dadosCarrinho');
-
-  // },[])
-
+          <h4 className="Texto-Preto Texto-Medio text-start fw-bold">Ingressos</h4>
+            <div className="Modal-Ingresos p-3">
+            {renderOpcoesGerais()}
+            </div>
+        </Container>
+        
+      )
+    }
+}
   return (
     <>
-      <h4 className="Texto-Preto Texto-Medio text-start fw-bold">Ingressos</h4>
-
-      <div className="Modal-Ingresos p-3">
-        {renderOpcoesGerais()}
-      </div>
+      {renderAll()}
     </>
   );
 }

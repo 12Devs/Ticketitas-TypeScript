@@ -21,7 +21,8 @@ function CarouselPrincipal() {
     }, []);
 
     const navigate = useNavigate();
-    console.log(arrayEventos);
+
+    console.log("Todos os evenetos", arrayEventos);
 
     function renderCarouselItem(dados: any) {
 
@@ -39,13 +40,15 @@ function CarouselPrincipal() {
                 navigate(`/evento/${idEvento}`);
             }
 
+            console.log(`https://drive.google.com/uc?export=view&id=${dados.imageEvent}`);
+
             return (
                 <Carousel.Item >
                     <Container>
                         <Row>
                             <Col sm={8} className='noMarginPadding'>
 
-                                <Image className='configImg' src="img/exemploHeaderEvento.png" />
+                                <Image className='configImg' src={`https://drive.google.com/uc?export=view&id=${dados.imageEvent}`} />
 
                             </Col>
                             <Col sm={4} className=''>

@@ -11,12 +11,14 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useLocation } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import ModalCadastrarCartao from '../../../components/ModalCadastarCartao';
 
 
 //import './styleDescricao.css';
 import './styleResumoCompra.css';
 import '../../../components/Texto/Texto.css';
 import { container } from 'googleapis/build/src/apis/container';
+import exp from 'constants';
 
 export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     
@@ -29,7 +31,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     var infoID1 = '0';
     
 
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
 
     if (location.state) {
         infoID1 = location.state.idCheckout;
@@ -64,32 +66,40 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [cardNumber, setCardNumber] = useState('xxxx xxxx xxxx 0000');
     const [cardHolder, setCardHolder] = useState('Mailson A S Santos');
     const [cardExp, setCardExp] = useState('12/25');
+    const [cardCVV, setCardCVV] = useState("");
 
-    const [saldo, setSaldo] = useState(false);
+    const [saldo, setSaldo] = useState(0.0);
+    const [TemCartao, setTemCartao] = useState(false);
+    const [TemSaldo, setTemSaldo] = useState(false);
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
     
     useEffect(()=>{
         const token = localStorage.getItem('token')
+        
         const user = localStorage.getItem('userType');
+        
         if(token != null){
             dados = jwtDecode(token);
+            
             if(dados != null){
                 setCpf(dados.sub);
             }
         }
         api.get(`user/client/${cpf}`, config).then((response) => {
-            console.log(response);
+            
+            setSaldo(response.data.ClientInfos.client.saldo);
+            if(saldo>0.0)
+            {
+                setTemSaldo(true);
+            }
             setPrimeiroNome(response.data.ClientInfos.client.nome);
             setEmail(response.data.ClientInfos.client.email);
            
          
         });
         
-        api.get(`client/card/}`, config).then((response) => {
-            console.log("Retorno Cartão: ",response);
-
-        });
+        
     },[])
     useEffect(() => {
         
@@ -98,17 +108,16 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             
             
             api.get(`sale/checkout/${idCheckout}`, config).then((response) => {
-            console.log("retorno checkout: ",response);
+           
 
-            console.log("eventID: ",response.data.CheckoutInfos.checkout.eventId);
-            console.log("response id do evento: ",response.data.CheckoutInfos.checkout.eventId);
+            
             setIdvento(response.data.CheckoutInfos.checkout.eventId);
             setTotal(response.data.CheckoutInfos.checkout.amountSale)
             
-            console.log("eventID: ",idEvento);
+           
             
             });
-            console.log("array dados:", arrayEventos);
+            
         }
 
         
@@ -116,10 +125,19 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     }, []);
     
     useEffect(() => {
+        api.get(`/user/client/card`, config).then((response) => {
+            console.log("Retorno Cartão: ",response);
+
+        });
+
+    }, []);
+
+
+    useEffect(() => {
         if(idEvento!="0")
         {
         api.get(`/event/${idEvento}`).then((response) => {
-            console.log("retorno evento: ",response);
+            
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
@@ -148,40 +166,46 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
 
     function renderCartao(){
-        if (true){
+        console.log("Tem cartao:", TemCartao)
+        if (!TemCartao){
             return(
                 <>
-              
-            
             <Row className=''>
-                <h5>
-                    Dados do cartão
-                </h5>
+
+            
+            
+            <Row>
+              
                 
             </Row>  
                 <Row>
-                    <Col sm={7}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                    <Col sm={5}>
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputCardNumber"} data={cardNumber} setData={setCardNumber}/>
                     </Col>
-                    <Col sm={4}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                    <Col sm={3}>
+                        <InputTexto type={'date'} defaultValue={''} required={true} label={"VALIDADE*"} placeholder={""} controlId={"inputExp"} data={cardExp} setData={setCardExp}/>
                     </Col>
+                    
                     
                     
                 </Row>
                 <Row>
-                        <Col sm={7}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"TITULAR DO CARTÃO*"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                        <Col sm={5}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"TITULAR DO CARTÃO*"} placeholder={""} controlId={"inputCardHolder"} data={cardHolder} setData={setCardHolder}/>
                         </Col>
-                        <Col sm={4}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF DO TITULAR*"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
-                        </Col>
+                        <Col sm={2}>
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CVV*"} placeholder={""} controlId={"inputCVV"} data={cardCVV} setData={setCardCVV}/>
+                    </Col>
                         
+                </Row>
+
                 </Row>
                 </>
             ) 
         }
         else{
+            
+
             return(
                 <>
             
@@ -220,11 +244,29 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 </Card.Body>
 
             </Card>
+            
+
+            
+           
+            
             </Col>
 
             
+            {renderSaldo()}
             
-            <Col>
+            </Row>
+            </>
+        )
+        }
+    }
+    
+    function renderSaldo(){
+
+        if(saldo>0)
+        {
+            return(
+                <>
+                <Col>
                 
                 <div className="boxSaldo1">
                         <div className="logoTicketitasSaldo1">
@@ -240,36 +282,36 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {}</p>
                         </div>
                         <Form>
-                <Form.Check  onChange={e => { setSaldo(!saldo)}} className='d-flex justify-content-center'
+                <Form.Check  onChange={e => { setTemSaldo(!TemSaldo)}} className='d-flex justify-content-center'
                     type="switch"
                     id="custom-switch"
                     label ="Usar Saldo para pagar"
                 />
                 </Form>
-                    <p> saldo: {total}</p>
+                    <p> saldo: {saldo}</p>
                     </div>
                 </Col>
-            </Row>
-            </>
-        )
+                </>
+            )
         }
+        
     }
-
+    
    
     useEffect(() => {
         var valorTotalCartao = 0;
-        if(saldo)
+        if(TemSaldo)
         {
-            let totalTeste = total - 100;
+            let totalTeste = total - saldo
             setTotal(totalTeste);
         }
         else
         {
-            let totalTeste = total + 100;
+            let totalTeste = total + saldo;
             setTotal(totalTeste);
         }
 
-    }, [saldo]);
+    }, [TemSaldo]);
 
     return (
         <Container>
@@ -292,9 +334,13 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
                             {descricao}
                         </p>
-
+                        
                         <Row className=''>
-                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold py-5'>Dados do Ingresso</h4>
+                            
+                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold pt-5'>Dados do Ingresso</h4>
+                        <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
+                            Insira os dados de quem pertence o(s) ingresso(s)
+                        </p>
                         <Form style={{minHeight: '30vh'}}>
                         <Row>
                             <Col lg={7}>
