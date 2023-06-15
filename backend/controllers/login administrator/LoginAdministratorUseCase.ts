@@ -79,9 +79,9 @@ class LoginAdministratorUseCase {
         const isSuper = await this.superAdministratorRelationRepository.findByCpf(infoAdministrator.cpf);
 
         if (isSuper) {
-            const token = sign({tipo: "administrator", nome: infoAdministrator.name},
+            const token = sign({tipo: "superAdministrator", nome: infoAdministrator.name},
         
-            process.env.JWT_SECRET as string,
+            process.env.JWT_SECRET_SUPER_ADMINISTRATOR as string,
     
             {subject: `${infoAdministrator.cpf}`,
                 expiresIn: process.env.EXPIRES_TOKEN as string});
@@ -110,7 +110,7 @@ class LoginAdministratorUseCase {
 
         const token = sign({tipo: "administrator", nome: infoAdministrator.name},
         
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET_ADMINISTRATOR as string,
 
         {subject: `${infoAdministrator.cpf}`,
             expiresIn: process.env.EXPIRES_TOKEN as string});
