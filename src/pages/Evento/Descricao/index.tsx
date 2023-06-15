@@ -9,6 +9,7 @@ import { api } from '../../../services/api';
 import './styleDescricao.css';
 import '../styleGeralEvento.css';
 import '../../../components/Texto/Texto.css';
+import { Button } from 'react-bootstrap';
 
 export default function Descricao({ idEvento }: { idEvento: string }) {
     const [titulo, setTitulo] = useState('Titulo');
@@ -34,7 +35,7 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
             setImageEvent(response.data.eventInfos.event.imageEvent);
-            console.log("ID da imagem: ",response.data.eventInfos.event.imageEvent)
+            console.log("ID da imagem: ", response.data.eventInfos.event.imageEvent)
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);
@@ -43,6 +44,17 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
         });
     }, []);
 
+    const share = () => {
+        if (navigator.share !== undefined) {
+            navigator.share({
+                title: titulo,
+                text: descricao,
+                url: 'http://localhost:3000',
+            })
+                .then(() => console.log('Successful share'))
+                .catch((error) => console.log('Error sharing', error));
+        }
+    }
 
     return (
         <Container>
@@ -59,6 +71,11 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             </Row>
 
             <section className='larguraMainContentEventos mt-5'>
+                <Row>
+                <Button onClick={share} style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                    Compartilhar
+                </Button>
+                </Row>
                 <Row className='noMarginPadding'>
                     <Col sm={7}>
                         <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Descrição do evento</h4>
