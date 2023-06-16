@@ -1,8 +1,16 @@
+//Import of the necessary modules for the functioning of the class
 import { Request } from "express";
 import multer from "multer";
 import crypto from "crypto";
 import { ApiError } from "../errors/ApiError";
 
+
+/**
+ * Function that stores image
+ * @date 6/15/2023 - 11:36:06 PM
+ *
+ * @type {*}
+ */
 const imageStore = multer.diskStorage({
     destination: function(request: Request, file, callBack) {
         callBack(null, `./backend/temp`);
@@ -16,6 +24,13 @@ const imageStore = multer.diskStorage({
     }
 })
 
+
+/**
+ * Function that uploads image
+ * @date 6/15/2023 - 11:36:29 PM
+ *
+ * @type {*}
+ */
 const imageUpload = multer({
     storage: imageStore,
     fileFilter(request, file, callBack) {

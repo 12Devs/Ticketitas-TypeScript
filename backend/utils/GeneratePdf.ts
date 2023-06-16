@@ -1,3 +1,4 @@
+//Import of the necessary modules for the functioning of the class
 import PdfPrinter from "pdfmake";
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 import fs from 'fs';
@@ -5,6 +6,14 @@ import { resolve } from "path";
 import nodemailer from 'nodemailer';
 import handlebars from 'handlebars';
 
+
+/**
+ * Class that generates pdf
+ * @date 6/15/2023 - 11:35:15 PM
+ *
+ * @class GeneratePdf
+ * @typedef {GeneratePdf}
+ */
 class GeneratePdf {
 
     private fonts;

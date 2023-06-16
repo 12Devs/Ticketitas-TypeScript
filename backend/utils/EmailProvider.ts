@@ -1,3 +1,4 @@
+//Import of the necessary modules for the functioning of the class
 import nodemailer, { Transporter } from 'nodemailer';
 import handlebars from 'handlebars';
 import fs from 'fs';
@@ -5,12 +6,18 @@ import PdfPrinter from 'pdfmake';
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 import { resolve } from "path";
 
-//configurando login e senha do send email
-  //gerando a classe
+
+/**
+ * Class responsible for sending emails
+ * @date 6/15/2023 - 11:33:02 PM
+ *
+ * @class EmailProvider
+ * @typedef {EmailProvider}
+ */
 class EmailProvider{
   
   private transporter: Transporter;
-  //construindo a mensagem utilizando o email fornecido
+
   public constructor(){
       
     const transporter = nodemailer.createTransport({
@@ -27,7 +34,6 @@ class EmailProvider{
 
   public async sendEmailTicketAttached (to: string, ticketInfo) {
   
-    //Envio do email
     const templatePath = resolve(__dirname, '..', 'utils', 'templates', 'MakePurchaseTemplate.hbs');
 
     const templateFileContent = fs.readFileSync(templatePath).toString("utf-8");
@@ -136,7 +142,6 @@ class EmailProvider{
 
   public async sendEmail (to: string, emailInfo) {
 
-    //Envio do email
     const templatePath = resolve(__dirname, '..', 'utils', 'templates', `${emailInfo.template}.hbs`);
 
     const templateFileContent = fs.readFileSync(templatePath).toString("utf-8");
