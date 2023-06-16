@@ -18,6 +18,14 @@ import { google } from "googleapis";
 import fs from 'fs';
 import path from 'path';
 import { file } from "googleapis/build/src/apis/file";
+import { MakePurchaseUseCase } from "../controllers/make purchase/MakePurchaseUseCase";
+import { SaleRepository } from "../db/SaleRepository";
+import { CheckoutRepository } from "../db/CheckoutRepository";
+import { TicketRepository } from "../db/TicketRepository";
+import { CardRepository } from "../db/CardRepository";
+import { EnderecoEventRepository } from "../db/EnderecoEventRepository";
+import { WalletRepository } from "../db/WalletRepository";
+import { UpdateCardUseCase } from "../controllers/update card/UpdateCardUseCase";
 
 const uploadFileStorage = async (filePath, name) => {
     const KEYFILEPATH = path.join('backend/config/googleStorage.json');
@@ -105,11 +113,11 @@ class FillDataBase {
         const fvsDate = new Date("2023-12-12T22:36:06.000Z");
         const sjSerrinhaDate = new Date("2024-06-24T22:36:06.000Z");
 
-        await createEventUseCase.execute(45850724974, "Oktoberfest Feira City", oktoberFest, oktoberFestDate, true, 30000, 1, 500, 120.98, 1, 300.99 ,40.00, 0.00, 44075516, "Feira de Santa", "BA", "Centro", "Av. Presidente Dutra", 1226);
+        await createEventUseCase.execute(45850724974, "Oktoberfest Feira City", oktoberFest, oktoberFestDate, true, 30000, 20, 500, 120.98, 1, 300.99 ,40.00, 0.00, 44075516, "Feira de Santa", "BA", "Centro", "Av. Presidente Dutra", 1226);
 
         await createEventUseCase.execute(82231237709, "Tomorrowland", tomorrowland, tomorrowlandDate, true, 100000, 20000, 10000, 300.00, 420.00, 1230.48, 45.00, 0.00, 44230000, "Amélia Rodrigues", "BA", "Centro", "Rua da Festa", 420);
 
-        await createEventUseCase.execute(75316609549, "Computali", computali, computaliDate, true, 500, 0, 90, 30.00, 0, 40.50, 60.00, 0.00, 44036900, "Feira de Santa", "BA", "Novo Horizonte", "Av. Transnordestina", 0);
+        await createEventUseCase.execute(75316609549, "Computali", computali, computaliDate, true, 500, 30, 90, 30.00, 0, 40.50, 60.00, 0.00, 44036900, "Feira de Santa", "BA", "Novo Horizonte", "Av. Transnordestina", 0);
 
         await createEventUseCase.execute(82231237709, "Festival de Inverno Bahia", fiba, fibaDate, true, 30000, 8000, 8000, 300.00, 390.00, 700.00, 41.00, 0.00, 44036900, "Vitória da Conquista", "BA", "Centro", "Av. Siqueira Campos", 1320);
 
@@ -147,6 +155,25 @@ class FillDataBase {
         const promoterRepository = new PromoterRepository();
         const promoterAprove = new AprovePromoterRegistrationUseCase(new PromoterRegistrationRequestRepository(), promoterRepository);
         await promoterAprove.execute(75316609549);
+    }
+
+    public static async updateCard(){
+        const updateCard = new UpdateCardUseCase(new CardRepository());
+        await updateCard.execute(82231237709, 5226818748178086, "Princeso Lucca", 4, 2024, 157);
+    }
+
+    public static async makePurchase(){
+
+        const eventRepository = new EventRepository();
+        const checkoutRepository = new CheckoutRepository();
+
+        const makePurchase = new MakePurchaseUseCase(new StockRepository(), new SaleRepository(), checkoutRepository, eventRepository, new TicketRepository(), new CardRepository(), new EnderecoEventRepository(), new WalletRepository(), new EmailProvider());
+
+        const event: any = await eventRepository.findByCpfPromoter(45850724974);
+
+        console.log(event)
+        const checkout: any = await checkoutRepository.create(event[0].id, 2, 3, 1, 0, 0, 0, 0, 0.0);
+        await makePurchase.execute(2, 3, 1, 0, 0, 0, 0, 0.0, "Lucca Princeso", 82231237709, "luccaprinceso@email.com", event[0].id, checkout.id);
     }
 }
 
