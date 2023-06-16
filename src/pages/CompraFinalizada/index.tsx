@@ -6,7 +6,7 @@ import Forbidden403 from "../Forbidden403";
 export default function CompraFinalizada() {
     const navigate = useNavigate();
 
-    if (localStorage.getItem("userType") == "Cliente") {
+    if (localStorage.getItem("userType") == "cliente") {
         return (
             <>
                 <NavBarGeral />

@@ -25,7 +25,7 @@ export default function Checkout() {
         return (<ResumoCompra idCheckout={infoID} />)
     }
 
-    if (localStorage.getItem("userType") == "Cliente") {
+    if (localStorage.getItem("userType") == "cliente") {
         return (
             <>
                 <NavBarGeral />
