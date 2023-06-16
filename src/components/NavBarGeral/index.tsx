@@ -5,13 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ModalLogin from '../ModalLogin';
-import Form from 'react-bootstrap/Form';
-
 
 import './Navbar.css';
 import { api } from '../../services/api'
 import { Dropdown } from 'react-bootstrap';
-import InputBuscar from '../InputBuscar';
 import ReactSelect from '../ReactSelect';
 
 const NavBarGeral = () => {
@@ -47,7 +44,7 @@ const NavBarGeral = () => {
   const [typeUser, setTypeUser] = useState('default');
   const navigate = useNavigate();
 
-  const [seconds, setSeconds] = useState(30);
+  const [seconds, setSeconds] = useState(600);
   const [booleanControl, setBooleanControl] = useState(false);
 
   const [arrayEventos, setArrayEventos] = useState({ allActiveEvents: [] });
@@ -117,12 +114,10 @@ const NavBarGeral = () => {
     } else if (seconds == 0){
       console.log("Refresh token chamado");
       refreshToken();
-    	setSeconds(30)
+    	setSeconds(600)
     }
     
   }, [seconds]);
-
-  console.log("Tempo: ", seconds);
 
   return (
     <Navbar collapseOnSelect expand="lg" className='NavBar'>
