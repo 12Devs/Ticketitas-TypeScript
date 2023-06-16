@@ -88,10 +88,14 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [TemCartao, setTemCartao] = useState(false);
     const [TemSaldo, setTemSaldo] = useState(false);
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
-    
-    const refresh = () => window.location.reload();
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
+    const [isLoading, setLoading] = useState(false);
+    const handleClick = () => {
+        if (!isLoading){
+            setLoading(true);
+        }
+    }
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -119,12 +123,9 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
 
     }, [])
+
     useEffect(() => {
-
         if (idCheckout != "0") {
-
-
-
             api.get(`sale/checkout/${idCheckout}`, config).then((response) => {
 
                 console.log("dados do checkout ", response)
@@ -135,20 +136,11 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 setQuantidadeStageMeia(response.data.CheckoutInfos.checkout.stageAmountHalf);
                 setQuantidadeVipInteira(response.data.CheckoutInfos.checkout.vipAmount);
                 setQuantidadeVipMeia(response.data.CheckoutInfos.checkout.vipAmountHalf);
-
-
                 setIdvento(response.data.CheckoutInfos.checkout.eventId);
                 setTotalBruto(response.data.CheckoutInfos.checkout.amountSale);
                 setTotalLiquido(response.data.CheckoutInfos.checkout.amountSale);
-
-
-
             });
-
         }
-
-
-
     }, []);
 
     useEffect(() => {
@@ -160,19 +152,14 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             setCardExp(response.data.cardInfos.card.expirationDate);
             setCardExpSeven((response.data.cardInfos.card.expirationDate).slice(0, 7));
             setCardHolder(response.data.cardInfos.card.holder);
-
             setTemCartao(true);
-
-
         }).catch((e) => { });
-
     }, []);
 
 
     useEffect(() => {
         if (idEvento != "0") {
             api.get(`/event/${idEvento}`).then((response) => {
-
                 setTitulo(response.data.eventInfos.event.nome);
                 setDescricao(response.data.eventInfos.event.descricao);
                 setDataHora(response.data.eventInfos.event.dataEvento);
@@ -180,59 +167,64 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 setRua(response.data.eventInfos.enderecoEvent.rua);
                 setCidade(response.data.eventInfos.enderecoEvent.cidade);
                 setEstado(response.data.eventInfos.enderecoEvent.estado);
-
                 setEvent(response.data.eventInfos.event)
-
             });
         }
     }, [idEvento]);
 
     useEffect(() => {
-
         setInfoID(idCheckout);
-
     }, [idCheckout]);
 
-    function handleFinalizar() {
-        if (!TemCartao) {
-            var data: any = {
-                cvv: cardCVV,
-                cardNumber: cardNumber,
-                monthExpirationDate: cardExpMonth,
-                yearExpirationDate: cardExpYear,
-                holder: cardHolder,
-                cpf: cpfCardHolder
+    useEffect(() => {
+        if (isLoading) {
+            var dadosFinalizar = {
+                pistaAmount: quantidadePistaInteira,
+                stageAmount: quantidadeStageInteira,
+                vipAmount: quantidadeVipInteira,
+                pistaAmountHalf: quantidadePistaMeia,
+                stageAmountHalf: quantidadeStageMeia,
+                vipAmountHalf: quantidadeVipMeia,
+                freeAmount: quantidadeFree,
+                walletValue: saldo,
+                clientName: primeiroNome,
+                clientCpf: cpf,
+                email: email,
+                eventId: idEvento,
+                checkoutId: idCheckout
             }
-            console.log("Dados cartão:", data)
 
-            api.post("user/client/card", data, config).then((response) => {
-                {console.log(response)}
-            });
+            if (!TemCartao) {
+                var data: any = {
+                    cvv: cardCVV,
+                    cardNumber: cardNumber,
+                    monthExpirationDate: cardExpMonth,
+                    yearExpirationDate: cardExpYear,
+                    holder: cardHolder,
+                    cpf: cpfCardHolder
+                }
+                console.log("Dados cartão:", data)
+
+                api.post("user/client/card", data, config).then((response) => {
+                    api.post('/sale/make-purchase', dadosFinalizar, config).then((response) => {
+                        setLoading(false);
+                        navigate("/");
+                    })
+                })
+            } else {
+                api.post('/sale/make-purchase', dadosFinalizar, config).then((response) => {
+                    setLoading(false);
+                    navigate("/");
+                });
+            }
         }
-        var dadosFinalizar = {
-            pistaAmount: quantidadePistaInteira,
-            stageAmount: quantidadeStageInteira,
-            vipAmount: quantidadeVipInteira,
-            pistaAmountHalf: quantidadePistaMeia,
-            stageAmountHalf: quantidadeStageMeia,
-            vipAmountHalf: quantidadeVipMeia,
-            freeAmount: quantidadeFree,
-            walletValue: saldo,
-            clientName: primeiroNome,
-            clientCpf: cpf,
-            email: email,
-            eventId: idEvento,
-            checkoutId: idCheckout
-        }
-        api.post('/sale/make-purchase', dadosFinalizar, config).then((response) => {console.log("Resultado compra:", response); navigate("/")});
-    }
+    }, [isLoading]);
 
     function pegarUltimosQuatroDigitos(numero: string) {
-
         let ultimosQuatroDigitos = numero.slice(-4);
-
         setCardNumberFour(ultimosQuatroDigitos);
     }
+
     function renderCartao() {
 
         if (!TemCartao) {
@@ -374,7 +366,6 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
     }
 
-
     useEffect(() => {
         var valorTotalCartao = 0;
         if (TemSaldo) {
@@ -478,7 +469,14 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 </Row >
 
                 <Row className='justify-content-center p-3' >
-                    <Button onClick={handleFinalizar} className="btn btn-success w-80">FINALIZAR COMPRA</Button>
+                    <Button
+                        type="submit"
+                        variant="dark"
+                        disabled={isLoading}
+                        onClick={handleClick}
+                    >
+                        {isLoading ? 'Finalizando compra...' : 'Finalizar compra'}
+                    </Button>
                 </Row>
 
             </section>
