@@ -10,17 +10,28 @@ import '../../components/Texto/Texto.css';
 import ItemEvento from './ItemEvento';
 
 export default function MeusIngressos() {
-    const [arrayTickets, setArrayTickets] = useState({ PromoterInfos: [] });
+    const [arrayTickets, setArrayTickets] = useState({ tickets: [] });
+
+    const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    };
 
     useEffect(() => {
-        const config = {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        };
-        api.get(`user/client/ticket`,config).then((response) => {
+        api.get(`user/client/ticket`, config).then((response) => {
             setArrayTickets(response.data.PromoterInfos);
-            console.log(response)
         });
     }, []);
+
+    console.log("Entrou", arrayTickets)
+
+    function renderLista() {
+        if (arrayTickets.tickets !== undefined) {
+            return (
+                arrayTickets.tickets.map((evento: any, index) => (
+                <ItemEvento evento={evento} />
+            ))        )}
+
+    }
 
     if (localStorage.getItem("userType") == "cliente") {
 
@@ -28,12 +39,13 @@ export default function MeusIngressos() {
             <>
                 <NavBarGeral />
                 <Container style={{ minHeight: '75vh' }} className='ms-5 me-5'>
-                    <FormLabel label={"Meus Eventos"} />
+                    <FormLabel label={"Meus Ingressos"} />
                     <ListGroup>
 
-                        {arrayTickets.PromoterInfos.map((evento: any, index) => (
+                        {/* {arrayTickets.PromoterInfos.map((evento: any, index) => (
                             <ItemEvento evento={evento}/>
-                        ))}
+                        ))} */}
+                        {renderLista()}
 
                     </ListGroup>
                 </Container>

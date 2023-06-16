@@ -1,0 +1,7 @@
+
+
+class ListTicketsController {
+
+}
+
+export { ListTicketsController }

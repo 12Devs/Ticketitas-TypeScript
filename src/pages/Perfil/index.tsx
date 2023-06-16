@@ -107,6 +107,8 @@ export default function Perfil() {
                 SetnomeCompleto(response.data.AdministratorInfos.administrator.name)
                 setEmail(response.data.AdministratorInfos.administrator.email)
                 setTelefone(response.data.AdministratorInfos.administrator.phone)
+                setCpf(response.data.AdministratorInfos.administrator.cpf);
+
    
             });
         }
