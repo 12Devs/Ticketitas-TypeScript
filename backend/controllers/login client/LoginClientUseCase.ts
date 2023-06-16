@@ -2,6 +2,7 @@ import { ClientRepository } from "../../db/ClientRepository";
 import { TokenClientRepository } from "../../db/TokenClientRepository";
 import { ApiError } from "../../errors/ApiError";
 import bcrypt from "bcrypt";
+import 'dotenv/config'
 import { sign } from "jsonwebtoken";
 
 /**

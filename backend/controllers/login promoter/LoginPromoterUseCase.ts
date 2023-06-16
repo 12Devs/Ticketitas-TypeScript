@@ -2,6 +2,7 @@ import { PromoterRepository } from "../../db/PromoterRepository";
 import bcrypt from "bcrypt";
 import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
+import 'dotenv/config'
 import { TokenPromoterRepository } from "../../db/TokenPromoterRepository";
 import { PromoterRegistrationRequestRepository } from "../../db/PromoterRegistrationRequestRepository";
 
