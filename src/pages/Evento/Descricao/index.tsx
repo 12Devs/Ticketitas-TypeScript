@@ -30,12 +30,10 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
 
     useEffect(() => {
         api.get(`/event/${idEvento}`).then((response) => {
-            console.log(response);
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
             setImageEvent(response.data.eventInfos.event.imageEvent);
-            console.log("ID da imagem: ", response.data.eventInfos.event.imageEvent)
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);
@@ -43,18 +41,6 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             setEvent(response.data.eventInfos.event)
         });
     }, []);
-
-    // const share = () => {
-    //     if (navigator.share !== undefined) {
-    //         navigator.share({
-    //             title: titulo,
-    //             text: descricao,
-    //             url: 'http://localhost:3000',
-    //         })
-    //             .then(() => console.log('Successful share'))
-    //             .catch((error) => console.log('Error sharing', error));
-    //     }
-    // }
 
     return (
         <Container>
@@ -71,17 +57,18 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             </Row>
 
             <section className='larguraMainContentEventos mt-5'>
-                <Row>
-                <Button href="https://api.whatsapp.com/send?text=Confira esse evento no site Ticketitas: http://localhost:3000" style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
-                    Compartilhar evento
-                </Button>
-                </Row>
                 <Row className='noMarginPadding'>
                     <Col sm={7}>
                         <h4 className='Texto-Preto Texto-Medio text-start fw-bold'>Descrição do evento</h4>
                         <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
                             {descricao}
                         </p>
+                        
+                        <Row>
+                            <Button href={`https://api.whatsapp.com/send?text=Confira esse evento no site Ticketitas: http://localhost:3000/evento/${idEvento}`} className='Botão-Secundario Texto-Azul mt-3 mb-3'>
+                                Compartilhar evento
+                            </Button>
+                        </Row>
                     </Col>
 
                     <Col sm={5} className='pe-5 ps-5'>
