@@ -8,14 +8,12 @@ export default function ItemPromoter(data: any) {
     const refresh = () => window.location.reload();
 
     const atualizarStatusPromoter = () => {
-        const config = {
+        const aut = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
 
-        api.patch(`/user/administrator/update-status-promoter/${data.promoter.cpf}`, config).then((response)=>console.log(response));
+        api.patch(`/user/administrator/update-status-promoter/${data.promoter.cpf}`, aut , aut).then(refresh);
     }
-
-    console.log("Nome:", data.promoter.nome, "Status: ", data.promoter.status )
     
     return (
         <ListGroup.Item>

@@ -11,12 +11,14 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useLocation } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import ModalCadastrarCartao from '../../../components/ModalCadastarCartao';
 
 
 //import './styleDescricao.css';
 import './styleResumoCompra.css';
 import '../../../components/Texto/Texto.css';
 import { container } from 'googleapis/build/src/apis/container';
+import exp from 'constants';
 
 export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     
@@ -29,7 +31,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     var infoID1 = '0';
     
 
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
 
     if (location.state) {
         infoID1 = location.state.idCheckout;
@@ -55,30 +57,46 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const dataHoraOBJ = new Date(dataHora);
     const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
 
-   
+    const [total, setTotal] = useState(0.0);
     const [primeiroNome, setPrimeiroNome] = useState('');
-    const [sobrenome, setSobrenome] = useState('');
+    
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
 
+    const [cardNumber, setCardNumber] = useState('xxxx xxxx xxxx 0000');
+    const [cardHolder, setCardHolder] = useState('Mailson A S Santos');
+    const [cardExp, setCardExp] = useState('12/25');
+    const [cardCVV, setCardCVV] = useState("");
+
+    const [saldo, setSaldo] = useState(0.0);
+    const [TemCartao, setTemCartao] = useState(false);
+    const [TemSaldo, setTemSaldo] = useState(false);
     const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
 
     
     useEffect(()=>{
         const token = localStorage.getItem('token')
+        
         const user = localStorage.getItem('userType');
+        
         if(token != null){
             dados = jwtDecode(token);
+            
             if(dados != null){
                 setCpf(dados.sub);
             }
         }
         api.get(`user/client/${cpf}`, config).then((response) => {
-            console.log(response);
+            
+            setSaldo(response.data.ClientInfos.client.saldo);
+            if(saldo>0.0)
+            {
+                setTemSaldo(true);
+            }
             setPrimeiroNome(response.data.ClientInfos.client.nome);
             setEmail(response.data.ClientInfos.client.email);
            
-           
+         
         });
         
         
@@ -90,16 +108,16 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             
             
             api.get(`sale/checkout/${idCheckout}`, config).then((response) => {
-            console.log("retorno checkout: ",response);
+           
 
-            console.log("eventID: ",response.data.CheckoutInfos.checkout.eventId);
-            console.log("response id do evento: ",response.data.CheckoutInfos.checkout.eventId);
-            setIdvento(response.data.CheckoutInfos.checkout.eventId);
             
-            console.log("eventID: ",idEvento);
+            setIdvento(response.data.CheckoutInfos.checkout.eventId);
+            setTotal(response.data.CheckoutInfos.checkout.amountSale)
+            
+           
             
             });
-            console.log("array dados:", arrayEventos);
+            
         }
 
         
@@ -107,10 +125,19 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     }, []);
     
     useEffect(() => {
+        api.get(`/user/client/card`, config).then((response) => {
+            console.log("Retorno Cartão: ",response);
+
+        });
+
+    }, []);
+
+
+    useEffect(() => {
         if(idEvento!="0")
         {
         api.get(`/event/${idEvento}`).then((response) => {
-            console.log("retorno evento: ",response);
+            
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
@@ -132,65 +159,58 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     }, [idCheckout]);
 
     
+    function alterarSaldoOption()
+    {
+
+    }
 
 
     function renderCartao(){
-        if (false){
+        console.log("Tem cartao:", TemCartao)
+        if (!TemCartao){
             return(
                 <>
-                <Row className="labelPagamento">
-                
-                <h3>Forma de Pagamento</h3>
-                <Row className='opcoesPagamento'>
-                    <Col sm={6}>
-                        <h5>Cartão</h5>
-                        <Form.Check type="radio" aria-label="radio 1" />
-                    </Col>
-                    <Col sm={6}>
-                        <h5>Saldo</h5>
-                        <Form.Check type="radio" aria-label="radio 1" />
-                    </Col>
-                </Row>
-                
-                
-            
-            </Row>
+            <Row className=''>
 
             
-            <Row className='dadosCartao'>
-                <h5>
-                    Dados do cartão
-                </h5>
+            
+            <Row>
+              
                 
             </Row>  
                 <Row>
-                    <Col sm={4}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Número do Cartão *"} placeholder={"0000 0000 0000 0000"} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                    <Col sm={5}>
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputCardNumber"} data={cardNumber} setData={setCardNumber}/>
                     </Col>
-                    <Col sm={2}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"Data de Validade*"} placeholder={"MM/AA"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome}  />
+                    <Col sm={3}>
+                        <InputTexto type={'date'} defaultValue={''} required={true} label={"VALIDADE*"} placeholder={""} controlId={"inputExp"} data={cardExp} setData={setCardExp}/>
                     </Col>
-                    <Col sm={2}>
-                        <InputTexto type={'text'} defaultValue={''} required={true} label={"CVV*"} placeholder={"000"} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome}  />
-                    </Col>
+                    
+                    
+                    
                 </Row>
                 <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome impresso no cartão *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                        <Col sm={5}>
+                            <InputTexto type={'text'} defaultValue={''} required={true} label={"TITULAR DO CARTÃO*"} placeholder={""} controlId={"inputCardHolder"} data={cardHolder} setData={setCardHolder}/>
                         </Col>
-                        <Col sm={4}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
-                        </Col>
+                        <Col sm={2}>
+                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CVV*"} placeholder={""} controlId={"inputCVV"} data={cardCVV} setData={setCardCVV}/>
+                    </Col>
                         
+                </Row>
+
                 </Row>
                 </>
             ) 
         }
         else{
+            
+
             return(
                 <>
             
             <Row className='p-3'>
+            <Col>
             <Card style={{ width: '20rem', height:'12rem'}}>
                 <Card.Body>
                     
@@ -206,16 +226,16 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         />{''}
                         </div>
                         
-                    <Card.Title>XXXX XXXX XXXX {"XXXX"}</Card.Title>
+                    <Card.Title>{cardNumber}</Card.Title>
                     <Row>
                         <Col>
                             <Card.Text>
-                                Nome da Pessoa
+                                {cardHolder}
                             </Card.Text>
                         </Col>
                         <Col>
                         <Card.Text>
-                            12/2023
+                            {cardExp}
                         </Card.Text>
                         </Col>
                         
@@ -224,20 +244,74 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 </Card.Body>
 
             </Card>
-            <Form>
-                <Form.Check className='d-flex justify-content-start'
-                    type="switch"
-                    id="custom-switch"
-                    label ="Usar Saldo Ticketitas"
-                />
-            </Form>
+            
+
+            
+           
+            
+            </Col>
+
+            
+            {renderSaldo()}
+            
             </Row>
             </>
         )
         }
     }
+    
+    function renderSaldo(){
 
+        if(saldo>0)
+        {
+            return(
+                <>
+                <Col>
+                
+                <div className="boxSaldo1">
+                        <div className="logoTicketitasSaldo1">
+                        <img
+                                    src="/img/logo.svg"
+                                    width="40"
+                                    height="40"
+                                    alt=''
+                                />
+                        </div>
+                        <div className="saldoConteudo1">
+                        <h1 style={{fontSize: 25}}>Saldo</h1>
+                        <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {}</p>
+                        </div>
+                        <Form>
+                <Form.Check  onChange={e => { setTemSaldo(!TemSaldo)}} className='d-flex justify-content-center'
+                    type="switch"
+                    id="custom-switch"
+                    label ="Usar Saldo para pagar"
+                />
+                </Form>
+                    <p> saldo: {saldo}</p>
+                    </div>
+                </Col>
+                </>
+            )
+        }
+        
+    }
+    
+   
+    useEffect(() => {
+        var valorTotalCartao = 0;
+        if(TemSaldo)
+        {
+            let totalTeste = total - saldo
+            setTotal(totalTeste);
+        }
+        else
+        {
+            let totalTeste = total + saldo;
+            setTotal(totalTeste);
+        }
 
+    }, [TemSaldo]);
 
     return (
         <Container>
@@ -260,51 +334,53 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
                             {descricao}
                         </p>
-
+                        
                         <Row className=''>
-                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold py-5'>Dados do Participante</h4>
+                            
+                        <h4 className='Texto-Preto Texto-Medio text-start fw-bold pt-5'>Dados do Ingresso</h4>
+                        <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
+                            Insira os dados de quem pertence o(s) ingresso(s)
+                        </p>
                         <Form style={{minHeight: '30vh'}}>
                         <Row>
-                            <Col lg={5}>
-                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro Nome *"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
+                            <Col lg={7}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Nome*"} placeholder={""} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setPrimeiroNome}/>
                             </Col>
-                            <Col lg={5}>
-                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome *"} placeholder={""} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome}  />
-                            </Col>
+                            
                         </Row>
                         <Row>
-                                <Col sm={5}>
-                                    <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF *"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
+                                <Col sm={7}>
+                                    <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF*"} placeholder={""} controlId={"cpfCnpj"} data={cpf} setData={setCpf} />
                                 </Col>
-                        </Row>'
+                        </Row>
                         <Row>
-                            <Col sm={5}>
-                                <InputTexto type={'email'} defaultValue={''} required={true} label={"E-mail *"} placeholder={""} controlId={"email"} data={email} setData={setEmail} />
+                            <Col sm={7}>
+                                <InputTexto type={'email'} defaultValue={''} required={true} label={"E-mail*"} placeholder={""} controlId={"email"} data={email} setData={setEmail} />
                             </Col>
                         </Row>
                         </Form>
                     
                 </Row >
                 
-                
+                <h4 className='Texto-Preto Texto-Medio text-start fw-bold py-5'>Dados do Pagamento</h4>
                 
                 {renderCartao()}
                 
-
+                
                <Row className='divParcelamento'>
                     <Form.Select size="sm">
-                    <option>1X de </option>
-                    <option>2X de </option>
-                    <option>3X de </option>
-                    <option>4X de </option>
-                    <option>5X de </option>
-                    <option>6X de </option>
-                    <option>7X de </option>
-                    <option>8X de </option>
-                    <option>9X de </option>
-                    <option>10X de </option>
-                    <option>11X de </option>
-                    <option>12X de </option>
+                    <option>1X de {total.toFixed(2)}</option>
+                    <option>2X de {(total/2).toFixed(2)}</option>
+                    <option>3X de {(total/3).toFixed(2)}</option>
+                    <option>4X de {(total/4).toFixed(2)}</option>
+                    <option>5X de {(total/5).toFixed(2)}</option>
+                    <option>6X de {(total/6).toFixed(2)}</option>
+                    <option>7X de {(total/7).toFixed(2)}</option>
+                    <option>8X de {(total/8).toFixed(2)}</option>
+                    <option>9X de {(total/9).toFixed(2)}</option>
+                    <option>10X de {(total/10).toFixed(2)}</option>
+                    <option>11X de {(total/11).toFixed(2)}</option>
+                    <option>12X de {(total/12).toFixed(2)}</option>
                     </Form.Select>
                </Row>
                 

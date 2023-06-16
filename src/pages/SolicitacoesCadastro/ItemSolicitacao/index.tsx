@@ -11,7 +11,7 @@ export default function ItemSolicitacao(data: any) {
     };
     
     const aprovarPromoter = () => {
-        api.patch(`/user/administrator/aprove-registration/${data.promoter.promoterCpf}`, credenciais).then(refresh);
+        api.patch(`/user/administrator/aprove-registration/${data.promoter.promoterCpf}`, credenciais, credenciais).then(refresh);
     }
 
     return (

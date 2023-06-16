@@ -2,7 +2,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import InputBuscar from '../InputBuscar';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ModalLogin from '../ModalLogin';
@@ -12,6 +11,7 @@ import Form from 'react-bootstrap/Form';
 import './Navbar.css';
 import { api } from '../../services/api'
 import { Dropdown } from 'react-bootstrap';
+import InputBuscar from '../InputBuscar';
 
 const NavBarGeral = () => {
   const rotasDefault = [{
@@ -44,13 +44,9 @@ const NavBarGeral = () => {
   }]
 
   const [typeUser, setTypeUser] = useState('default');
-  const [busca, setBusca] = useState('');
   const navigate = useNavigate();
 
-  const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
-
-  console.log("Arayyyyyyyy na navbar: ", arrayEventos)
-
+  const [arrayEventos, setArrayEventos] = useState({ allActiveEvents: [] });
 
   // Recarrega a tela
   const refresh = () => window.location.reload();
@@ -62,36 +58,25 @@ const NavBarGeral = () => {
     refresh();
   }
 
-  function renderBuscarOpcoes(){
-    return(
-      <Form>
-        <Form.Group controlId="exampleForm.ControlInput1">
-          <Form.Label>Selecione uma opção:</Form.Label>
-          <Form.Control
-            type="text"
-            list="opcoes"
-            placeholder="Digite uma opção"
-          />
-          <datalist id="opcoes">
-            <option value="Opção 1" />
-            <option value="Opção 2" />
-            <option value="Opção 3" />
-            <option value="Opção 4" />
-          </datalist>
-        </Form.Group>
-      </Form>
+  function renderBuscarOpcoes() {
+    return (
+      <InputBuscar 
+        placeholder={"Buscar eventos, shows e etc..."} 
+        controlId={"Barra de busca"} 
+        options={arrayEventos.allActiveEvents} 
+        listaId={'search'} />
     )
   }
-  
+
   useEffect(() => {
-    setTypeUser(localStorage.getItem("userType")? '' + localStorage.getItem("userType") : 'default');
+    setTypeUser(localStorage.getItem("userType") ? '' + localStorage.getItem("userType") : 'default');
   }, []);
 
   useEffect(() => {
-    api.get(`/event`).then((response) => {
-        setArrayEventos(response.data);
+    api.get(`/event/active`,).then((response) => {
+      setArrayEventos(response.data);
     });
-}, []);
+  }, []);
   return (
     <Navbar collapseOnSelect expand="lg" className='NavBar'>
 
@@ -116,8 +101,7 @@ const NavBarGeral = () => {
             <Nav className="me-auto" />
 
             <Nav className="me-auto" >
-              {/*renderBuscarOpcoes()*/}
-              
+              {renderBuscarOpcoes()}
             </Nav>
 
             <Nav>
@@ -148,7 +132,7 @@ const NavBarGeral = () => {
             <Nav className="me-auto" />
 
             <Nav className="me-auto" >
-              <InputBuscar placeholder='Busque eventos, shows, teatros...' controlId='buscarNavBar' data={busca} setData={setBusca} />
+              {renderBuscarOpcoes()}
             </Nav>
 
             <Nav>
@@ -188,7 +172,7 @@ const NavBarGeral = () => {
             <Nav className="me-auto" />
 
             <Nav className="me-auto" >
-              <InputBuscar placeholder='Busque eventos, shows, teatros...' controlId='buscarNavBar' data={busca} setData={setBusca} />
+              {renderBuscarOpcoes()}
             </Nav>
 
             <Nav>
@@ -231,7 +215,7 @@ const NavBarGeral = () => {
             <Nav className="me-auto" />
 
             <Nav className="me-auto" >
-              <InputBuscar placeholder='Busque eventos, shows, teatros...' controlId='buscarNavBar' data={busca} setData={setBusca} />
+              {renderBuscarOpcoes()}
             </Nav>
 
             <Nav>

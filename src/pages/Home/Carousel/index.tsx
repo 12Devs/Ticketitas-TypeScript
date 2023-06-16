@@ -12,16 +12,15 @@ import './carousel.css';
 import '../styleHome.css';
 
 function CarouselPrincipal() {
-    const [arrayEventos, setArrayEventos] = useState({ allEvents: [] });
+    const [arrayEventos, setArrayEventos] = useState({ allActiveEvents: [] });
 
     useEffect(() => {
-        api.get(`/event`).then((response) => {
+        api.get(`/event/active`).then((response) => {
             setArrayEventos(response.data);
         });
     }, []);
 
     const navigate = useNavigate();
-
 
     function renderCarouselItem(dados: any) {
 
@@ -45,7 +44,7 @@ function CarouselPrincipal() {
                         <Row>
                             <Col sm={8} className='noMarginPadding'>
 
-                                <Image className='configImg' src="img/exemploHeaderEvento.png" />
+                                <Image className='configImg' src={`https://drive.google.com/uc?export=view&id=${dados.imageEvent}`} />
 
                             </Col>
                             <Col sm={4} className=''>
@@ -70,8 +69,9 @@ function CarouselPrincipal() {
 
     return (
         <Carousel className='noMarginPadding' variant='dark'>
-            {renderCarouselItem(arrayEventos.allEvents[1])}
-            {renderCarouselItem(arrayEventos.allEvents[2])}
+            {renderCarouselItem(arrayEventos.allActiveEvents[1])}
+            {renderCarouselItem(arrayEventos.allActiveEvents[2])}
+            {renderCarouselItem(arrayEventos.allActiveEvents[3])}
         </Carousel>
     );
 }

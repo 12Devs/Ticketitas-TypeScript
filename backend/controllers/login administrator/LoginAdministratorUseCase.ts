@@ -4,6 +4,7 @@ import { ApiError } from "../../errors/ApiError";
 import { sign } from "jsonwebtoken";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
 import 'dotenv/config'
+import { SuperAdministratorRelationRepository } from "../../db/SuperAdministratorRelationRepository";
 
 /**
  * Login administrator use case class
@@ -22,6 +23,7 @@ class LoginAdministratorUseCase {
      * @type {AdministratorRepository}
      */
     private administratorRepository: AdministratorRepository;
+    private superAdministratorRelationRepository: SuperAdministratorRelationRepository;
     private tokenAdministratorRepository: TokenAdministratorRepository;
     
     /**
@@ -32,8 +34,9 @@ class LoginAdministratorUseCase {
      * @param {AdministratorRepository} administratorRepository
      * @param {TokenAdministratorRepository} tokenAdministratorRepository
      */
-    constructor (administratorRepository: AdministratorRepository, tokenAdministratorRepository: TokenAdministratorRepository) {
+    constructor (administratorRepository: AdministratorRepository, superAdministratorRelationRepository: SuperAdministratorRelationRepository, tokenAdministratorRepository: TokenAdministratorRepository) {
         this.administratorRepository = administratorRepository;
+        this.superAdministratorRelationRepository = superAdministratorRelationRepository;
         this.tokenAdministratorRepository = tokenAdministratorRepository;
     }
     
@@ -73,33 +76,65 @@ class LoginAdministratorUseCase {
             throw new ApiError("Email ou senha incorretos", 422);
         }
 
+        const isSuper = await this.superAdministratorRelationRepository.findByCpf(infoAdministrator.cpf);
+
+        if (isSuper) {
+            const token = sign({tipo: "superAdministrator", nome: infoAdministrator.name},
+        
+            process.env.JWT_SECRET_SUPER_ADMINISTRATOR as string,
+    
+            {subject: `${infoAdministrator.cpf}`,
+                expiresIn: process.env.EXPIRES_TOKEN as string});
+        
+        
+            const refreshToken = await sign({tipo: "super", nome: infoAdministrator.name},
+                
+                process.env.JWT_REFRESH_SECRET as string,
+                
+                {subject: `${infoAdministrator.cpf}`,
+                    expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
+            
+            var expiresDate = new Date();
+            expiresDate.setDate(expiresDate.getDate() + 30);
+        
+            await this.tokenAdministratorRepository.create(infoAdministrator.cpf, expiresDate, refreshToken);
+        
+            const administrator = {
+                nome: infoAdministrator.name,
+                cpf: infoAdministrator.cpf,
+                email: infoAdministrator.email
+            }
+            
+            return { administrator, token, refreshToken };
+        }
+
         const token = sign({tipo: "administrator", nome: infoAdministrator.name},
         
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET_ADMINISTRATOR as string,
 
         {subject: `${infoAdministrator.cpf}`,
             expiresIn: process.env.EXPIRES_TOKEN as string});
     
     
-    const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
+        const refreshToken = await sign({tipo: "administrator", nome: infoAdministrator.name},
         
         process.env.JWT_REFRESH_SECRET as string,
         
         {subject: `${infoAdministrator.cpf}`,
             expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
     
-    var expiresDate = new Date();
-    expiresDate.setDate(expiresDate.getDate() + 30);
+        var expiresDate = new Date();
+        expiresDate.setDate(expiresDate.getDate() + 30);
 
-    await this.tokenAdministratorRepository.create(infoAdministrator.cpf, expiresDate, refreshToken);
+        await this.tokenAdministratorRepository.create(infoAdministrator.cpf, expiresDate, refreshToken);
 
-    const administrator = {
-        nome: infoAdministrator.name,
-        cpf: infoAdministrator.cpf,
-        email: infoAdministrator.email
-    }
+        const administrator = {
+            nome: infoAdministrator.name,
+            cpf: infoAdministrator.cpf,
+            email: infoAdministrator.email
+        }
     
-    return { administrator, token, refreshToken };
+        return { administrator, token, refreshToken };
     }
 }
 

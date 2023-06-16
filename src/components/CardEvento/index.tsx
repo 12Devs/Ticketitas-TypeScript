@@ -12,6 +12,7 @@ const CardEvento = ({dados}:{dados: any}) => {
   const [cidade, setCidade] = useState('');
   const [estado, setEstado] = useState('');
   const [idEvento, setIdEvento] = useState('');
+  const [ImageEvent, setImageEvent] = useState('');
 
   // Recarrega a tela
   const refresh = () => window.location.reload();
@@ -40,12 +41,13 @@ const CardEvento = ({dados}:{dados: any}) => {
       setRua(dados.enderecoEvent.rua);
       setCidade(dados.enderecoEvent.cidade);
       setEstado(dados.enderecoEvent.estado);
+      setImageEvent(dados.imageEvent);
     }
   }, [dados]);
 
   return(
     <Card className="card-container noPadding m-2" style={{border:'none', borderRadius: '11px'}}>
-      <Card.Img className="cardImg" variant="top" src="img/eventPic.jpg" />
+      <Card.Img className="cardImg" variant="top" src={`https://drive.google.com/uc?export=view&id=${ImageEvent}`}/>
       <Card.Body>
         
         <Card.Title className="cardTitle">{nome}</Card.Title>

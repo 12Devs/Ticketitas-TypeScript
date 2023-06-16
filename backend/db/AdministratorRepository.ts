@@ -35,6 +35,12 @@ class AdministratorRepository {
         
     }
 
+    public async removeAdministrator(cpf: number){
+        await Administrator.destroy({
+            where: {cpf: cpf}
+        });
+    }
+
     public async findOneAdministrator(cpf: number) {
 
         const AdministratorExists = await Administrator.findOne({raw: true,

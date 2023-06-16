@@ -46,8 +46,23 @@ class SetFeaturedEventUseCase {
         if(!id) {
             throw new ApiError("O id é obrigatório!", 422);
         }
+        const event: any = await this.eventRepository.findDestaqueById(id);
 
-        await this.eventRepository.setFeatured(id);
+        if (!event) {
+            throw new ApiError("Evento não encontrado!", 422);
+        }
+
+        if (event.status == false) {
+            throw new ApiError("Eventos desativados não podem ser destaque", 422);
+        }
+
+        let newStatus = true;
+
+        if (event.destaque == true) {
+            newStatus = false
+        }
+
+        await this.eventRepository.setFeatured(id, newStatus);
     }
 }
 
