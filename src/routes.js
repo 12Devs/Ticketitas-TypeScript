@@ -43,15 +43,10 @@ export default function AppRouter() {
                         path='evento/:eventId' element={<Evento />} 
                         loader={({ params }) => {console.log(params.eventId)}}
                     />
-
                     < Route 
                         path='checkout/:IdCart' element={<Checkout />} 
                         loader={({ params }) => {console.log(params.IdCart)}}
                     />
-
-                    
-            
-                    
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarClienteCompra' element={<CadastrarClienteCompra/>}/>
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
@@ -60,7 +55,10 @@ export default function AppRouter() {
                     <Route path='editarPromoter' element={<EditarPromoter/>}/>
                     <Route path='cadastrarAdmin' element={<CadastrarAdmin />} />
                     <Route path='editarAdmin' element={<EditarAdmin/>}/>
-                    <Route path='recuperarSenha' element={<RecuperarSenha />} />
+                    <Route 
+                        path='recuperarSenha/:idRecuperar' element={<RecuperarSenha/>} 
+                        loader={({ params }) => {console.log(params.idRecuperar)}} 
+                    />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>

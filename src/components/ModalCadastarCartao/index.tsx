@@ -42,10 +42,8 @@ export default function ModalCadastrarCartao(){
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        api.post("user/client/card", data, config).then((response) => {
-            console.log(response)
-        });
-      
+        api.post("user/client/card", data, config).then((response) => {console.log(response); handleClose(); refresh()});
+        
     }
     return(
         <>
