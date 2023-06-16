@@ -49,6 +49,17 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [estado, setEstado] = useState('Estado');
     const [imageEvent, setImageEvent] = useState('./img/exemploHeaderEvento.png');
 
+    const [quantidadePistaInteira, setQuantidadePistaInteira] = useState(0);
+    const [quantidadePistaMeia, setQuantidadePistaMeia] = useState(0);
+
+    const [quantidadeStageInteira, setQuantidadeStageInteira] = useState(0);
+    const [quantidadeStageMeia, setQuantidadeStageMeia] = useState(0);
+  
+    const [quantidadeVipInteira, setQuantidadeVipInteira] = useState(0);
+    const [quantidadeVipMeia, setQuantidadeVipMeia] = useState(0);
+  
+    const [quantidadeFree, setQuantidadeFree] = useState(0);
+
     const [event, setEvent] = useState();
     let dados: any;
 
@@ -59,8 +70,10 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
     const [totalBruto, setTotalBruto] = useState(0.0);
     const [totalLiquido, setTotalLiquido] = useState(0.0);
+
+
+
     const [primeiroNome, setPrimeiroNome] = useState('');
-    
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
 
@@ -72,6 +85,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const [cardExpYear, setCardExpYear] = useState('');
     const [cardExpSeven, setCardExpSeven] = useState('');
     const [cardCVV, setCardCVV] = useState("");
+    const [cpfCardHolder, setCpfCArdHolder] = useState("");
 
     const [saldo, setSaldo] = useState(0.0);
     const [dadosCartao, setDadosCartao] = useState({});
@@ -115,8 +129,16 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
             
             api.get(`sale/checkout/${idCheckout}`, config).then((response) => {
            
+                console.log("dados do checkout ", response)
+                setQuantidadeFree(response.data.CheckoutInfos.checkout.freeAmount);
+                setQuantidadePistaInteira(response.data.CheckoutInfos.checkout.pistaAmount);
+                setQuantidadePistaMeia(response.data.CheckoutInfos.checkout.pistaAmountHalf);
+                setQuantidadeStageInteira(response.data.CheckoutInfos.checkout.stageAmount);
+                setQuantidadeStageMeia(response.data.CheckoutInfos.checkout.stageAmountHalf);
+                setQuantidadeVipInteira(response.data.CheckoutInfos.checkout.vipAmount);
+                setQuantidadeVipMeia(response.data.CheckoutInfos.checkout.vipAmountHalf);
 
-            
+
             setIdvento(response.data.CheckoutInfos.checkout.eventId);
             setTotalBruto(response.data.CheckoutInfos.checkout.amountSale);
             setTotalLiquido(response.data.CheckoutInfos.checkout.amountSale);
@@ -194,26 +216,30 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 cardExpMonth,
                 cardExpYear,
                 cardHolder,
+                cpfCardHolder
             }
             console.log("Dados cartão:", data)
+            const config = {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            };
             api.post("user/client/card",data,config).then((response) => {
                 console.log(response)
             });
         }
-        let dadosFinalizar = {
-            "pistaAmount": 0,
-            "stageAmount": 0,
-            "vipAmount": 0,
-            "clientCpf": 45850724974,
-            "pistaAmountHalf": 0,
-            "stageAmountHalf": 0,
-            "vipAmountHalf": 0,
-            "freeAmount": 0,
-            "walletValue": 0.00,
-            "email": "gcmorais66@gmail.com",
-            "eventId": "34f3f0b1-3ea6-4466-96ad-882f86ee0bbf",
-            "clientName": "Gabriel Cordeiro Moraes",
-            "checkoutId": "77930582-ba37-4682-86e1-5f273c8acaac"  
+        let dadosFinalizar = {  
+            "pistaAmount": quantidadePistaInteira,
+            "stageAmount": quantidadeStageInteira,
+            "vipAmount": quantidadeVipInteira,
+            "clientCpf": cpf,
+            "pistaAmountHalf": quantidadePistaMeia,
+            "stageAmountHalf": quantidadeStageMeia,
+            "vipAmountHalf": quantidadeVipMeia,
+            "freeAmount": quantidadeFree,
+            "walletValue": saldo,
+            "email": email,
+            "eventId": idEvento,
+            "clientName": primeiroNome,
+            "checkoutId": idCheckout  
         }
         
     }
@@ -235,12 +261,19 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                     <Col sm={8}>
                         <InputTexto type={'number'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputCardNumber"} data={cardNumber} setData={setCardNumber}/>
                     </Col>
+                    
                     <Col sm={4}>
                         <InputTexto type={'number'} defaultValue={''} required={true} label={"MÉS DE VALIDADE*"} placeholder={""} controlId={"inputExpMonth"} data={cardExpMonth} setData={setCardExpMonth}/>
+                    </Col>
+                <Row>
+                    <Col sm={8}>
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"CPF DO TITULAR*"} placeholder={"0000 0000 0000 0000"} controlId={"inputCarCpfCardHolder"} data={cpfCardHolder} setData={setCpfCArdHolder}/>
                     </Col>
                     <Col sm={4}>
                         <InputTexto type={'number'} defaultValue={''} required={true} label={"ANO DE VALIDADE*"} placeholder={""} controlId={"inputExpYear"} data={cardExpYear} setData={setCardExpYear}/>
                     </Col>
+                </Row>    
+                    
                     
                     
                     
