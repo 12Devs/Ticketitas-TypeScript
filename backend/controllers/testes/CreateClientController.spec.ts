@@ -1,5 +1,5 @@
-import { CreateClientController } from "./CreateClientController";
-import { CreateClientUseCase } from "./CreateClientUseCase";
+import { CreateClientController } from "../create client/CreateClientController";
+import { CreateClientUseCase } from "../create client/CreateClientUseCase";
 import { Request, Response } from "express";
 import { ApiError } from "../../errors/ApiError";
 
@@ -24,6 +24,9 @@ describe("CreateClientController", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as Partial<Response>;
+
+    // Adicionar o método `send()` ao objeto mock da classe Response
+    mockResponse.send = jest.fn();
   });
 
   it("should create a new client", async () => {
@@ -85,13 +88,11 @@ describe("CreateClientController", () => {
     createClientUseCase.execute = jest.fn().mockImplementation((nome, cpf) => {
       if (cpf === clientData.cpf) {
         throw new ApiError("Utilize outro cpf", 422);
-      }
-      return { newClient: { name: nome, email: clientData.email } };
-    });
+      }})
 
-    await expect(
-      createClientController.handle(mockRequest as Request, mockResponse as Response)
-    ).rejects.toThrow(ApiError);
+    await expect(async () => {
+      await createClientController.handle(mockRequest as Request, mockResponse as Response);
+    }).rejects.toThrowError(ApiError);    
 
     expect(mockResponse.status).toHaveBeenCalledWith(422);
     expect(mockResponse.json).toHaveBeenCalledWith({ error: "Utilize outro cpf" });
