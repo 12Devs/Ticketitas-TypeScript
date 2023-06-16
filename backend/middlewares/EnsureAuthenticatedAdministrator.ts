@@ -13,7 +13,7 @@ async function ensureAuthenticatedAdministrator(request: Request, response: Resp
 
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub }: any = await verify(token, process.env.JWT_SECRET as string);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET_ADMINISTRATOR as string);
 
         request.user = {
             tipo: "administrator",
@@ -21,7 +21,20 @@ async function ensureAuthenticatedAdministrator(request: Request, response: Resp
         }
         next();
     } catch {
-        next(new ApiError("Token inválido", 401));
+
+        try {
+            const { sub }: any = await verify(token, process.env.JWT_SECRET_SUPER_ADMINISTRATOR as string);
+
+            request.user = {
+                tipo: "administrator",
+                cpf: sub
+            }
+            next();
+            
+        } catch {
+            next(new ApiError("Token inválido", 401));
+        }
+
     }  
 }
 

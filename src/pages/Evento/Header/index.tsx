@@ -3,9 +3,6 @@ import './style.css'
 
 
 export default function Header({caminho}: {caminho: string}) {
-    // var caminhoCerto = './backend/uploadImages/events/' + caminho;
-
-    // console.log(caminhoCerto);
     return (
         <>
         <div>

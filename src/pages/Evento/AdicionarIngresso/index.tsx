@@ -4,9 +4,10 @@ import "./AdicionarIngresso.css";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
-import ModalLoginCompra from "../ModalLoginCompra";
+
 import { api } from "../../../services/api";
 import { Navigate, useNavigate } from "react-router-dom";
+import ModalLoginCompra from "../ModalLoginCompra";
 
 export default function AdicionarIngresso({ event }: { event: any }) {
   const navigate = useNavigate();

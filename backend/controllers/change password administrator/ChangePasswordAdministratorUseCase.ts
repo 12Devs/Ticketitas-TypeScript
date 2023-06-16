@@ -5,7 +5,7 @@ import { AdministratorRepository } from "../../db/AdministratorRepository";
 import { AdministratorPasswordChangeCodeRepository } from "../../db/AdministratorPasswordChangeCodeRepository";
 
 import { ApiError } from "../../errors/ApiError"; //Import of the ApiError class
-import { SendEmail } from "../../utils/SendEmail"; //Import of the SendEmail class
+import { EmailProvider } from "../../utils/EmailProvider"; //Import of the EmailProvider class
 
 /**
  * Class that contains the methods and procedures necessary to send an email with the link with which an user can change their password
@@ -35,27 +35,27 @@ class ChangePasswordAdministratorUseCase {
      private administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository;
     
     /**
-     * Creates an instance of {@link SendEmail}
+     * Creates an instance of {@link EmailProvider}
      * @date 5/12/2023 - 4:52:03 PM
      *
      * @private Marks this instance as having "private" visibility
-     * @type {SendEmail}
+     * @type {EmailProvider}
      */
-    private sendEmail: SendEmail;
+    private emailProvider: EmailProvider;
 
     /**
-     * Constructor for instances of {@link AdministratorRepository}, {@link AdministratorPasswordChangeCodeRepository} and {@link SendEmail}
+     * Constructor for instances of {@link AdministratorRepository}, {@link AdministratorPasswordChangeCodeRepository} and {@link EmailProvider}
      * @date 5/12/2023 - 4:59:48 PM
      *
      * @constructor Marks this part of the code as a constructor
      * @param {AdministratorRepository} administratorRepository Private instance of the AdministratorRepository class
      * @param {AdministratorPasswordChangeCodeRepository} administratorPasswordChangeCodeRepository Private instance of the AdministratorPasswordChangeCodeRepository class
-     * @param {SendEmail} sendEmail Private instance of the SendEmail class
+     * @param {EmailProvider} emailProvider Private instance of the EmailProvider class
      */
-    constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository, sendEmail: SendEmail) {
+    constructor (administratorRepository: AdministratorRepository, administratorPasswordChangeCodeRepository: AdministratorPasswordChangeCodeRepository, emailProvider: EmailProvider) {
         this.administratorRepository =  administratorRepository;
         this.administratorPasswordChangeCodeRepository = administratorPasswordChangeCodeRepository;
-        this.sendEmail = sendEmail;
+        this.emailProvider = emailProvider;
     }
 
     /**
@@ -103,15 +103,14 @@ class ChangePasswordAdministratorUseCase {
             resetCode: randomCode
         }
 
+        const emailInfo = {
+            template: 'ChangePassword',
+            subject: `PEDIDO DE ALTERAÇÃO DE SENHA! CODE: ${randomCode}`
+        }
+
+        await this.emailProvider.sendEmail(email, emailInfo);
+
         return { resetAdministratorPassword };
-
-        //Message subject text
-        //const subject = "PEDIDO DE ALTERAÇÃO DA SENHA DO ADMINISTRADOR RECEBIDO";
-        //Message description text
-        //const message = (`  Caro Administrador:\n\nO código para alteração da sua senha é:\n\n           ${randomCode}\n\n      Atenciosamente, Equipe Ticketitas.`);
-
-        //Sends information for the "sendEmail" util method to forward the message
-        //await this.sendEmail.sendEmail(email, subject, message);
     }
 }
 

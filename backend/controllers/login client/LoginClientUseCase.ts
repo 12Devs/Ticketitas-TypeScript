@@ -74,7 +74,7 @@ class LoginClientUseCase {
 
         const token = sign({tipo: "client", nome: infoClient.nome},
             
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET_CLIENT as string,
 
             {subject: `${infoClient.cpf}`,
                 expiresIn: process.env.EXPIRES_TOKEN});
@@ -82,7 +82,7 @@ class LoginClientUseCase {
         
         const refreshToken = await sign({tipo: "client", nome: infoClient.nome},
             
-            process.env.JWT_REFRESH_SECRET,
+            process.env.JWT_REFRESH_SECRET as string,
             
             {subject: `${infoClient.cpf}`,
                 expiresIn: process.env.EXPIRES_REFRESH_TOKEN});

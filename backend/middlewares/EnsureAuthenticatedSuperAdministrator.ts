@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import { verify } from "jsonwebtoken";
 import { ApiError } from "../errors/ApiError";
 
-
-async function ensureAuthenticatedClient(request: Request, response: Response, next: NextFunction) {
+async function ensureAuthenticatedSuperAdministrator(request: Request, response: Response, next: NextFunction) {
     
     const authHeader = request.headers.authorization; // Pegando o token de dentro do header da requisição;
 
@@ -14,10 +13,10 @@ async function ensureAuthenticatedClient(request: Request, response: Response, n
 
     const [, token] = authHeader.split(" "); //Pegando o token com split;
     try {
-        const { sub }: any = await verify(token, process.env.JWT_SECRET_CLIENT as string as string);
+        const { sub }: any = await verify(token, process.env.JWT_SECRET_SUPER_ADMINISTRATOR as string);
 
         request.user = {
-            tipo: "client",
+            tipo: "superAdministrator",
             cpf: sub
         }
         next();
@@ -26,4 +25,4 @@ async function ensureAuthenticatedClient(request: Request, response: Response, n
     }  
 }
 
-export { ensureAuthenticatedClient }
+export { ensureAuthenticatedSuperAdministrator }

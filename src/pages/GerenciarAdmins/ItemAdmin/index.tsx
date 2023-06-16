@@ -1,10 +1,12 @@
-import { Button, Col, ListGroup, Row } from 'react-bootstrap';
+import { Alert, Button, Col, ListGroup, Row } from 'react-bootstrap';
 import { api } from '../../../services/api';
 
 import '../../../components/Button/Button.css';
 import '../../../components/Texto/Texto.css';
+import { useState } from 'react';
 
 export default function ItemAdmin(data: any) {
+    const [mensagem, setMensagem] = useState(false);
     const refresh = () => window.location.reload();
 
     const atualizarStatusAdmin = () => {
@@ -12,10 +14,8 @@ export default function ItemAdmin(data: any) {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
 
-        api.patch(``, config).then(refresh);
+        api.delete(`/user/administrator/remove/${data.admin.cpf}`, config).then(refresh).catch((erro) => setMensagem(true));
     }
-
-    console.log("Admin: ", data.admin.name, "Status: ", data.admin.status )
     
     return (
         <ListGroup.Item>
@@ -28,6 +28,10 @@ export default function ItemAdmin(data: any) {
                 </Col>
                 <Col sm={6} className='row align-items-center justify-content-evenly'>
                     <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' onClick={atualizarStatusAdmin}>Excluir administrador</Button>
+                    
+                    <Alert className='m-3' style={{ width: 'fit-content' }} show={mensagem} variant="danger">
+                        <p>Acesso apenas para super administradores!</p>
+                    </Alert>
                 </Col>
             </Row>
         </ListGroup.Item>
