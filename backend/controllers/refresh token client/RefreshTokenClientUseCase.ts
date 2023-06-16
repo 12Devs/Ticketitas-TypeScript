@@ -44,7 +44,7 @@ class RefreshTokenClientUseCase {
      */
     public async execute (token: string){
 
-        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
+        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET as string);
         const clientCpf = decode.sub;
 
         const clientToken: any = await this.tokenClientRepository.findByCpfAndRefreshToken(clientCpf, token);
@@ -57,7 +57,7 @@ class RefreshTokenClientUseCase {
 
         const refreshToken = await sign({tipo: "client", nome: decode.nome},
             
-            process.env.JWT_REFRESH_SECRET,
+            process.env.JWT_REFRESH_SECRET as string,
             
             {subject: `${clientCpf}`,
                 expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
@@ -69,7 +69,7 @@ class RefreshTokenClientUseCase {
 
         const newToken = sign({tipo: "client", nome: decode.nome},
             
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET_CLIENT as string,
 
             {subject: `${clientCpf}`,
                 expiresIn: process.env.EXPIRES_TOKEN});

@@ -44,7 +44,8 @@ class RefreshTokenAdministratorUseCase {
      */
     public async execute (token: string){
 
-        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
+        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET as string);
+        
         const administratorCpf = decode.sub;
 
         const administratorToken: any = await this.tokenAdministratorRepository.findByCpfAndRefreshToken(administratorCpf, token);
@@ -55,26 +56,51 @@ class RefreshTokenAdministratorUseCase {
 
         await this.tokenAdministratorRepository.deleteByCpf(administratorToken.administratorCpf);
 
-        const refreshToken = await sign({tipo: "Administrator", nome: decode.nome},
+        var refreshToken
+        if (decode.tipo == "administrator") {
             
-            process.env.JWT_REFRESH_SECRET,
+            refreshToken = await sign({tipo: "administrator", nome: decode.nome},
+            
+            process.env.JWT_REFRESH_SECRET as string,
             
             {subject: `${administratorCpf}`,
-                expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
-
-        var expiresDate = new Date();
-        expiresDate.setDate(expiresDate.getDate() + 30);
-        
-        await this.tokenAdministratorRepository.create(administratorCpf, expiresDate, refreshToken);
-
-        const newToken = sign({tipo: "Administrator", nome: decode.nome},
+                expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
             
-            process.env.JWT_SECRET,
-
+            var expiresDate = new Date();
+            expiresDate.setDate(expiresDate.getDate() + 30);
+            
+            await this.tokenAdministratorRepository.create(administratorCpf, expiresDate, refreshToken);
+    
+            const newToken = sign({tipo: "administrator", nome: decode.nome},
+                
+                process.env.JWT_SECRET_ADMINISTRATOR as string,
+    
+                {subject: `${administratorCpf}`,
+                    expiresIn: process.env.EXPIRES_TOKEN as string});
+            
+            return {token: newToken, refreshToken};
+        } else {
+            refreshToken = await sign({tipo: "superAdministrator", nome: decode.nome},
+            
+            process.env.JWT_REFRESH_SECRET as string,
+            
             {subject: `${administratorCpf}`,
-                expiresIn: process.env.EXPIRES_TOKEN});
-        
-        return {token: newToken, refreshToken};
+                expiresIn: process.env.EXPIRES_REFRESH_TOKEN as string});
+            
+            var expiresDate = new Date();
+            expiresDate.setDate(expiresDate.getDate() + 30);
+            
+            await this.tokenAdministratorRepository.create(administratorCpf, expiresDate, refreshToken);
+    
+            const newToken = sign({tipo: "superAdministrator", nome: decode.nome},
+                
+                process.env.JWT_SECRET_ADMINISTRATOR as string,
+    
+                {subject: `${administratorCpf}`,
+                    expiresIn: process.env.EXPIRES_TOKEN as string});
+            
+            return {token: newToken, refreshToken};
+        }
     }
 
 }
