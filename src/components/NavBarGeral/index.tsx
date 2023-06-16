@@ -5,13 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ModalLogin from '../ModalLogin';
-import Form from 'react-bootstrap/Form';
-
 
 import './Navbar.css';
 import { api } from '../../services/api'
 import { Dropdown } from 'react-bootstrap';
-import InputBuscar from '../InputBuscar';
 import ReactSelect from '../ReactSelect';
 
 const NavBarGeral = () => {
@@ -47,6 +44,9 @@ const NavBarGeral = () => {
   const [typeUser, setTypeUser] = useState('default');
   const navigate = useNavigate();
 
+  const [seconds, setSeconds] = useState(600);
+  const [booleanControl, setBooleanControl] = useState(false);
+
   const [arrayEventos, setArrayEventos] = useState({ allActiveEvents: [] });
 
   // Recarrega a tela
@@ -65,7 +65,7 @@ const NavBarGeral = () => {
 
     return dataHoraFormatada;
   }
-  
+
   function renderBuscarOpcoes() {
     var listaEventos = [{}];
 
@@ -87,6 +87,37 @@ const NavBarGeral = () => {
       setArrayEventos(response.data);
     });
   }, []);
+
+  var token = {
+    token: localStorage.getItem("refreshToken")
+  }
+
+  function setToken(response: any) {
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
+  }
+
+  function refreshToken() {
+    if (localStorage.getItem("userType") == "admin") {
+      api.post("/user/administrator/refresh-token", token).then((response) => {console.log(response); setToken(response)});
+    } else if (localStorage.getItem("userType") == "cliente") {
+      api.post("/user/client/refresh-token", token).then((response) => {console.log(response); setToken(response)});
+    } else if (localStorage.getItem("userType") == "promoter") {
+      api.post("/user/promoter/refresh-token", token).then((response) => {console.log(response); setToken(response)});
+    }
+  }
+
+  useEffect(() => {
+    if (seconds > 0) {
+      const timer = setTimeout(() => setSeconds(seconds - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (seconds == 0){
+      console.log("Refresh token chamado");
+      refreshToken();
+    	setSeconds(600)
+    }
+    
+  }, [seconds]);
 
   return (
     <Navbar collapseOnSelect expand="lg" className='NavBar'>

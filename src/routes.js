@@ -29,6 +29,7 @@ import GerenciarPromoters from './pages/GerenciarPromoters';
 import GerenciarAdmins from './pages/GerenciarAdmins';
 import Privacidade from './pages/Privacidade';
 import Contato from './pages/Contato';
+import CompraFinalizada from './pages/CompraFinalizada';
 
 export default function AppRouter() {
     return (
@@ -43,15 +44,10 @@ export default function AppRouter() {
                         path='evento/:eventId' element={<Evento />} 
                         loader={({ params }) => {console.log(params.eventId)}}
                     />
-
                     < Route 
                         path='checkout/:IdCart' element={<Checkout />} 
                         loader={({ params }) => {console.log(params.IdCart)}}
                     />
-
-                    
-            
-                    
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarClienteCompra' element={<CadastrarClienteCompra/>}/>
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
@@ -60,7 +56,10 @@ export default function AppRouter() {
                     <Route path='editarPromoter' element={<EditarPromoter/>}/>
                     <Route path='cadastrarAdmin' element={<CadastrarAdmin />} />
                     <Route path='editarAdmin' element={<EditarAdmin/>}/>
-                    <Route path='recuperarSenha' element={<RecuperarSenha />} />
+                    <Route 
+                        path='recuperarSenha/:idRecuperar' element={<RecuperarSenha/>} 
+                        loader={({ params }) => {console.log(params.idRecuperar)}} 
+                    />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>
@@ -73,7 +72,8 @@ export default function AppRouter() {
                     <Route path='editarEvento' element={<EditarEvento/>}/>                    
                     <Route path='meusIngressos' element={<MeusIngressos/>}/> 
                     <Route path='gerenciarPromoters' element={<GerenciarPromoters/>}/>
-                    <Route path='GerenciarAdmins' element={<GerenciarAdmins/>}/>                                                             
+                    <Route path='GerenciarAdmins' element={<GerenciarAdmins/>}/>
+                    <Route path='compraFinalizada' element={<CompraFinalizada/>}/>                                                                                                                          
                 </Routes>
                 <Footer />
             </Router>

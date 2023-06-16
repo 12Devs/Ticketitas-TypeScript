@@ -87,7 +87,7 @@ class LoginAdministratorUseCase {
                 expiresIn: process.env.EXPIRES_TOKEN as string});
         
         
-            const refreshToken = await sign({tipo: "super", nome: infoAdministrator.name},
+            const refreshToken = await sign({tipo: "superAdministrator", nome: infoAdministrator.name},
                 
                 process.env.JWT_REFRESH_SECRET as string,
                 

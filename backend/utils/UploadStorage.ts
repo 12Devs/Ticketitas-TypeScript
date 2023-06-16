@@ -1,7 +1,17 @@
+//Import of the necessary modules for the functioning of the class
 import { google } from 'googleapis';
 import fs from 'fs';
 import path from 'path';
 
+
+/**
+ * Function that uploads a file to google storage
+ * @date 6/15/2023 - 11:37:31 PM
+ *
+ * @async
+ * @param {*} fileObject
+ * @returns {unknown}
+ */
 const uploadFileStorage = async (fileObject: any) => {
     const KEYFILEPATH = path.join('backend/config/googleStorage.json');
     const SCOPES = ['https://www.googleapis.com/auth/drive'];
@@ -25,6 +35,15 @@ const uploadFileStorage = async (fileObject: any) => {
     return data;
 };
 
+
+/**
+ * Function that deletes a file from google storage
+ * @date 6/15/2023 - 11:37:42 PM
+ *
+ * @async
+ * @param {string} fileId
+ * @returns {*}
+ */
 const deleteFileStorage = async (fileId: string) => {
     const KEYFILEPATH = path.join('backend/config/googleStorage.json');
     const SCOPES = ['https://www.googleapis.com/auth/drive'];

@@ -10,7 +10,7 @@ import FormLabel from '../../components/FormLabel';
 import NavBarGeral from '../../components/NavBarGeral';
 import { api } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 
 import '../pages.css';
 import '../../components/Texto/Texto.css';
@@ -35,8 +35,7 @@ export default function EditarCliente() {
     const [rua, setRua] = useState('undefined');
     const [numero, setNumero] = useState('undefined');
     const [email, setEmail] = useState('undefined');
-    const [cardName, setCardName] = useState('Matheus Mota Santos');
-    const [cardNumber, setcardNumber] = useState('1234567832324545');
+    const [cardNumber, setcardNumber] = useState('');
     const [cardNumberFour, setcardNumberFour] = useState('');
     const [saldo, setSaldo] = useState('0');
     const [show, setShow] = useState(false);
@@ -46,6 +45,9 @@ export default function EditarCliente() {
     const [confirmarSenha, setconfirmarSenha] = useState('');
     const [novoEmail, setnovoEmail] = useState('');
     const [confirmarEmail, setconfirmarEmail] = useState('');
+
+    const [mensagem, setMensagem] = useState(false);
+    const [mensagemString, setMensagemString] = useState('');
 
     const handleClose = () => {
         setShow(false)
@@ -74,8 +76,8 @@ export default function EditarCliente() {
 
         let nome = partesNome[0];
         setprimeiroNome(nome)
-   }
-   function pegarSobrenome(nomeCompleto: string){
+    }
+    function pegarSobrenome(nomeCompleto: string) {
         let partesNome = nomeCompleto.split(' ');
 
         if (partesNome.length < 2) {
@@ -85,7 +87,7 @@ export default function EditarCliente() {
             let sobrenome = partesNome[partesNome.length - 1];
             setSobrenome(sobrenome)
         }
-   }
+    }
 
     function pegarUltimosQuatroDigitos(numero: string) {
         let ultimosQuatroDigitos = numero.slice(-4);
@@ -198,6 +200,8 @@ export default function EditarCliente() {
 
 
     const alterarEmail = (event: any) => {
+        setMensagem(false);
+
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
@@ -210,7 +214,7 @@ export default function EditarCliente() {
             newEmailConfirmation: confirmarEmail,
             passwordAuth: senhaAtual
         }
-        api.post("user/client/update-email", email, config).then((response) => { console.log(response) });
+        api.post("user/client/update-email", email, config).then((response) => { console.log(response); refresh() }).catch((erro) => { setMensagemString(erro.response.data.message); setMensagem(true) });
 
     }
 
@@ -282,16 +286,21 @@ export default function EditarCliente() {
                                             <h1 style={{ fontSize: 20 }}>Alterar email</h1>
                                         </Row>
 
-                                        <Form onSubmit={alterarEmail}>
+                                        <Form >
                                             <Row className='justify-content-center'>
                                                 <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
                                                 <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
                                                 <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
                                             </Row>
                                             <Row className='justify-content-center'>
-                                                <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                <Button className='Botão-Primario Texto-Branco' onClick={alterarEmail}>
                                                     Confirmar alteração
                                                 </Button>
+                                            </Row>
+                                            <Row>
+                                                <Alert style={{ width: 'fit-content' }} className='m-3' show={mensagem} variant="danger">
+                                                    <p>{mensagemString}</p>
+                                                </Alert>
                                             </Row>
                                         </Form>
                                     </Modal.Body>

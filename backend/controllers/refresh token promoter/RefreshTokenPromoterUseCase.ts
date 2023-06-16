@@ -48,7 +48,7 @@ class RefreshTokenPromoterUseCase {
      */
     public async execute (token: string){
 
-        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
+        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET as string);
         const promoterCpf = decode.sub;
 
         const promoterToken: any = await this.tokenPromoterRepository.findByCpfAndRefreshToken(promoterCpf, token);
@@ -66,7 +66,7 @@ class RefreshTokenPromoterUseCase {
         }
         const refreshToken = await sign({tipo: "Promoter", nome: decode.nome},
             
-            process.env.JWT_REFRESH_SECRET,
+            process.env.JWT_REFRESH_SECRET as string,
             
             {subject: `${promoterCpf}`,
                 expiresIn: process.env.EXPIRES_REFRESH_TOKEN});
@@ -78,7 +78,7 @@ class RefreshTokenPromoterUseCase {
 
         const newToken = sign({tipo: "Promoter", nome: decode.nome},
             
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET_PROMOTER as string,
 
             {subject: `${promoterCpf}`,
                 expiresIn: process.env.EXPIRES_TOKEN});

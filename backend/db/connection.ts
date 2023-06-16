@@ -1,3 +1,4 @@
+
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 import {DB_HOST as dbhost, DB_USER as dbuser, DB_NAME as dbname, DB_PASSWORD as dbpassword, DB_DIALECT as dbdialect} from '../config/env';
@@ -11,6 +12,12 @@ dotenv.config();
 // const dbPort: any = process.env.DB_PORT;
 
 
+/**
+ * Connection to DB
+ * @date 6/15/2023 - 9:03:23 PM
+ *
+ * @type {*}
+ */
 const conn = new Sequelize(dbname, dbuser, dbpassword,{
     host: dbhost,
     dialect: dbdialect
@@ -28,6 +35,9 @@ const conn = new Sequelize(dbname, dbuser, dbpassword,{
 //       }
 //   });
 
+/**
+ * Test connection to DB
+*/
 try {
     conn.authenticate();
     console.log("Conectado ao DB!")

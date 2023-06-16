@@ -8,7 +8,6 @@ import '../pages.css';
 import {useNavigate } from 'react-router-dom';
 
 export default function RecuperarSenha(){
-    const [senhaAtual, setSenhaAtual] = useState('');
     const [novaSenha, setNovaSenha] = useState('');
     const [novaSenhaConfirmacao, setNovaSenhaConfirmacao] = useState('');
     const [mensagem, setMensagem] = useState(false); //Boleano que define a exibição da mensagem de erro
@@ -17,7 +16,6 @@ export default function RecuperarSenha(){
     const atualizarSenha = (event: any) => {
         event.preventDefault();
         var dadosSenha: any = {
-            senhaAtual,
             novaSenha,
             novaSenhaConfirmacao
         }
@@ -47,11 +45,6 @@ export default function RecuperarSenha(){
                         <p className='Texto-Medio Texto-Preto'>Alterar Senha</p>
                     </Row>
 
-                    <Row className='mt-3 d-flex justify-content-center'>
-                        <Col sm={4}>
-                            <InputTexto type="password" defaultValue={''} required={true} label={"Senha atual"} placeholder={"Insira a senha atual"} controlId={"inputSenhaAtual"} data={senhaAtual} setData={setSenhaAtual} />
-                        </Col>
-                    </Row>
                     <Row className='mt-3 d-flex justify-content-center'>
                         <Col sm={4}>
                             <InputTexto type="password" defaultValue={''} required={true} label={"Nova senha"} placeholder={"Insira a nova senha"} controlId={"inputNovaSenha"} data={novaSenha} setData={setNovaSenha} />
