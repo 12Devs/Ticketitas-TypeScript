@@ -65,7 +65,7 @@ const NavBarGeral = () => {
 
     return dataHoraFormatada;
   }
-  
+
   function renderBuscarOpcoes() {
     var listaEventos = [{}];
 
@@ -88,8 +88,22 @@ const NavBarGeral = () => {
     });
   }, []);
 
+  function refreshToken() {
+    const token = {
+      token: localStorage.getItem("refreshToken")
+    }
+    if (localStorage.getItem("userType") == "admin") {
+      api.post("/user/administrator/refresh-token", token).then((response) => console.log(response));
+    } else if (localStorage.getItem("userType") == "cliente") {
+      api.post("/user/client/refresh-token", token).then((response) => console.log(response));
+    } else if (localStorage.getItem("userType") == "promoter") {
+      api.post("/user/promoter/refresh-token", token).then((response) => console.log(response));
+    }
+  }
+
+
   return (
-    <Navbar collapseOnSelect expand="lg" className='NavBar'>
+    <Navbar collapseOnSelect expand="lg" className='NavBar' onMouseEnter={() => refreshToken()}>
 
       <Container fluid className={typeUser == 'admLogin' ? 'justify-content-center' : ''}>
         <Navbar.Brand>
