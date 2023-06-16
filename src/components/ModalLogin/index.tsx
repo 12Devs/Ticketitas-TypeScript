@@ -19,8 +19,8 @@ export default function ModalLogin() {
     const [emailRecuperacao, setEmailRecuperacao] = useState('');
     const [senha, setSenha] = useState('');
 
-    const [captchavalidate, setcaptchavalidate] = useState(false);
-    const [captchastatus, setcaptchastatus] = useState(false);
+    const [mensagemRecuperar, setMensagemRecuperar] = useState(false);
+    const [mensagemRecuperarString, setMensagemRecuperarString] = useState("");
 
     const [show, setShow] = useState(false);
     const [showRecuperar, setShowRecuperar] = useState(false);
@@ -85,17 +85,25 @@ export default function ModalLogin() {
     // Handlers modal de login
     const handleClose = () => {
         setShow(false)
-        setcaptchavalidate(false)
-        setcaptchastatus(false)
     };
+
     const handleShow = () => {
-        setcaptchastatus(true)
         setShow(true)
     };
-    const validateCaptcha = () => {
-        setcaptchavalidate(true)
 
-    };
+    const handleRecuperar = () => {
+        setMensagemRecuperar(false);
+
+        const body = {
+            email: emailRecuperacao
+        }
+
+        if (userType == "cliente") {
+            api.post("/user/client/change-password", body).then(handleCloseRecuperar).catch((erro) => {setMensagemRecuperar(true); setMensagemRecuperarString(erro.response.data.message)});
+        } else {
+            api.post("/user/promoter/change-password", body).then(handleCloseRecuperar).catch((erro) => {setMensagemRecuperar(true); setMensagemRecuperarString(erro.response.data.message)});
+        }
+    }
 
     return (
         <>
@@ -134,16 +142,6 @@ export default function ModalLogin() {
                         <Alert style={{ width: 'fit-content' }} show={mensagem} variant="danger">
                             <p>{mensagemString}</p>
                         </Alert>
-                        {
-                            /*
-                            <Row className='justify-content-center'>
-                            <ReCAPTCHA 
-                            sitekey="6LdLG-ElAAAAAN34jptkg-UA6ASYNmnM9_CXjvFM"
-                            onChange={validateCaptcha}
-                            />
-                            </Row>
-                            */
-                        }
 
                         <Row className='justify-content-center' >
                             <Button className='Botão-Terciário Texto-Azul' onClick={handleShowRecuperar}>
@@ -188,8 +186,13 @@ export default function ModalLogin() {
                             setData={setEmailRecuperacao} 
                             type=''/>
                     </Row>
+
+                    <Alert style={{ width: 'fit-content' }} show={mensagemRecuperar} variant="danger">
+                            <p>{mensagemRecuperarString}</p>
+                    </Alert>
+
                     <Row className='justify-content-center'>
-                        <Button className='Botão-Primario Texto-Branco' type='submit'>
+                        <Button className='Botão-Primario Texto-Branco' onClick={handleRecuperar}>
                             Enviar
                         </Button>
                     </Row>

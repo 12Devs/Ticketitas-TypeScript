@@ -4,7 +4,7 @@ import { ClientRepository } from "../../db/ClientRepository";
 
 //Import of the ApiError API
 import { ApiError } from "../../errors/ApiError";
-import { SendEmail } from "../../utils/SendEmail";
+import { EmailProvider } from "../../utils/EmailProvider";
 
 //Import of the class that will be tested here
 import { ChangePasswordClientUseCase } from "./ChangePasswordClientUseCase";
@@ -13,7 +13,7 @@ describe('ChangePasswordClientController, no code stored', () => {
   let changePasswordClientUseCase: ChangePasswordClientUseCase;
   let clientRepository:  ClientRepository;
   let clientPasswordChangeCodeRepository: ClientPasswordChangeCodeRepository;
-  let sendEmail: SendEmail;
+  let emailProvider: EmailProvider;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (ClientRepository)
@@ -28,11 +28,15 @@ describe('ChangePasswordClientController, no code stored', () => {
       updateCode: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as ClientPasswordChangeCodeRepository;
 
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
     // Criação do serviço (ChangePasswordClientUseCase) injetando o caso de uso simulado
     changePasswordClientUseCase = new ChangePasswordClientUseCase(
       clientRepository,
       clientPasswordChangeCodeRepository,
-      sendEmail
+      emailProvider
     );
   });
 
@@ -47,6 +51,7 @@ describe('ChangePasswordClientController, no code stored', () => {
     const findByEmailSpy = jest.spyOn(clientRepository, 'findByEmail');
     const createSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
     const mockReturn = await changePasswordClientUseCase.execute(mockEmail);
@@ -62,6 +67,9 @@ describe('ChangePasswordClientController, no code stored', () => {
 
     // Verificar se o a criação foi bem-sucedida por meio de verificação do return
     expect(mockReturn.resetClientPassword).not.toBe(null);
+
+    // Verificar se o email foi enviado
+    expect(sendEmailSpy).toHaveBeenCalled()
   });
 
   // Teste para verificar se o método execute é retorna erro caso o campo de emai esteja vazio
@@ -75,6 +83,7 @@ describe('ChangePasswordClientController, no code stored', () => {
     const findByEmailSpy = jest.spyOn(clientRepository, 'findByEmail');
     const createSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método execute do serviço com os argumentos desejados e verificar que um erro específico ocorreu
     try {
@@ -98,6 +107,9 @@ describe('ChangePasswordClientController, no code stored', () => {
 
     // Verificar se o método updateCodeSpy não foi chamado
     expect(updateCodeSpy).not.toHaveBeenCalled();
+
+    // Verificar se o email não foi enviado
+    expect(sendEmailSpy).not.toHaveBeenCalled()
   });
 });
 
@@ -105,7 +117,7 @@ describe('ChangePasswordClientController, code already stored', () => {
   let changePasswordClientUseCase: ChangePasswordClientUseCase;
   let clientRepository:  ClientRepository;
   let clientPasswordChangeCodeRepository: ClientPasswordChangeCodeRepository;
-  let sendEmail: SendEmail;
+  let emailProvider: EmailProvider;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (ClientRepository)
@@ -120,11 +132,15 @@ describe('ChangePasswordClientController, code already stored', () => {
       updateCode: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as ClientPasswordChangeCodeRepository;
 
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
     // Criação do serviço (ChangePasswordClientUseCase) injetando o caso de uso simulado
     changePasswordClientUseCase = new ChangePasswordClientUseCase(
       clientRepository,
       clientPasswordChangeCodeRepository,
-      sendEmail
+      emailProvider
     );
   });
 
@@ -139,6 +155,7 @@ describe('ChangePasswordClientController, code already stored', () => {
     const findByEmailSpy = jest.spyOn(clientRepository, 'findByEmail');
     const createSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
     const mockReturn = await changePasswordClientUseCase.execute(mockEmail);
@@ -154,6 +171,9 @@ describe('ChangePasswordClientController, code already stored', () => {
 
     // Verificar se o a criação foi bem-sucedida por meio de verificação do return
     expect(mockReturn.resetClientPassword).not.toBe(null);
+
+    // Verificar se o email foi enviado
+    expect(sendEmailSpy).toHaveBeenCalled()
   });
 });
 
@@ -162,7 +182,7 @@ describe('ChangePasswordClientController, no code stored', () => {
   let changePasswordClientUseCase: ChangePasswordClientUseCase;
   let clientRepository:  ClientRepository;
   let clientPasswordChangeCodeRepository: ClientPasswordChangeCodeRepository;
-  let sendEmail: SendEmail;
+  let emailProvider: EmailProvider;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (ClientRepository)
@@ -177,11 +197,15 @@ describe('ChangePasswordClientController, no code stored', () => {
       updateCode: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as ClientPasswordChangeCodeRepository;
 
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
     // Criação do serviço (ChangePasswordClientUseCase) injetando o caso de uso simulado
     changePasswordClientUseCase = new ChangePasswordClientUseCase(
       clientRepository,
       clientPasswordChangeCodeRepository,
-      sendEmail
+      emailProvider
     );
   });
 
@@ -196,6 +220,7 @@ describe('ChangePasswordClientController, no code stored', () => {
     const findByEmailSpy = jest.spyOn(clientRepository, 'findByEmail');
     const createSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(clientPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método execute do serviço com os argumentos desejados e verificar que um erro específico ocorreu
     try {
@@ -219,5 +244,8 @@ describe('ChangePasswordClientController, no code stored', () => {
 
     // Verificar se o método updateCodeSpy não foi chamado
     expect(updateCodeSpy).not.toHaveBeenCalled();
+
+    // Verificar se o email não foi enviado
+    expect(sendEmailSpy).not.toHaveBeenCalled()
   });
 });

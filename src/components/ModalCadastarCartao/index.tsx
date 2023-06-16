@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import InputTexto from "../InputTexto";
 import { api } from "../../services/api";
@@ -6,6 +6,7 @@ import { api } from "../../services/api";
 export default function ModalCadastrarCartao(){
     const [show, setShow] = useState(false);
     const [cvv, setCvv] = useState('');
+    const [cpf, setCpf] = useState('undefined');
     const [cardNumber, setCardNumber] = useState('');
     const [monthExpirationDate, setMonthExpirationDate] = useState('');
     const [yearExpirationDate, setYearExpirationDate] = useState('');
@@ -18,6 +19,14 @@ export default function ModalCadastrarCartao(){
     const handleShow = () => {
         setShow(true)
     };
+
+    useEffect(() => {
+       
+        const cpfLocalStorage = localStorage.getItem('CPF');
+        if (cpfLocalStorage != null) {
+            setCpf(cpfLocalStorage);
+        }
+    }, [])
     
     
     const cadastrarCartao = (event: any) => {
@@ -27,13 +36,14 @@ export default function ModalCadastrarCartao(){
             cardNumber,
             monthExpirationDate,
             yearExpirationDate,
+            holder,
+            cpf
         }
         const config = {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         };
-        api.post("user/client/card",data,config).then((response) => {
-            console.log(response)
-        });
+        api.post("user/client/card", data, config).then((response) => {console.log(response); handleClose(); refresh()});
+        
     }
     return(
         <>

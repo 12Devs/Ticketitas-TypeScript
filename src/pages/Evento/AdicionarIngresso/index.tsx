@@ -88,7 +88,6 @@ export default function AdicionarIngresso({ event }: { event: any }) {
             navigate(`/checkout/${idCart}`);
           });
   
-          console.log("cliente logado");
         } else {
           console.log("login nao autorizado");
         }
@@ -616,7 +615,7 @@ export default function AdicionarIngresso({ event }: { event: any }) {
 
   function renderAll()
   {
-    if(user=="cliente")
+    if(user != "promoter" && user != "admin")
     {
       return(
         <Container className="larguraMinima">
