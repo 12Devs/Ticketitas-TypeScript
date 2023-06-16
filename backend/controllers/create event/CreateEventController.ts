@@ -55,9 +55,9 @@ class CreateEventController {
         const {promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, porcentagemMeia, porcentagemGratis} = request.body;
         const { cep, cidade, estado, bairro, rua, numero } = request.body;
 
-        await this.createEventUseCase.execute(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
+        const event = await this.createEventUseCase.execute(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip, porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
 
-        return response.status(201).json({message: "Evento criado com sucessso!"});
+        return response.status(201).json(event);
     }
 }
 
