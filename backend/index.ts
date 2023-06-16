@@ -4,6 +4,7 @@ import { conn } from "./db/connection";
 import { ApiError } from "./errors/ApiError";
 import cors from "cors";
 import { FillDataBase } from "./config/fillDb";
+import { FORCE } from "sequelize/types/index-hints";
 
 
 const app = express();
@@ -26,7 +27,7 @@ app.use((error, request: Request, response: Response, next: NextFunction) => {
   });
 });
 
-conn.sync().then(async () => {
+conn.sync({}).then(async () => {
 // await FillDataBase.fillClients();
 // await FillDataBase.fillPromoters();
 // await FillDataBase.fillSuperAdministrator();
