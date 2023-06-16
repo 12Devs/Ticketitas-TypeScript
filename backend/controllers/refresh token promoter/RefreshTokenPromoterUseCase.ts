@@ -78,7 +78,7 @@ class RefreshTokenPromoterUseCase {
 
         const newToken = sign({tipo: "Promoter", nome: decode.nome},
             
-            process.env.JWT_SECRET_CLIENT as string,
+            process.env.JWT_SECRET_PROMOTER as string,
 
             {subject: `${promoterCpf}`,
                 expiresIn: process.env.EXPIRES_TOKEN});
