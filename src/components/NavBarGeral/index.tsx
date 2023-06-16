@@ -47,6 +47,9 @@ const NavBarGeral = () => {
   const [typeUser, setTypeUser] = useState('default');
   const navigate = useNavigate();
 
+  const [seconds, setSeconds] = useState(30);
+  const [booleanControl, setBooleanControl] = useState(false);
+
   const [arrayEventos, setArrayEventos] = useState({ allActiveEvents: [] });
 
   // Recarrega a tela
@@ -88,22 +91,41 @@ const NavBarGeral = () => {
     });
   }, []);
 
+  var token = {
+    token: localStorage.getItem("refreshToken")
+  }
+
+  function setToken(response: any) {
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
+  }
+
   function refreshToken() {
-    const token = {
-      token: localStorage.getItem("refreshToken")
-    }
     if (localStorage.getItem("userType") == "admin") {
-      api.post("/user/administrator/refresh-token", token).then((response) => console.log(response));
+      api.post("/user/administrator/refresh-token", token).then((response) => {console.log(response); setToken(response)});
     } else if (localStorage.getItem("userType") == "cliente") {
-      api.post("/user/client/refresh-token", token).then((response) => console.log(response));
+      api.post("/user/client/refresh-token", token).then((response) => {console.log(response); setToken(response)});
     } else if (localStorage.getItem("userType") == "promoter") {
-      api.post("/user/promoter/refresh-token", token).then((response) => console.log(response));
+      api.post("/user/promoter/refresh-token", token).then((response) => {console.log(response); setToken(response)});
     }
   }
 
+  useEffect(() => {
+    if (seconds > 0) {
+      const timer = setTimeout(() => setSeconds(seconds - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (seconds == 0){
+      console.log("Refresh token chamado");
+      refreshToken();
+    	setSeconds(30)
+    }
+    
+  }, [seconds]);
+
+  console.log("Tempo: ", seconds);
 
   return (
-    <Navbar collapseOnSelect expand="lg" className='NavBar' onMouseEnter={() => refreshToken()}>
+    <Navbar collapseOnSelect expand="lg" className='NavBar'>
 
       <Container fluid className={typeUser == 'admLogin' ? 'justify-content-center' : ''}>
         <Navbar.Brand>
