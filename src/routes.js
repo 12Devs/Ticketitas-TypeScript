@@ -29,6 +29,7 @@ import GerenciarPromoters from './pages/GerenciarPromoters';
 import GerenciarAdmins from './pages/GerenciarAdmins';
 import Privacidade from './pages/Privacidade';
 import Contato from './pages/Contato';
+import CompraFinalizada from './pages/CompraFinalizada';
 
 export default function AppRouter() {
     return (
@@ -71,7 +72,8 @@ export default function AppRouter() {
                     <Route path='editarEvento' element={<EditarEvento/>}/>                    
                     <Route path='meusIngressos' element={<MeusIngressos/>}/> 
                     <Route path='gerenciarPromoters' element={<GerenciarPromoters/>}/>
-                    <Route path='GerenciarAdmins' element={<GerenciarAdmins/>}/>                                                             
+                    <Route path='GerenciarAdmins' element={<GerenciarAdmins/>}/>
+                    <Route path='compraFinalizada' element={<CompraFinalizada/>}/>                                                                                                                          
                 </Routes>
                 <Footer />
             </Router>

@@ -208,13 +208,13 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 api.post("user/client/card", data, config).then((response) => {
                     api.post('/sale/make-purchase', dadosFinalizar, config).then((response) => {
                         setLoading(false);
-                        navigate("/");
+                        navigate("/compraFinalizada");
                     })
                 })
             } else {
                 api.post('/sale/make-purchase', dadosFinalizar, config).then((response) => {
                     setLoading(false);
-                    navigate("/");
+                    navigate("/compraFinalizada");
                 });
             }
         }
