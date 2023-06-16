@@ -88,8 +88,16 @@ const NavBarGeral = () => {
     });
   }, []);
 
+  function refreshToken() {
+    const token = {
+      refreshToken: localStorage.getItem("refreshToken")
+    }
+    api.post("/user/administrator/refresh-token", token).then((response) => console.log(response));
+  }
+
+
   return (
-    <Navbar collapseOnSelect expand="lg" className='NavBar'>
+    <Navbar collapseOnSelect expand="lg" className='NavBar' onMouseEnter={() => refreshToken()}>
 
       <Container fluid className={typeUser == 'admLogin' ? 'justify-content-center' : ''}>
         <Navbar.Brand>
