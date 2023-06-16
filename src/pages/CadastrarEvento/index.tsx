@@ -40,6 +40,8 @@ export default function CadastrarEvento() {
     const [numero, setNumero] = useState('');
 
     const [selectedImage, setSelectedImage] = useState("");
+    const [imageFile, setImageFile] = useState(new File([], ''));
+    const imageElement: HTMLImageElement = new Image();
 
     const navigate = useNavigate();
 
@@ -83,16 +85,21 @@ export default function CadastrarEvento() {
 
         api.post('/event', dadosEvento, config).then((response) => {
             console.log(response);
+            
+            config = {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            };
+
             var data = {
-                // id: ,
-                cpf: promoterCpf,
-                imageEvent: selectedImage
+                id: response.data.event.id,
+                cpf: response.data.event.promoterCpf,
+                imageEvent: imageFile,
             }
 
-            api.patch("/event/image", data, config).then((response) => {
-                console.log(response);
-                navigate("/");
-            });
+            // api.patch("/event/image", data, config).then((response) => {
+            //     console.log(response);
+            // });
+            navigate("/");
         });
     }
 
@@ -111,6 +118,7 @@ export default function CadastrarEvento() {
     const onImageChange = (event: any) => {
         if (event.target.files && event.target.files[0]) {
             var img = event.target.files[0];
+            setImageFile(img);
             setSelectedImage(URL.createObjectURL(img));
         }
     };
