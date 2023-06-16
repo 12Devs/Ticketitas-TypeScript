@@ -217,12 +217,12 @@ const NavBarGeral = () => {
                 <Dropdown.Item onClick={() => navigate('/perfil')}>Perfil</Dropdown.Item>
                 <Dropdown.Item onClick={() => navigate('/gerenciarPromoters')}>Gerenciar promoters</Dropdown.Item>
                 <Dropdown.Item onClick={() => navigate('/gerenciarAdmins')}>Gerenciar administradores</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate('/cadastrarAdmin')}>Cadastrar administrador</Dropdown.Item>
                 <Dropdown.Item onClick={() => navigate('/relatorioEventos')}>Eventos cadastrados</Dropdown.Item>
                 <Dropdown.Divider></Dropdown.Divider>
                 <Dropdown.Item onClick={logout}>Sair</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-
           </Navbar.Collapse>
         }
 

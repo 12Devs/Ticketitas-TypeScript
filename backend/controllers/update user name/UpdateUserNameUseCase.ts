@@ -70,13 +70,13 @@ class UpdateUserNameUseCase {
      */
     public async execute (tipo: string, cpf: number, newName: string){
 
+        //New user name cannot be blank
+        if(!newName) {
+            throw new ApiError("O novo nome não pode ser vazio!", 422);
+        }
+
         //Checks the type of user in order to communicate with the correct database repository
         if (tipo === "client"){
-            
-            //New user name cannot be blank
-            if(!newName) {
-                throw new ApiError("O novo nome não pode ser vazio!", 422);
-            }
             
             const cpfClient: any = await this.clientRepository.findByCpf(cpf);
 
@@ -84,21 +84,11 @@ class UpdateUserNameUseCase {
         } 
         else if (tipo === "promoter"){
             
-            //New user name cannot be blank
-            if(!newName) {
-                throw new ApiError("O novo nome não pode ser vazio!", 422);
-            }
-            
             const cpfPromoter: any = await this.promoterRepository.findByCpf(cpf);
 
             await this.promoterRepository.updateName(cpfPromoter.cpf, newName);
         } 
         else if (tipo === "administrator"){
-            
-            //New user name cannot be blank
-            if(!newName) {
-                throw new ApiError("O novo nome não pode ser vazio!", 422);
-            }
             
             const cpfAdministrator: any = await this.administratorRepository.findByCpf(cpf);
 
