@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../pages.css';
 import jwtDecode from 'jwt-decode';
-import { Modal } from 'react-bootstrap';
+import { Alert, Modal } from 'react-bootstrap';
 import OutputInfo from '../../components/OutputInfo';
 import Forbidden403 from '../Forbidden403';
 
@@ -32,7 +32,8 @@ export default function EditarAdmin() {
     const [novoEmail, setnovoEmail] = useState('');
     const [confirmarEmail, setconfirmarEmail] = useState('');
 
-
+    const [mensagem, setMensagem] = useState(false);
+    const [mensagemString, setMensagemString] = useState('');
 
     const handleClose = () => {
         setShow(false)
@@ -154,7 +155,7 @@ export default function EditarAdmin() {
             newEmailConfirmation: confirmarEmail,
             passwordAuth: senhaAtual
         }
-        api.post("user/administrator/update-email", email, config).then((response) => { console.log(response) });
+        api.post("user/administrator/update-email", email, config).then((response) => { console.log(response); refresh() }).catch((erro) => { setMensagemString(erro.response.data.message); setMensagem(true) });
 
     }
 
@@ -202,9 +203,14 @@ export default function EditarAdmin() {
                                                 <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
                                             </Row>
                                             <Row className='justify-content-center'>
-                                                <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                <Button className='Botão-Primario Texto-Branco' onClick={alterarEmail}>
                                                     Confirmar alteração
                                                 </Button>
+                                            </Row>
+                                            <Row>
+                                                <Alert style={{ width: 'fit-content' }} className='m-3' show={mensagem} variant="danger">
+                                                    <p>{mensagemString}</p>
+                                                </Alert>
                                             </Row>
                                         </Form>
                                     </Modal.Body>
