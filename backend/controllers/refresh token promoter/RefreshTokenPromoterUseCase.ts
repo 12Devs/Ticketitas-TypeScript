@@ -48,7 +48,7 @@ class RefreshTokenPromoterUseCase {
      */
     public async execute (token: string){
 
-        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
+        const decode: any = await verify(token, process.env.JWT_SECRET_PROMOTER);
         const promoterCpf = decode.sub;
 
         const promoterToken: any = await this.tokenPromoterRepository.findByCpfAndRefreshToken(promoterCpf, token);

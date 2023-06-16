@@ -90,7 +90,7 @@ const NavBarGeral = () => {
 
   function refreshToken() {
     const token = {
-      refreshToken: localStorage.getItem("refreshToken")
+      token: localStorage.getItem("refreshToken")
     }
     api.post("/user/administrator/refresh-token", token).then((response) => console.log(response));
   }

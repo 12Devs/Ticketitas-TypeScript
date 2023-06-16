@@ -44,7 +44,7 @@ class RefreshTokenClientUseCase {
      */
     public async execute (token: string){
 
-        const decode: any = await verify(token, process.env.JWT_REFRESH_SECRET);
+        const decode: any = await verify(token, process.env.JWT_SECRET_CLIENT);
         const clientCpf = decode.sub;
 
         const clientToken: any = await this.tokenClientRepository.findByCpfAndRefreshToken(clientCpf, token);
