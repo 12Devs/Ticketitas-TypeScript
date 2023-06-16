@@ -9,46 +9,29 @@ export default function ItemEvento(data: any) {
     const navigate = useNavigate();
     const refresh = () => window.location.reload();
 
-    const dataHoraOBJ = new Date(data.evento.dataEvento);
+    const dataHoraOBJ = new Date(data.evento.dateEvent);
+    console.log("teste", data);
     const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
 
     const config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
 
-    const atualizarStatusEvento = () => {
-        const id = data.evento.id;
-        const promoterCpf = data.evento.promoterCpf;
 
-        var dadosEvento : any = {
-            id,
-            promoterCpf
-        }
-
-        api.patch(`/event/administrator/update-status`, dadosEvento, config).then((response)=>{console.log(response)});
-
-        refresh();
-    }
-
-    const verDetalhes = () => {
-        navigate(`/evento/${data.evento.id}`);
-    }
-    const editar = () => {
-        navigate(`/editarEvento`,{state:{idEvento: data.evento.id}});
-    }
-    
     return (
         <ListGroup.Item>
             <Row>
                 <Col sm={6}>
                     <div className='row align-items-start'>
-                        <h5 className=' text-start'>{data.evento.nome}</h5>
+                        <h5 className=' text-start'>{data.evento.nameEvent}</h5>
                         <p className='text-start'>{dataHoraFormatada}</p>
-                        <p className='text-start'>{data.evento.status}</p>
+                        <p className='text-start'>Tipo: {data.evento.profile}</p>
+                        <p className='text-start'>Setor: {data.evento.sector}</p>
+                        <p className='text-start'>R$ {data.evento.value}</p>
                     </div>
                 </Col>
                 <Col sm={6} className='row align-items-center justify-content-evenly'>
-                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno'  onClick={editar}>Ver Ingresso</Button>
+                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno' >Ver Ingresso</Button>
 
                 </Col>
             </Row>
