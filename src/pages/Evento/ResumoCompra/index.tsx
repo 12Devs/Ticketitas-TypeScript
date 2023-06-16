@@ -57,15 +57,20 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     const dataHoraOBJ = new Date(dataHora);
     const dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
 
-    const [total, setTotal] = useState(0.0);
+    const [totalBruto, setTotalBruto] = useState(0.0);
+    const [totalLiquido, setTotalLiquido] = useState(0.0);
     const [primeiroNome, setPrimeiroNome] = useState('');
     
     const [cpf, setCpf] = useState('');
     const [email, setEmail] = useState('');
 
     const [cardNumber, setCardNumber] = useState('');
+    const [cardNumberFour, setCardNumberFour] = useState('');
     const [cardHolder, setCardHolder] = useState('');
     const [cardExp, setCardExp] = useState('');
+    const [cardExpMonth, setCardExpMonth] = useState('');
+    const [cardExpYear, setCardExpYear] = useState('');
+    const [cardExpSeven, setCardExpSeven] = useState('');
     const [cardCVV, setCardCVV] = useState("");
 
     const [saldo, setSaldo] = useState(0.0);
@@ -113,7 +118,8 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
             
             setIdvento(response.data.CheckoutInfos.checkout.eventId);
-            setTotal(response.data.CheckoutInfos.checkout.amountSale)
+            setTotalBruto(response.data.CheckoutInfos.checkout.amountSale);
+            setTotalLiquido(response.data.CheckoutInfos.checkout.amountSale);
             
            
             
@@ -129,8 +135,15 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
         api.get(`/user/client/card`, config).then((response) => {
             console.log("Retorno Cartão: ",response.data.cardInfos);
             setDadosCartao(response.data.cardInfos);
-            
+            setCardNumber(response.data.cardInfos.card.cardNumber);
+            pegarUltimosQuatroDigitos(`${response.data.cardInfos.card.cardNumber}`);
+            setCardExp(response.data.cardInfos.card.expirationDate);
+            setCardExpSeven((response.data.cardInfos.card.expirationDate).slice(0,7));
+            setCardHolder(response.data.cardInfos.card.holder);
+               
             setTemCartao(true);
+            
+
         }) .catch((e)=>{});
 
     }, []);
@@ -168,6 +181,49 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     }
 
 
+
+
+
+    function handleFinalizar()
+    {
+        if(!TemCartao)
+        {
+            var data: any = {
+                cardCVV,
+                cardNumber,
+                cardExpMonth,
+                cardExpYear,
+                cardHolder,
+            }
+            console.log("Dados cartão:", data)
+            api.post("user/client/card",data,config).then((response) => {
+                console.log(response)
+            });
+        }
+        let dadosFinalizar = {
+            "pistaAmount": 0,
+            "stageAmount": 0,
+            "vipAmount": 0,
+            "clientCpf": 45850724974,
+            "pistaAmountHalf": 0,
+            "stageAmountHalf": 0,
+            "vipAmountHalf": 0,
+            "freeAmount": 0,
+            "walletValue": 0.00,
+            "email": "gcmorais66@gmail.com",
+            "eventId": "34f3f0b1-3ea6-4466-96ad-882f86ee0bbf",
+            "clientName": "Gabriel Cordeiro Moraes",
+            "checkoutId": "77930582-ba37-4682-86e1-5f273c8acaac"  
+        }
+        
+    }
+
+    function pegarUltimosQuatroDigitos(numero: string) {
+      
+        let ultimosQuatroDigitos = numero.slice(-4);
+        
+        setCardNumberFour(ultimosQuatroDigitos);
+    }
     function renderCartao(){
        
         if (!TemCartao){
@@ -180,7 +236,10 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         <InputTexto type={'number'} defaultValue={''} required={true} label={"NÚMERO DO CARTÃO*"} placeholder={"0000 0000 0000 0000"} controlId={"inputCardNumber"} data={cardNumber} setData={setCardNumber}/>
                     </Col>
                     <Col sm={4}>
-                        <InputTexto type={'date'} defaultValue={''} required={true} label={"VALIDADE*"} placeholder={""} controlId={"inputExp"} data={cardExp} setData={setCardExp}/>
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"MÉS DE VALIDADE*"} placeholder={""} controlId={"inputExpMonth"} data={cardExpMonth} setData={setCardExpMonth}/>
+                    </Col>
+                    <Col sm={4}>
+                        <InputTexto type={'number'} defaultValue={''} required={true} label={"ANO DE VALIDADE*"} placeholder={""} controlId={"inputExpYear"} data={cardExpYear} setData={setCardExpYear}/>
                     </Col>
                     
                     
@@ -225,6 +284,12 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         
                     <Card.Title></Card.Title>
                     <Row>
+                        
+                      
+                            <Card.Text>
+                                XXXX XXXX XXXX {cardNumberFour}
+                            </Card.Text>
+                        
                         <Col>
                             <Card.Text>
                                 {cardHolder}
@@ -232,7 +297,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         </Col>
                         <Col>
                         <Card.Text>
-                            {cardExp}
+                            {cardExpSeven}
                         </Card.Text>
                         </Col>
                         
@@ -258,7 +323,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
     }
     
     function renderSaldo(){
-
+        console.log("SALDO: ", saldo);
         if(saldo>0)
         {
             return(
@@ -276,17 +341,17 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         </div>
                         <div className="saldoConteudo1">
                         <h1 style={{fontSize: 25}}>Saldo</h1>
-                        <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {}</p>
+                        <p style ={{fontWeight: 'bold', fontSize: 20}}>R$: {saldo}</p>
                         </div>
                         <Form>
-                <Form.Check  onChange={e => { setTemSaldo(!TemSaldo)}} className='d-flex justify-content-center'
-                    type="switch"
-                    id="custom-switch"
-                    label ="Usar Saldo para pagar"
-                />
-                </Form>
-                    <p> saldo: {saldo}</p>
-                    </div>
+                            <Form.Check  onChange={e => { setTemSaldo(!TemSaldo)}} className='d-flex justify-content-center'
+                                type="switch"
+                                id="custom-switch"
+                                label ="Usar Saldo para pagar"
+                            />
+                         </Form>
+                    
+                </div>
                 </Col>
                 </>
             )
@@ -299,13 +364,20 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
         var valorTotalCartao = 0;
         if(TemSaldo)
         {
-            let totalTeste = total - saldo
-            setTotal(totalTeste);
+            if(totalBruto<saldo)
+            {
+                setTotalLiquido(0.0);
+            }
+            else{
+
+                let totalTeste = totalBruto - saldo
+                setTotalLiquido(totalTeste);
+            }
         }
         else
         {
-            let totalTeste = total + saldo;
-            setTotal(totalTeste);
+            let totalTeste = totalBruto + saldo;
+            setTotalLiquido(totalTeste);
         }
 
     }, [TemSaldo]);
@@ -366,18 +438,18 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 
                <Row className='divParcelamento'>
                     <Form.Select size="sm">
-                    <option>1X de {total.toFixed(2)}</option>
-                    <option>2X de {(total/2).toFixed(2)}</option>
-                    <option>3X de {(total/3).toFixed(2)}</option>
-                    <option>4X de {(total/4).toFixed(2)}</option>
-                    <option>5X de {(total/5).toFixed(2)}</option>
-                    <option>6X de {(total/6).toFixed(2)}</option>
-                    <option>7X de {(total/7).toFixed(2)}</option>
-                    <option>8X de {(total/8).toFixed(2)}</option>
-                    <option>9X de {(total/9).toFixed(2)}</option>
-                    <option>10X de {(total/10).toFixed(2)}</option>
-                    <option>11X de {(total/11).toFixed(2)}</option>
-                    <option>12X de {(total/12).toFixed(2)}</option>
+                    <option>1X de {totalLiquido.toFixed(2)}</option>
+                    <option>2X de {(totalLiquido/2).toFixed(2)}</option>
+                    <option>3X de {(totalLiquido/3).toFixed(2)}</option>
+                    <option>4X de {(totalLiquido/4).toFixed(2)}</option>
+                    <option>5X de {(totalLiquido/5).toFixed(2)}</option>
+                    <option>6X de {(totalLiquido/6).toFixed(2)}</option>
+                    <option>7X de {(totalLiquido/7).toFixed(2)}</option>
+                    <option>8X de {(totalLiquido/8).toFixed(2)}</option>
+                    <option>9X de {(totalLiquido/9).toFixed(2)}</option>
+                    <option>10X de {(totalLiquido/10).toFixed(2)}</option>
+                    <option>11X de {(totalLiquido/11).toFixed(2)}</option>
+                    <option>12X de {(totalLiquido/12).toFixed(2)}</option>
                     </Form.Select>
                </Row>
                 
@@ -394,7 +466,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                 </Row >
                 
                 <Row className='justify-content-center p-3' >
-                <button type="button" className="btn btn-success w-80">FINALIZAR COMPRA</button>
+                <Button onClick = {handleFinalizar }className="btn btn-success w-80">FINALIZAR COMPRA</Button>
                 </Row>
                
             </section>

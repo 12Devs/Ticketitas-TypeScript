@@ -123,7 +123,7 @@ class FillDataBase {
 
         await createEventUseCase.execute(45850724974, "Festival de Verão Salvador", fvs, fvsDate, true, 900000, 20000, 50000, 300.00, 390.00, 1032.99, 52.00, 0.00, 41730101, "Salvador", "BA", "Itapuã", "Av. Luís Viana Filho", 0);
 
-        await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, sjSerrinhaDate, true, 40000, 3000, 0, 0, 0, 0,  50.00, 0.00, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
+        await createEventUseCase.execute(75316609549, "São João de Serrinha", sjSerrinha, sjSerrinhaDate, true, 40000, 3000, 300, 200, 100, 100,  50.00, 0.00, 48700000, "Serrinha", "BA", "Centro", "Rua 13", 0);
     }
 
     public static async fillImageEvents() {
