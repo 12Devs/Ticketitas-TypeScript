@@ -48,7 +48,7 @@ export default function ItemEvento(data: any) {
                     </div>
                 </Col>
                 <Col sm={6} className='row align-items-center justify-content-evenly'>
-                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno'  onClick={editar}>Ver ingresso</Button>
+                    <Button className='Botão-Primario Texto-Branco Texto-MuitoPequeno'  onClick={editar}>Ver Ingresso</Button>
 
                 </Col>
             </Row>

@@ -45,6 +45,7 @@ export default function ModalCadastrarCartao(){
         api.post("user/client/card", data, config).then((response) => {
             console.log(response)
         });
+      
     }
     return(
         <>

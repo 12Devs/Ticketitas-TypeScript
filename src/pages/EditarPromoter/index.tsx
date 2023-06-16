@@ -21,7 +21,7 @@ export default function EditarPromoter() {
     const [cpf, setCpf] = useState('undefined');
     const [nomeCompleto, SetnomeCompleto] = useState('undefined');
     const [primeiroNome, setprimeiroNome] = useState('undefined');
-    const [sobrenome, setSobreome] = useState('undefined');
+    const [sobrenome, setSobrenome] = useState('undefined');
     const [telefone, setTelefone] = useState('undefined');
     const [cep, setCep] = useState('undefined');
     const [cidade, setCidade] = useState('undefined');
@@ -62,13 +62,12 @@ export default function EditarPromoter() {
 
     function pegarSobrenome(nomeCompleto: string) {
         var partesNome = nomeCompleto.split(' ');
-
         if (partesNome.length < 2) {
-            setSobreome("")
+            setSobrenome("")
         }
         else {
-            let sobrenome = partesNome[partesNome.length - 2];
-            setSobreome(sobrenome)
+            let sobrenome = partesNome[partesNome.length - 1];
+            setSobrenome(sobrenome)
         }
     }
     function pegarNome(nomeCompleto: string) {
@@ -106,8 +105,8 @@ export default function EditarPromoter() {
             setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
             setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
             setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
-            pegarSobrenome(nomeCompleto);
-            pegarNome(nomeCompleto)
+            pegarSobrenome(response.data.PromoterInfos.promoter.nome);
+            pegarNome(response.data.PromoterInfos.promoter.nome)
         });
 
 
@@ -208,7 +207,7 @@ export default function EditarPromoter() {
                                 <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
                             </Col>
                             <Col sm={6}>
-                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome} />
                             </Col>
                         </Row>
 

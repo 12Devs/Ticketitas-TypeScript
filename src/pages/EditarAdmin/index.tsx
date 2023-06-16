@@ -63,7 +63,7 @@ export default function EditarAdmin() {
             setSobreome("")
         }
         else {
-            let sobrenome = partesNome[partesNome.length - 2];
+            let sobrenome = partesNome[partesNome.length - 1];
             setSobreome(sobrenome)
         }
     }
@@ -94,8 +94,8 @@ export default function EditarAdmin() {
             setEmail(response.data.AdministratorInfos.administrator.email)
             setTelefone(response.data.AdministratorInfos.administrator.phone)
             setCpf(response.data.AdministratorInfos.administrator.cpf);
-            pegarSobrenome(nomeCompleto);
-            pegarNome(nomeCompleto)
+            pegarSobrenome(response.data.AdministratorInfos.administrator.name);
+            pegarNome(response.data.AdministratorInfos.administrator.name)
         });
 
 

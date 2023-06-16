@@ -26,7 +26,7 @@ export default function EditarCliente() {
     const [cpf, setCpf] = useState('undefined');
     const [nomeCompleto, SetnomeCompleto] = useState('undefined');
     const [primeiroNome, setprimeiroNome] = useState('undefined');
-    const [sobrenome, setSobreome] = useState('undefined');
+    const [sobrenome, setSobrenome] = useState('undefined');
     const [telefone, setTelefone] = useState('undefined');
     const [cep, setCep] = useState('undefined');
     const [cidade, setCidade] = useState('undefined');
@@ -69,24 +69,23 @@ export default function EditarCliente() {
 
     const navigate = useNavigate();
 
-    function pegarSobrenome(nomeCompleto: string) {
-        var partesNome = nomeCompleto.split(' ');
+    function pegarNome(nomeCompleto: string) {
+        let partesNome = nomeCompleto.split(' ');
+
+        let nome = partesNome[0];
+        setprimeiroNome(nome)
+   }
+   function pegarSobrenome(nomeCompleto: string){
+        let partesNome = nomeCompleto.split(' ');
 
         if (partesNome.length < 2) {
-            setSobreome("")
+            setSobrenome("")
         }
         else {
-            let sobrenome = partesNome[partesNome.length - 2];
-            setSobreome(sobrenome)
+            let sobrenome = partesNome[partesNome.length - 1];
+            setSobrenome(sobrenome)
         }
-    }
-    function pegarNome(nomeCompleto: string) {
-
-        var partesNome = nomeCompleto.split(' ');
-
-        let sobrenome = partesNome[0];
-        setprimeiroNome(sobrenome)
-    }
+   }
 
     function pegarUltimosQuatroDigitos(numero: string) {
         let ultimosQuatroDigitos = numero.slice(-4);
@@ -123,12 +122,15 @@ export default function EditarCliente() {
             setNumero(response.data.ClientInfos.enderecoClient.numero)
             setCidade(response.data.ClientInfos.enderecoClient.cidade)
             pegarUltimosQuatroDigitos(cardNumber)
-            pegarSobrenome(nomeCompleto);
-            pegarNome(nomeCompleto)
+            console.log(response.data.ClientInfos.client.nome)
+            pegarNome(response.data.ClientInfos.client.nome)
+            pegarSobrenome(response.data.ClientInfos.client.nome)
+
         });
 
 
     }, [])
+
 
     useEffect(() => {
 
@@ -228,7 +230,7 @@ export default function EditarCliente() {
                                 <InputTexto type='text' defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
                             </Col>
                             <Col sm={6}>
-                                <InputTexto type='text' defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
+                                <InputTexto type='text' defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome} />
                             </Col>
                         </Row>
 
