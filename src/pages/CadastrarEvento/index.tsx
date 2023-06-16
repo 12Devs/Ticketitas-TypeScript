@@ -39,14 +39,21 @@ export default function CadastrarEvento() {
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
 
+    const [selectedImage, setSelectedImage] = useState("");
+    const [imageFile, setImageFile] = useState(new File([], ''));
+    const imageElement: HTMLImageElement = new Image();
+
     const navigate = useNavigate();
 
-    const config = {
+    var config = {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     };
 
     const realizarCadastro = (event: any) => {
         event.preventDefault();
+        config = {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        };
 
         var promoterCpf = 0;
         if (localStorage.getItem("CPF") !== null) {
@@ -76,14 +83,29 @@ export default function CadastrarEvento() {
             numero
         }
 
-        api.post('/event', dadosEvento, config).then((response) => { console.log(response) });
-        navigate('/');
+        api.post('/event', dadosEvento, config).then((response) => {
+            console.log(response);
+            
+            config = {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            };
+
+            var data = {
+                id: response.data.event.id,
+                cpf: response.data.event.promoterCpf,
+                imageEvent: imageFile,
+            }
+
+            // api.patch("/event/image", data, config).then((response) => {
+            //     console.log(response);
+            // });
+            navigate("/");
+        });
     }
 
     // Acompanha as mudanças na variavel CEP e chama o conteudo quando ocorrem
     useEffect(() => {
         if (cep.length == 8 && !isNaN(parseInt(cep))) {
-
             api.get(`/endereco/${cep}`).then((endereco) => {
                 setCidade(endereco.data.localidade);
                 setEstado(endereco.data.uf);
@@ -92,6 +114,14 @@ export default function CadastrarEvento() {
             });
         }
     }, [cep]);
+
+    const onImageChange = (event: any) => {
+        if (event.target.files && event.target.files[0]) {
+            var img = event.target.files[0];
+            setImageFile(img);
+            setSelectedImage(URL.createObjectURL(img));
+        }
+    };
 
     if (localStorage.getItem("userType") == "promoter") {
         return (
@@ -195,6 +225,22 @@ export default function CadastrarEvento() {
                             </Col>
                         </Row>
 
+                        <Row>
+                            <Form.Group controlId="formFile" className="mb-3">
+                                <Row>
+                                    <Form.Label className='ms-3 text-start'>Escolha o banner do evento:</Form.Label>
+                                </Row>
+                                <Row>
+                                    <Form.Control 
+                                        className='ms-3'
+                                        type="file"
+                                        onChange={onImageChange}/>
+                                </Row>
+                            </Form.Group>
+                        </Row>
+                        <Row>
+                            {selectedImage && <img src={selectedImage} style={{maxWidth: "400px"}} alt="Imagem selecionada" />}
+                        </Row>
                         <Row className='d-flex justify-content-center'>
                             <Button href='/' style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
                                 Cancelar
@@ -203,7 +249,6 @@ export default function CadastrarEvento() {
                                 Confirmar
                             </Button>
                         </Row>
-
                     </Container>
                 </Form>
             </>

@@ -1,22 +1,22 @@
-import { CreateClientController } from "./CreateClientController";
-import { CreateClientUseCase } from "./CreateClientUseCase";
+import { CreatePromoterController } from "./CreatePromoterController";
+import { CreatePromoterUseCase } from "./CreatePromoterUseCase";
 import { Request, Response } from "express";
 
-describe('CreateClientController', () => {
-  let createClientController: CreateClientController;
-  let createClientUseCase: CreateClientUseCase;
+describe('CreatePromoterController', () => {
+  let createPromoterController: CreatePromoterController;
+  let createPromoterUseCase: CreatePromoterUseCase;
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (AprovePromoterRegistrationUseCase)
-    createClientUseCase = {
+    createPromoterUseCase = {
       execute: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
-    } as unknown as CreateClientUseCase;
+    } as unknown as CreatePromoterUseCase;
 
     // Criação do controlador (AprovePromoterRegistrationController) injetando o caso de uso simulado
-    createClientController = new CreateClientController(
-        createClientUseCase
+    createPromoterController = new CreatePromoterController(
+        createPromoterUseCase
     );
 
     // Criação de um objeto simulado para a resposta (Response)
@@ -27,7 +27,7 @@ describe('CreateClientController', () => {
   });
 
   // Teste para verificar se o método handle é chamado corretamente
-  it('should call execute method of CreateClientUseCase and return status 201', async () => {
+  it('should call execute method of CreatePromoterUseCase and return status 201', async () => {
     
     // Criação de um objeto simulado para a requisição (Request)
     mockRequest = {
@@ -48,10 +48,10 @@ describe('CreateClientController', () => {
 	  };
     
     // Espionar o método execute do caso de uso simulado para verificar se foi chamado corretamente
-    const executeSpy = jest.spyOn(createClientUseCase, 'execute');
+    const executeSpy = jest.spyOn(createPromoterUseCase, 'execute');
 
     // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
-    await createClientController.handle(mockRequest as Request, mockResponse as Response);
+    await createPromoterController.handle(mockRequest as Request, mockResponse as Response);
 
     // Verificar se o método execute foi chamado com o parâmetro correto
     expect(executeSpy).toHaveBeenCalledWith("Batatinha", "123456789", "Batatinha@gmail.com", "123456789","senha123", "senha123","12345678", "Batatopoles", "batatones", "Bairro da batata", "Potato","00");
