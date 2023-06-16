@@ -141,6 +141,8 @@ class CreateEventUseCase {
         const event: any = await this.eventRepository.create(promoterCpf, nome, descricao, dataEvento, status, quantPista, quantStage, quantVip, valorPista, valorStage, valorVip,  porcentagemMeia, porcentagemGratis, cep, cidade, estado, bairro, rua, numero);
 
         await this.stockRepository.create(event.id, event.quantPista, event.quantStage, event.quantVip);
+
+        return { event }
         
     }
 }
