@@ -44,17 +44,17 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
         });
     }, []);
 
-    const share = () => {
-        if (navigator.share !== undefined) {
-            navigator.share({
-                title: titulo,
-                text: descricao,
-                url: 'http://localhost:3000',
-            })
-                .then(() => console.log('Successful share'))
-                .catch((error) => console.log('Error sharing', error));
-        }
-    }
+    // const share = () => {
+    //     if (navigator.share !== undefined) {
+    //         navigator.share({
+    //             title: titulo,
+    //             text: descricao,
+    //             url: 'http://localhost:3000',
+    //         })
+    //             .then(() => console.log('Successful share'))
+    //             .catch((error) => console.log('Error sharing', error));
+    //     }
+    // }
 
     return (
         <Container>
@@ -72,8 +72,8 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
 
             <section className='larguraMainContentEventos mt-5'>
                 <Row>
-                <Button onClick={share} style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
-                    Compartilhar
+                <Button href="https://api.whatsapp.com/send?text=Confira esse evento no site Ticketitas: http://localhost:3000" style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                    Compartilhar evento
                 </Button>
                 </Row>
                 <Row className='noMarginPadding'>
