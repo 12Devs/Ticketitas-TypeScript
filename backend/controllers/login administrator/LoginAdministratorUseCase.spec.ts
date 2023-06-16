@@ -1,5 +1,6 @@
 //Import of the repository classes
 import { AdministratorRepository } from "../../db/AdministratorRepository";
+import { SuperAdministratorRelationRepository } from "../../db/SuperAdministratorRelationRepository";
 import { TokenAdministratorRepository } from "../../db/TokenAdministratorRepository";
 
 //Import of the ApiError API
@@ -8,12 +9,10 @@ import { ApiError } from "../../errors/ApiError";
 //Import of the class that will be tested here
 import { LoginAdministratorUseCase } from "./LoginAdministratorUseCase";
 
-//Import of the bcrypt module
-import bcrypt from 'bcrypt';
-
-describe('LoginAdministratorController, returns info when the DB is asked for the existence of an user with a certain email address', () => {
+describe('LoginAdministratorController, returns info when the DB is asked for the existence of an user with a certain email address (normal administrator case)', () => {
   let loginAdministratorUseCase: LoginAdministratorUseCase;
   let administratorRepository:  AdministratorRepository;
+  let superAdministratorRelationRepository: SuperAdministratorRelationRepository;
   let tokenAdministratorRepository: TokenAdministratorRepository;
 
   beforeEach(() => {
@@ -21,6 +20,11 @@ describe('LoginAdministratorController, returns info when the DB is asked for th
     administratorRepository = {
       findByEmailAndSenha: jest.fn().mockReturnValue({ name: "Outro Nome Sem Importacia", cpf: 84586545345, email: "youknownothing@email.com", password: "$2a$12$bFpND0cLaRrLDeaUq6qaf.saPTA3TyUJHmem/ECHhw29r/peM/4n6"}), // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as AdministratorRepository;
+
+    // Criação de um objeto simulado para o caso de uso (SuperAdministratorRelationRepository)
+    superAdministratorRelationRepository = {
+      findByCpf: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as SuperAdministratorRelationRepository;
 
     // Criação de um objeto simulado para o caso de uso (TokenAdministratorRepository)
     tokenAdministratorRepository = {
@@ -30,12 +34,13 @@ describe('LoginAdministratorController, returns info when the DB is asked for th
     // Criação do serviço (LoginAdministratorUseCase) injetando o caso de uso simulado
     loginAdministratorUseCase = new LoginAdministratorUseCase(
       administratorRepository,
+      superAdministratorRelationRepository,
       tokenAdministratorRepository
     );
   });
 
   // Teste para verificar se o método execute é chamado corretamente
-  it('should call execute method of LoginAdministratorUseCase and return administrator login info', async () => {
+  it('should call execute method of LoginAdministratorUseCase and return administrator login info (normal administrator case)', async () => {
     
     // Criação de objetos simulados para a requisição
     const mockEmail = "youknownothing@email.com";
@@ -191,6 +196,7 @@ describe('LoginAdministratorController, returns info when the DB is asked for th
 describe('LoginAdministratorController, returns no info regarding the provided e-mail address', () => {
   let loginAdministratorUseCase: LoginAdministratorUseCase;
   let administratorRepository:  AdministratorRepository;
+  let superAdministratorRelationRepository: SuperAdministratorRelationRepository;
   let tokenAdministratorRepository: TokenAdministratorRepository;
 
   beforeEach(() => {
@@ -198,6 +204,11 @@ describe('LoginAdministratorController, returns no info regarding the provided e
     administratorRepository = {
       findByEmailAndSenha: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as AdministratorRepository;
+
+    // Criação de um objeto simulado para o caso de uso (SuperAdministratorRelationRepository)
+    superAdministratorRelationRepository = {
+      findByCpf: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as SuperAdministratorRelationRepository;
 
     // Criação de um objeto simulado para o caso de uso (TokenAdministratorRepository)
     tokenAdministratorRepository = {
@@ -207,6 +218,7 @@ describe('LoginAdministratorController, returns no info regarding the provided e
     // Criação do serviço (LoginAdministratorUseCase) injetando o caso de uso simulado
     loginAdministratorUseCase = new LoginAdministratorUseCase(
       administratorRepository,
+      superAdministratorRelationRepository,
       tokenAdministratorRepository
     );
   });
@@ -241,5 +253,61 @@ describe('LoginAdministratorController, returns no info regarding the provided e
 
     // Verificar se o método create não foi chamado
     expect(createSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('LoginAdministratorController, returns info when the DB is asked for the existence of an user with a certain email address (super administrator case)', () => {
+  let loginAdministratorUseCase: LoginAdministratorUseCase;
+  let administratorRepository:  AdministratorRepository;
+  let superAdministratorRelationRepository: SuperAdministratorRelationRepository;
+  let tokenAdministratorRepository: TokenAdministratorRepository;
+
+  beforeEach(() => {
+    // Criação de um objeto simulado para o caso de uso (AdministratorRepository)
+    administratorRepository = {
+      findByEmailAndSenha: jest.fn().mockReturnValue({ name: "Outro Nome Sem Importacia", cpf: 84586545345, email: "youknownothing@email.com", password: "$2a$12$bFpND0cLaRrLDeaUq6qaf.saPTA3TyUJHmem/ECHhw29r/peM/4n6"}), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as AdministratorRepository;
+
+    // Criação de um objeto simulado para o caso de uso (SuperAdministratorRelationRepository)
+    superAdministratorRelationRepository = {
+      findByCpf: jest.fn().mockReturnValue({cpf: 84586545345}) // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as SuperAdministratorRelationRepository;
+
+    // Criação de um objeto simulado para o caso de uso (TokenAdministratorRepository)
+    tokenAdministratorRepository = {
+      create: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as TokenAdministratorRepository;
+
+    // Criação do serviço (LoginAdministratorUseCase) injetando o caso de uso simulado
+    loginAdministratorUseCase = new LoginAdministratorUseCase(
+      administratorRepository,
+      superAdministratorRelationRepository,
+      tokenAdministratorRepository
+    );
+  });
+
+  // Teste para verificar se o método execute é chamado corretamente
+  it('should call execute method of LoginAdministratorUseCase and return administrator login info (super administrator case)', async () => {
+    
+    // Criação de objetos simulados para a requisição
+    const mockEmail = "youknownothing@email.com";
+    const mockPassword = "YeTaNoThErPW987";
+
+    // Espionar os métodos do caso de uso simulado para verificar se foram chamados corretamente
+    const findByEmailAndSenhaSpy = jest.spyOn(administratorRepository, 'findByEmailAndSenha');
+    const createSpy = jest.spyOn(tokenAdministratorRepository, 'create');
+
+    // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
+    const mockReturn = await loginAdministratorUseCase.execute(mockEmail, mockPassword);
+
+    // Verificar se o método findByEmailAndSenha foi chamado com o parâmetro correto
+    expect(findByEmailAndSenhaSpy).toHaveBeenCalledWith(mockEmail);
+
+    // Verificar se o método create foi chamado com o parâmetro correto
+    //Infelizmente, o modulo jsonwebtoken nao tem muito suporte para mocking, porem ainda podemos conferir o cpf correto sendo passado para a funcao que cria o token.
+    expect(createSpy).toHaveBeenCalledWith(84586545345, expect.anything(), expect.anything());
+
+    // Verificar se o a criação foi bem-sucedida por meio de verificação do return
+    expect(mockReturn.administrator).not.toBe(null);
   });
 });

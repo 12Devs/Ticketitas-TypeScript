@@ -27,7 +27,8 @@ import EditarEvento from './pages/EditarEvento';
 import MeusIngressos from './pages/MeusIngressos';
 import GerenciarPromoters from './pages/GerenciarPromoters';
 import GerenciarAdmins from './pages/GerenciarAdmins';
-
+import Privacidade from './pages/Privacidade';
+import Contato from './pages/Contato';
 
 export default function AppRouter() {
     return (
@@ -36,6 +37,8 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos />} />
+                    <Route path='privacy' element={<Privacidade />} />
+                    <Route path='contact' element={<Contato />} />
                     <Route 
                         path='evento/:eventId' element={<Evento />} 
                         loader={({ params }) => {console.log(params.eventId)}}

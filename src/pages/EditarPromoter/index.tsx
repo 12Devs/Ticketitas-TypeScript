@@ -14,13 +14,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { Modal } from 'react-bootstrap';
 import OutputInfo from '../../components/OutputInfo';
+import Forbidden403 from '../Forbidden403';
 
 export default function EditarPromoter() {
     const [userType, setUserType] = useState('');
     const [cpf, setCpf] = useState('undefined');
     const [nomeCompleto, SetnomeCompleto] = useState('undefined');
     const [primeiroNome, setprimeiroNome] = useState('undefined');
-    const [sobrenome, setSobreome] = useState('undefined');
+    const [sobrenome, setSobrenome] = useState('undefined');
     const [telefone, setTelefone] = useState('undefined');
     const [cep, setCep] = useState('undefined');
     const [cidade, setCidade] = useState('undefined');
@@ -61,13 +62,12 @@ export default function EditarPromoter() {
 
     function pegarSobrenome(nomeCompleto: string) {
         var partesNome = nomeCompleto.split(' ');
-
         if (partesNome.length < 2) {
-            setSobreome("")
+            setSobrenome("")
         }
         else {
-            let sobrenome = partesNome[partesNome.length - 2];
-            setSobreome(sobrenome)
+            let sobrenome = partesNome[partesNome.length - 1];
+            setSobrenome(sobrenome)
         }
     }
     function pegarNome(nomeCompleto: string) {
@@ -105,8 +105,8 @@ export default function EditarPromoter() {
             setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
             setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
             setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
-            pegarSobrenome(nomeCompleto);
-            pegarNome(nomeCompleto)
+            pegarSobrenome(response.data.PromoterInfos.promoter.nome);
+            pegarNome(response.data.PromoterInfos.promoter.nome)
         });
 
 
@@ -192,124 +192,129 @@ export default function EditarPromoter() {
 
     }
 
-    return (
-        <>
-            <NavBarGeral />
-            <Form style={{ minHeight: '75vh' }} onSubmit={editarPromoter}>
-                <Container>
-                    <Row >
-                        <FormLabel label='Editar informações' />
-                    </Row>
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
-                        </Col>
-                        <Col sm={6}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobreome} />
-                        </Col>
-                    </Row>
+    if (localStorage.getItem("userType") == "promoter") {
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
-                        </Col>
-                    </Row>
+        return (
+            <>
+                <NavBarGeral />
+                <Form style={{ minHeight: '75vh' }} onSubmit={editarPromoter}>
+                    <Container>
+                        <Row >
+                            <FormLabel label='Editar informações' />
+                        </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Primeiro nome"} placeholder={primeiroNome} controlId={"inputPirmeiroNome"} data={primeiroNome} setData={setprimeiroNome} />
+                            </Col>
+                            <Col sm={6}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Sobrenome"} placeholder={sobrenome} controlId={"inputSobrenome"} data={sobrenome} setData={setSobrenome} />
+                            </Col>
+                        </Row>
 
-                    <Row>
-                        <Col sm={6}>
-                            <InputTexto type={'number'} defaultValue={''} required={true} label={"CEP"} placeholder={cep} controlId={"cep"} data={cep} setData={setCep} />
-                        </Col>
-                    </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <InputTexto type={'number'} defaultValue={''} required={true} label={"Telefone"} placeholder={telefone} controlId={"telefone"} data={telefone} setData={setTelefone} />
+                            </Col>
+                        </Row>
 
-                    <Row>
-                        <Col sm={8}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Cidade"} placeholder={cidade} controlId={"cidade"} data={cidade} setData={setCidade} />
-                        </Col>
-                        <Col sm={4}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Estado"} placeholder={estado} controlId={"estado"} data={estado} setData={setEstado} />
-                        </Col>
-                    </Row>
+                        <Row>
+                            <Col sm={6}>
+                                <InputTexto type={'number'} defaultValue={''} required={true} label={"CEP"} placeholder={cep} controlId={"cep"} data={cep} setData={setCep} />
+                            </Col>
+                        </Row>
 
-                    <Row>
-                        <Col>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Bairro"} placeholder={bairro} controlId={"bairro"} data={bairro} setData={setBairro} />
-                        </Col>
-                    </Row>
+                        <Row>
+                            <Col sm={8}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Cidade"} placeholder={cidade} controlId={"cidade"} data={cidade} setData={setCidade} />
+                            </Col>
+                            <Col sm={4}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Estado"} placeholder={estado} controlId={"estado"} data={estado} setData={setEstado} />
+                            </Col>
+                        </Row>
 
-                    <Row>
-                        <Col sm={8}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Rua"} placeholder={rua} controlId={"rua"} data={rua} setData={setRua} />
-                        </Col>
-                        <Col sm={4}>
-                            <InputTexto type={'text'} defaultValue={''} required={true} label={"Número"} placeholder={numero} controlId={"numero"} data={numero} setData={setNumero} />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={{ span: 3, offset: 3 }}>
-                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
-                                Alterar email
+                        <Row>
+                            <Col>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Bairro"} placeholder={bairro} controlId={"bairro"} data={bairro} setData={setBairro} />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={8}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Rua"} placeholder={rua} controlId={"rua"} data={rua} setData={setRua} />
+                            </Col>
+                            <Col sm={4}>
+                                <InputTexto type={'text'} defaultValue={''} required={true} label={"Número"} placeholder={numero} controlId={"numero"} data={numero} setData={setNumero} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={{ span: 3, offset: 3 }}>
+                                <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShowEmail}>
+                                    Alterar email
+                                </Button>
+                                <Modal show={showEmail} onHide={handleCloseEmail}>
+                                    <Modal.Body className=" modal-content">
+                                        <Row className='d-flex justify-content-center' >
+                                            <h1 style={{ fontSize: 20 }}>Alterar email</h1>
+                                        </Row>
+
+                                        <Form onSubmit={alterarEmail}>
+                                            <Row className='justify-content-center'>
+                                                <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
+                                                <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
+                                                <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                            </Row>
+                                            <Row className='justify-content-center'>
+                                                <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                    Confirmar alteração
+                                                </Button>
+                                            </Row>
+                                        </Form>
+                                    </Modal.Body>
+                                </Modal>
+
+                            </Col>
+
+                            <Col md={3}>
+                                <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
+                                    Alterar senha
+                                </Button>
+                                <Modal show={show} onHide={handleClose}>
+                                    <Modal.Body className=" modal-content">
+                                        <Row className='d-flex justify-content-center' >
+                                            <h1 style={{ fontSize: 20 }}>Alterar senha</h1>
+                                        </Row>
+
+                                        <Form onSubmit={alterarSenha}>
+                                            <Row className='justify-content-center'>
+                                                <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
+                                                <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="password" />
+                                                <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="password" />
+                                            </Row>
+                                            <Row className='justify-content-center'>
+                                                <Button className='Botão-Primario Texto-Branco' type='submit'>
+                                                    Confirmar alteração
+                                                </Button>
+                                            </Row>
+                                        </Form>
+                                    </Modal.Body>
+                                </Modal>
+                            </Col>
+                        </Row>
+
+                        <Row className='d-flex justify-content-center'>
+                            <Button onClick={voltarPerfil} style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
+                                Cancelar
                             </Button>
-                            <Modal show={showEmail} onHide={handleCloseEmail}>
-                                <Modal.Body className=" modal-content">
-                                    <Row className='d-flex justify-content-center' >
-                                        <h1 style={{ fontSize: 20 }}>Alterar email</h1>
-                                    </Row>
-
-                                    <Form onSubmit={alterarEmail}>
-                                        <Row className='justify-content-center'>
-                                            <InputTexto defaultValue={''} required={true} label={"Novo email"} placeholder={""} controlId={"Novo email"} data={novoEmail} setData={setnovoEmail} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Confirmar novo email"} placeholder={""} controlId={"Confirmar novo email"} data={confirmarEmail} setData={setconfirmarEmail} type="text" />
-                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
-                                        </Row>
-                                        <Row className='justify-content-center'>
-                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
-                                                Confirmar alteração
-                                            </Button>
-                                        </Row>
-                                    </Form>
-                                </Modal.Body>
-                            </Modal>
-
-                        </Col>
-
-                        <Col md={3}>
-                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Terciário Texto-Azul' onClick={handleShow}>
-                                Alterar senha
+                            <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
+                                Confirmar alterações
                             </Button>
-                            <Modal show={show} onHide={handleClose}>
-                                <Modal.Body className=" modal-content">
-                                    <Row className='d-flex justify-content-center' >
-                                        <h1 style={{ fontSize: 20 }}>Alterar senha</h1>
-                                    </Row>
+                        </Row>
 
-                                    <Form onSubmit={alterarSenha}>
-                                        <Row className='justify-content-center'>
-                                            <InputTexto defaultValue={''} required={true} label={"Senha atual"} placeholder={""} controlId={"Senha atual"} data={senhaAtual} setData={setsenhaAtual} type='password' />
-                                            <InputTexto defaultValue={''} required={true} label={"Nova senha"} placeholder={""} controlId={"Nova Senha"} data={novaSenha} setData={setnovaSenha} type="password" />
-                                            <InputTexto defaultValue={''} required={true} label={"Confirmar nova senha"} placeholder={""} controlId={"Confirmar nova senha"} data={confirmarSenha} setData={setconfirmarSenha} type="password" />
-                                        </Row>
-                                        <Row className='justify-content-center'>
-                                            <Button className='Botão-Primario Texto-Branco' type='submit'>
-                                                Confirmar alteração
-                                            </Button>
-                                        </Row>
-                                    </Form>
-                                </Modal.Body>
-                            </Modal>
-                        </Col>
-                    </Row>
-
-                    <Row className='d-flex justify-content-center'>
-                        <Button onClick={voltarPerfil} style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Secundario Texto-Azul'>
-                            Cancelar
-                        </Button>
-                        <Button style={{ margin: '5vh 5vw 5vh 5vw' }} className='Botão-Primario Texto-Branco' type="submit" >
-                            Confirmar alterações
-                        </Button>
-                    </Row>
-
-                </Container>
-            </Form>
-        </>
-    )
+                    </Container>
+                </Form>
+            </>
+        );
+    } else {
+        return (<Forbidden403 />)
+    }
 }
