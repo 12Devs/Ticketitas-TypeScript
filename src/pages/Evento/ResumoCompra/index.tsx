@@ -202,21 +202,17 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
 
     }
 
-
-
-
-
     function handleFinalizar()
     {
         if(!TemCartao)
         {
             var data: any = {
-                cardCVV,
-                cardNumber,
-                cardExpMonth,
-                cardExpYear,
-                cardHolder,
-                cpfCardHolder
+                cvv: cardCVV,
+                cardNumber: cardNumber,
+                monthExpirationDate: cardExpMonth,
+                yearExpirationDate: cardExpYear,
+                holder: cardHolder,
+                cpf: cpfCardHolder
             }
             console.log("Dados cartão:", data)
             const config = {
