@@ -27,33 +27,21 @@ export default function Perfil() {
     const [rua, setRua] = useState('undefined');
     const [numero, setNumero] = useState('undefined');
     const [email, setEmail] = useState('undefined');
-    const [cardName, setCardName] = useState('Matheus Mota Santos');
-    const [cardNumber, setCardNumber] = useState('1234567832324545');
+    const [cardName, setCardName] = useState('undefined');
+    const [cardNumber, setCardNumber] = useState('XXXXXXXXXXXXXXXX');
     const [cardNumberFour, setcardNumberFour] = useState('');
-    const [saldo, setSaldo] = useState('0');
+    const [saldo, setSaldo] = useState('');
 
     const [eventSelect, setEventSelect] = useState('Meus Dados');
     const navigate = useNavigate();
     const handleSelect = (eventKey: any) => setEventSelect(eventKey);
 
-    function separarNomeSobrenome(nomeCompleto: string) {
-        // Dividir o nome completo em palavras
-        var palavras = nomeCompleto.split(" ");
-
-
-        // O primeiro nome é a primeira palavra
-        setprimeiroNome(palavras[0])
-        console.log(palavras[0])
-
-        // O sobrenome é o restante das palavras
-        setSobreome(palavras[-1])
-        console.log(palavras[-1])
-
-        // Retornar o nome e o sobrenome como um objeto
-    }
+   
 
     function pegarUltimosQuatroDigitos(numero: string) {
+
         let ultimosQuatroDigitos = numero.slice(-4);
+        console.log(ultimosQuatroDigitos)
         setcardNumberFour(ultimosQuatroDigitos);
     }
 
@@ -75,6 +63,7 @@ export default function Perfil() {
             console.log(response)
             setCardNumber(response.data.cardInfos.card.cardNumber);
             setCardName(response.data.cardInfos.card.holder);
+            pegarUltimosQuatroDigitos(response.data.cardInfos.card.cardNumber)
         });
         if (user == "cliente") {
             api.get("user/client/", config).then((response) => {
@@ -91,7 +80,7 @@ export default function Perfil() {
                 setBairro(response.data.ClientInfos.enderecoClient.bairro)
                 setNumero(response.data.ClientInfos.enderecoClient.numero)
                 setCidade(response.data.ClientInfos.enderecoClient.cidade)
-                pegarUltimosQuatroDigitos(cardNumber)
+                
 
             });
 
@@ -109,7 +98,7 @@ export default function Perfil() {
                 setBairro(response.data.PromoterInfos.enderecoPromoter.bairro)
                 setNumero(response.data.PromoterInfos.enderecoPromoter.numero)
                 setCidade(response.data.PromoterInfos.enderecoPromoter.cidade)
-                separarNomeSobrenome(nomeCompleto)
+  
             });
         }
         else if (user == "admin") {
@@ -118,10 +107,9 @@ export default function Perfil() {
                 SetnomeCompleto(response.data.AdministratorInfos.administrator.name)
                 setEmail(response.data.AdministratorInfos.administrator.email)
                 setTelefone(response.data.AdministratorInfos.administrator.phone)
-                separarNomeSobrenome(nomeCompleto)
+   
             });
         }
-        separarNomeSobrenome(nomeCompleto)
 
     }, [])
 
@@ -154,14 +142,11 @@ export default function Perfil() {
                     </Col>
                 </Row>
                 {
-                    eventSelect == "Meus Dados" && userType != "admin" ?
+                    eventSelect == "Meus Dados" ?
                         <>
                             <Row style={{ marginTop: 20 }}>
                                 <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='Nome' text={primeiroNome} />
-                                </Col>
-                                <Col md={2}>
-                                    <OutputInfo label='Sobrenome' text='' />
+                                    <OutputInfo label='Nome' text={nomeCompleto} />
                                 </Col>
 
                             </Row><Row>
@@ -178,34 +163,44 @@ export default function Perfil() {
                                 <Col md={{ span: 3, offset: 3 }}>
                                     <OutputInfo label='CPF' text={cpf} />
                                 </Col>
-
-                            </Row><Row>
-                                <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='Cidade' text={cidade} />
-                                </Col>
-                                <Col md={4}>
-                                    <OutputInfo label='Estado' text={estado} />
-                                </Col>
-
-                            </Row><Row>
-                                <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='Bairro' text={bairro} />
-                                </Col>
-
-                            </Row><Row>
-                                <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='CEP' text={cep} />
-                                </Col>
-
-                            </Row><Row>
-                                <Col md={{ span: 3, offset: 3 }}>
-                                    <OutputInfo label='Rua' text={rua} />
-                                </Col>
-                                <Col md={4}>
-                                    <OutputInfo label='Numero' text={numero} />
-                                </Col>
-
-                            </Row><Row className='d-flex justify-content-center'>
+                            
+                            </Row>
+                            {   
+                             userType == "cliente" || userType == "promoter" ?
+                                <>
+                                 <Row>
+                                 <Col md={{ span: 3, offset: 3 }}>
+                                     <OutputInfo label='Cidade' text={cidade} />
+                                 </Col>
+                                 <Col md={4}>
+                                     <OutputInfo label='Estado' text={estado} />
+                                 </Col>
+ 
+                             </Row><Row>
+                                 <Col md={{ span: 3, offset: 3 }}>
+                                     <OutputInfo label='Bairro' text={bairro} />
+                                 </Col>
+ 
+                             </Row><Row>
+                                 <Col md={{ span: 3, offset: 3 }}>
+                                     <OutputInfo label='CEP' text={cep} />
+                                 </Col>
+ 
+                             </Row><Row>
+                                 <Col md={{ span: 3, offset: 3 }}>
+                                     <OutputInfo label='Rua' text={rua} />
+                                 </Col>
+                                 <Col md={4}>
+                                     <OutputInfo label='Numero' text={numero} />
+                                 </Col>
+ 
+                             </Row>
+                             </>
+                             :
+                             <div></div>
+                             
+                            }
+                           <Row className='d-flex justify-content-center'>
                                 {
                                     userType === "admin" ?
                                         <Button style={{ margin: '5vh 5vw 5vh 5vw' }}
@@ -271,7 +266,7 @@ export default function Perfil() {
                                     </Card.Body>
                                 </Card>
                             </Col>
-                            <Col md={2}>
+                            <Col md={2} className={"align-items-left"}>
                                 <div style={{ marginTop: 40 }} >
                                     <p style={{ fontWeight: 'bold', fontSize: 12 }}>{cardName}</p>
                                     <p style={{ fontSize: 12 }}>XXXX XXXX XXXX {cardNumberFour}</p>

@@ -9,6 +9,7 @@ import { api } from '../../../services/api';
 import './styleDescricao.css';
 import '../styleGeralEvento.css';
 import '../../../components/Texto/Texto.css';
+import { Button } from 'react-bootstrap';
 
 export default function Descricao({ idEvento }: { idEvento: string }) {
     const [titulo, setTitulo] = useState('Titulo');
@@ -29,12 +30,10 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
 
     useEffect(() => {
         api.get(`/event/${idEvento}`).then((response) => {
-            console.log(response);
             setTitulo(response.data.eventInfos.event.nome);
             setDescricao(response.data.eventInfos.event.descricao);
             setDataHora(response.data.eventInfos.event.dataEvento);
             setImageEvent(response.data.eventInfos.event.imageEvent);
-            console.log("ID da imagem: ",response.data.eventInfos.event.imageEvent)
             setRua(response.data.eventInfos.enderecoEvent.rua);
             setCidade(response.data.eventInfos.enderecoEvent.cidade);
             setEstado(response.data.eventInfos.enderecoEvent.estado);
@@ -42,7 +41,6 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
             setEvent(response.data.eventInfos.event)
         });
     }, []);
-
 
     return (
         <Container>
@@ -65,6 +63,12 @@ export default function Descricao({ idEvento }: { idEvento: string }) {
                         <p className='Texto-Preto Texto-MuitoPequeno Texto-Justificado'>
                             {descricao}
                         </p>
+                        
+                        <Row>
+                            <Button href={`https://api.whatsapp.com/send?text=Confira esse evento no site Ticketitas: http://localhost:3000/evento/${idEvento}`} className='Botão-Secundario Texto-Azul mt-3 mb-3'>
+                                Compartilhar evento
+                            </Button>
+                        </Row>
                     </Col>
 
                     <Col sm={5} className='pe-5 ps-5'>

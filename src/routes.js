@@ -27,7 +27,8 @@ import EditarEvento from './pages/EditarEvento';
 import MeusIngressos from './pages/MeusIngressos';
 import GerenciarPromoters from './pages/GerenciarPromoters';
 import GerenciarAdmins from './pages/GerenciarAdmins';
-
+import Privacidade from './pages/Privacidade';
+import Contato from './pages/Contato';
 
 export default function AppRouter() {
     return (
@@ -36,19 +37,16 @@ export default function AppRouter() {
                 <Routes>
                     <Route path='/' element={<Home />} />
                     <Route path='about' element={<QuemSomos />} />
+                    <Route path='privacy' element={<Privacidade />} />
+                    <Route path='contact' element={<Contato />} />
                     <Route 
                         path='evento/:eventId' element={<Evento />} 
                         loader={({ params }) => {console.log(params.eventId)}}
                     />
-
                     < Route 
                         path='checkout/:IdCart' element={<Checkout />} 
                         loader={({ params }) => {console.log(params.IdCart)}}
                     />
-
-                    
-            
-                    
                     <Route path='cadastrarCliente' element={<CadastrarCliente />} />
                     <Route path='cadastrarClienteCompra' element={<CadastrarClienteCompra/>}/>
                     <Route path='cadastrarEvento' element={<CadastrarEvento />} />
@@ -57,7 +55,10 @@ export default function AppRouter() {
                     <Route path='editarPromoter' element={<EditarPromoter/>}/>
                     <Route path='cadastrarAdmin' element={<CadastrarAdmin />} />
                     <Route path='editarAdmin' element={<EditarAdmin/>}/>
-                    <Route path='recuperarSenha' element={<RecuperarSenha />} />
+                    <Route 
+                        path='recuperarSenha/:idRecuperar' element={<RecuperarSenha/>} 
+                        loader={({ params }) => {console.log(params.idRecuperar)}} 
+                    />
                     <Route path='PrimeiraSenha' element={<PrimeiraSenha />} />
                     <Route path='checkout' element={<Checkout />} />
                     <Route path='loginAdm' element={<LoginAdm/>}/>

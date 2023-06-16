@@ -19,8 +19,8 @@ export default function LoginAdm() {
 
     const [showRecuperar, setShowRecuperar] = useState(false);
 
-    const [captchavalidate, setcaptchavalidate] = useState(false);
-    const [captchastatus, setcaptchastatus] = useState(false);
+    const [mensagemRecuperar, setMensagemRecuperar] = useState(false);
+    const [mensagemRecuperarString, setMensagemRecuperarString] = useState("");
 
     // Recarrega a tela
     const refresh = () => window.location.reload();
@@ -59,6 +59,16 @@ export default function LoginAdm() {
         refresh();
     }
 
+    
+    const handleRecuperar = () => {
+        setMensagemRecuperar(false);
+
+        const body = {
+            email: emailRecuperacao
+        }
+        api.post("/user/administrator/change-password", body).then(handleCloseRecuperar).catch((erro) => {setMensagemRecuperar(true); setMensagemRecuperarString(erro.response.data.message)});
+    }
+
     return (
         <>
             <NavBarGeral />
@@ -78,16 +88,6 @@ export default function LoginAdm() {
                         <InputTexto defaultValue={''} required={true} label={"Email"} placeholder={""} controlId={"email"} data={email} setData={setEmail} type='' />
                         <InputTexto defaultValue={''} required={true} label={"Senha"} placeholder={""} controlId={"senha"} data={senha} setData={setSenha} type="password" />
                     </Row>
-                    {
-                        /*
-                        <Row className='justify-content-center'>
-                        <ReCAPTCHA 
-                        sitekey="6LdLG-ElAAAAAN34jptkg-UA6ASYNmnM9_CXjvFM"
-                        onChange={validateCaptcha}
-                        />
-                        </Row>
-                        */
-                    }
 
                     <Row className='justify-content-center'>
                         <Button className='Botão-Terciário Texto-Azul' onClick={handleShowRecuperar}>
@@ -135,8 +135,13 @@ export default function LoginAdm() {
                             setData={setEmailRecuperacao}
                             type='' />
                     </Row>
+
+                    <Alert style={{ width: 'fit-content' }} show={mensagemRecuperar} variant="danger">
+                            <p>{mensagemRecuperarString}</p>
+                    </Alert>
+
                     <Row className='justify-content-center'>
-                        <Button className='Botão-Primario Texto-Branco' type='submit'>
+                        <Button className='Botão-Primario Texto-Branco' onClick={handleRecuperar}>
                             Enviar
                         </Button>
                     </Row>

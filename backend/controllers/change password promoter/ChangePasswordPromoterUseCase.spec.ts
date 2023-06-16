@@ -4,7 +4,7 @@ import { PromoterRepository } from "../../db/PromoterRepository";
 
 //Import of the ApiError API
 import { ApiError } from "../../errors/ApiError";
-import { SendEmail } from "../../utils/SendEmail";
+import { EmailProvider } from "../../utils/EmailProvider";
 
 //Import of the class that will be tested here
 import { ChangePasswordPromoterUseCase } from "./ChangePasswordPromoterUseCase";
@@ -13,7 +13,7 @@ describe('ChangePasswordPromoterController, no code stored', () => {
   let changePasswordPromoterUseCase: ChangePasswordPromoterUseCase;
   let promoterRepository:  PromoterRepository;
   let promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository;
-  let sendEmail: SendEmail;
+  let emailProvider: EmailProvider;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (PromoterRepository)
@@ -28,11 +28,15 @@ describe('ChangePasswordPromoterController, no code stored', () => {
       updateCode: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as PromoterPasswordChangeCodeRepository;
 
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
     // Criação do serviço (ChangePasswordPromoterUseCase) injetando o caso de uso simulado
     changePasswordPromoterUseCase = new ChangePasswordPromoterUseCase(
       promoterRepository,
       promoterPasswordChangeCodeRepository,
-      sendEmail
+      emailProvider
     );
   });
 
@@ -47,6 +51,7 @@ describe('ChangePasswordPromoterController, no code stored', () => {
     const findByEmailSpy = jest.spyOn(promoterRepository, 'findByEmail');
     const createSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
     const mockReturn = await changePasswordPromoterUseCase.execute(mockEmail);
@@ -62,6 +67,9 @@ describe('ChangePasswordPromoterController, no code stored', () => {
 
     // Verificar se o a criação foi bem-sucedida por meio de verificação do return
     expect(mockReturn.resetPromoterPassword).not.toBe(null);
+
+    // Verificar se o email foi enviado
+    expect(sendEmailSpy).toHaveBeenCalled()
   });
 
   // Teste para verificar se o método execute é retorna erro caso o campo de emai esteja vazio
@@ -75,6 +83,7 @@ describe('ChangePasswordPromoterController, no code stored', () => {
     const findByEmailSpy = jest.spyOn(promoterRepository, 'findByEmail');
     const createSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método execute do serviço com os argumentos desejados e verificar que um erro específico ocorreu
     try {
@@ -98,6 +107,9 @@ describe('ChangePasswordPromoterController, no code stored', () => {
 
     // Verificar se o método updateCodeSpy não foi chamado
     expect(updateCodeSpy).not.toHaveBeenCalled();
+
+    // Verificar se o email não foi enviado
+    expect(sendEmailSpy).not.toHaveBeenCalled()
   });
 });
 
@@ -105,7 +117,7 @@ describe('ChangePasswordPromoterController, code already stored', () => {
   let changePasswordPromoterUseCase: ChangePasswordPromoterUseCase;
   let promoterRepository:  PromoterRepository;
   let promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository;
-  let sendEmail: SendEmail;
+  let emailProvider: EmailProvider;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (PromoterRepository)
@@ -120,11 +132,15 @@ describe('ChangePasswordPromoterController, code already stored', () => {
       updateCode: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as PromoterPasswordChangeCodeRepository;
 
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
     // Criação do serviço (ChangePasswordPromoterUseCase) injetando o caso de uso simulado
     changePasswordPromoterUseCase = new ChangePasswordPromoterUseCase(
       promoterRepository,
       promoterPasswordChangeCodeRepository,
-      sendEmail
+      emailProvider
     );
   });
 
@@ -139,6 +155,7 @@ describe('ChangePasswordPromoterController, code already stored', () => {
     const findByEmailSpy = jest.spyOn(promoterRepository, 'findByEmail');
     const createSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método handle do controlador com os objetos simulados de requisição e resposta
     const mockReturn = await changePasswordPromoterUseCase.execute(mockEmail);
@@ -154,6 +171,9 @@ describe('ChangePasswordPromoterController, code already stored', () => {
 
     // Verificar se o a criação foi bem-sucedida por meio de verificação do return
     expect(mockReturn.resetPromoterPassword).not.toBe(null);
+
+    // Verificar se o email foi enviado
+    expect(sendEmailSpy).toHaveBeenCalled()
   });
 });
 
@@ -162,7 +182,7 @@ describe('ChangePasswordPromoterController, no code stored', () => {
   let changePasswordPromoterUseCase: ChangePasswordPromoterUseCase;
   let promoterRepository:  PromoterRepository;
   let promoterPasswordChangeCodeRepository: PromoterPasswordChangeCodeRepository;
-  let sendEmail: SendEmail;
+  let emailProvider: EmailProvider;
 
   beforeEach(() => {
     // Criação de um objeto simulado para o caso de uso (PromoterRepository)
@@ -177,11 +197,15 @@ describe('ChangePasswordPromoterController, no code stored', () => {
       updateCode: jest.fn() // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as PromoterPasswordChangeCodeRepository;
 
+    emailProvider = {
+      sendEmail: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
+    } as unknown as EmailProvider;
+
     // Criação do serviço (ChangePasswordPromoterUseCase) injetando o caso de uso simulado
     changePasswordPromoterUseCase = new ChangePasswordPromoterUseCase(
       promoterRepository,
       promoterPasswordChangeCodeRepository,
-      sendEmail
+      emailProvider
     );
   });
 
@@ -196,6 +220,7 @@ describe('ChangePasswordPromoterController, no code stored', () => {
     const findByEmailSpy = jest.spyOn(promoterRepository, 'findByEmail');
     const createSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'create');
     const updateCodeSpy = jest.spyOn(promoterPasswordChangeCodeRepository, 'updateCode');
+    const sendEmailSpy = jest.spyOn(emailProvider, 'sendEmail');
 
     // Chamar o método execute do serviço com os argumentos desejados e verificar que um erro específico ocorreu
     try {
@@ -219,5 +244,8 @@ describe('ChangePasswordPromoterController, no code stored', () => {
 
     // Verificar se o método updateCodeSpy não foi chamado
     expect(updateCodeSpy).not.toHaveBeenCalled();
+
+    // Verificar se o email não foi enviado
+    expect(sendEmailSpy).not.toHaveBeenCalled();
   });
 });
