@@ -223,7 +223,7 @@ export default function ResumoCompra({ idCheckout }: { idCheckout: string }) {
                         />{''}
                         </div>
                         
-                    <Card.Title>aaa</Card.Title>
+                    <Card.Title></Card.Title>
                     <Row>
                         <Col>
                             <Card.Text>
