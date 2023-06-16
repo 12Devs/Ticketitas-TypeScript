@@ -12,6 +12,7 @@ import './Navbar.css';
 import { api } from '../../services/api'
 import { Dropdown } from 'react-bootstrap';
 import InputBuscar from '../InputBuscar';
+import ReactSelect from '../ReactSelect';
 
 const NavBarGeral = () => {
   const rotasDefault = [{
@@ -58,13 +59,22 @@ const NavBarGeral = () => {
     refresh();
   }
 
+  function formatData(data: string) {
+    var dataHoraOBJ = new Date(data);
+    var dataHoraFormatada = (dataHoraOBJ.getUTCDate()) + "/" + (dataHoraOBJ.getMonth() + 1) + "/" + dataHoraOBJ.getFullYear();
+
+    return dataHoraFormatada;
+  }
+  
   function renderBuscarOpcoes() {
+    var listaEventos = [{}];
+
+    arrayEventos.allActiveEvents.map((event: any, index) => (
+      listaEventos.push({ value: event.id, label: `${event.nome}, ${formatData(event.dataEvento)}` })
+    ))
+
     return (
-      <InputBuscar 
-        placeholder={"Buscar eventos, shows e etc..."} 
-        controlId={"Barra de busca"} 
-        options={arrayEventos.allActiveEvents} 
-        listaId={'search'} />
+      <ReactSelect listaEventos={listaEventos} />
     )
   }
 
@@ -77,6 +87,7 @@ const NavBarGeral = () => {
       setArrayEventos(response.data);
     });
   }, []);
+
   return (
     <Navbar collapseOnSelect expand="lg" className='NavBar'>
 
