@@ -9,12 +9,12 @@ describe('LoginAdministratorController', () => {
   let mockResponse: Partial<Response>;
 
   beforeEach(() => {
-    // Criação de um objeto simulado para o caso de uso (AprovePromoterRegistrationUseCase)
+    // Criação de um objeto simulado para o caso de uso (LoginAdministratorUseCase)
     loginAdministratorUseCase = {
       execute: jest.fn(), // Utilizamos o jest.fn() para criar uma função simulada
     } as unknown as LoginAdministratorUseCase;
 
-    // Criação do controlador (AprovePromoterRegistrationController) injetando o caso de uso simulado
+    // Criação do controlador (LoginAdministratorController) injetando o caso de uso simulado
     loginAdministratorController = new LoginAdministratorController(
         loginAdministratorUseCase
     );
