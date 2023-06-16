@@ -34,7 +34,9 @@ conn.sync().then(async () => {
 // await FillDataBase.setHighlights();
 // await FillDataBase.promoterAprove();
 // await FillDataBase.fillEvents();
-// await FillDataBase.fillImageEvents()
+// await FillDataBase.fillImageEvents();
+// await FillDataBase.updateCard();
+// await FillDataBase.makePurchase();
   app.listen(process.env.PORT_BACK, () => console.log("Server on! Porta => 3333"));
 }).catch((error) => console.log(error));
 
